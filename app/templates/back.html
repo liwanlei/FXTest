@@ -2,9 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>API自动化平台</title>
+    <link href="../static/css/bootstrap.css"  rel="stylesheet">
+    <script src="../static/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="    background-color: beige;">
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">API自动化平台</a>
+    </div>
+     <ul class="nav navbar-nav">
+         <li><a href="">首页</a></li>
+    <li>     <a href="">接口列表</a></li>
+       <li>    <a href="">用例</a></li>
+       <li>       <a href="">测试报告</a></li>
+         <li>    <a href="">日志</a></li>
+         <li>     <a href="">统计</a></li>
+          <li>   <a href="">用户管理</a></li>
+        </ul>
+        <p style="margin-top: 13px;float: right"><a>用户</a></p>
+    </div>
+</nav>
+<div class="container">
 
+{% block hello %}
+    {% endblock %}
+
+</div>
+ <div class="container">
+        <p class="muted credit"> @雷子API后台管理 BY  雷子 </p>
+      </div>
 </body>
+
 </html>

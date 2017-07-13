@@ -16,7 +16,7 @@ class RegFrom(Form):
     password = PasswordField('密码', [validators.length(min=8, max=16, message='密码长度8-16位'), validators.DataRequired()],render_kw={'placeholder': '请输入密码'})
     se_password = PasswordField('密码', [validators.length(min=8, max=16, message='密码长度8-16位'), validators.DataRequired()],
                              render_kw={'placeholder': '请输入密码'})
-    email=StringField('用户名', [validators.Length(min=4, max=16, message='邮箱输入错误'), validators.DataRequired()],
+    email=StringField('邮箱', [validators.Length(min=4, max=16, message='邮箱输入错误'), validators.DataRequired()],
                            render_kw={'placeholder': '请输入邮箱'})
 class XugaiFrom(Form):
     password = PasswordField('密码', [validators.length(min=8, max=16, message='密码长度8-16位'), validators.DataRequired()],
@@ -33,8 +33,10 @@ class Interface(Form):
     interface_name=StringField('接口名字', [validators.DataRequired()],render_kw={'placeholder': '请输入接口名称'})
     interface_url=StringField('接口url', [validators.DataRequired()],render_kw={'placeholder': '请输入接口url'})
     interface_meth=StringField('请求方式', [validators.DataRequired()],render_kw={'placeholder': '请输入接口请求方式'})
+    interface_par = StringField('请求示例', [validators.DataRequired()], render_kw={'placeholder': '请输入接口参数示例'})
+    interface_bas= StringField('请求返回示例', [validators.DataRequired()], render_kw={'placeholder': '请输入接口返回示例'})
 class Interface_yong(Form):
-    yongli_name=StringField('用户名字', [validators.DataRequired()],render_kw={'placeholder': '请输入接口用例名称'})
+    yongli_name=StringField('用例名字', [validators.DataRequired()],render_kw={'placeholder': '请输入接口用例名称'})
     interface_name = StringField('接口名字', [validators.DataRequired()], render_kw={'placeholder': '请输入接口名称'})
     interface_url = StringField('接口url', [validators.DataRequired()], render_kw={'placeholder': '请输入接口url'})
     interface_meth = StringField('请求方式', [validators.DataRequired()], render_kw={'placeholder': '请输入接口请求方式'})

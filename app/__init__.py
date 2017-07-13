@@ -12,8 +12,10 @@ from  flask_sqlalchemy import  SQLAlchemy
 from flask_login import  LoginManager
 from flask_moment import  Moment
 from flask_bootstrap import  Bootstrap
+from  config import  Bease
 app=Flask(__name__)
 db=SQLAlchemy(app)
 moment=Moment(app)
+app.config.from_object(Bease)
 bootstrap=Bootstrap(app)
 from  app import  views ,models
