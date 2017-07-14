@@ -2,9 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>API自动化平台</title>
+    <link href="../static/css/bootstrap.css"  rel="stylesheet">
+    <link href="../static/css/demo.css"  rel="stylesheet">
+    <link href="../static/css/main.css"  rel="stylesheet">
+    <script src="../static/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="    background-color: beige;">
+<div id="wrapper">
+		<div class="vertical-align-wrap">
+			<div class="vertical-align-middle">
+				<div class="auth-box " >
+					<div class="left" style="text-align: center">
+						<div class="content">
+							<div class="header">
+								<div class="logo text-center"></div>
+								<h1>登录</h1>
+							</div>
+                            {% with messages = get_flashed_messages() %}
+                                  {% if messages %}
+                                    <ul class='flashes'>
+                                    {% for message in messages %}
+                                      <li >{{ message }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                  {% endif %}
+                                {% endwith %}
+                                {% block body %}{% endblock %}
+							<form class="form-auth-small" action="{{ url_for('login') }}" method="POST">
+                                {{form.hidden_tag()}}
+								<div class="form-group">
+                                    {% if form.username.errors %}
+                                    {% for e in form.username.errors %}
+                                    <p class="flashes">{{ e }}</p>
+                                    {% endfor %}
+                                {% endif %}
+									{{ form.username(class='form-control') }}
+								<div class="form-group">
+									{{ form.password(class='form-control') }}
+								</div>
 
+								<button type="submit" class="btn btn-primary btn-lg btn-block">登录</button>
+								<div class="bottom">
+                                    <span class="helper-text"><i class="fa fa-lock"></i> <a href="{{ url_for('reg') }}" style="float: left"><strong>注册</strong></a></span>
+									<span class="helper-text"><i class="fa fa-lock"></i> <a href="#" style="float: right"><strong>忘记密码?</strong></a></span>
+								</div>
+                                </div>
+							</form>
+
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

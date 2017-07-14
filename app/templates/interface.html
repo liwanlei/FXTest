@@ -1,0 +1,54 @@
+{% extends "back.html" %}
+{% block hello %}
+    <div>
+    <h2>接口</h2>
+    <form method="POST">
+     <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project">
+    <span></span>
+    <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model">
+        <span></span>
+    <input type="submit" value="查询" class="">
+    </form>
+        <div style="margin-top: 10px">
+            <button class="btn btn-default">添加</button>
+            <button class="btn btn-default">导入</button>
+        <button class="btn btn-default">批量删除</button></div>
+
+   <table class="table table-bordered" style="width:70%">
+  <caption><strong>详细的接口</strong></caption>
+  <thead>
+    <tr>
+        <th><input type="checkbox"></th>
+      <th>接口id</th>
+      <th>项目名称</th>
+      <th>所属模块</th>
+         <th>接口名称</th>
+         <th>接口地址</th>
+         <th>接口请求方法</th>
+         <th>接口请求参数</th>
+         <th>接口返回参数</th>
+        <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td><input type="checkbox"></td>
+      <td>Tanmay</td>
+      <td>Bangalore</td>
+      <td>560001</td>
+         <td>Tanmay</td>
+      <td>Bangalore</td>
+      <td>560001</td>
+         <td>Tanmay</td>
+      <td>Bangalore</td>
+      <td><p>
+          <input type="button" value="编辑" ></p>
+          <p><input type="button" value="删除"></p>
+      </td>
+    </tr>
+
+
+  </tbody>
+</table>
+</div>
+{% endblock %}

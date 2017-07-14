@@ -22,7 +22,7 @@ class User(db.Model):
     def set_password(self,password):
         self.password=generate_password_hash(password)
     def check_password(self,password):
-        return  check_password_hash(password)
+        return  check_password_hash(self.password,password)
 class Interface(db.Model):
     __tablename__='interfaces'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
@@ -44,7 +44,6 @@ class InterfaceTest(db.Model):
     Interface_url = db.Column(db.String(252), unique=True)
     Interface_meth = db.Column(db.String(252), unique=True)
     Interface_pase = db.Column(db.String(252), unique=True)
-    Interface_back = db.Column(db.String(252), unique=True)
     Interface_assert=db.Column(db.String(252),unique=True)
     Interface_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
     def __repr__(self):

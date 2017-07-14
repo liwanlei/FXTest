@@ -1,7 +1,34 @@
 {% extends "back.html" %}
-
 {% block hello %}
-<div class="jumbotron">
-	<h2>雷子API后台管理<h2>
+	<h2>API后台统计</h2>
+       <div class="panel-body">
+           <div class="row">
+               <div class="col-md-3">
+                   <div class="metric">
+                       <span class="icon"><i class="fa fa-download"></i></span>
+                       <p>
+                       <span class="number">{{ yongli }}条</span>
+                       <span class="title">用例</span>
+										</p>
+                   </div>
+               </div>
+               <div class="col-md-3">
+                   <div class="metric">
+                       <span class="icon"><i class="fa fa-download"></i></span>
+                       <p>
+                       <span class="number">{{ jiekou }}条</span>
+                       <span class="title">接口</span></p>
+                   </div>
+               </div>
+               <div class="col-md-3">
+                   <div class="metric">
+                       <span class="icon"><i class="fa fa-download"></i></span>
+                       <p>
+                       <span class="number">{{ report }}个</span>
+                       <span class="title">测试报告</span>
+										</p>
+                   </div>
+               </div>
 </div>
+       </div>
 {% endblock %}
