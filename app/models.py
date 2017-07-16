@@ -60,5 +60,3 @@ class TestResult(db.Model):
     hour_time=db.Column(db.DateTime())
     def __repr__(self):
         return  self.id
-
-
