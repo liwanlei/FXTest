@@ -14,9 +14,9 @@ from flask_moment import  Moment
 from flask_bootstrap import  Bootstrap
 from config import lod
 app=Flask(__name__)
-config=lod()
-app.config.from_object(config)
-db=SQLAlchemy(app)
 moment=Moment(app)
+conf=lod()
+app.config.from_object(conf)
 bootstrap=Bootstrap(app)
+db=SQLAlchemy(app)
 from  app import  views ,models

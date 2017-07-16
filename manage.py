@@ -7,6 +7,5 @@
 @time: 2017/7/13 16:39g
 """
 from  app import  app
-
-if __name__ == "__mian__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run()

@@ -3,6 +3,15 @@
 	<h2>API后台统计</h2>
        <div class="panel-body">
            <div class="row">
+           {% with messages = get_flashed_messages() %}
+                                  {% if messages %}
+                                    <ul class=flashes>
+                                    {% for message in messages %}
+                                      <li >{{ message }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                  {% endif %}
+                                {% endwith %}
                <div class="col-md-3">
                    <div class="metric">
                        <span class="icon"><i class="fa fa-download"></i></span>

@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>API自动化平台</title>
-    <link href="../static/css/bootstrap.css"  rel="stylesheet">
-    <link href="../static/css/demo.css"  rel="stylesheet">
-    <link href="../static/css/main.css"  rel="stylesheet">
-    <script src="../static/js/bootstrap.min.js"></script>
+    <link href="{{url_for('static',filename='css/bootstrap.css')}}"  rel="stylesheet">
+    <link href="{{url_for('static',filename='css/demo.css')}}"  rel="stylesheet">
+    <link href="{{url_for('static',filename='css/main.css')}}"  rel="stylesheet">
+    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
 </head>
 <body style="    background-color: beige;">
 <nav class="navbar navbar-default" role="navigation">
@@ -17,7 +17,6 @@
          <p style=" margin-top:15px;float: right"><a href="{{ url_for('logt') }}">退出</a></p>
         <span>|</span>
         <p style=" margin-top:15px;float: right"><a>{{session.username }}</a></p>
-
     </div></nav>
 <div class="container">
     <div class="row" >
@@ -27,11 +26,11 @@
 				<nav>
 					<ul class="nav">
 						<li><a href="{{ url_for('index') }}" class="active"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
-						<li><a href="{{ url_for('inter') }}" class=""><i class="lnr lnr-code"></i> <span>接口</span></a></li>
+						<li><a href="{{ url_for('interface') }}" class=""><i class="lnr lnr-code"></i> <span>接口</span></a></li>
 						<li><a href="{{ url_for('yongli') }}" class=""><i class="lnr lnr-chart-bars"></i> <span>用例</span></a></li>
                         <li><a href="" class=""><i class="lnr lnr-chart-bars"></i> <span>日志</span></a></li>
                         <li><a href="" class=""><i class="lnr lnr-chart-bars"></i> <span>测试报告</span></a></li>
-						<li><a href="" class=""><i class="lnr lnr-cog"></i> <span>用户管理</span></a></li>
+						<li><a href="{{url_for('adminuser')}}" class=""><i class="lnr lnr-cog"></i> <span>用户管理</span></a></li>
 
 					</ul>
 				</nav>

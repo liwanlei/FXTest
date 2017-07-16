@@ -3,21 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>API自动化平台</title>
-    <link href="../static/css/bootstrap.css"  rel="stylesheet">
-    <link href="../static/css/demo.css"  rel="stylesheet">
-    <link href="../static/css/main.css"  rel="stylesheet">
-    <script src="../static/js/bootstrap.min.js"></script>
+    <link href="{{url_for('static',filename='css/bootstrap.css')}}"  rel="stylesheet">
+    <link href="{{url_for('static',filename='css/demo.css')}}"  rel="stylesheet">
+    <link href="{{url_for('static',filename='css/main.css')}}"  rel="stylesheet">
+    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
 </head>
 <body style="    background-color: beige;">
 <div id="wrapper">
 		<div class="vertical-align-wrap">
-			<div class="vertical-align-middle">
-				<div class="auth-box " >
+			<div class="vertical-align-middle" >
 					<div class="left" style="text-align: center">
-						<div class="content">
-							<div class="header">
-								<div class="logo text-center"></div>
-								<h1>注册</h1>
+							<h1>注册</h1>
 							</div>
                             {% with messages = get_flashed_messages() %}
                                   {% if messages %}
@@ -29,7 +25,8 @@
                                   {% endif %}
                                 {% endwith %}
                                 {% block body %}{% endblock %}
-							<form class="form-auth-small" action="{{ url_for('reg') }}" method="POST">
+							<form class="form-auth-small" action="{{ url_for('reg') }}" method="POST" style="width: 40%;
+    margin-left: 30%;">
                                 {{form.hidden_tag()}}
 								<div class="form-group">
                                     {{ form.username.label }}

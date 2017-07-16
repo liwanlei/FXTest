@@ -12,6 +12,8 @@ from  app.models import User,Interface,InterfaceTest,TestResult
 from app.form import  LoginFrom,RegFrom
 @app.route('/',methods=['GET'])
 def index():
+    if not session.get('username'):
+        return redirect(url_for('login'))
     interface_cont=len(Interface.query.all())
     interfaceTest_cunt=len(InterfaceTest.query.all())
     resu_cout=len(TestResult.query.all())
@@ -65,7 +67,21 @@ def logt():
     return redirect(url_for('login'))
 @app.route('/interface',methods=['GET','POST'])
 def interface():
+    if not session.get('username'):
+        return redirect(url_for('login'))
     return  render_template('interface.html')
 @app.route('/yongli',methods=['GET','POST'])
 def yongli():
+    if not session.get('username'):
+        return redirect(url_for('login'))
     return  render_template('interface_yongli.html')
+@app.route('/adminuser',methods=['GET','POST'])
+def adminuser():
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    user=User.query.filter_by(username=session.get('username')).first()
+    if user.level!=1:
+        flash('您没有权限进入管理中心')
+        return redirect(url_for('index'))
+    return render_template('useradmin.html')
+
