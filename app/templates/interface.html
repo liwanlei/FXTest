@@ -2,8 +2,6 @@
 {% block hello %}
 {% import "fenye.html" as macros %}
 </ul>
-{% endif %}
-{% endwith %}
    <div>
     <h2>接口</h2>
     {% with messages = get_flashed_messages() %}
@@ -12,18 +10,19 @@
 {% for message in messages %}
 <li >{{ message }}</li>
 {% endfor %}
+{% endif %}
+{% endwith %}
     <form method="POST">
      <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project">
     <span></span>
     <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model">
         <span></span>
-    <input type="submit" value="查询" class="">
+    <input type="submit" value="查询" class="btn btn-default">
     </form>
         <div style="margin-top: 10px">
-            <button class="btn btn-default"><a href="{{url_for('interface_add')}}">添加</a></button>
+            <a href="{{url_for('interface_add')}}"><input type="button" name="" value="添加" class="btn btn-default"> </a>
             <button class="btn btn-default">导入</button>
         <button class="btn btn-default">批量删除</button></div>
-
    <table class="table table-bordered" style="width:70%">
   <caption><strong>详细的接口</strong></caption>
   <thead>

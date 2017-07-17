@@ -1,0 +1,38 @@
+{%extends 'back.html'%}
+{%block hello%}
+<h2>添加测试用用例</h2>
+{% with messages = get_flashed_messages()%}
+{% if messages%}
+<ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<form method="POST" action="{{url_for('addtestcase')}}">
+ {{form.hidden_tag()}}
+ {{form.csrf_token}}
+ <div>
+ <div class="form-group">
+<strong>用例名字:</strong>
+{{ form.yongli_name }}</div>
+ <div class="form-group">
+<strong>接口名字:</strong>
+{{ form.interface_name }}</div>
+ <div class="form-group">
+<strong>接口url:</strong>
+{{ form.interface_url }}</div>
+ <div class="form-group">
+<strong>请求方式:</strong>
+{{ form.interface_meth }}</div>
+ <div class="form-group" style="margin-left: 25%;">
+<strong>请求参数:</strong>
+{{ form.interface_can }}</div>
+ <div class="form-group" style="margin-left: 25%;">
+<strong>请求预期:</strong>
+{{ form.interface_rest }}</div>
+<button type="submit" class="btn btn-primary" style="margin-left: 26%;">添加</button>
+</form>
+</div>
+{%endblock%}

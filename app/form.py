@@ -40,5 +40,5 @@ class Interface_yong_Form(Form):
     interface_name = StringField('接口名字', [validators.DataRequired()], render_kw={'placeholder': '请输入接口名称'})
     interface_url = StringField('接口url', [validators.DataRequired()], render_kw={'placeholder': '请输入接口url'})
     interface_meth = StringField('请求方式', [validators.DataRequired()], render_kw={'placeholder': '请输入接口请求方式'})
-    interface_can=StringField('参数', [validators.DataRequired()], render_kw={'placeholder': '请输入接口请求参数'})
-    interface_rest = StringField('预期', [validators.DataRequired()], render_kw={'placeholder': '请输入接口预期'})
+    interface_can=StringField('请求参数', [validators.DataRequired()], render_kw={'placeholder': '请输入接口请求参数'})
+    interface_rest = StringField('请求预期', [validators.DataRequired()], render_kw={'placeholder': '请输入接口预期'})

@@ -1,0 +1,42 @@
+{% extends "back.html" %}
+{%block hello%}
+<h3>编辑用例</h3>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+ <ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<form  action="" method="POST" style="width: 40%;
+    margin-left: 30%;">
+<div class="form-group">
+<strong>用例名字:</strong>
+<input type="text" name="project" value="{{edit.yongli_name}}">
+</div>
+<div class="form-group">
+<strong>接口名字:</strong>
+<input type="text" name="model" value="{{edit.Interface_name}}" >
+</div>
+<div class="form-group">
+<strong>接口url:</strong>
+<input type="text" name="url" value="{{edit.Interface_url}}">
+</div>
+<div class="form-group">
+<strong>请求方式:</strong>
+<input type="text" name="meth" value="{{edit.Interface_meth}}">
+</div>
+<div class="form-group">
+<strong>请求参数:</strong>
+<input type="text" name="parme" value="{{edit.Interface_pase}}">
+</div>
+<div class="form-group">
+<strong>请求预期:</strong>
+<input type="text" name="reque" value="{{edit.Interface_assert}}">
+</div>
+<button type="submit" class="btn btn-primary ">添加</button>
+</div>
+</form>
+{%endblock%}

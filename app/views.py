@@ -1,8 +1,6 @@
 # encoding: utf-8
 """
 @author: lileilei
-@site: 
-@software: PyCharm
 @file: views.py
 @time: 2017/7/13 16:42
 """
@@ -155,9 +153,67 @@ def dele_inter(id):
         db.session.commit()
         flash('删除成功')
         return redirect(url_for('interface'))
-    flash('您不能删除这条接口')
+    flash('您没有权限删除这条接口')
     return redirect(url_for('interface'))
-
-
+@app.route('/addtestcase',methods=['GET','POST'])
+def addtestcase():
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    form=Interface_yong_Form()
+    if form.validate_on_submit() and request.method=='POST':
+        yongli_name=request.form.get('yongli_name')
+        interface_name=request.form.get('interface_name')
+        interface_url=request.form.get('interface_url')
+        interface_meth=request.form.get('interface_meth')
+        interface_can=request.form.get('interface_can')
+        interface_re=request.form.get('interface_rest')
+        if yongli_name ==''or interface_name=='' or interface_url=='' or interface_meth=='' or interface_re=='':
+            flash('请准确填写用例')
+            return render_template('add_test_case.html',form=form)
+        newcase=InterfaceTest(yongli_name=yongli_name,Interface_name=interface_name,Interface_url=interface_url,
+            Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+        db.session.add(newcase)
+        db.session.commit()
+        flash('添加用例成功')
+        return redirect(url_for('yongli'))
+    return render_template('add_test_case.html',form=form)
+@app.route('/delete_case/<int:id>',methods=['GET','POST'])
+def delete_case(id):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    testcase=InterfaceTest.query.filter_by(id=id).first()
+    user=User.query.filter_by(username=session.get('username')).first()
+    if testcase.Interface_user_id==user.id or user.level==1:
+        db.session.delete(testcase)
+        db.session.commit()
+        flash('删除成功')
+        return redirect(url_for('yongli'))
+    flash('您没有权限去删除这条用例')
+    return redirect(url('yongli'))
+@app.route('/edit_case/<int:id>',methods=['GET','POST'])
+def edit_case(id):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    edit_case=InterfaceTest.query.filter_by(id=id).first()
+    if request.method=='POST':
+        projecct=request.form.get('project')
+        model=request.form.get('model')
+        url=request.form.get('url')
+        meth=request.form.get('meth')
+        parme=request.form.get('parme')
+        reque=request.form.get('reque')
+        if projecct =='' or model=='' or url=='' or meth=='' or parme=='' or reque=='':
+            flash('请确定各项参数都正常填写')
+        edit_case.yongli_name=projecct
+        edit_case.Interface_name=model
+        edit_case.Interface_url=url
+        edit_case.Interface_meth=meth
+        edit_case.Interface_pase=parme
+        edit_case.Interface_assert=reque
+        interface.Interface_user_id=User.query.filter_by(username=session.get('username')).first().id
+        db.session.commit()
+        flash('编辑成功')
+        return redirect(url_for('yongli'))
+    return render_template('edit_case.html',edit=edit_case)
 
 
