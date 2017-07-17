@@ -1,7 +1,17 @@
 {% extends "back.html" %}
 {% block hello %}
-    <div>
+{% import "fenye.html" as macros %}
+</ul>
+{% endif %}
+{% endwith %}
+   <div>
     <h2>接口</h2>
+    {% with messages = get_flashed_messages() %}
+{% if messages %}
+ <ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
     <form method="POST">
      <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project">
     <span></span>
@@ -10,7 +20,7 @@
     <input type="submit" value="查询" class="">
     </form>
         <div style="margin-top: 10px">
-            <button class="btn btn-default">添加</button>
+            <button class="btn btn-default"><a href="{{url_for('interface_add')}}">添加</a></button>
             <button class="btn btn-default">导入</button>
         <button class="btn btn-default">批量删除</button></div>
 
@@ -31,24 +41,26 @@
     </tr>
   </thead>
   <tbody>
+  {%for inter in inte%}
     <tr>
         <td><input type="checkbox"></td>
-      <td>Tanmay</td>
-      <td>Bangalore</td>
-      <td>560001</td>
-         <td>Tanmay</td>
-      <td>Bangalore</td>
-      <td>560001</td>
-         <td>Tanmay</td>
-      <td>Bangalore</td>
+      <td>{{inter.id}}</td>
+      <td>{{inter.project_name}}</td>
+      <td>{{inter.models_name}}</td>
+         <td>{{inter.Interface_name}}</td>
+      <td>{{inter.Interface_url}}</td>
+      <td>{{inter.Interface_meth}}</td>
+         <td>{{inter.Interface_par}}</td>
+      <td>{{inter.Interface_back}}</td>
       <td><p>
-          <input type="button" value="编辑" ></p>
-          <p><input type="button" value="删除"></p>
+          <a href="{{url_for('interfac_edit',id=inter.id)}}"><input type="button" value="编辑" ></a></p>
+          <p><a href="{{url_for('dele_inter',id=inter.id)}}"><input type="button" value="删除"></a></p>
       </td>
     </tr>
-
-
+{%endfor%}
   </tbody>
 </table>
-</div>
+  <p class="pagination" style="margin-left: 24%;">
+  {{macros.pagination_widget(pagination,'.interface')}}
+</p></div>
 {% endblock %}

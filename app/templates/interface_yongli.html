@@ -1,5 +1,6 @@
 {% extends "back.html" %}
 {% block hello %}
+{% import "fenye.html" as macros %}
     <div>
     <h2>用例</h2>
     <form method="POST">
@@ -14,7 +15,9 @@
         <div style="margin-top: 10px">
             <button class="btn btn-default">添加</button>
             <button class="btn btn-default">导入</button>
-        <button class="btn btn-default">批量删除</button></div>
+        <button class="btn btn-default">批量删除</button>
+        <button class="btn btn-default">批量执行</button></div>
+
    <table class="table table-bordered" style="width:70%">
   <caption><strong>用例</strong></caption>
   <thead>
@@ -27,25 +30,30 @@
          <th>请求方式</th>
          <th>参数</th>
          <th>预期</th>
-        <th>操作</th>
+        <th style="width:30px">操作</th>
     </tr>
   </thead>
   <tbody>
+  {%for yongli in yonglis%}
     <tr>
         <td><input type="checkbox"></td>
-      <td>Tanmay</td>
-      <td>Bangalore</td>
-      <td>560001</td>
-         <td>Tanmay</td>
-      <td>Bangalore</td>
-      <td>560001</td>
-         <td>Tanmay</td>
+      <td>{{yongli.id}}</td>
+      <td>{{yongli.yongli_name}}</td>
+      <td>{{yongli.Interface_name}}</td>
+         <td>{{yongli.Interface_url}}</td>
+      <td>{{yongli.Interface_meth}}</td>
+      <td>{{yongli.Interface_pase}}</td>
+         <td>{{yongli.Interface_assert}}</td>
       <td><p>
-          <input type="button" value="编辑" ></p>
-          <p><input type="button" value="删除"></p>
+        <span><input type="button" value="编辑" class="btn btn-default"></span>
+        <span> <input type="button" value="删除"class="btn btn-default"></span>
+       <span><input type="button" value="执行"class="btn btn-default"></span>
       </td>
     </tr>
+    {%endfor%}
   </tbody>
 </table>
+ <p class="pagination" style="margin-left: 24%;">
+  {{macros.pagination_widget(pagination,'.yongli')}}
 </div>
 {% endblock %}

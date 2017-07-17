@@ -27,7 +27,7 @@ class XugaiFrom(Form):
     xiu_password_se = PasswordField('密码',
                                  [validators.length(min=8, max=16, message='密码长度8-16位'), validators.DataRequired()],
                                  render_kw={'placeholder': '请再次输入密码'})
-class Interface(Form):
+class InterForm(Form):
     project_name=StringField('项目名字', [validators.DataRequired()],render_kw={'placeholder': '请输入接口所属项目名称'})
     model_name=StringField('模块名字', [validators.DataRequired()],render_kw={'placeholder': '请输入接口所属模块名称'})
     interface_name=StringField('接口名字', [validators.DataRequired()],render_kw={'placeholder': '请输入接口名称'})
@@ -35,7 +35,7 @@ class Interface(Form):
     interface_meth=StringField('请求方式', [validators.DataRequired()],render_kw={'placeholder': '请输入接口请求方式'})
     interface_par = StringField('请求示例', [validators.DataRequired()], render_kw={'placeholder': '请输入接口参数示例'})
     interface_bas= StringField('请求返回示例', [validators.DataRequired()], render_kw={'placeholder': '请输入接口返回示例'})
-class Interface_yong(Form):
+class Interface_yong_Form(Form):
     yongli_name=StringField('用例名字', [validators.DataRequired()],render_kw={'placeholder': '请输入接口用例名称'})
     interface_name = StringField('接口名字', [validators.DataRequired()], render_kw={'placeholder': '请输入接口名称'})
     interface_url = StringField('接口url', [validators.DataRequired()], render_kw={'placeholder': '请输入接口url'})

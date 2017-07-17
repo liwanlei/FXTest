@@ -26,25 +26,25 @@ class User(db.Model):
 class Interface(db.Model):
     __tablename__='interfaces'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
-    project_name=db.Column(db.String(252),unique=True)
-    models_name=db.Column(db.String(252),unique=True)
-    Interface_name=db.Column(db.String(252),unique=True)
-    Interface_url=db.Column(db.String(252),unique=True)
-    Interface_meth= db.Column(db.String(252), unique=True)
-    Interface_par=db.Column(db.String(252),unique=True)
-    Interface_back=db.Column(db.String(252),unique=True)
+    project_name=db.Column(db.String(252))
+    models_name=db.Column(db.String(252))
+    Interface_name=db.Column(db.String(252))
+    Interface_url=db.Column(db.String(252))
+    Interface_meth= db.Column(db.String(252),default='GET')
+    Interface_par=db.Column(db.String(252))
+    Interface_back=db.Column(db.String(252))
     Interface_user_id=db.Column(db.Integer(),db.ForeignKey('users.id'))
     def __repr__(self):
         return  self.Interface_name
 class InterfaceTest(db.Model):
     __tablename__='interfacetests'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    yongli_name = db.Column(db.String(252), unique=True)
-    Interface_name= db.Column(db.String(252),unique=True)
-    Interface_url = db.Column(db.String(252), unique=True)
-    Interface_meth = db.Column(db.String(252), unique=True)
-    Interface_pase = db.Column(db.String(252), unique=True)
-    Interface_assert=db.Column(db.String(252),unique=True)
+    yongli_name = db.Column(db.String(252))
+    Interface_name= db.Column(db.String(252))
+    Interface_url = db.Column(db.String(252))
+    Interface_meth = db.Column(db.String(252))
+    Interface_pase = db.Column(db.String(252))
+    Interface_assert=db.Column(db.String(252))
     Interface_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
     def __repr__(self):
         return  self.yongli_name

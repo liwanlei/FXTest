@@ -1,0 +1,47 @@
+{%extends 'back.html'%}
+{%block hello%}
+<h3>添加接口</h3>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+ <ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<form  action="{{ url_for('interface_add') }}" method="POST" style="width: 40%;
+    margin-left: 30%;">
+ {{form.hidden_tag()}}
+ {{form.csrf_token}}
+<div class="form-group">
+<strong>项目名字:</strong>
+{{ form.project_name }}</div>
+<div class="form-group">
+<strong>模块名字:</strong>
+{{ form.model_name }}
+</div>
+<div class="form-group">
+<strong>接口名字:</strong>
+{{ form.interface_name }}
+</div>
+<div class="form-group">
+<strong>接口地址:</strong>
+{{ form.interface_url }}
+</div>
+<div class="form-group">
+<strong>请求方式:</strong>
+{{ form.interface_meth }}
+</div>
+<div class="form-group">
+<strong>请求示例:</strong>
+{{ form.interface_par}}
+</div>
+<div class="form-group">
+<strong>返回示例:</strong>
+{{ form.interface_bas }}
+</div>
+<button type="submit" class="btn btn-primary ">添加</button>
+</div>
+</form>
+{%endblock%}

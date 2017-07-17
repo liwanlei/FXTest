@@ -1,1 +1,66 @@
 {% extends "back.html" %}
+{% block hello %}
+{% import "fenye.html" as macros %}
+
+   <div>
+    <h2>用户</h2>
+    {% with messages = get_flashed_messages() %}
+{% if messages %}
+ <ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+    <form method="POST">
+     <strong  style="margin-right: 10px;margin-left: 10px">用户名</strong><input type="text" name="project">
+    <span></span>
+    <input type="submit" value="查询" class="btn btn-default">
+    </form>
+        <div style="margin-top: 10px">
+            <button class="btn btn-default">添加</button>
+            <button class="btn btn-default">导入</button>
+        <button class="btn btn-default">批量删除</button></div>
+   <table class="table table-bordered" style="width:70%">
+  <caption><strong>用户</strong></caption>
+  <thead>
+    <tr>
+        <th><input type="checkbox"></th>
+      <th>用户id</th>
+      <th>用户名</th>
+      <th>用户邮箱</th>
+         <th>用户状态</th>
+         <th>管理</th>
+        <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for user in users%}
+    <tr>
+        <td><input type="checkbox"></td>
+      <td>{{user.id}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.user_email}}</td>
+{% if user.status !=1%}
+         <td><input type="button" value="冻结" class="btn btn-default"></td>
+         {%else%}
+         <td><input type="button" value="解冻" class="btn btn-default"></td>
+      {%endif%}
+      {% if user.status !=1%}
+      <td><input type="button" value="取消管理" class="btn btn-default"></td>
+       {%else%}
+        <td><input type="button" value="设置管理" class="btn btn-default"></td>
+        {%endif%}
+      <td><span>
+          <input type="button" value="编辑" class="btn btn-default" ></span>
+          <span><input type="button" value="重置密码" class="btn btn-default"></span>
+      </td>
+    </tr>
+{%endfor%}
+  </tbody>
+</table>
+  <p class="pagination" style="margin-left: 25%;">
+  {{macros.pagination_widget(pagination,'.adminuser')}}
+</p></div>
+{% endblock %}
