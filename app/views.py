@@ -5,9 +5,11 @@
 @time: 2017/7/13 16:42
 """
 from app import  app,db
-from  flask import  redirect,request,render_template,session,url_for,flash
+from  flask import  redirect,request,render_template,session,url_for,flash,send_file,abort,make_response
+from werkzeug import secure_filename
 from  app.models import User,Interface,InterfaceTest,TestResult
 from app.form import  LoginFrom,RegFrom,InterForm,Interface_yong_Form
+import os
 @app.route('/',methods=['GET'])
 def index():
     if not session.get('username'):
@@ -215,5 +217,23 @@ def edit_case(id):
         flash('编辑成功')
         return redirect(url_for('yongli'))
     return render_template('edit_case.html',edit=edit_case)
-
-
+@app.route('/down_jiekou',methods=['GET'])
+def down_jiekou():
+    response = make_response(send_file("接口.xlsx"))
+    return response
+@app.route('/down_case',methods=['GET'])
+def down_case():
+    response=make_response(send_file('测试用例.xlsx'))
+    return response
+@app.route('/daoru_inter',methods=['GET','POST'])
+def daoru_inter():
+    if request.method == 'POST':
+        file = request.files['myfile']
+        if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
+            filename='jiekou.xlsx'
+            file.save(filename)
+            flash('导入成功')
+            return redirect(url_for('index'))
+        flash('导入失败')
+        return render_template('daoru.html')
+    return render_template('daoru.html')

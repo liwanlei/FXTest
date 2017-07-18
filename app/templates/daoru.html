@@ -1,0 +1,17 @@
+{% extends "back.html" %}
+{% block hello %}
+<h2>导入接口</h2>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<form method="POST" action="{{url_for('daoru_inter')}}"  enctype=multipart/form-data>
+<input type="file" name="myfile">
+<button type='submit'>导入</button>
+</form>
+{%endblock%}
