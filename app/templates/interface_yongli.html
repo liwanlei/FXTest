@@ -22,7 +22,7 @@
     </form>
         <div style="margin-top: 10px">
            <a href="{{url_for('addtestcase')}}"><input type="button" name="" class="btn btn-default" value="添加"></a>
-            <button class="btn btn-default">导入</button>
+            <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="btn btn-default" value="导入"></a>
         <button class="btn btn-default">批量删除</button>
         <button class="btn btn-default">批量执行</button></div>
 
@@ -31,9 +31,9 @@
   <thead>
     <tr>
         <th><input type="checkbox" id='input'></th>
-      <th>用例id</th>
-      <th>用例名</th>
-      <th>接口名</th>
+      <th>用例编号</th>
+      <th>项目名称</th>
+      <th>模块名称</th>
          <th>接口地址</th>
          <th>请求方式</th>
          <th>参数</th>

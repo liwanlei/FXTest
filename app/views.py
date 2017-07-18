@@ -10,6 +10,7 @@ from werkzeug import secure_filename
 from  app.models import User,Interface,InterfaceTest,TestResult
 from app.form import  LoginFrom,RegFrom,InterForm,Interface_yong_Form
 import os
+from common.pares_excel_inter import pasre_inter
 @app.route('/',methods=['GET'])
 def index():
     if not session.get('username'):
@@ -191,7 +192,7 @@ def delete_case(id):
         flash('删除成功')
         return redirect(url_for('yongli'))
     flash('您没有权限去删除这条用例')
-    return redirect(url('yongli'))
+    return redirect(url_for('yongli'))
 @app.route('/edit_case/<int:id>',methods=['GET','POST'])
 def edit_case(id):
     if not session.get('username'):
@@ -219,21 +220,72 @@ def edit_case(id):
     return render_template('edit_case.html',edit=edit_case)
 @app.route('/down_jiekou',methods=['GET'])
 def down_jiekou():
+    if not session.get('username'):
+        return redirect(url_for('login'))
     response = make_response(send_file("接口.xlsx"))
     return response
 @app.route('/down_case',methods=['GET'])
 def down_case():
+    if not session.get('username'):
+        return redirect(url_for('login'))
     response=make_response(send_file('测试用例.xlsx'))
     return response
 @app.route('/daoru_inter',methods=['GET','POST'])
 def daoru_inter():
+    if not session.get('username'):
+        return redirect(url_for('login'))
     if request.method == 'POST':
         file = request.files['myfile']
         if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
             filename='jiekou.xlsx'
             file.save(filename)
-            flash('导入成功')
-            return redirect(url_for('index'))
+            project_name,model_name,interface_name,interface_url,interface_meth,interface_par,interface_bas=pasre_inter(filename)
+            try:
+                for i in range(len(project_name)):
+                    new_interface=Interface(project_name=str(project_name[i]),models_name=str(model_name[i]),Interface_name=str(interface_name[i]),
+                        Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+                    db.session.add(new_interface)
+                db.session.commit()
+                flash('导入成功')
+                return redirect(url_for('interface'))
+            except:
+                flash('导入失败，请检查格式是否正确')
+                return render_template('daoru.html')
         flash('导入失败')
         return render_template('daoru.html')
     return render_template('daoru.html')
+@app.route('/daoru_case',methods=['GET','POST'])
+def daoru_case():
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        file = request.files['myfile']
+        if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
+            filename='jiekoucase.xlsx'
+            file.save(filename)
+            project_name, model_name, interface_name, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(
+                filename)
+            try:
+                for i in range(len(project_name)):
+                    new_interface = InterfaceTest(project_name=str(project_name[i]), yongli_name=str(model_name[i]),
+                                                  Interface_name=str(interface_name[i]),
+                                                  Interface_url=str(interface_url[i]),
+                                                  Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),
+                                                  Interface_assert=str(interface_bas[i]),
+                                                  Interface_user_id=User.query.filter_by(
+                                                  username=session.get('username')).first().id)
+                    db.session.add(new_interface)
+                db.session.commit()
+                flash('导入成功')
+                return redirect(url_for('yongli'))
+            except:
+                flash('导入失败，请检查格式是否正确')
+                return render_template('daoru_case.html')
+        flash('导入失败')
+        return render_template('daoru_case.html')
+    return  render_template('daoru_case.html')
+@app.route('/add_user',methods=['GET','POST'])
+def add_user():
+    if not session.get('username'):
+        return  redirect(url_for('login'))
+
