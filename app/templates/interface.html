@@ -22,12 +22,11 @@
         <div style="margin-top: 10px">
             <a href="{{url_for('interface_add')}}"><input type="button" name="" value="添加" class="btn btn-default"> </a>
             <a href="{{url_for('daoru_inter')}}"><input type="button" name=""  value="导入" class="btn btn-default"></a>
-        <button class="btn btn-default">批量删除</button></div>
+       </div>
    <table class="table table-bordered" style="width:70%">
   <caption><strong>详细的接口</strong></caption>
   <thead>
     <tr>
-        <th><input type="checkbox"></th>
       <th>接口id</th>
       <th>项目名称</th>
       <th>所属模块</th>
@@ -42,10 +41,9 @@
   <tbody>
   {%for inter in inte%}
     <tr>
-        <td><input type="checkbox"></td>
       <td>{{inter.id}}</td>
-      <td>{{inter.project_name}}</td>
-      <td>{{inter.models_name}}</td>
+      <td>{{inter.project}}</td>
+      <td>{{inter.model}}</td>
          <td>{{inter.Interface_name}}</td>
       <td>{{inter.Interface_url}}</td>
       <td>{{inter.Interface_meth}}</td>

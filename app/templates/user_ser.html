@@ -1,9 +1,7 @@
 {% extends "back.html" %}
 {% block hello %}
-{% import "fenye.html" as macros %}
-
    <div>
-    <h2>用户</h2>
+    <h2>用户查询</h2>
     {% with messages = get_flashed_messages() %}
 {% if messages %}
  <ul class='flashes'>
@@ -13,7 +11,7 @@
 </ul>
 {% endif %}
 {% endwith %}
-    <form method="POST" action="{{url_for('ser_user')}}">
+    <form method="POST">
      <strong  style="margin-right: 10px;margin-left: 10px">用户名</strong><input type="text" name="user">
     <span></span>
     <input type="submit" value="查询" class="btn btn-default">
@@ -52,13 +50,11 @@
         <td><a href="{{url_for('del_ad',id=user.id)}}"><input type="button" value="取消管理" class="btn btn-default"></a></td>
         {%endif%}
       <td>
-          <span><a href="{{url_for('red_pass',id=user.id)}}"><input type="button" value="重置密码" class="btn btn-default"></a></span>
+          <span><input type="button" value="重置密码" class="btn btn-default"></span>
       </td>
     </tr>
 {%endfor%}
   </tbody>
 </table>
-  <p class="pagination" style="margin-left: 25%;">
-  {{macros.pagination_widget(pagination,'.adminuser')}}
-</p></div>
+ </div>
 {% endblock %}

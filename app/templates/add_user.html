@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{%extends 'back.html'%}
+{%block hello%}
+<h2>添加用户</h2>
+{% with messages = get_flashed_messages()%}
+{% if messages%}
+<ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<form method="POST" action="{{url_for('add_user')}}">
+ <div>
+ <div class="form-group">
+<strong>用户名:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="text" name="user" ></div>
+ <div class="form-group">
+<strong>登录密码  :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="password" name="password" ></div>
+<div class="form-group">
+<strong>再次输入密码:</strong>
+<input type="password" name="password1" ></div>
+<div class="form-group">
+<strong>输入邮箱:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="text" name="email" ></div>
+<button type="submit" class="btn btn-primary" style="margin-left: 26%;">添加</button>
+</form>
+</div>
+{%endblock%}

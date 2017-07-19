@@ -37,8 +37,8 @@ class Interface(db.Model):
 class InterfaceTest(db.Model):
     __tablename__='interfacetests'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    project_name=db.Column(db.String(252))
-    yongli_name = db.Column(db.String(252))
+    project=db.Column(db.String(252))
+    model=db.Column(db.String(252))
     Interface_name= db.Column(db.String(252))
     Interface_url = db.Column(db.String(252))
     Interface_meth = db.Column(db.String(252))

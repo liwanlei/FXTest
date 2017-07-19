@@ -30,8 +30,11 @@ def login():
         user=User.query.filter_by(username=username).first()
         if user:
             if user.check_password(password=password)==True:
-                session['username']=username
-                return  redirect(url_for('index'))
+                if user.status==0:
+                    session['username']=username
+                    return  redirect(url_for('index'))
+                flash('用户冻结，请联系管理员')
+                return render_template('login.html', form=form)
             flash('用户名密码错误')
             return render_template('login.html', form=form)
         flash('用户名不存在')
@@ -164,16 +167,17 @@ def addtestcase():
         return redirect(url_for('login'))
     form=Interface_yong_Form()
     if form.validate_on_submit() and request.method=='POST':
-        yongli_name=request.form.get('yongli_name')
+        yongli_nam=request.form.get('yongli_name')
+        mode=request.form.get('model_name')
         interface_name=request.form.get('interface_name')
         interface_url=request.form.get('interface_url')
         interface_meth=request.form.get('interface_meth')
         interface_can=request.form.get('interface_can')
         interface_re=request.form.get('interface_rest')
-        if yongli_name ==''or interface_name=='' or interface_url=='' or interface_meth=='' or interface_re=='':
+        if yongli_nam ==''or mode==''or interface_name=='' or interface_url=='' or interface_meth=='' or interface_re=='':
             flash('请准确填写用例')
             return render_template('add_test_case.html',form=form)
-        newcase=InterfaceTest(yongli_name=yongli_name,Interface_name=interface_name,Interface_url=interface_url,
+        newcase=InterfaceTest(project=yongli_nam,model=mode,Interface_name=interface_name,Interface_url=interface_url,
             Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
         db.session.add(newcase)
         db.session.commit()
@@ -207,7 +211,7 @@ def edit_case(id):
         reque=request.form.get('reque')
         if projecct =='' or model=='' or url=='' or meth=='' or parme=='' or reque=='':
             flash('请确定各项参数都正常填写')
-        edit_case.yongli_name=projecct
+        edit_case.project=projecct
         edit_case.Interface_name=model
         edit_case.Interface_url=url
         edit_case.Interface_meth=meth
@@ -267,7 +271,7 @@ def daoru_case():
                 filename)
             try:
                 for i in range(len(project_name)):
-                    new_interface = InterfaceTest(project_name=str(project_name[i]), yongli_name=str(model_name[i]),
+                    new_interface = InterfaceTest(project=str(project_name[i]), model=str(model_name[i]),
                                                   Interface_name=str(interface_name[i]),
                                                   Interface_url=str(interface_url[i]),
                                                   Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),
@@ -288,4 +292,146 @@ def daoru_case():
 def add_user():
     if not session.get('username'):
         return  redirect(url_for('login'))
+    if request.method =='POST':
+        user=request.form.get('user')
+        password=request.form.get('password')
+        password1=request.form.get('password1')
+        email=request.form.get('email')
+        if password!= password1:
+            flash('请确定两次密码是否一致')
+            return render_template('add_user.html')
+        use=User.query.filter_by(username=user).first()
+        if use:
+            flash('用户已经存在')
+            return render_template('add_user.html')
+        emai=User.query.filter_by(user_email=email).first()
+        if emai:
+            flash('邮箱已经存在')
+            return render_template('add_user.html')
+        new_user=User(username=user,user_email=email)
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+        flash('添加成功')
+        return redirect(url_for('adminuser'))
+    return render_template('add_user.html')
+@app.route('/set_ad/<int:id>',methods=['GET','POST'])
+def set_ad(id):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    user=User.query.filter_by(username=session.get('username')).first()
+    if user.level !=1:
+        flash('您不是管理员，无法设置！')
+        return redirect(url_for('adminuser'))
+    new_ad=User.query.filter_by(id=id).first()
+    if new_ad.level==1:
+        flash('已经是管理员，无需设置')
+        return redirect(url_for('adminuser'))
+    new_ad.level=1
+    db.session.commit()
+    flash('已经是管理员')
+    return redirect(url_for('adminuser'))
+@app.route('/del_ad/<int:id>',methods=['GET','POST'])
+def del_ad(id):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    user=User.query.filter_by(username=session.get('username')).first()
+    if user.level !=1:
+        flash('您不是管理员，无法取消管理！')
+        return redirect(url_for('adminuser'))
+    new_ad=User.query.filter_by(id=id).first()
+    if new_ad.level==0:
+        flash('已经不是管理员，无需设置')
+        return redirect(url_for('adminuser'))
+    if new_ad==user:
+        flash('自己不能取消自己的管理员')
+        return redirect(url_for('adminuser'))
+    new_ad.level=0
+    db.session.commit()
+    flash('已经取消管理员权限')
+    return redirect(url_for('adminuser'))
+@app.route('/fre_ad/<int:id>',methods=['GET','POST'])
+def fre_ad(id):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    user=User.query.filter_by(username=session.get('username')).first()
+    if user.level !=1:
+        flash('您不是管理员，无法冻结！')
+        return redirect(url_for('adminuser'))
+    new_ad=User.query.filter_by(id=id).first()
+    if new_ad.status==1:
+        flash('已经冻结')
+        return redirect(url_for('adminuser'))
+    if new_ad==user:
+        flash('自己不能冻结自己')
+        return redirect(url_for('adminuser'))
+    new_ad.status=1
+    db.session.commit()
+    flash('已经冻结')
+    return redirect(url_for('adminuser'))
+@app.route('/fre_re/<int:id>',methods=['GET','POST'])
+def fre_re(id):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    user=User.query.filter_by(username=session.get('username')).first()
+    if user.level !=1:
+        flash('您不是管理员，无法解冻！')
+        return redirect(url_for('adminuser'))
+    new_ad=User.query.filter_by(id=id).first()
+    if new_ad.status==0:
+        flash('已经解冻')
+        return redirect(url_for('adminuser'))
+    if new_ad==user:
+        flash('自己不能解冻自己')
+        return redirect(url_for('adminuser'))
+    new_ad.status=0
+    db.session.commit()
+    flash('已经解冻')
+    return redirect(url_for('adminuser'))
+@app.route('/red_pass/<int:id>',methods=['GET','POST'])
+def red_pass(id):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    user=User.query.filter_by(username=session.get('username')).first()
+    if user.level !=1:
+        flash('您不是管理员，重置密码！')
+        return redirect(url_for('adminuser'))
+    new_ad=User.query.filter_by(id=id).first()
+    if new_ad==user:
+        flash('自己不能解冻自己')
+        return redirect(url_for('adminuser'))
+    new_ad.set_password=111111
+    db.session.commit()
+    flash('已经重置！密码：111111')
+    return redirect(url_for('adminuser'))
+@app.route('/ser_user',methods=['GET','POST'])
+def ser_user():
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    if request.method=='POST':
+        user=request.form.get('user')
+        if user=='':
+            flash('请输入您要查询的用户')
+            return redirect(url_for('adminuser'))
+        use=User.query.filter(User.username.like('%'+user+'%')).all()
+        if len(use)<=0:
+            flash('没有找到您输入的用户')
+            return redirect(url_for('adminuser'))
+        return render_template('user_ser.html',users=use)
+    return redirect(url_for('adminuser'))
+@app.route('/ser_yongli',methods=['GET','POST'])
+def ser_yongli():
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    if request.method=='POST':
+        projecct=request.form.get('project')
+        print(projecct)
+        model=request.form.get('model')
+        if projecct =='' and model  =='':
+            flash('请输入搜索的内容')
+            return redirect(url_for('yongli'))
+        interd=InterfaceTest.query.filter_by(project_name=projecct).all()
+        print(len(interd))
+        return render_template('ser_yonglo.html')
+    return redirect(url_for('yongli'))
 

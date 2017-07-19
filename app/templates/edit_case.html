@@ -13,8 +13,12 @@
 <form  action="" method="POST" style="width: 40%;
     margin-left: 30%;">
 <div class="form-group">
-<strong>用例名字:</strong>
-<input type="text" name="project" value="{{edit.yongli_name}}">
+<strong>项目:</strong>
+<input type="text" name="project" value="{{edit.project}}">
+</div>
+<div class="form-group">
+<strong>模块:</strong>
+<input type="text" name="model" value="{{edit.model}}" >
 </div>
 <div class="form-group">
 <strong>接口名字:</strong>
@@ -36,7 +40,7 @@
 <strong>请求预期:</strong>
 <input type="text" name="reque" value="{{edit.Interface_assert}}">
 </div>
-<button type="submit" class="btn btn-primary ">添加</button>
+<button type="submit" class="btn btn-primary ">修改</button>
 </div>
 </form>
 {%endblock%}
