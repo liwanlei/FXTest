@@ -1,14 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>Examples</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<link href="" rel="stylesheet">
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "back.html" %}
+{% block hello %}
+    <div>
+    <h2>搜索用例结果</h2>
+     {% with messages = get_flashed_messages() %}
+{% if messages %}
+ <ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+{% endif %}
+{% endwith %}
+    <form method="POST" action="{{url_for('ser_yongli')}}">
+     <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project">
+    <span></span>
+    <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model">
+        <span></span>
+    <input type="submit" value="查询" class="">
+    </form>
+        <div style="margin-top: 10px">
+           <a href="{{url_for('addtestcase')}}"><input type="button" name="" class="btn btn-default" value="添加"></a>
+            <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="btn btn-default" value="导入"></a>
+        <button class="btn btn-default">批量执行</button></div>
+
+   <table class="table table-bordered" style="width:70%">
+  <caption><strong>用例</strong></caption>
+  <thead>
+    <tr>
+        <th></th>
+      <th>用例编号</th>
+      <th>项目名称</th>
+      <th>模块名称</th>
+         <th>接口地址</th>
+         <th>请求方式</th>
+         <th>参数</th>
+         <th>预期</th>
+        <th style="width:30px">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for yongli in yonglis%}
+    <tr>
+        <td><input type="checkbox" id='input'></td>
+      <td>{{yongli.id}}</td>
+      <td>{{yongli.project}}</td>
+      <td>{{yongli.model}}</td>
+         <td>{{yongli.Interface_url}}</td>
+      <td>{{yongli.Interface_meth}}</td>
+      <td>{{yongli.Interface_pase}}</td>
+         <td>{{yongli.Interface_assert}}</td>
+      <td><p>
+        <span><a href="{{url_for('edit_case',id=yongli.id)}}"><input type="button" value="编辑" class="btn btn-default"></a></span>
+        <span> <a href="{{url_for('delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-default"></a></span>
+       <span><input type="button" value="执行"class="btn btn-default"></span>
+      </td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+</div>
+{% endblock %} 

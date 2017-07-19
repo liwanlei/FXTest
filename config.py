@@ -14,6 +14,7 @@ class beijing:
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 	SQLALCHEMY_TRACK_MODIFICATIONS=False
 	CSRF_ENABLED = True
+	UPLOAD_FOLDER='/upload'
 	DEBUG = True
 	@staticmethod
 	def init_app(app):

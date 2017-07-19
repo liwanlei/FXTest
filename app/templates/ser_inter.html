@@ -1,0 +1,60 @@
+{% extends "back.html" %}
+{% block hello %}
+</ul>
+   <div>
+    <h2>搜索接口结果</h2>
+    {% with messages = get_flashed_messages() %}
+{% if messages %}
+ <ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+{% endif %}
+{% endwith %}
+    <form method="POST" action="{{url_for('ser_inter')}}">
+     <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project">
+    <span></span>
+    <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model">
+        <span></span>
+    <input type="submit" value="查询" class="btn btn-default">
+    </form>
+        <div style="margin-top: 10px">
+            <a href="{{url_for('interface_add')}}"><input type="button" name="" value="添加" class="btn btn-default"> </a>
+            <a href="{{url_for('daoru_inter')}}"><input type="button" name=""  value="导入" class="btn btn-default"></a>
+       </div>
+   <table class="table table-bordered" style="width:70%">
+  <caption><strong>详细的接口</strong></caption>
+  <thead>
+    <tr>
+      <th>接口id</th>
+      <th>项目名称</th>
+      <th>所属模块</th>
+         <th>接口名称</th>
+         <th>接口地址</th>
+         <th>接口请求方法</th>
+         <th>接口请求参数</th>
+         <th>接口返回参数</th>
+        <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for inter in inte%}
+    <tr>
+      <td>{{inter.id}}</td>
+      <td>{{inter.project_name}}</td>
+      <td>{{inter.models_name}}</td>
+         <td>{{inter.Interface_name}}</td>
+      <td>{{inter.Interface_url}}</td>
+      <td>{{inter.Interface_meth}}</td>
+         <td>{{inter.Interface_par}}</td>
+      <td>{{inter.Interface_back}}</td>
+      <td><p>
+          <a href="{{url_for('interfac_edit',id=inter.id)}}"><input type="button" value="编辑" ></a></p>
+          <p><a href="{{url_for('dele_inter',id=inter.id)}}"><input type="button" value="删除"></a></p>
+      </td>
+    </tr>
+{%endfor%}
+  </tbody>
+</table>
+</div>
+{% endblock %}

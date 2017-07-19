@@ -12,7 +12,7 @@
 {% endfor %}
 {% endif %}
 {% endwith %}
-    <form method="POST">
+    <form method="POST" action="{{url_for('ser_inter')}}">
      <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project">
     <span></span>
     <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model">
@@ -42,16 +42,16 @@
   {%for inter in inte%}
     <tr>
       <td>{{inter.id}}</td>
-      <td>{{inter.project}}</td>
-      <td>{{inter.model}}</td>
+      <td>{{inter.project_name}}</td>
+      <td>{{inter.models_name}}</td>
          <td>{{inter.Interface_name}}</td>
       <td>{{inter.Interface_url}}</td>
       <td>{{inter.Interface_meth}}</td>
          <td>{{inter.Interface_par}}</td>
       <td>{{inter.Interface_back}}</td>
       <td><p>
-          <a href="{{url_for('interfac_edit',id=inter.id)}}"><input type="button" value="编辑" ></a></p>
-          <p><a href="{{url_for('dele_inter',id=inter.id)}}"><input type="button" value="删除"></a></p>
+          <a href="{{url_for('interfac_edit',id=inter.id)}}"><input type="button" value="编辑" class="btn btn-default"></a></p>
+          <p><a href="{{url_for('dele_inter',id=inter.id)}}"><input type="button" value="删除" class="btn btn-default"></a></p>
       </td>
     </tr>
 {%endfor%}

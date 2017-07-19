@@ -1,7 +1,7 @@
 {% extends "back.html" %}
 {% block hello %}
 	<h2>API后台统计</h2>
-       <div class="panel-body">
+       <div class="panel-body" >
            <div class="row">
            {% with messages = get_flashed_messages() %}
                                   {% if messages %}
@@ -38,7 +38,7 @@
 										</p>
                    </div>
                </div>
-               <h2>模板</h2>
+               <h2 style="margin-left: 26%;">模板</h2>
                <div style="margin-left:24%">
                     <h3 >根据这里的版本可以在用例或者接口模块导入相应的测试用例或者测试接口</h3>
                     <a href="{{url_for('down_jiekou')}}">接口模板</a>

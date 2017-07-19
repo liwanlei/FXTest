@@ -425,13 +425,37 @@ def ser_yongli():
         return redirect(url_for('login'))
     if request.method=='POST':
         projecct=request.form.get('project')
-        print(projecct)
         model=request.form.get('model')
         if projecct =='' and model  =='':
             flash('请输入搜索的内容')
             return redirect(url_for('yongli'))
-        interd=InterfaceTest.query.filter_by(project_name=projecct).all()
-        print(len(interd))
-        return render_template('ser_yonglo.html')
+        interd=InterfaceTest.query.filter(InterfaceTest.model.like('%'+model+'%'),InterfaceTest.project.like('%'+projecct+'%')).all()
+        if len(interd)<1:
+            flash('搜索的内容没有找到')
+            return redirect(url_for('yongli'))
+        return render_template('ser_yonglo.html',yonglis=interd)
     return redirect(url_for('yongli'))
-
+@app.route('/ser_inter',methods=['GET','POST'])
+def ser_inter():
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    if request.method=='POST':
+        projecct=request.form.get('project')
+        model=request.form.get('model')
+        if projecct =='' and model  =='':
+            flash('请输入搜索的内容')
+            return redirect(url_for('interface'))
+        interd=Interface.query.filter(Interface.models_name.like('%'+model+'%'),Interface.project_name.like('%'+projecct+'%')).all()
+        if len(interd)<1:
+            flash('搜索的内容不存在')
+            return redirect(url_for('interface'))
+        return render_template('ser_inter.html',inte=interd)
+    return redirect(url_for('interface'))
+@app.route('/test_rep',methods=['GET','POST'])
+@app.route('/test_rep/<int:page>',methods=['GET','POST'])
+def test_rep(page=1):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    pagination=TestResult.query.paginate(page, per_page=5,error_out=False)
+    inter=pagination.items
+    return render_template('test_result.html',inte=inter,pagination=pagination)

@@ -1,0 +1,51 @@
+{% extends "back.html" %}
+{% block hello %}
+{% import "fenye.html" as macros %}
+    <div>
+    <h1>用例测试报告</h1>
+     {% with messages = get_flashed_messages() %}
+{% if messages %}
+ <ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+{% endif %}
+{% endwith %}
+    
+   <table class="table table-bordered" style="width:70%">
+  <caption><strong>测试报告</strong></caption>
+  <thead>
+    <tr>
+      <th>测试数量</th>
+      <th>通过</th>
+      <th>失败</th>
+         <th>跳过</th>
+         <th>测试时间</th>
+         <th>测试耗时</th>
+         <th>评分</th>
+         <th>测试用户</th>
+          <th>报告下载</th>
+          <th>日志下载</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for yongli in inte%}
+    <tr>
+      <td>{{yongli.test_num}}</td>
+      <td>{{yongli.pass_num}}</td>
+      <td>{{yongli.fail_num}}</td>
+         <td>{{yongli.skip_num}}</td>
+      <td>{{yongli.test_time}}</td>
+      <td>{{yongli.hour_time}}</td>
+         <td>{{(yongli.pass_num)/(yongli.test_num)}}</td>
+         <td>{{yongli.users}}</td>
+         <td></td>
+         <td></td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+ <p class="pagination" style="margin-left: 24%;">
+  {{macros.pagination_widget(pagination,'.yongli')}}
+</div>
+{% endblock %} 

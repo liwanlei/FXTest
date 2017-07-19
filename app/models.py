@@ -15,6 +15,7 @@ class User(db.Model):
     user_email=db.Column(db.String(64),unique=True)
     status=db.Column(db.Integer(),default=0)
     level=db.Column(db.Integer(),default=0)
+    phone = db.relationship('TestResult', backref='users', lazy='dynamic')
     def __repr__(self):
         return  self.username
     def set_password(self,password):
@@ -56,6 +57,6 @@ class TestResult(db.Model):
     fail_num = db.Column(db.Integer())
     skip_num=db.Column(db.Integer())
     test_time=db.Column(db.DateTime(),default=datetime.datetime.now())
-    hour_time=db.Column(db.DateTime())
+    hour_time=db.Column(db.Integer())
     def __repr__(self):
         return  self.id
