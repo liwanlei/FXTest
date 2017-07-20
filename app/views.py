@@ -5,12 +5,14 @@
 @time: 2017/7/13 16:42
 """
 from app import  app,db
-from  flask import  redirect,request,render_template,session,url_for,flash,send_file,abort,make_response
+from  flask import  redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory
 from werkzeug import secure_filename
 from  app.models import User,Interface,InterfaceTest,TestResult
 from app.form import  LoginFrom,RegFrom,InterForm,Interface_yong_Form
 import os
 from common.pares_excel_inter import pasre_inter
+from common.py_Html import createHtml
+from common.requ_case import Api
 @app.route('/',methods=['GET'])
 def index():
     if not session.get('username'):
@@ -226,13 +228,17 @@ def edit_case(id):
 def down_jiekou():
     if not session.get('username'):
         return redirect(url_for('login'))
-    response = make_response(send_file("接口.xlsx"))
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    file_dir=os.path.join(basedir,'upload')
+    response=make_response(send_from_directory(file_dir,'interface.xlsx',as_attachment=True))
     return response
 @app.route('/down_case',methods=['GET'])
 def down_case():
     if not session.get('username'):
         return redirect(url_for('login'))
-    response=make_response(send_file('测试用例.xlsx'))
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    file_dir=os.path.join(basedir,'upload')
+    response=make_response(send_from_directory(file_dir,'interface_case.xlsx',as_attachment=True))
     return response
 @app.route('/daoru_inter',methods=['GET','POST'])
 def daoru_inter():
@@ -459,3 +465,31 @@ def test_rep(page=1):
     pagination=TestResult.query.paginate(page, per_page=5,error_out=False)
     inter=pagination.items
     return render_template('test_result.html',inte=inter,pagination=pagination)
+@app.route('/load/<string:filename>',methods=['GET'])
+def load(filename):
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    file_dir=os.path.join(basedir,'upload')
+    response=make_response(send_from_directory(file_dir,filename,as_attachment=True))
+    return response
+@app.route('/load_res/<string:filename>',methods=['GET'])
+def load_res(filename):
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    file_dir=os.path.join(basedir,'upload')
+    response=make_response(send_from_directory(file_dir,filename,as_attachment=True))
+    return response
+@app.route('/make_one_case/<int:id>',methods=['GET','POST'])
+def make_one_case(id):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    case=InterfaceTest.query.filter_by(id=id).first()
+    me=Api(url=case.Interface_url,fangshi=case.Interface_meth,params=case.Interface_pase)
+    result=me.testapi()
+    try:
+        if result==eval(case.Interface_assert):
+            flash('用例测试通过')
+            return redirect(url_for('yongli'))
+        flash('用例测试失败')
+        return redirect(url_for('yongli'))
+    except:
+        flash('用例测试失败,请检查您的用例')
+        return redirect(url_for('yongli'))

@@ -39,8 +39,9 @@
       <td>{{yongli.hour_time}}</td>
          <td>{{(yongli.pass_num)/(yongli.test_num)}}</td>
          <td>{{yongli.users}}</td>
-         <td></td>
-         <td></td>
+          <td><a href="{{url_for('load_res',filename='11.txt')}}">报告下载</td>
+         <td><a href="{{url_for('load',filename='11.txt')}}">日志下载</a></td>
+        
     </tr>
     {%endfor%}
   </tbody>

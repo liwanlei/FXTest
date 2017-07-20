@@ -58,5 +58,7 @@ class TestResult(db.Model):
     skip_num=db.Column(db.Integer())
     test_time=db.Column(db.DateTime(),default=datetime.datetime.now())
     hour_time=db.Column(db.Integer())
+    test_rep=db.Column(db.String(252))
+    test_log=db.Column(db.String(252))
     def __repr__(self):
         return  self.id

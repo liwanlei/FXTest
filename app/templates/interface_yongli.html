@@ -7,7 +7,7 @@
 {% if messages %}
  <ul class='flashes'>
 {% for message in messages %}
-<li >{{ message }}</li>
+<li style="color: #b92c28;">{{ message }}</li>
 {% endfor %}
 {% endif %}
 {% endwith %}
@@ -52,7 +52,7 @@
       <td><p>
         <span><a href="{{url_for('edit_case',id=yongli.id)}}"><input type="button" value="编辑" class="btn btn-default"></a></span>
         <span> <a href="{{url_for('delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-default"></a></span>
-       <span><input type="button" value="执行"class="btn btn-default"></span>
+       <span><a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="执行"class="btn btn-default"></a></span>
       </td>
     </tr>
     {%endfor%}
