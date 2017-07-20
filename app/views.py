@@ -9,7 +9,7 @@ from  flask import  redirect,request,render_template,session,url_for,flash,send_
 from werkzeug import secure_filename
 from  app.models import User,Interface,InterfaceTest,TestResult
 from app.form import  LoginFrom,RegFrom,InterForm,Interface_yong_Form
-import os
+import os,time
 from common.pares_excel_inter import pasre_inter
 from common.py_Html import createHtml
 from common.requ_case import Api
@@ -277,8 +277,7 @@ def daoru_case():
                 filename)
             try:
                 for i in range(len(project_name)):
-                    new_interface = InterfaceTest(project=str(project_name[i]), model=str(model_name[i]),
-                                                  Interface_name=str(interface_name[i]),
+                    new_interface = InterfaceTest(project=str(project_name[i]), model=str(model_name[i]),Interface_name=str(interface_name[i]),
                                                   Interface_url=str(interface_url[i]),
                                                   Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),
                                                   Interface_assert=str(interface_bas[i]),
@@ -493,3 +492,21 @@ def make_one_case(id):
     except:
         flash('用例测试失败,请检查您的用例')
         return redirect(url_for('yongli'))
+@app.route('/duoyongli',methods=['GET','POST'])
+def duoyongli():
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    file_dir = os.path.join(basedir, '/upload')
+    file = os.path.join(file_dir, (day + '.log'))
+    if os.path.exists(file) is False:
+        os.system('touch %s' % file)
+    if request.method=='POST':
+        me=request.form.getlist('yongli')
+        if len(me)<=1:
+            flash('请选择一个以上的用例来执行')
+            return redirect(url_for('yongli'))
+        for id in me:
+            cuer=InterfaceTest.query.filter_by(id=id).first()
+    return redirect(url_for('test_rep'))

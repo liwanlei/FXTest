@@ -18,11 +18,11 @@
         <span></span>
     <input type="submit" value="查询" class="btn btn-default">
     </form>
+    <form method="POST" action="{{url_for('duoyongli')}}">
         <div style="margin-top: 10px">
            <a href="{{url_for('addtestcase')}}"><input type="button" name="" class="btn btn-default" value="添加"></a>
-            <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="btn btn-default" value="导入"></a>
+            <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="btn btn-default" value="导入"></a> 
         <button class="btn btn-default">批量执行</button></div>
-
    <table class="table table-bordered" style="width:70%">
   <caption><strong>用例</strong></caption>
   <thead>
@@ -41,7 +41,7 @@
   <tbody>
   {%for yongli in yonglis%}
     <tr>
-        <td><input type="checkbox" id='input'></td>
+        <td><input type="checkbox"  name="yongli" value="{{yongli.id}}"></td>
       <td>{{yongli.id}}</td>
       <td>{{yongli.project}}</td>
       <td>{{yongli.model}}</td>
@@ -58,6 +58,7 @@
     {%endfor%}
   </tbody>
 </table>
+</form>
  <p class="pagination" style="margin-left: 24%;">
   {{macros.pagination_widget(pagination,'.yongli')}}
 </div>

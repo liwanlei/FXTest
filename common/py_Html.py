@@ -39,7 +39,7 @@ shanghai='''
 
 
         <p>&nbsp;</p>
-        <table border='2'cellspacing='1' cellpadding='1' width='1100'align="center" >
+        <table border='2'cellspacing='1' cellpadding='1' width='70%'align="center" >
 		<tr >
             <td ><strong>用例ID&nbsp;</strong></td>
             <td><strong>项目</strong></td>
