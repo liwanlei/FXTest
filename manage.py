@@ -8,7 +8,7 @@ from  app import  app
 from flask_admin import Admin,AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from app.models import User,Interface,InterfaceTest,TestResult,db
-admin=Admin(app,name='api管理后台')
+admin=Admin(app,name=u'api管理后台')
 admin.add_view(ModelView(User,db.session))
 admin.add_view(ModelView(Interface,db.session))
 admin.add_view(ModelView(InterfaceTest,db.session))

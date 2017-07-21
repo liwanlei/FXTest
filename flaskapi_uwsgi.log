@@ -1,0 +1,865 @@
+*** Starting uWSGI 2.0.15 (32bit) on [Fri Jul 21 22:55:51 2017] ***
+compiled with version: 5.4.0 20160609 on 21 July 2017 17:03:45
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+writing pidfile to /var/run/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:9191 fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0xa113cf0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 703824 bytes (687 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0xa113cf0 pid: 26033 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 26033)
+spawned uWSGI worker 1 (pid: 26038, cores: 1)
+spawned uWSGI worker 2 (pid: 26039, cores: 1)
+spawned uWSGI worker 3 (pid: 26040, cores: 1)
+spawned uWSGI worker 4 (pid: 26041, cores: 1)
+spawned uWSGI worker 5 (pid: 26042, cores: 1)
+spawned uWSGI worker 6 (pid: 26043, cores: 1)
+spawned uWSGI worker 7 (pid: 26044, cores: 1)
+spawned uWSGI worker 8 (pid: 26045, cores: 1)
+spawned uWSGI worker 9 (pid: 26046, cores: 1)
+spawned uWSGI worker 10 (pid: 26047, cores: 1)
+[pid: 26040|app: 0|req: 1/1] 123.121.157.173 () {46 vars in 770 bytes} [Fri Jul 21 22:56:13 2017] GET / => generated 219 bytes in 38 msecs (HTTP/1.1 302) 3 headers in 125 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./app/views.py", line 46, in login
+    return  render_template('login.html',form=form)
+  File "/usr/local/lib/python2.7/dist-packages/flask/templating.py", line 134, in render_template
+    context, ctx.app)
+  File "/usr/local/lib/python2.7/dist-packages/flask/templating.py", line 116, in _render
+    rv = template.render(context)
+  File "/usr/local/lib/python2.7/dist-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/usr/local/lib/python2.7/dist-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/FXTest/app/templates/login.html", line 37, in top-level template code
+    {{ form.username(class='form-control') }}
+  File "/usr/local/lib/python2.7/dist-packages/wtforms/fields/core.py", line 153, in __call__
+    return self.meta.render_field(self, kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/wtforms/meta.py", line 56, in render_field
+    return field.widget(field, **render_kw)
+  File "/usr/local/lib/python2.7/dist-packages/wtforms/widgets/core.py", line 164, in __call__
+    return HTMLString('<input %s>' % self.html_params(name=field.name, **kwargs))
+  File "/usr/local/lib/python2.7/dist-packages/wtforms/widgets/core.py", line 53, in html_params
+    params.append('%s="%s"' % (text_type(k), escape(text_type(v), quote=True)))
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe8 in position 0: ordinal not in range(128)
+[pid: 26041|app: 0|req: 1/2] 123.121.157.173 () {46 vars in 780 bytes} [Fri Jul 21 22:56:13 2017] GET /login => generated 0 bytes in 43 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+Fri Jul 21 22:58:13 2017 - *** PAUSE (press start to resume, if you do not have a joypad send SIGTSTP) ***
+Fri Jul 21 22:58:13 2017 - *** worker 1 suspended ***
+Fri Jul 21 22:58:13 2017 - *** worker 2 suspended ***
+Fri Jul 21 22:58:13 2017 - *** worker 3 suspended ***
+Fri Jul 21 22:58:13 2017 - *** worker 4 suspended ***
+Fri Jul 21 22:58:13 2017 - *** worker 5 suspended ***
+Fri Jul 21 22:58:13 2017 - *** worker 6 suspended ***
+Fri Jul 21 22:58:13 2017 - *** worker 7 suspended ***
+Fri Jul 21 22:58:13 2017 - *** worker 8 suspended ***
+Fri Jul 21 22:58:13 2017 - *** worker 9 suspended ***
+Fri Jul 21 22:58:13 2017 - *** worker 10 suspended ***
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (32bit) on [Fri Jul 21 22:58:16 2017] ***
+compiled with version: 5.4.0 20160609 on 21 July 2017 17:03:45
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+writing pidfile to /var/run/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:9191 fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x9365cf0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 703824 bytes (687 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x9365cf0 pid: 26123 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 26123)
+spawned uWSGI worker 1 (pid: 26128, cores: 1)
+spawned uWSGI worker 2 (pid: 26129, cores: 1)
+spawned uWSGI worker 3 (pid: 26130, cores: 1)
+spawned uWSGI worker 4 (pid: 26131, cores: 1)
+spawned uWSGI worker 5 (pid: 26132, cores: 1)
+spawned uWSGI worker 6 (pid: 26133, cores: 1)
+spawned uWSGI worker 7 (pid: 26134, cores: 1)
+spawned uWSGI worker 8 (pid: 26135, cores: 1)
+spawned uWSGI worker 9 (pid: 26136, cores: 1)
+spawned uWSGI worker 10 (pid: 26137, cores: 1)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 26130|app: 0|req: 1/1] 123.121.157.173 () {48 vars in 811 bytes} [Fri Jul 21 22:58:22 2017] GET /login => generated 1948 bytes in 57 msecs (HTTP/1.1 200) 3 headers in 263 bytes (1 switches on core 0)
+[pid: 26132|app: 0|req: 1/2] 123.121.157.173 () {48 vars in 917 bytes} [Fri Jul 21 22:58:22 2017] GET /static/css/main.css => generated 47438 bytes in 122 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 26137|app: 0|req: 1/3] 123.121.157.173 () {48 vars in 917 bytes} [Fri Jul 21 22:58:22 2017] GET /static/css/demo.css => generated 395 bytes in 125 msecs via sendfile() (HTTP/1.1 200) 8 headers in 299 bytes (0 switches on core 0)
+[pid: 26135|app: 0|req: 1/4] 123.121.157.173 () {48 vars in 927 bytes} [Fri Jul 21 22:58:22 2017] GET /static/css/bootstrap.css => generated 152842 bytes in 132 msecs via sendfile() (HTTP/1.1 200) 8 headers in 305 bytes (0 switches on core 0)
+[pid: 26136|app: 0|req: 1/5] 123.121.157.173 () {48 vars in 916 bytes} [Fri Jul 21 22:58:22 2017] GET /static/js/bootstrap.min.js => generated 28631 bytes in 79 msecs via sendfile() (HTTP/1.1 200) 8 headers in 302 bytes (0 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 26135|app: 0|req: 2/6] 123.121.157.173 () {58 vars in 1178 bytes} [Fri Jul 21 22:58:28 2017] POST /login => generated 209 bytes in 102 msecs (HTTP/1.1 302) 4 headers in 331 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 2/7] 123.121.157.173 () {52 vars in 1041 bytes} [Fri Jul 21 22:58:28 2017] GET / => generated 3561 bytes in 28 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 3/8] 123.121.157.173 () {50 vars in 1023 bytes} [Fri Jul 21 22:58:32 2017] GET /down_case => generated 10153 bytes in 3 msecs via sendfile() (HTTP/1.1 200) 9 headers in 408 bytes (0 switches on core 0)
+[pid: 26136|app: 0|req: 2/9] 123.121.157.173 () {50 vars in 1027 bytes} [Fri Jul 21 22:58:34 2017] GET /down_jiekou => generated 10111 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 9 headers in 402 bytes (0 switches on core 0)
+[pid: 26132|app: 0|req: 2/10] 123.121.157.173 () {50 vars in 1023 bytes} [Fri Jul 21 22:58:35 2017] GET /interface => generated 6516 bytes in 63 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 4/11] 123.121.157.173 () {58 vars in 1217 bytes} [Fri Jul 21 22:58:41 2017] POST /ser_inter => generated 227 bytes in 6 msecs (HTTP/1.1 302) 4 headers in 440 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 3/12] 123.121.157.173 () {52 vars in 1163 bytes} [Fri Jul 21 22:58:41 2017] GET /interface => generated 6576 bytes in 28 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 5/13] 123.121.157.173 () {58 vars in 1217 bytes} [Fri Jul 21 22:58:48 2017] POST /ser_inter => generated 3462 bytes in 45 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 4/14] 123.121.157.173 () {50 vars in 1046 bytes} [Fri Jul 21 22:58:51 2017] GET /edit_interface/1 => generated 2859 bytes in 19 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 6/15] 123.121.157.173 () {58 vars in 1238 bytes} [Fri Jul 21 22:58:52 2017] POST /edit_interface/1 => generated 227 bytes in 9 msecs (HTTP/1.1 302) 3 headers in 129 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 5/16] 123.121.157.173 () {52 vars in 1070 bytes} [Fri Jul 21 22:58:52 2017] GET /interface => generated 6516 bytes in 9 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 7/17] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 22:58:59 2017] GET /test_rep => generated 3578 bytes in 42 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 6/18] 123.121.157.173 () {50 vars in 1025 bytes} [Fri Jul 21 22:59:01 2017] GET /yongli => generated 4932 bytes in 40 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 8/19] 123.121.157.173 () {58 vars in 1216 bytes} [Fri Jul 21 22:59:10 2017] POST /ser_yongli => generated 3752 bytes in 29 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 7/20] 123.121.157.173 () {58 vars in 1216 bytes} [Fri Jul 21 23:00:41 2017] POST /ser_yongli => generated 3752 bytes in 20 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 9/21] 123.121.157.173 () {50 vars in 1031 bytes} [Fri Jul 21 23:00:58 2017] GET /test_rep => generated 3578 bytes in 7 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 8/22] 123.121.157.173 () {50 vars in 1031 bytes} [Fri Jul 21 23:01:03 2017] GET /adminuser => generated 3602 bytes in 22 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 10/23] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 23:01:05 2017] GET /fre_ad/1 => generated 227 bytes in 9 msecs (HTTP/1.1 302) 4 headers in 437 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 9/24] 123.121.157.173 () {50 vars in 1129 bytes} [Fri Jul 21 23:01:05 2017] GET /adminuser => generated 3668 bytes in 10 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 11/25] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 23:01:07 2017] GET /del_ad/1 => generated 227 bytes in 6 msecs (HTTP/1.1 302) 4 headers in 455 bytes (1 switches on core 0)
+[pid: 26136|app: 0|req: 3/26] 123.121.157.173 () {50 vars in 1147 bytes} [Fri Jul 21 23:01:08 2017] GET /adminuser => generated 3680 bytes in 47 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 12/27] 123.121.157.173 () {50 vars in 1034 bytes} [Fri Jul 21 23:01:09 2017] GET /red_pass/1 => generated 227 bytes in 7 msecs (HTTP/1.1 302) 4 headers in 436 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 10/28] 123.121.157.173 () {50 vars in 1128 bytes} [Fri Jul 21 23:01:09 2017] GET /adminuser => generated 3668 bytes in 8 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 13/29] 123.121.157.173 () {50 vars in 1034 bytes} [Fri Jul 21 23:01:11 2017] GET /red_pass/1 => generated 227 bytes in 5 msecs (HTTP/1.1 302) 4 headers in 436 bytes (1 switches on core 0)
+[pid: 26136|app: 0|req: 4/30] 123.121.157.173 () {50 vars in 1128 bytes} [Fri Jul 21 23:01:11 2017] GET /adminuser => generated 3668 bytes in 7 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 14/31] 123.121.157.173 () {50 vars in 1034 bytes} [Fri Jul 21 23:01:12 2017] GET /red_pass/1 => generated 227 bytes in 9 msecs (HTTP/1.1 302) 4 headers in 436 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 11/32] 123.121.157.173 () {50 vars in 1128 bytes} [Fri Jul 21 23:01:12 2017] GET /adminuser => generated 3668 bytes in 11 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 15/33] 123.121.157.173 () {50 vars in 1034 bytes} [Fri Jul 21 23:01:13 2017] GET /red_pass/1 => generated 227 bytes in 9 msecs (HTTP/1.1 302) 4 headers in 436 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 12/34] 123.121.157.173 () {50 vars in 1128 bytes} [Fri Jul 21 23:01:13 2017] GET /adminuser => generated 3668 bytes in 10 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 16/35] 123.121.157.173 () {50 vars in 1034 bytes} [Fri Jul 21 23:01:13 2017] GET /red_pass/1 => generated 227 bytes in 8 msecs (HTTP/1.1 302) 4 headers in 436 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 13/36] 123.121.157.173 () {50 vars in 1128 bytes} [Fri Jul 21 23:01:13 2017] GET /adminuser => generated 3668 bytes in 10 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 17/37] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 23:01:14 2017] GET /add_user => generated 2683 bytes in 9 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 14/38] 123.121.157.173 () {58 vars in 1214 bytes} [Fri Jul 21 23:01:15 2017] POST /add_user => generated 227 bytes in 63 msecs (HTTP/1.1 302) 4 headers in 416 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 18/39] 123.121.157.173 () {52 vars in 1138 bytes} [Fri Jul 21 23:01:15 2017] GET /adminuser => generated 4099 bytes in 16 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 15/40] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 23:01:25 2017] GET /test_rep => generated 3578 bytes in 18 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 19/41] 123.121.157.173 () {50 vars in 1065 bytes} [Fri Jul 21 23:01:27 2017] GET /load_res/201707211243.html => generated 2201 bytes in 3 msecs via sendfile() (HTTP/1.1 200) 9 headers in 362 bytes (0 switches on core 0)
+[pid: 26136|app: 0|req: 5/42] 123.121.157.173 () {50 vars in 1055 bytes} [Fri Jul 21 23:01:29 2017] GET /load/201707211243.log => generated 253 bytes in 3 msecs via sendfile() (HTTP/1.1 200) 9 headers in 359 bytes (0 switches on core 0)
+[pid: 26128|app: 0|req: 1/43] 123.121.157.173 () {50 vars in 1025 bytes} [Fri Jul 21 23:01:37 2017] GET /yongli => generated 4932 bytes in 91 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+./app/views.py:478: UnicodeWarning: Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
+  if result==eval(case.Interface_assert):
+[pid: 26135|app: 0|req: 20/44] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:01:39 2017] GET /make_one_case/8 => generated 221 bytes in 100 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 16/45] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:01:39 2017] GET /yongli => generated 5009 bytes in 10 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 21/46] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:01:42 2017] GET /make_one_case/9 => generated 221 bytes in 83 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 17/47] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:01:42 2017] GET /yongli => generated 5009 bytes in 8 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26135|app: 0|req: 22/48] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:01:44 2017] GET /make_one_case/9 => generated 221 bytes in 77 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 26137|app: 0|req: 18/49] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:01:44 2017] GET /yongli => generated 5009 bytes in 7 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None}
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./app/views.py", line 525, in duoyongli
+    result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
+  File "./app/test_case/Test_case.py", line 25, in testapi
+    self.log_can.info_log('input:接口地址：%s,参数:%s,实际返回:%s,预期:%s'%(self.url[case],self.parm[case],apijson,self.assert_test[case]))
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe5 in position 3: ordinal not in range(128)
+[pid: 26135|app: 0|req: 23/50] 123.121.157.173 () {58 vars in 1214 bytes} [Fri Jul 21 23:01:48 2017] POST /duoyongli => generated 0 bytes in 279 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+Fri Jul 21 23:03:13 2017 - *** PAUSE (press start to resume, if you do not have a joypad send SIGTSTP) ***
+Fri Jul 21 23:03:13 2017 - *** worker 1 suspended ***
+Fri Jul 21 23:03:13 2017 - *** worker 2 suspended ***
+Fri Jul 21 23:03:13 2017 - *** worker 3 suspended ***
+Fri Jul 21 23:03:13 2017 - *** worker 4 suspended ***
+Fri Jul 21 23:03:13 2017 - *** worker 5 suspended ***
+Fri Jul 21 23:03:13 2017 - *** worker 6 suspended ***
+Fri Jul 21 23:03:13 2017 - *** worker 7 suspended ***
+Fri Jul 21 23:03:13 2017 - *** worker 9 suspended ***
+Fri Jul 21 23:03:13 2017 - *** worker 8 suspended ***
+Fri Jul 21 23:03:13 2017 - *** worker 10 suspended ***
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (32bit) on [Fri Jul 21 23:03:19 2017] ***
+compiled with version: 5.4.0 20160609 on 21 July 2017 17:03:45
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+writing pidfile to /var/run/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:9191 fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x9debcf0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 703824 bytes (687 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x9debcf0 pid: 26317 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 26317)
+spawned uWSGI worker 1 (pid: 26322, cores: 1)
+spawned uWSGI worker 2 (pid: 26323, cores: 1)
+spawned uWSGI worker 3 (pid: 26324, cores: 1)
+spawned uWSGI worker 4 (pid: 26325, cores: 1)
+spawned uWSGI worker 5 (pid: 26326, cores: 1)
+spawned uWSGI worker 6 (pid: 26327, cores: 1)
+spawned uWSGI worker 7 (pid: 26328, cores: 1)
+spawned uWSGI worker 8 (pid: 26329, cores: 1)
+spawned uWSGI worker 9 (pid: 26330, cores: 1)
+spawned uWSGI worker 10 (pid: 26331, cores: 1)
+{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None}
+2017-07-21 23:03:27,286 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index,参数:None,实际返回:{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+./app/common/dict_com.py:7: UnicodeWarning: Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
+  if k==k2 and v==v2:
+{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None}
+2017-07-21 23:03:27,501 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index	,参数:,实际返回:{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./app/views.py", line 528, in duoyongli
+    createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
+  File "./app/common/py_Html.py", line 93, in createHtml
+    texts=relust(titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuqi,json,relusts)
+  File "./app/common/py_Html.py", line 88, in relust
+    text=title(titles)+connent+time(starttime,endtime,passge,fail)+shanghai+relus+weibu
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe6 in position 50: ordinal not in range(128)
+[pid: 26326|app: 0|req: 1/1] 123.121.157.173 () {58 vars in 1214 bytes} [Fri Jul 21 23:03:26 2017] POST /duoyongli => generated 0 bytes in 550 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (32bit) on [Fri Jul 21 23:05:08 2017] ***
+compiled with version: 5.4.0 20160609 on 21 July 2017 17:03:45
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+writing pidfile to /var/run/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:9191 fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x8db1cf0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 703824 bytes (687 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x8db1cf0 pid: 26445 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 26445)
+spawned uWSGI worker 1 (pid: 26450, cores: 1)
+spawned uWSGI worker 2 (pid: 26451, cores: 1)
+spawned uWSGI worker 3 (pid: 26452, cores: 1)
+spawned uWSGI worker 4 (pid: 26453, cores: 1)
+spawned uWSGI worker 5 (pid: 26454, cores: 1)
+spawned uWSGI worker 6 (pid: 26455, cores: 1)
+spawned uWSGI worker 7 (pid: 26456, cores: 1)
+spawned uWSGI worker 8 (pid: 26457, cores: 1)
+spawned uWSGI worker 9 (pid: 26458, cores: 1)
+spawned uWSGI worker 10 (pid: 26459, cores: 1)
+{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None}
+2017-07-21 23:05:16,377 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index,参数:None,实际返回:{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+./app/common/dict_com.py:7: UnicodeWarning: Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
+  if k==k2 and v==v2:
+{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None}
+2017-07-21 23:05:16,587 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index	,参数:,实际返回:{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./app/views.py", line 528, in duoyongli
+    createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
+  File "./app/common/py_Html.py", line 93, in createHtml
+    texts=relust(titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuqi,json,relusts)
+  File "./app/common/py_Html.py", line 88, in relust
+    text=title(titles)+connent+time(starttime,endtime,passge,fail)+shanghai+relus+weibu
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe6 in position 50: ordinal not in range(128)
+[pid: 26452|app: 0|req: 1/1] 123.121.157.173 () {58 vars in 1214 bytes} [Fri Jul 21 23:05:16 2017] POST /duoyongli => generated 0 bytes in 529 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (32bit) on [Fri Jul 21 23:08:48 2017] ***
+compiled with version: 5.4.0 20160609 on 21 July 2017 17:03:45
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+writing pidfile to /var/run/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:9191 fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x8de9cf0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 703824 bytes (687 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x8de9cf0 pid: 26594 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 26594)
+spawned uWSGI worker 1 (pid: 26599, cores: 1)
+spawned uWSGI worker 2 (pid: 26600, cores: 1)
+spawned uWSGI worker 3 (pid: 26601, cores: 1)
+spawned uWSGI worker 4 (pid: 26602, cores: 1)
+spawned uWSGI worker 5 (pid: 26603, cores: 1)
+spawned uWSGI worker 6 (pid: 26604, cores: 1)
+spawned uWSGI worker 7 (pid: 26605, cores: 1)
+spawned uWSGI worker 8 (pid: 26606, cores: 1)
+spawned uWSGI worker 9 (pid: 26607, cores: 1)
+spawned uWSGI worker 10 (pid: 26608, cores: 1)
+{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None}
+2017-07-21 23:08:55,925 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index,参数:None,实际返回:{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+./app/common/dict_com.py:7: UnicodeWarning: Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
+  if k==k2 and v==v2:
+{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None}
+2017-07-21 23:08:56,148 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index	,参数:,实际返回:{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./app/views.py", line 528, in duoyongli
+    createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
+  File "./app/common/py_Html.py", line 93, in createHtml
+    texts=relust(titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuqi,json,relusts)
+  File "./app/common/py_Html.py", line 88, in relust
+    text=title(titles)+connent.encode('utf-8')+time(starttime,endtime,passge,fail)+shanghai+relus+weibu
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe6 in position 50: ordinal not in range(128)
+[pid: 26601|app: 0|req: 1/1] 123.121.157.173 () {58 vars in 1214 bytes} [Fri Jul 21 23:08:55 2017] POST /duoyongli => generated 0 bytes in 534 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (32bit) on [Fri Jul 21 23:10:18 2017] ***
+compiled with version: 5.4.0 20160609 on 21 July 2017 17:03:45
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+writing pidfile to /var/run/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:9191 fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x85b9cf0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 703824 bytes (687 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x85b9cf0 pid: 26671 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 26671)
+spawned uWSGI worker 1 (pid: 26676, cores: 1)
+spawned uWSGI worker 2 (pid: 26677, cores: 1)
+spawned uWSGI worker 3 (pid: 26678, cores: 1)
+spawned uWSGI worker 4 (pid: 26679, cores: 1)
+spawned uWSGI worker 5 (pid: 26680, cores: 1)
+spawned uWSGI worker 6 (pid: 26681, cores: 1)
+spawned uWSGI worker 7 (pid: 26682, cores: 1)
+spawned uWSGI worker 8 (pid: 26683, cores: 1)
+spawned uWSGI worker 9 (pid: 26684, cores: 1)
+spawned uWSGI worker 10 (pid: 26685, cores: 1)
+{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None}
+2017-07-21 23:10:27,712 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index,参数:None,实际返回:{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+./app/common/dict_com.py:7: UnicodeWarning: Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
+  if k==k2 and v==v2:
+{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None}
+2017-07-21 23:10:27,922 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index	,参数:,实际返回:{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./app/views.py", line 528, in duoyongli
+    createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
+  File "./app/common/py_Html.py", line 93, in createHtml
+    texts=relust(titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuqi,json,relusts)
+  File "./app/common/py_Html.py", line 88, in relust
+    text=title(titles)+connent.decode('utf-8')+time(starttime,endtime,passge,fail)+shanghai+relus+weibu
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe5 in position 14: ordinal not in range(128)
+[pid: 26678|app: 0|req: 1/1] 123.121.157.173 () {58 vars in 1214 bytes} [Fri Jul 21 23:10:27 2017] POST /duoyongli => generated 0 bytes in 533 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (32bit) on [Fri Jul 21 23:11:54 2017] ***
+compiled with version: 5.4.0 20160609 on 21 July 2017 17:03:45
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+writing pidfile to /var/run/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:9191 fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x84f7cf0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 703824 bytes (687 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x84f7cf0 pid: 26736 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 26736)
+spawned uWSGI worker 1 (pid: 26741, cores: 1)
+spawned uWSGI worker 2 (pid: 26742, cores: 1)
+spawned uWSGI worker 3 (pid: 26743, cores: 1)
+spawned uWSGI worker 4 (pid: 26744, cores: 1)
+spawned uWSGI worker 5 (pid: 26745, cores: 1)
+spawned uWSGI worker 6 (pid: 26746, cores: 1)
+spawned uWSGI worker 7 (pid: 26747, cores: 1)
+spawned uWSGI worker 8 (pid: 26748, cores: 1)
+spawned uWSGI worker 9 (pid: 26749, cores: 1)
+spawned uWSGI worker 10 (pid: 26750, cores: 1)
+{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None}
+2017-07-21 23:12:00,800 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index,参数:None,实际返回:{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+./app/common/dict_com.py:7: UnicodeWarning: Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
+  if k==k2 and v==v2:
+{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None}
+2017-07-21 23:12:01,023 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index	,参数:,实际返回:{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./app/views.py", line 528, in duoyongli
+    createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
+  File "./app/common/py_Html.py", line 93, in createHtml
+    texts=relust(titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuqi,json,relusts)
+  File "./app/common/py_Html.py", line 88, in relust
+    text=title(titles)+connent.decode('utf-8')+time(starttime,endtime,passge,fail)+shanghai+relus+weibu
+  File "/usr/lib/python2.7/encodings/utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 50-56: ordinal not in range(128)
+[pid: 26743|app: 0|req: 1/1] 123.121.157.173 () {58 vars in 1214 bytes} [Fri Jul 21 23:12:00 2017] POST /duoyongli => generated 0 bytes in 562 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+Fri Jul 21 23:14:55 2017 - *** PAUSE (press start to resume, if you do not have a joypad send SIGTSTP) ***
+Fri Jul 21 23:14:55 2017 - *** worker 1 suspended ***
+Fri Jul 21 23:14:55 2017 - *** worker 2 suspended ***
+Fri Jul 21 23:14:55 2017 - *** worker 3 suspended ***
+Fri Jul 21 23:14:55 2017 - *** worker 4 suspended ***
+Fri Jul 21 23:14:55 2017 - *** worker 5 suspended ***
+Fri Jul 21 23:14:55 2017 - *** worker 6 suspended ***
+Fri Jul 21 23:14:55 2017 - *** worker 7 suspended ***
+Fri Jul 21 23:14:55 2017 - *** worker 8 suspended ***
+Fri Jul 21 23:14:55 2017 - *** worker 9 suspended ***
+Fri Jul 21 23:14:55 2017 - *** worker 10 suspended ***
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (32bit) on [Fri Jul 21 23:14:59 2017] ***
+compiled with version: 5.4.0 20160609 on 21 July 2017 17:03:45
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+writing pidfile to /var/run/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:9191 fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x8ac9cf0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 703824 bytes (687 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x8ac9cf0 pid: 26859 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 26859)
+spawned uWSGI worker 1 (pid: 26864, cores: 1)
+spawned uWSGI worker 2 (pid: 26865, cores: 1)
+spawned uWSGI worker 3 (pid: 26866, cores: 1)
+spawned uWSGI worker 4 (pid: 26867, cores: 1)
+spawned uWSGI worker 5 (pid: 26868, cores: 1)
+spawned uWSGI worker 6 (pid: 26869, cores: 1)
+spawned uWSGI worker 7 (pid: 26870, cores: 1)
+spawned uWSGI worker 8 (pid: 26871, cores: 1)
+spawned uWSGI worker 9 (pid: 26872, cores: 1)
+spawned uWSGI worker 10 (pid: 26873, cores: 1)
+{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None}
+2017-07-21 23:15:07,703 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index,参数:None,实际返回:{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None}
+2017-07-21 23:15:07,919 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index	,参数:,实际返回:{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
+[pid: 26867|app: 0|req: 1/1] 123.121.157.173 () {58 vars in 1214 bytes} [Fri Jul 21 23:15:07 2017] POST /duoyongli => generated 227 bytes in 551 msecs (HTTP/1.1 302) 4 headers in 432 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 1/2] 123.121.157.173 () {52 vars in 1152 bytes} [Fri Jul 21 23:15:07 2017] GET /interface => generated 6570 bytes in 89 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 1/3] 123.121.157.173 () {50 vars in 1032 bytes} [Fri Jul 21 23:15:10 2017] GET /adminuser => generated 4045 bytes in 60 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 2/4] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 23:15:11 2017] GET /test_rep => generated 3937 bytes in 32 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 2/5] 123.121.157.173 () {50 vars in 1031 bytes} [Fri Jul 21 23:15:17 2017] GET /adminuser => generated 4045 bytes in 12 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 3/6] 123.121.157.173 () {48 vars in 982 bytes} [Fri Jul 21 23:15:28 2017] GET /adminuser => generated 4045 bytes in 38 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 3/7] 123.121.157.173 () {48 vars in 974 bytes} [Fri Jul 21 23:15:34 2017] GET /admin => generated 269 bytes in 5 msecs (HTTP/1.1 301) 3 headers in 138 bytes (1 switches on core 0)
+[pid: 26869|app: 0|req: 1/8] 123.121.157.173 () {48 vars in 976 bytes} [Fri Jul 21 23:15:34 2017] GET /admin/ => generated 2141 bytes in 122 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 4/9] 123.121.157.173 () {48 vars in 1056 bytes} [Fri Jul 21 23:15:34 2017] GET /admin/static/bootstrap/bootstrap2/swatch/default/bootstrap.min.css?v=2.3.2 => generated 105939 bytes in 27 msecs via sendfile() (HTTP/1.1 200) 8 headers in 305 bytes (0 switches on core 0)
+[pid: 26871|app: 0|req: 4/10] 123.121.157.173 () {48 vars in 1048 bytes} [Fri Jul 21 23:15:34 2017] GET /admin/static/bootstrap/bootstrap2/css/bootstrap-responsive.css?v=2.3.2 => generated 22102 bytes in 34 msecs via sendfile() (HTTP/1.1 200) 8 headers in 304 bytes (0 switches on core 0)
+[pid: 26872|app: 0|req: 5/11] 123.121.157.173 () {48 vars in 993 bytes} [Fri Jul 21 23:15:34 2017] GET /admin/static/vendor/select2/select2.min.js?v=3.5.2 => generated 66596 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 26865|app: 0|req: 1/12] 123.121.157.173 () {48 vars in 975 bytes} [Fri Jul 21 23:15:34 2017] GET /admin/static/vendor/moment.min.js?v=2.9.0 => generated 34737 bytes in 130 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 26870|app: 0|req: 1/13] 123.121.157.173 () {48 vars in 1010 bytes} [Fri Jul 21 23:15:34 2017] GET /admin/static/admin/css/bootstrap2/admin.css?v=1.1.1 => generated 2980 bytes in 131 msecs via sendfile() (HTTP/1.1 200) 8 headers in 302 bytes (0 switches on core 0)
+[pid: 26868|app: 0|req: 1/14] 123.121.157.173 () {48 vars in 1015 bytes} [Fri Jul 21 23:15:34 2017] GET /admin/static/bootstrap/bootstrap2/js/bootstrap.min.js?v=2.3.2 => generated 28631 bytes in 130 msecs via sendfile() (HTTP/1.1 200) 8 headers in 302 bytes (0 switches on core 0)
+[pid: 26866|app: 0|req: 1/15] 123.121.157.173 () {48 vars in 975 bytes} [Fri Jul 21 23:15:34 2017] GET /admin/static/vendor/jquery.min.js?v=2.1.4 => generated 84345 bytes in 130 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 26872|app: 0|req: 6/16] 123.121.157.173 () {50 vars in 1033 bytes} [Fri Jul 21 23:15:37 2017] GET /admin/user/ => generated 10759 bytes in 269 msecs (HTTP/1.1 200) 2 headers in 82 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 5/17] 123.121.157.173 () {48 vars in 1007 bytes} [Fri Jul 21 23:15:37 2017] GET /admin/static/vendor/select2/select2.css?v=3.5.2 => generated 19457 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 26865|app: 0|req: 2/18] 123.121.157.173 () {48 vars in 1069 bytes} [Fri Jul 21 23:15:37 2017] GET /admin/static/vendor/bootstrap-daterangepicker/daterangepicker-bs2.css?v=1.3.22 => generated 6731 bytes in 15 msecs via sendfile() (HTTP/1.1 200) 8 headers in 302 bytes (0 switches on core 0)
+[pid: 26870|app: 0|req: 2/19] 123.121.157.173 () {48 vars in 978 bytes} [Fri Jul 21 23:15:37 2017] GET /admin/static/admin/js/actions.js?v=1.0.0 => generated 1405 bytes in 17 msecs via sendfile() (HTTP/1.1 200) 8 headers in 301 bytes (0 switches on core 0)
+[pid: 26867|app: 0|req: 2/20] 123.121.157.173 () {48 vars in 972 bytes} [Fri Jul 21 23:15:37 2017] GET /admin/static/admin/js/form.js?v=1.0.1 => generated 21033 bytes in 27 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 26864|app: 0|req: 1/21] 123.121.157.173 () {48 vars in 978 bytes} [Fri Jul 21 23:15:37 2017] GET /admin/static/admin/js/filters.js?v=1.0.0 => generated 7236 bytes in 79 msecs via sendfile() (HTTP/1.1 200) 8 headers in 301 bytes (0 switches on core 0)
+[pid: 26873|app: 0|req: 1/22] 123.121.157.173 () {48 vars in 1044 bytes} [Fri Jul 21 23:15:37 2017] GET /admin/static/vendor/bootstrap-daterangepicker/daterangepicker.js?v=1.3.22 => generated 55552 bytes in 78 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 26872|app: 0|req: 7/23] 123.121.157.173 () {48 vars in 1136 bytes} [Fri Jul 21 23:15:37 2017] GET /admin/static/bootstrap/bootstrap2/swatch/img/glyphicons-halflings.png => generated 12799 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 8 headers in 290 bytes (0 switches on core 0)
+[pid: 26867|app: 0|req: 3/24] 123.121.157.173 () {58 vars in 1237 bytes} [Fri Jul 21 23:15:41 2017] POST /admin/user/delete/ => generated 231 bytes in 12 msecs (HTTP/1.1 302) 4 headers in 449 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 8/25] 123.121.157.173 () {52 vars in 1176 bytes} [Fri Jul 21 23:15:41 2017] GET /admin/user/ => generated 8924 bytes in 13 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 6/26] 123.121.157.173 () {52 vars in 1062 bytes} [Fri Jul 21 23:15:46 2017] GET /adminuser => generated 3602 bytes in 8 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 9/27] 123.121.157.173 () {50 vars in 1034 bytes} [Fri Jul 21 23:15:49 2017] GET /red_pass/1 => generated 227 bytes in 10 msecs (HTTP/1.1 302) 4 headers in 436 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 7/28] 123.121.157.173 () {50 vars in 1128 bytes} [Fri Jul 21 23:15:49 2017] GET /adminuser => generated 3668 bytes in 12 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 10/29] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 23:15:53 2017] GET /del_ad/1 => generated 227 bytes in 6 msecs (HTTP/1.1 302) 4 headers in 455 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 8/30] 123.121.157.173 () {50 vars in 1147 bytes} [Fri Jul 21 23:15:53 2017] GET /adminuser => generated 3680 bytes in 7 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 11/31] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 23:15:54 2017] GET /fre_ad/1 => generated 227 bytes in 6 msecs (HTTP/1.1 302) 4 headers in 437 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 9/32] 123.121.157.173 () {50 vars in 1129 bytes} [Fri Jul 21 23:15:54 2017] GET /adminuser => generated 3668 bytes in 8 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 12/33] 123.121.157.173 () {50 vars in 1034 bytes} [Fri Jul 21 23:15:55 2017] GET /red_pass/1 => generated 227 bytes in 6 msecs (HTTP/1.1 302) 4 headers in 436 bytes (1 switches on core 0)
+[pid: 26869|app: 0|req: 2/34] 123.121.157.173 () {50 vars in 1128 bytes} [Fri Jul 21 23:15:55 2017] GET /adminuser => generated 3668 bytes in 41 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 13/35] 123.121.157.173 () {52 vars in 1063 bytes} [Fri Jul 21 23:19:30 2017] GET /adminuser => generated 3602 bytes in 12 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 10/36] 123.121.157.173 () {50 vars in 1034 bytes} [Fri Jul 21 23:19:32 2017] GET /red_pass/1 => generated 227 bytes in 10 msecs (HTTP/1.1 302) 4 headers in 436 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 14/37] 123.121.157.173 () {50 vars in 1128 bytes} [Fri Jul 21 23:19:32 2017] GET /adminuser => generated 3668 bytes in 11 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 11/38] 123.121.157.173 () {52 vars in 1063 bytes} [Fri Jul 21 23:19:35 2017] GET /adminuser => generated 3602 bytes in 8 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 15/39] 123.121.157.173 () {52 vars in 1063 bytes} [Fri Jul 21 23:23:45 2017] GET /adminuser => generated 3602 bytes in 10 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 12/40] 123.121.157.173 () {50 vars in 1014 bytes} [Fri Jul 21 23:23:46 2017] GET / => generated 3561 bytes in 22 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 16/41] 123.121.157.173 () {50 vars in 1023 bytes} [Fri Jul 21 23:23:47 2017] GET /interface => generated 6516 bytes in 8 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 13/42] 123.121.157.173 () {50 vars in 1026 bytes} [Fri Jul 21 23:23:48 2017] GET /yongli => generated 4932 bytes in 18 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 17/43] 123.121.157.173 () {50 vars in 1029 bytes} [Fri Jul 21 23:23:50 2017] GET /adminuser => generated 3602 bytes in 6 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 26871|app: 0|req: 14/44] 123.121.157.173 () {50 vars in 1034 bytes} [Fri Jul 21 23:23:51 2017] GET /red_pass/1 => generated 227 bytes in 8 msecs (HTTP/1.1 302) 4 headers in 436 bytes (1 switches on core 0)
+[pid: 26872|app: 0|req: 18/45] 123.121.157.173 () {50 vars in 1128 bytes} [Fri Jul 21 23:23:51 2017] GET /adminuser => generated 3668 bytes in 7 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (32bit) on [Fri Jul 21 23:24:00 2017] ***
+compiled with version: 5.4.0 20160609 on 21 July 2017 17:03:45
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+writing pidfile to /var/run/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:9191 fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x9a47cf0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 703824 bytes (687 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x9a47cf0 pid: 27150 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 27150)
+spawned uWSGI worker 1 (pid: 27155, cores: 1)
+spawned uWSGI worker 2 (pid: 27156, cores: 1)
+spawned uWSGI worker 3 (pid: 27157, cores: 1)
+spawned uWSGI worker 4 (pid: 27158, cores: 1)
+spawned uWSGI worker 5 (pid: 27159, cores: 1)
+spawned uWSGI worker 6 (pid: 27160, cores: 1)
+spawned uWSGI worker 7 (pid: 27161, cores: 1)
+spawned uWSGI worker 8 (pid: 27162, cores: 1)
+spawned uWSGI worker 9 (pid: 27163, cores: 1)
+spawned uWSGI worker 10 (pid: 27164, cores: 1)
+[pid: 27157|app: 0|req: 1/1] 123.121.157.173 () {52 vars in 1063 bytes} [Fri Jul 21 23:24:11 2017] GET /adminuser => generated 3602 bytes in 95 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 1/2] 123.121.157.173 () {50 vars in 1034 bytes} [Fri Jul 21 23:24:13 2017] GET /red_pass/1 => generated 227 bytes in 38 msecs (HTTP/1.1 302) 4 headers in 449 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 1/3] 123.121.157.173 () {50 vars in 1141 bytes} [Fri Jul 21 23:24:13 2017] GET /adminuser => generated 3677 bytes in 61 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 2/4] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 23:24:15 2017] GET /del_ad/1 => generated 227 bytes in 10 msecs (HTTP/1.1 302) 4 headers in 455 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 2/5] 123.121.157.173 () {50 vars in 1147 bytes} [Fri Jul 21 23:24:15 2017] GET /adminuser => generated 3680 bytes in 12 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 3/6] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 23:24:16 2017] GET /fre_ad/1 => generated 227 bytes in 5 msecs (HTTP/1.1 302) 4 headers in 437 bytes (1 switches on core 0)
+[pid: 27164|app: 0|req: 1/7] 123.121.157.173 () {50 vars in 1129 bytes} [Fri Jul 21 23:24:16 2017] GET /adminuser => generated 3668 bytes in 61 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 4/8] 123.121.157.173 () {50 vars in 1030 bytes} [Fri Jul 21 23:24:17 2017] GET /test_rep => generated 3937 bytes in 41 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 3/9] 123.121.157.173 () {50 vars in 1025 bytes} [Fri Jul 21 23:24:20 2017] GET /yongli => generated 4932 bytes in 19 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 5/10] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:24:22 2017] GET /make_one_case/8 => generated 221 bytes in 89 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 4/11] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:24:22 2017] GET /yongli => generated 5009 bytes in 12 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 6/12] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:24:24 2017] GET /make_one_case/9 => generated 221 bytes in 83 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 5/13] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:24:24 2017] GET /yongli => generated 5009 bytes in 11 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 7/14] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:24:37 2017] GET /make_one_case/9 => generated 221 bytes in 74 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 6/15] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:24:37 2017] GET /yongli => generated 5009 bytes in 10 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 8/16] 123.121.157.173 () {50 vars in 1033 bytes} [Fri Jul 21 23:24:39 2017] GET /edit_case/9 => generated 2960 bytes in 11 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 7/17] 123.121.157.173 () {58 vars in 1225 bytes} [Fri Jul 21 23:24:45 2017] POST /edit_case/9 => generated 221 bytes in 12 msecs (HTTP/1.1 302) 4 headers in 490 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 9/18] 123.121.157.173 () {52 vars in 1212 bytes} [Fri Jul 21 23:24:45 2017] GET /yongli => generated 5073 bytes in 18 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 8/19] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:24:50 2017] GET /make_one_case/9 => generated 221 bytes in 84 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 10/20] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:24:50 2017] GET /yongli => generated 5008 bytes in 9 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 9/21] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:24:52 2017] GET /make_one_case/8 => generated 221 bytes in 92 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 11/22] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:24:52 2017] GET /yongli => generated 5008 bytes in 12 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 10/23] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:24:56 2017] GET /make_one_case/9 => generated 221 bytes in 80 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 12/24] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:24:56 2017] GET /yongli => generated 5008 bytes in 13 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 11/25] 123.121.157.173 () {50 vars in 1033 bytes} [Fri Jul 21 23:24:58 2017] GET /edit_case/9 => generated 2959 bytes in 11 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 13/26] 123.121.157.173 () {58 vars in 1225 bytes} [Fri Jul 21 23:25:02 2017] POST /edit_case/9 => generated 221 bytes in 18 msecs (HTTP/1.1 302) 4 headers in 490 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 12/27] 123.121.157.173 () {52 vars in 1212 bytes} [Fri Jul 21 23:25:02 2017] GET /yongli => generated 5073 bytes in 10 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 14/28] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:25:05 2017] GET /make_one_case/9 => generated 221 bytes in 78 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 13/29] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:25:05 2017] GET /yongli => generated 5008 bytes in 9 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 15/30] 123.121.157.173 () {50 vars in 1033 bytes} [Fri Jul 21 23:25:20 2017] GET /edit_case/9 => generated 2959 bytes in 6 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 14/31] 123.121.157.173 () {58 vars in 1225 bytes} [Fri Jul 21 23:25:30 2017] POST /edit_case/9 => generated 221 bytes in 12 msecs (HTTP/1.1 302) 4 headers in 490 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 16/32] 123.121.157.173 () {52 vars in 1212 bytes} [Fri Jul 21 23:25:30 2017] GET /yongli => generated 5073 bytes in 9 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 15/33] 123.121.157.173 () {50 vars in 1041 bytes} [Fri Jul 21 23:25:34 2017] GET /make_one_case/9 => generated 221 bytes in 86 msecs (HTTP/1.1 302) 4 headers in 429 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 17/34] 123.121.157.173 () {50 vars in 1115 bytes} [Fri Jul 21 23:25:34 2017] GET /yongli => generated 5008 bytes in 10 msecs (HTTP/1.1 200) 3 headers in 292 bytes (1 switches on core 0)
+[pid: 27162|app: 0|req: 16/35] 123.121.157.173 () {46 vars in 787 bytes} [Fri Jul 21 23:25:56 2017] GET /yongli => generated 219 bytes in 2 msecs (HTTP/1.1 302) 3 headers in 130 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 27155|app: 0|req: 1/36] 123.121.157.173 () {46 vars in 785 bytes} [Fri Jul 21 23:25:56 2017] GET /login => generated 1935 bytes in 62 msecs (HTTP/1.1 200) 3 headers in 263 bytes (1 switches on core 0)
+[pid: 27156|app: 0|req: 18/37] 123.121.157.173 () {48 vars in 937 bytes} [Fri Jul 21 23:25:56 2017] GET /static/css/bootstrap.css => generated 152842 bytes in 23 msecs via sendfile() (HTTP/1.1 200) 8 headers in 305 bytes (0 switches on core 0)
+[pid: 27162|app: 0|req: 17/38] 123.121.157.173 () {48 vars in 927 bytes} [Fri Jul 21 23:25:57 2017] GET /static/css/demo.css => generated 395 bytes in 22 msecs via sendfile() (HTTP/1.1 200) 8 headers in 299 bytes (0 switches on core 0)
+[pid: 27161|app: 0|req: 1/39] 123.121.157.173 () {48 vars in 927 bytes} [Fri Jul 21 23:25:57 2017] GET /static/css/main.css => generated 47438 bytes in 65 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 27160|app: 0|req: 1/40] 123.121.157.173 () {48 vars in 926 bytes} [Fri Jul 21 23:25:57 2017] GET /static/js/bootstrap.min.js => generated 28631 bytes in 64 msecs via sendfile() (HTTP/1.1 200) 8 headers in 302 bytes (0 switches on core 0)
+[pid: 27156|app: 0|req: 19/41] 123.121.157.173 () {48 vars in 932 bytes} [Fri Jul 21 23:25:58 2017] GET /favicon.ico => generated 233 bytes in 3 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 27162|app: 0|req: 18/42] 123.121.157.173 () {58 vars in 1193 bytes} [Fri Jul 21 23:26:00 2017] POST /login => generated 2125 bytes in 15 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 27156|app: 0|req: 20/43] 123.121.157.173 () {50 vars in 981 bytes} [Fri Jul 21 23:27:00 2017] GET /login => generated 1935 bytes in 17 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)

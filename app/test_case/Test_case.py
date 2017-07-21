@@ -15,14 +15,14 @@ class ApiTestCase():
         self.assert_test=inteface_assert
         self.bask_list=[]
         self.result_pf=[]
-        self.title = '测试日志'
+        self.title = u'测试日志'
         self.log_can = log_t(self.title, filename=file)
     def testapi(self):
         for case in range(len(self.url)):
             api=Api(url=self.url[case],fangshi=self.meth[case],params=self.parm[case])
             apijson=api.getJson()
             apicode=api.getcode()
-            self.log_can.info_log('input:接口地址：%s,参数:%s,实际返回:%s,预期:%s'%(self.url[case],self.parm[case],apijson,self.assert_test[case]))
+            self.log_can.info_log(u'input:接口地址：%s,参数:%s,实际返回:%s,预期:%s'%(self.url[case],self.parm[case],apijson,self.assert_test[case]))
             come=comp_dict(apijson,eval(self.assert_test[case]))
             if come== 'True':
                 self.result_pass+=1

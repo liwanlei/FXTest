@@ -9,15 +9,15 @@
 from flask_wtf import  Form
 from wtforms import  StringField,SubmitField,DateTimeField,validators,IntegerField,FileField,PasswordField
 class LoginFrom(Form):
-    username=StringField('用户名',[validators.Length(min=4, max=16,message='用户名长度在4-16位'),validators.DataRequired()],render_kw={'placeholder':'请输入用户名'})
-    password=PasswordField('密码',[validators.length(min=8,max=16,message='密码长度8-16位'),validators.DataRequired()],render_kw={'placeholder':'请输入密码'})
+    username=StringField(u'用户名',[validators.Length(min=4, max=16,message=u'用户名长度在4-16位'),validators.DataRequired()],render_kw={'placeholder':u'请输入用户名'})
+    password=PasswordField(u'密码',[validators.length(min=8,max=16,message=u'密码长度8-16位'),validators.DataRequired()],render_kw={'placeholder':u'请输入密码'})
 class RegFrom(Form):
-    username = StringField('注册用户名', [validators.Length(min=4, max=16, message='用户名长度在4-16位'), validators.DataRequired()],render_kw={'placeholder': '请输入用户名'})
-    password = PasswordField('注册密码', [validators.length(min=8, max=16, message='密码长度8-16位'), validators.DataRequired()],render_kw={'placeholder': '请输入密码'})
-    se_password = PasswordField('再次输入密码', [validators.length(min=8, max=16, message='密码长度8-16位'), validators.DataRequired()],
-                             render_kw={'placeholder': '请输入密码'})
-    email=StringField('输入注册邮箱', [validators.Length(min=4, max=16, message='邮箱输入错误'), validators.DataRequired()],
-                           render_kw={'placeholder': '请输入邮箱'})
+    username = StringField(u'注册用户名', [validators.Length(min=4, max=16, message=u'用户名长度在4-16位'), validators.DataRequired()],render_kw={'placeholder': u'请输入用户名'})
+    password = PasswordField(u'注册密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],render_kw={'placeholder': u'请输入密码'})
+    se_password = PasswordField(u'再次输入密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
+                             render_kw={'placeholder': u'请输入密码'})
+    email=StringField(u'输入注册邮箱', [validators.Length(min=4, max=16, message=u'邮箱输入错误'), validators.DataRequired()],
+                           render_kw={'placeholder': u'请输入邮箱'})
 class XugaiFrom(Form):
     password = PasswordField('密码', [validators.length(min=8, max=16, message='密码长度8-16位'), validators.DataRequired()],
                              render_kw={'placeholder': '请输入原密码'})
