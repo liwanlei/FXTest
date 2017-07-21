@@ -9,10 +9,12 @@ from  flask import  redirect,request,render_template,session,url_for,flash,send_
 from werkzeug import secure_filename
 from  app.models import User,Interface,InterfaceTest,TestResult
 from app.form import  LoginFrom,RegFrom,InterForm,Interface_yong_Form
-import os,time
-from common.pares_excel_inter import pasre_inter
-from common.py_Html import createHtml
-from common.requ_case import Api
+import os,time,datetime
+from app.common.pares_excel_inter import pasre_inter
+from app.common.py_Html import createHtml
+from app.common.requ_case import Api
+from app.test_case.Test_case import ApiTestCase
+from app.common.py_Html import createHtml
 @app.route('/',methods=['GET'])
 def index():
     if not session.get('username'):
@@ -116,10 +118,7 @@ def interface_add():
             flash('请准确的填写接口的各项信息')
             return render_template('add_interface.html',form=form)
         user_id=User.query.filter_by(username=session.get('username')).first().id
-        new_interface=Interface(
-            project_name=project_name,models_name=model_name,Interface_name=interface_name,Interface_url=interface_url,
-            Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id
-            )
+        new_interface=Interface(project_name=project_name,models_name=model_name,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id)
         db.session.add(new_interface)
         db.session.commit()
         return redirect(url_for('interface'))
@@ -179,8 +178,7 @@ def addtestcase():
         if yongli_nam ==''or mode==''or interface_name=='' or interface_url=='' or interface_meth=='' or interface_re=='':
             flash('请准确填写用例')
             return render_template('add_test_case.html',form=form)
-        newcase=InterfaceTest(project=yongli_nam,model=mode,Interface_name=interface_name,Interface_url=interface_url,
-            Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+        newcase=InterfaceTest(project=yongli_nam,model=mode,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
         db.session.add(newcase)
         db.session.commit()
         flash('添加用例成功')
@@ -252,8 +250,7 @@ def daoru_inter():
             project_name,model_name,interface_name,interface_url,interface_meth,interface_par,interface_bas=pasre_inter(filename)
             try:
                 for i in range(len(project_name)):
-                    new_interface=Interface(project_name=str(project_name[i]),models_name=str(model_name[i]),Interface_name=str(interface_name[i]),
-                        Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+                    new_interface=Interface(project_name=str(project_name[i]),models_name=str(model_name[i]),Interface_name=str(interface_name[i]),Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                     db.session.add(new_interface)
                 db.session.commit()
                 flash('导入成功')
@@ -273,16 +270,10 @@ def daoru_case():
         if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
             filename='jiekoucase.xlsx'
             file.save(filename)
-            project_name, model_name, interface_name, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(
-                filename)
+            project_name, model_name, interface_name, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(filename)
             try:
                 for i in range(len(project_name)):
-                    new_interface = InterfaceTest(project=str(project_name[i]), model=str(model_name[i]),Interface_name=str(interface_name[i]),
-                                                  Interface_url=str(interface_url[i]),
-                                                  Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),
-                                                  Interface_assert=str(interface_bas[i]),
-                                                  Interface_user_id=User.query.filter_by(
-                                                  username=session.get('username')).first().id)
+                    new_interface = InterfaceTest(project=str(project_name[i]), model=str(model_name[i]),Interface_name=str(interface_name[i]), Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),Interface_assert=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                     db.session.add(new_interface)
                 db.session.commit()
                 flash('导入成功')
@@ -496,17 +487,50 @@ def make_one_case(id):
 def duoyongli():
     if not session.get('username'):
         return redirect(url_for('login'))
+    starttime=datetime.datetime.now()
+    star=time.time()
     day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
     basedir = os.path.abspath(os.path.dirname(__file__))
-    file_dir = os.path.join(basedir, '/upload')
+    file_dir = os.path.join(basedir, 'upload')
     file = os.path.join(file_dir, (day + '.log'))
     if os.path.exists(file) is False:
         os.system('touch %s' % file)
+    filepath =os.path.join(file_dir,(day+'.html'))
+    if os.path.exists(filepath) is False:
+        os.system(r'touch %s' % filepath)
     if request.method=='POST':
         me=request.form.getlist('yongli')
         if len(me)<=1:
             flash('请选择一个以上的用例来执行')
             return redirect(url_for('yongli'))
-        for id in me:
-            cuer=InterfaceTest.query.filter_by(id=id).first()
-    return redirect(url_for('test_rep'))
+        projecct_list=[]
+        model_list=[]
+        Interface_name_list=[]
+        Interface_url_list=[]
+        Interface_meth_list=[]
+        Interface_pase_list=[]
+        Interface_assert_list=[]
+        id_list=[]
+        for case in me:
+            case_one=InterfaceTest.query.filter_by(id=case).first()
+            id_list.append(case_one.id)
+            projecct_list.append(case_one.project)
+            model_list.append(case_one.model)
+            Interface_url_list.append(case_one.Interface_url)
+            Interface_name_list.append(case_one.Interface_name)
+            Interface_meth_list.append(case_one.Interface_meth)
+            Interface_pase_list.append(case_one.Interface_pase)
+            Interface_assert_list.append(case_one.Interface_assert)
+        apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file)
+        result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
+        endtime=datetime.datetime.now()
+        end = time.time()
+        createHtml(titles='接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
+        hour=end-star
+        user_id=User.query.filter_by(username=session.get('username')).first().id
+        new_reust=TestResult(Test_user_id=user_id,test_num=result_toal,pass_num=result_pass,fail_num=result_fail,test_time=starttime,hour_time=hour,test_rep=(day+'.html'),test_log=(day+'.log'))
+        db.session.add(new_reust)
+        db.session.commit()
+        flash('测试已经完成')
+        return redirect(url_for('interface'))
+    return redirect(url_for('interface'))

@@ -2,7 +2,7 @@
 # @Date    : 2017-07-20 13:07:22
 # @Author  : lileilei 
 import requests,json
-from common.test_feng import reques
+from app.common.test_feng import reques
 requ=reques()
 liwanlei=[]
 class Api():
@@ -22,7 +22,8 @@ class Api():
 			liwanlei=requ.delfile(self.url,self.param)
 		return  liwanlei
 	def getcode(self):
-		code=self.testapi()['code']
+		print(self.testapi())
+		code=self.testapi()['error_code']
 		return code
 	def getJson(self):
 		json_data=self.testapi()

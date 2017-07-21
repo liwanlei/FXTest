@@ -28,7 +28,6 @@
   <thead>
     <tr>
         <th></th>
-      <th>用例编号</th>
       <th>项目名称</th>
       <th>模块名称</th>
          <th>接口地址</th>
@@ -42,7 +41,6 @@
   {%for yongli in yonglis%}
     <tr>
         <td><input type="checkbox"  name="yongli" value="{{yongli.id}}"></td>
-      <td>{{yongli.id}}</td>
       <td>{{yongli.project}}</td>
       <td>{{yongli.model}}</td>
          <td>{{yongli.Interface_url}}</td>

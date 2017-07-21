@@ -29,24 +29,23 @@
     </tr>
   </thead>
   <tbody>
-  {%for yongli in inte%}
+  {%for yong in inte%}
     <tr>
-      <td>{{yongli.test_num}}</td>
-      <td>{{yongli.pass_num}}</td>
-      <td>{{yongli.fail_num}}</td>
-         <td>{{yongli.skip_num}}</td>
-      <td>{{yongli.test_time}}</td>
-      <td>{{yongli.hour_time}}</td>
-         <td>{{(yongli.pass_num)/(yongli.test_num)}}</td>
-         <td>{{yongli.users}}</td>
-          <td><a href="{{url_for('load_res',filename='11.txt')}}">报告下载</td>
-         <td><a href="{{url_for('load',filename='11.txt')}}">日志下载</a></td>
-        
+      <td>{{yong.test_num}}</td>
+      <td>{{yong.pass_num}}</td>
+      <td>{{yong.fail_num}}</td>
+         <td>{{yong.skip_num}}</td>
+      <td>{{yong.test_time}}</td>
+      <td>{{yong.hour_time}}</td>
+         <td>{{(yong.pass_num)/(yong.test_num)}}</td>
+         <td>{{yong.users}}</td>
+        <td><a href="{{url_for('load_res',filename= yong.test_rep)}}">报告下载</a></td>
+         <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
     </tr>
     {%endfor%}
   </tbody>
 </table>
  <p class="pagination" style="margin-left: 24%;">
-  {{macros.pagination_widget(pagination,'.yongli')}}
+     {{macros.pagination_widget(pagination,'.yongli')}}</p>
 </div>
 {% endblock %} 

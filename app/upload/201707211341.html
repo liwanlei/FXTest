@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>接口测试报告</title>
+		<style type="text/css">
+			td{ width:40px; height:50px;}
+		</style>
+	</head>
+	<body>
+	
+<div style='width: 1170px;margin-left: 15%'>
+<h1>接口测试的结果</h1>
+		<p><strong>开始时间:</strong> 2017-07-21 13:41:00.407042</p>
+		<p><strong>结束时间:</strong> 2017-07-21 13:41:00.902670</p>
+		<p><strong>耗时:</strong> 0:00:00.495628</p>
+		<p><strong>结果:</strong>
+			<span >Pass: <strong >0</strong>
+			Fail: <strong >2</strong>
+			        </span></p>                  
+			    <p ><strong>测试详情如下</strong></p>  </div> 
+
+
+        <p>&nbsp;</p>
+        <table border='2'cellspacing='1' cellpadding='1' width='70%'align="center" >
+		<tr >
+            <td ><strong>用例ID&nbsp;</strong></td>
+            <td><strong>项目</strong></td>
+            <td><strong>模块</strong></td>
+            <td><strong>url</strong></td>
+            <td><strong>请求方式</strong></td>
+            <td><strong>参数</strong></td>
+            <td><strong>预期</strong></td>
+            <td><strong>实际返回</strong></td>  
+            <td><strong>结果</strong></td>
+        </tr>
+     
+        <tr>
+            <td>8</td>
+            <td>6.0</td>
+            <td>tuling</td>
+            <td>http://op.juhe.cn/robot/index</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}</td>
+            <td>{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}</td>
+            <td> <td bgcolor="fail">fail</td></td>
+        </tr>
+        
+    
+        <tr>
+            <td>9</td>
+            <td>美团</td>
+            <td>没软</td>
+            <td>http://op.juhe.cn/robot/index	</td>
+            <td>post</td>
+            <td></td>
+            <td>{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}</td>
+            <td>{'reason': 'æ\x8e¥å\x8f£å\x9c°å\x9d\x80ä¸\x8då\xad\x98å\x9c¨', 'result': None, 'error_code': 10022}</td>
+            <td> <td bgcolor="fail">fail</td></td>
+        </tr>
+        
+    
+	</table>
+    </body>
+    </html>

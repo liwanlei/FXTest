@@ -47,7 +47,7 @@ shanghai='''
             <td><strong>url</strong></td>
             <td><strong>请求方式</strong></td>
             <td><strong>参数</strong></td>
-            <td><strong>运气</strong></td>
+            <td><strong>预期</strong></td>
             <td><strong>实际返回</strong></td>  
             <td><strong>结果</strong></td>
         </tr>
@@ -84,7 +84,7 @@ def relust(titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuq
     if type(name) ==list:
         relus=' '
         for i in range(len(name)):
-            relus+=(ceshixiangqing(id[i],name[i],key[i],coneent[i],url[i],meth[i],int(yuqi[i]),json[i],relust[i]))
+            relus+=(ceshixiangqing(id[i],name[i],key[i],coneent[i],url[i],meth[i],yuqi[i],json[i],relust[i]))
         text=title(titles)+connent+time(starttime,endtime,passge,fail)+shanghai+relus+weibu
     else:
         text=title(titles)+connent+time(starttime,endtime,passge,fail)+shanghai+ceshixiangqing(id,name,key,coneent,url,meth,int(yuqi),json,relust)+weibu
