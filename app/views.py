@@ -9,7 +9,7 @@ from  flask import  redirect,request,render_template,session,url_for,flash,send_
 from werkzeug import secure_filename
 from  app.models import User,Interface,InterfaceTest,TestResult
 from app.form import  LoginFrom,RegFrom,InterForm,Interface_yong_Form
-import os,time,datetime
+import os,time,datetime,threading
 from app.common.pares_excel_inter import pasre_inter
 from app.common.py_Html import createHtml
 from app.common.requ_case import Api
