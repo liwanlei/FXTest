@@ -10,5 +10,19 @@
 ####   5.用例界面。 可以在界面添加测试用例，可以去批量导入，用例有变动的时候，可以去编辑下用例，用例输入错误，可以去删除测试用例，可以进行用例的搜索，单个的用例可以单独执行，批量执行的测试用例会单独生成测试报告，在测试报告界面可以下载，看结果
 ####   6.测试报告，展示批量执行的测试用例，可以去下载测试日志，和测试报告，
 ####   7。用户管理。 可以查询用户，添加用户，冻结用户，取消管理，重置密码。非管理员不能进入这个界面。
+  ----------------
 ##    效果图如下：
+### 目录：
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/项目目录.png)
+### 效果图：
+#### 首页
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/首页.png)
+#### 接口界面
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/接口.png)
+#### 测试用例界面
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/用例.png)
+#### 测试报告界面
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/测试报告界面.png)
+#### 用户管理界面
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/用户管理界面.png)
 
