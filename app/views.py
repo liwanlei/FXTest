@@ -4,7 +4,7 @@
 @file: views.py
 @time: 2017/7/13 16:42
 """
-from app import  app,db
+from app import  app,db,cache
 from  flask import  redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory
 from werkzeug import secure_filename
 from  app.models import User,Interface,InterfaceTest,TestResult
@@ -16,6 +16,7 @@ from app.common.requ_case import Api
 from app.test_case.Test_case import ApiTestCase
 from app.common.py_Html import createHtml
 @app.route('/',methods=['GET'])
+@cache.cached(timeout=60*3)
 def index():
     if not session.get('username'):
         return redirect(url_for('login'))
@@ -34,6 +35,7 @@ def login():
             if user.check_password(password=password)==True:
                 if user.status==0:
                     session['username']=username
+                    cache.clear()
                     return  redirect(url_for('index'))
                 flash(u'用户冻结，请联系管理员')
                 return render_template('login.html', form=form)
@@ -70,9 +72,11 @@ def reg():
 @app.route('/logt',methods=['GET','POST'])
 def logt():
     session.clear()
+    cache.clear()
     return redirect(url_for('login'))
 @app.route('/interface',methods=['GET','POST'])
 @app.route('/interface/<int:page>',methods=['GET','POST'])
+@cache.cached(timeout=60*3)
 def interface(page=1):
     if not session.get('username'):
         return redirect(url_for('login'))
@@ -81,6 +85,7 @@ def interface(page=1):
     return  render_template('interface.html',inte=inter,pagination=pagination)
 @app.route('/yongli',methods=['GET','POST'])
 @app.route('/yongli/<int:page>',methods=['GET','POST'])
+@cache.cached(timeout=60*3)
 def yongli(page=1):
     if not session.get('username'):
         return redirect(url_for('login'))
@@ -89,6 +94,7 @@ def yongli(page=1):
     return  render_template('interface_yongli.html',yonglis=yongli,pagination=pagination)
 @app.route('/adminuser',methods=['GET','POST'])
 @app.route('/adminuser/<int:page>',methods=['GET','POST'])
+@cache.cached(timeout=60*3)
 def adminuser(page=1):
     if not session.get('username'):
         return redirect(url_for('login'))
@@ -100,6 +106,7 @@ def adminuser(page=1):
     users=pagination.items
     return render_template('useradmin.html',users=users,pagination=pagination)
 @app.route('/interface_add',methods=['GET','POST'])
+@cache.cached(timeout=60*3)
 def interface_add():
     if not session.get('username'):
         return redirect(url_for('login'))
@@ -119,9 +126,11 @@ def interface_add():
         new_interface=Interface(project_name=project_name,models_name=model_name,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id)
         db.session.add(new_interface)
         db.session.commit()
+        cache.clear()
         return redirect(url_for('interface'))
     return render_template('add_interface.html',form=form)
 @app.route('/edit_interface/<int:id>',methods=['GET','POST'])
+@cache.cached(timeout=60*3)
 def interfac_edit(id):
     if not session.get('username'):
         return redirect(url_for('login'))
@@ -145,9 +154,11 @@ def interfac_edit(id):
         interface.Interface_back=back
         interface.Interface_user_id=User.query.filter_by(username=session.get('username')).first().id
         db.session.commit()
+        cache.clear()
         return redirect(url_for('interface'))
     return render_template('edit_inter.html',interface=interface)
 @app.route('/dele_inter/<int:id>',methods=['GET','POST'])
+@cache.cached(timeout=60*3)
 def dele_inter(id):
     if not session.get('username'):
         return redirect(url_for('login'))
@@ -157,10 +168,12 @@ def dele_inter(id):
         db.session.delete(interface)
         db.session.commit()
         flash(u'删除成功')
+        cache.clear()
         return redirect(url_for('interface'))
     flash(u'您没有权限删除这条接口')
     return redirect(url_for('interface'))
 @app.route('/addtestcase',methods=['GET','POST'])
+@cache.cached(timeout=60*3)
 def addtestcase():
     if not session.get('username'):
         return redirect(url_for('login'))
@@ -179,10 +192,12 @@ def addtestcase():
         newcase=InterfaceTest(project=yongli_nam,model=mode,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
         db.session.add(newcase)
         db.session.commit()
+        cache.clear()
         flash(u'添加用例成功')
         return redirect(url_for('yongli'))
     return render_template('add_test_case.html',form=form)
 @app.route('/delete_case/<int:id>',methods=['GET','POST'])
+@cache.cached(timeout=60*3)
 def delete_case(id):
     if not session.get('username'):
         return redirect(url_for('login'))
@@ -191,11 +206,13 @@ def delete_case(id):
     if testcase.Interface_user_id==user.id or user.level==1:
         db.session.delete(testcase)
         db.session.commit()
+        cache.clear()
         flash(u'删除成功')
         return redirect(url_for('yongli'))
     flash(u'您没有权限去删除这条用例')
     return redirect(url_for('yongli'))
 @app.route('/edit_case/<int:id>',methods=['GET','POST'])
+@cache.cached(timeout=60*3)
 def edit_case(id):
     if not session.get('username'):
         return redirect(url_for('login'))
@@ -217,6 +234,7 @@ def edit_case(id):
         edit_case.Interface_assert=reque
         interface.Interface_user_id=User.query.filter_by(username=session.get('username')).first().id
         db.session.commit()
+        cache.clear()
         flash(u'编辑成功')
         return redirect(url_for('yongli'))
     return render_template('edit_case.html',edit=edit_case)
@@ -251,6 +269,7 @@ def daoru_inter():
                     new_interface=Interface(project_name=str(project_name[i]),models_name=str(model_name[i]),Interface_name=str(interface_name[i]),Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                     db.session.add(new_interface)
                 db.session.commit()
+                cache.clear()
                 flash(u'导入成功')
                 return redirect(url_for('interface'))
             except:
@@ -274,6 +293,7 @@ def daoru_case():
                     new_interface = InterfaceTest(project=str(project_name[i]), model=str(model_name[i]),Interface_name=str(interface_name[i]), Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),Interface_assert=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                     db.session.add(new_interface)
                 db.session.commit()
+                cache.clear()
                 flash(u'导入成功')
                 return redirect(url_for('yongli'))
             except:
@@ -306,6 +326,7 @@ def add_user():
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
+        cache.clear()
         flash(u'添加成功')
         return redirect(url_for('adminuser'))
     return render_template('add_user.html')
@@ -323,6 +344,7 @@ def set_ad(id):
         return redirect(url_for('adminuser'))
     new_ad.level=1
     db.session.commit()
+    cache.clear()
     flash(u'已经是管理员')
     return redirect(url_for('adminuser'))
 @app.route('/del_ad/<int:id>',methods=['GET','POST'])
@@ -342,6 +364,7 @@ def del_ad(id):
         return redirect(url_for('adminuser'))
     new_ad.level=0
     db.session.commit()
+    cache.clear()
     flash(u'已经取消管理员权限')
     return redirect(url_for('adminuser'))
 @app.route('/fre_ad/<int:id>',methods=['GET','POST'])
@@ -361,6 +384,7 @@ def fre_ad(id):
         return redirect(url_for('adminuser'))
     new_ad.status=1
     db.session.commit()
+    cache.clear()
     flash(u'已经冻结')
     return redirect(url_for('adminuser'))
 @app.route('/fre_re/<int:id>',methods=['GET','POST'])
@@ -380,6 +404,7 @@ def fre_re(id):
         return redirect(url_for('adminuser'))
     new_ad.status=0
     db.session.commit()
+    cache.clear()
     flash(u'已经解冻')
     return redirect(url_for('adminuser'))
 @app.route('/red_pass/<int:id>',methods=['GET','POST'])
@@ -396,6 +421,7 @@ def red_pass(id):
         return redirect(url_for('adminuser'))
     new_ad.set_password=111111
     db.session.commit()
+    cache.clear()
     flash(u'已经重置！密码：111111')
     return redirect(url_for('adminuser'))
 @app.route('/ser_user',methods=['GET','POST'])
@@ -411,6 +437,7 @@ def ser_user():
         if len(use)<=0:
             flash(u'没有找到您输入的用户')
             return redirect(url_for('adminuser'))
+        cache.clear()
         return render_template('user_ser.html',users=use)
     return redirect(url_for('adminuser'))
 @app.route('/ser_yongli',methods=['GET','POST'])
@@ -427,6 +454,7 @@ def ser_yongli():
         if len(interd)<1:
             flash(u'搜索的内容没有找到')
             return redirect(url_for('yongli'))
+        cache.clear()
         return render_template('ser_yonglo.html',yonglis=interd)
     return redirect(url_for('yongli'))
 @app.route('/ser_inter',methods=['GET','POST'])
@@ -455,12 +483,6 @@ def test_rep(page=1):
     return render_template('test_result.html',inte=inter,pagination=pagination)
 @app.route('/load/<string:filename>',methods=['GET'])
 def load(filename):
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    file_dir=os.path.join(basedir,'upload')
-    response=make_response(send_from_directory(file_dir,filename,as_attachment=True))
-    return response
-@app.route('/load_res/<string:filename>',methods=['GET'])
-def load_res(filename):
     basedir = os.path.abspath(os.path.dirname(__file__))
     file_dir=os.path.join(basedir,'upload')
     response=make_response(send_from_directory(file_dir,filename,as_attachment=True))

@@ -39,7 +39,7 @@
       <td>{{yong.hour_time}}</td>
          <td>{{(yong.pass_num)/(yong.test_num)}}</td>
          <td>{{yong.users}}</td>
-        <td><a href="{{url_for('load_res',filename= yong.test_rep)}}">报告下载</a></td>
+        <td><a href="{{url_for('load',filename= yong.test_rep)}}">报告下载</a></td>
          <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
     </tr>
     {%endfor%}
