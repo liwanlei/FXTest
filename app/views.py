@@ -22,8 +22,6 @@ def index():
     interface_cont=len(Interface.query.all())
     interfaceTest_cunt=len(InterfaceTest.query.all())
     resu_cout=len(TestResult.query.all())
-    if not session.get('username'):
-        return  redirect(url_for('login'))
     return  render_template('index.html',yongli=interfaceTest_cunt,jiekou=interface_cont,report=resu_cout)
 @app.route('/login',methods=['GET','POST'])
 def login():
