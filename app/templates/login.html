@@ -17,11 +17,11 @@
 							</div>
                             {% with messages = get_flashed_messages() %}
                                   {% if messages %}
-                                    <ul class='flashes'>
+                                    <p class='flashes' style='text-align:center;color:red;'>
                                     {% for message in messages %}
                                       <li >{{ message }}</li>
                                     {% endfor %}
-                                    </ul>
+                                    </p>
                                   {% endif %}
                                 {% endwith %}
                                 {% block body %}{% endblock %}

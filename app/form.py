@@ -16,7 +16,7 @@ class RegFrom(Form):
     password = PasswordField(u'注册密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],render_kw={'placeholder': u'请输入密码'})
     se_password = PasswordField(u'再次输入密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
                              render_kw={'placeholder': u'请输入密码'})
-    email=StringField(u'输入注册邮箱', [validators.Length(min=4, max=16, message=u'邮箱输入错误'), validators.DataRequired()],
+    email=StringField(u'输入注册邮箱', [ validators.DataRequired()],
                            render_kw={'placeholder': u'请输入邮箱'})
 class XugaiFrom(Form):
     password = PasswordField('密码', [validators.length(min=8, max=16, message='密码长度8-16位'), validators.DataRequired()],
