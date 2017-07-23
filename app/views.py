@@ -78,7 +78,7 @@ def logt():
 def interface(page=1):
     if not session.get('username'):
         return redirect(url_for('login'))
-    pagination=Interface.query.paginate(page, per_page=10,error_out=False)
+    pagination=Interface.query.paginate(page, per_page=20,error_out=False)
     inter=pagination.items
     return  render_template('interface.html',inte=inter,pagination=pagination)
 @app.route('/yongli',methods=['GET','POST'])
@@ -86,7 +86,7 @@ def interface(page=1):
 def yongli(page=1):
     if not session.get('username'):
         return redirect(url_for('login'))
-    pagination=InterfaceTest.query.paginate(page, per_page=10,error_out=False)
+    pagination=InterfaceTest.query.paginate(page, per_page=30,error_out=False)
     yongli=pagination.items
     return  render_template('interface_yongli.html',yonglis=yongli,pagination=pagination)
 @app.route('/adminuser',methods=['GET','POST'])
@@ -98,7 +98,7 @@ def adminuser(page=1):
     if user.level!=1:
         flash(u'您没有权限进入管理中心')
         return redirect(url_for('index'))
-    pagination=User.query.paginate(page, per_page=10,error_out=False)
+    pagination=User.query.paginate(page, per_page=20,error_out=False)
     users=pagination.items
     return render_template('useradmin.html',users=users,pagination=pagination)
 @app.route('/interface_add',methods=['GET','POST'])
@@ -452,7 +452,7 @@ def ser_inter():
 def test_rep(page=1):
     if not session.get('username'):
         return redirect(url_for('login'))
-    pagination=TestResult.query.paginate(page, per_page=5,error_out=False)
+    pagination=TestResult.query.paginate(page, per_page=20,error_out=False)
     inter=pagination.items
     return render_template('test_result.html',inte=inter,pagination=pagination)
 @app.route('/load/<string:filename>',methods=['GET'])
