@@ -8,19 +8,19 @@
     <link href="{{url_for('static',filename='css/main.css')}}"  rel="stylesheet">
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
 </head>
-<body style="    background-color: beige;">
+<body style="   background-color: beige;">
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
     <div class="navbar-header">
         <p class="navbar-brand" href="#">API自动化平台</p>
     </div>
-         <p style=" margin-top:15px;float: right"><a href="{{ url_for('logt') }}">退出</a></p>
+         <p style=" margin-top:10px;float: right"><a href="{{ url_for('logt') }}">退出</a></p>
         <span>|</span>
-        <p style=" margin-top:15px;float: right"><a>{{session.username }}</a></p>
+        <p style=" margin-top:10px;float: right"><a>{{session.username }}</a></p>
     </div></nav>
 <div class="container">
     <div class="row" >
-    <div class="col-md-3">
+    <div class="col-md-3 ">
     <div id="sidebar-nav" class="" style="margin-left: inherit">
     <div class="sidebar-scroll">
 				<nav>
