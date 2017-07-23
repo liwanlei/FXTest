@@ -14680,3 +14680,237 @@ bind(): Address already in use [core/socket.c line 769]
 [pid: 27909|app: 0|req: 1398/7972] 114.254.65.66 () {50 vars in 1027 bytes} [Sun Jul 23 10:17:30 2017] GET /yongli => generated 4934 bytes in 11 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
 [pid: 27910|app: 0|req: 1682/7973] 114.254.65.66 () {50 vars in 1043 bytes} [Sun Jul 23 10:17:33 2017] GET /make_one_case/8 => generated 221 bytes in 80 msecs (HTTP/1.1 302) 4 headers in 432 bytes (1 switches on core 0)
 [pid: 27909|app: 0|req: 1399/7974] 114.254.65.66 () {50 vars in 1116 bytes} [Sun Jul 23 10:17:33 2017] GET /yongli => generated 5011 bytes in 12 msecs (HTTP/1.1 200) 3 headers in 296 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1683/7975] 36.149.0.3 () {46 vars in 930 bytes} [Sun Jul 23 10:19:40 2017] GET /IAPTest => generated 233 bytes in 1 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1400/7976] 36.149.0.3 () {46 vars in 916 bytes} [Sun Jul 23 10:19:42 2017] GET / => generated 219 bytes in 2 msecs (HTTP/1.1 302) 3 headers in 125 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 27903|app: 0|req: 550/7977] 36.149.0.3 () {46 vars in 926 bytes} [Sun Jul 23 10:19:42 2017] GET /login => generated 1935 bytes in 6 msecs (HTTP/1.1 200) 3 headers in 263 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1684/7978] 36.149.0.3 () {48 vars in 1071 bytes} [Sun Jul 23 10:19:42 2017] GET /static/css/bootstrap.css => generated 152842 bytes in 4 msecs via sendfile() (HTTP/1.1 200) 8 headers in 305 bytes (0 switches on core 0)
+[pid: 27908|app: 0|req: 676/7980] 36.149.0.3 () {48 vars in 1061 bytes} [Sun Jul 23 10:19:42 2017] GET /static/css/main.css => generated 47438 bytes in 8 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 27909|app: 0|req: 1401/7981] 36.149.0.3 () {48 vars in 1061 bytes} [Sun Jul 23 10:19:42 2017] GET /static/css/demo.css => generated 395 bytes in 10 msecs via sendfile() (HTTP/1.1 200) 8 headers in 299 bytes (0 switches on core 0)
+[pid: 27902|app: 0|req: 528/7981] 36.149.0.3 () {48 vars in 1060 bytes} [Sun Jul 23 10:19:42 2017] GET /static/js/bootstrap.min.js => generated 28631 bytes in 7 msecs via sendfile() (HTTP/1.1 200) 8 headers in 302 bytes (0 switches on core 0)
+[pid: 27901|app: 0|req: 824/7982] 183.222.134.161 () {46 vars in 929 bytes} [Sun Jul 23 10:19:53 2017] GET /IAPTest => generated 233 bytes in 2 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+[pid: 27904|app: 0|req: 545/7983] 27.38.24.93 () {46 vars in 919 bytes} [Sun Jul 23 10:20:03 2017] GET /IAPTest => generated 233 bytes in 1 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+[pid: 27906|app: 0|req: 696/7984] 183.222.134.161 () {46 vars in 929 bytes} [Sun Jul 23 10:20:14 2017] GET /IAPTest => generated 233 bytes in 1 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1685/7985] 111.196.14.197 () {46 vars in 785 bytes} [Sun Jul 23 10:28:57 2017] GET / => generated 219 bytes in 3 msecs (HTTP/1.1 302) 3 headers in 125 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 27904|app: 0|req: 546/7986] 111.196.14.197 () {46 vars in 795 bytes} [Sun Jul 23 10:28:57 2017] GET /login => generated 1935 bytes in 5 msecs (HTTP/1.1 200) 3 headers in 263 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1402/7987] 111.196.14.197 () {48 vars in 932 bytes} [Sun Jul 23 10:28:57 2017] GET /static/css/demo.css => generated 395 bytes in 5 msecs via sendfile() (HTTP/1.1 200) 8 headers in 299 bytes (0 switches on core 0)
+[pid: 27901|app: 0|req: 825/7988] 111.196.14.197 () {48 vars in 942 bytes} [Sun Jul 23 10:28:57 2017] GET /static/css/bootstrap.css => generated 152842 bytes in 5 msecs via sendfile() (HTTP/1.1 200) 8 headers in 305 bytes (0 switches on core 0)
+[pid: 27903|app: 0|req: 551/7989] 111.196.14.197 () {48 vars in 931 bytes} [Sun Jul 23 10:28:57 2017] GET /static/js/bootstrap.min.js => generated 28631 bytes in 4 msecs via sendfile() (HTTP/1.1 200) 8 headers in 302 bytes (0 switches on core 0)
+[pid: 27907|app: 0|req: 556/7990] 111.196.14.197 () {48 vars in 932 bytes} [Sun Jul 23 10:28:57 2017] GET /static/css/main.css => generated 47438 bytes in 6 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 27906|app: 0|req: 697/7991] 111.196.14.197 () {48 vars in 937 bytes} [Sun Jul 23 10:28:58 2017] GET /favicon.ico => generated 233 bytes in 2 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 27908|app: 0|req: 677/7992] 111.196.14.197 () {58 vars in 1193 bytes} [Sun Jul 23 10:29:15 2017] POST /login => generated 209 bytes in 94 msecs (HTTP/1.1 302) 4 headers in 335 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1686/7993] 111.196.14.197 () {52 vars in 1060 bytes} [Sun Jul 23 10:29:15 2017] GET / => generated 3564 bytes in 8 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1403/7994] 111.196.14.197 () {50 vars in 1046 bytes} [Sun Jul 23 10:29:21 2017] GET /down_jiekou => generated 10111 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 9 headers in 402 bytes (0 switches on core 0)
+[pid: 27906|app: 0|req: 698/7995] 111.196.14.197 () {50 vars in 1042 bytes} [Sun Jul 23 10:29:23 2017] GET /down_case => generated 10153 bytes in 3 msecs via sendfile() (HTTP/1.1 200) 9 headers in 408 bytes (0 switches on core 0)
+[pid: 27902|app: 0|req: 529/7996] 111.196.14.197 () {50 vars in 1036 bytes} [Sun Jul 23 10:29:48 2017] GET /yongli => generated 4934 bytes in 6 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1687/7997] 111.196.14.197 () {50 vars in 1052 bytes} [Sun Jul 23 10:29:57 2017] GET /edit_case/8 => generated 2962 bytes in 10 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1404/7998] 111.196.14.197 () {58 vars in 1244 bytes} [Sun Jul 23 10:30:02 2017] POST /edit_case/8 => generated 221 bytes in 7 msecs (HTTP/1.1 302) 4 headers in 420 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1688/7999] 111.196.14.197 () {52 vars in 1157 bytes} [Sun Jul 23 10:30:02 2017] GET /yongli => generated 5005 bytes in 7 msecs (HTTP/1.1 200) 3 headers in 296 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1405/8000] 111.196.14.197 () {50 vars in 1060 bytes} [Sun Jul 23 10:30:06 2017] GET /make_one_case/8 => generated 221 bytes in 81 msecs (HTTP/1.1 302) 4 headers in 432 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1689/8001] 111.196.14.197 () {50 vars in 1133 bytes} [Sun Jul 23 10:30:06 2017] GET /yongli => generated 5011 bytes in 11 msecs (HTTP/1.1 200) 3 headers in 296 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1406/8002] 111.196.14.197 () {50 vars in 1060 bytes} [Sun Jul 23 10:30:08 2017] GET /make_one_case/9 => generated 221 bytes in 69 msecs (HTTP/1.1 302) 4 headers in 430 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1690/8003] 111.196.14.197 () {50 vars in 1131 bytes} [Sun Jul 23 10:30:08 2017] GET /yongli => generated 5011 bytes in 10 msecs (HTTP/1.1 200) 3 headers in 296 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1407/8004] 111.196.14.197 () {50 vars in 1046 bytes} [Sun Jul 23 10:30:10 2017] GET /test_rep => generated 4761 bytes in 16 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1691/8005] 111.196.14.197 () {50 vars in 1084 bytes} [Sun Jul 23 10:30:13 2017] GET /load_res/201707211243.html => generated 2201 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 9 headers in 362 bytes (0 switches on core 0)
+[pid: 27901|app: 0|req: 826/8006] 111.196.14.197 () {50 vars in 1074 bytes} [Sun Jul 23 10:30:29 2017] GET /load/201707211243.log => generated 253 bytes in 3 msecs via sendfile() (HTTP/1.1 200) 9 headers in 359 bytes (0 switches on core 0)
+[pid: 27907|app: 0|req: 557/8007] 111.196.14.197 () {50 vars in 1050 bytes} [Sun Jul 23 10:30:44 2017] GET /adminuser => generated 209 bytes in 5 msecs (HTTP/1.1 302) 4 headers in 452 bytes (1 switches on core 0)
+[pid: 27906|app: 0|req: 699/8008] 111.196.14.197 () {50 vars in 1149 bytes} [Sun Jul 23 10:30:44 2017] GET / => generated 3852 bytes in 7 msecs (HTTP/1.1 200) 3 headers in 296 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1692/8009] 111.196.14.197 () {54 vars in 1120 bytes} [Sun Jul 23 10:30:58 2017] GET /down_jiekou => generated 1 bytes in 3 msecs (HTTP/1.1 206) 10 headers in 447 bytes (1 switches on core 0)
+[pid: 27908|app: 0|req: 678/8010] 111.196.14.197 () {54 vars in 1122 bytes} [Sun Jul 23 10:30:58 2017] GET /down_jiekou => generated 9180 bytes in 4 msecs (HTTP/1.1 206) 10 headers in 452 bytes (41 switches on core 0)
+[pid: 27910|app: 0|req: 1693/8011] 114.254.65.66 () {48 vars in 982 bytes} [Sun Jul 23 10:33:21 2017] GET /test_rep => generated 4761 bytes in 25 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1408/8012] 114.254.65.66 () {50 vars in 1015 bytes} [Sun Jul 23 10:33:25 2017] GET / => generated 3564 bytes in 25 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1694/8013] 114.254.65.66 () {50 vars in 1025 bytes} [Sun Jul 23 10:33:27 2017] GET /interface => generated 4364 bytes in 7 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1409/8014] 114.254.65.66 () {50 vars in 1034 bytes} [Sun Jul 23 10:33:27 2017] GET /adminuser => generated 209 bytes in 6 msecs (HTTP/1.1 302) 4 headers in 452 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1695/8015] 114.254.65.66 () {50 vars in 1133 bytes} [Sun Jul 23 10:33:27 2017] GET / => generated 3852 bytes in 10 msecs (HTTP/1.1 200) 3 headers in 296 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1410/8016] 114.254.65.66 () {50 vars in 1023 bytes} [Sun Jul 23 10:33:29 2017] GET /test_rep => generated 4761 bytes in 15 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1696/8017] 114.254.65.66 () {50 vars in 1035 bytes} [Sun Jul 23 10:33:32 2017] GET /test_rep/2 => generated 4403 bytes in 22 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1411/8018] 114.254.65.66 () {50 vars in 1025 bytes} [Sun Jul 23 10:34:16 2017] GET /logt => generated 219 bytes in 2 msecs (HTTP/1.1 302) 4 headers in 205 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 27901|app: 0|req: 827/8019] 114.254.65.66 () {48 vars in 829 bytes} [Sun Jul 23 10:34:16 2017] GET /login => generated 1935 bytes in 5 msecs (HTTP/1.1 200) 3 headers in 263 bytes (1 switches on core 0)
+./app/views.py:49: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=RegFrom()
+[pid: 27906|app: 0|req: 700/8020] 114.254.65.66 () {50 vars in 985 bytes} [Sun Jul 23 10:34:18 2017] GET /reg => generated 2476 bytes in 4 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27908|app: 0|req: 679/8021] 114.240.252.79 () {46 vars in 921 bytes} [Sun Jul 23 10:35:40 2017] GET / => generated 219 bytes in 2 msecs (HTTP/1.1 302) 3 headers in 125 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 27910|app: 0|req: 1697/8022] 114.240.252.79 () {46 vars in 931 bytes} [Sun Jul 23 10:35:40 2017] GET /login => generated 1935 bytes in 6 msecs (HTTP/1.1 200) 3 headers in 263 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1412/8023] 114.240.252.79 () {48 vars in 1076 bytes} [Sun Jul 23 10:35:40 2017] GET /static/css/bootstrap.css => generated 152842 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 8 headers in 305 bytes (0 switches on core 0)
+[pid: 27906|app: 0|req: 701/8024] 114.240.252.79 () {48 vars in 1066 bytes} [Sun Jul 23 10:35:40 2017] GET /static/css/demo.css => generated 395 bytes in 10 msecs via sendfile() (HTTP/1.1 200) 8 headers in 299 bytes (0 switches on core 0)
+[pid: 27903|app: 0|req: 552/8025] 114.240.252.79 () {48 vars in 1066 bytes} [Sun Jul 23 10:35:40 2017] GET /static/css/main.css => generated 47438 bytes in 8 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 27902|app: 0|req: 530/8026] 114.240.252.79 () {48 vars in 1065 bytes} [Sun Jul 23 10:35:40 2017] GET /static/js/bootstrap.min.js => generated 28631 bytes in 6 msecs via sendfile() (HTTP/1.1 200) 8 headers in 302 bytes (0 switches on core 0)
+./app/views.py:49: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=RegFrom()
+[pid: 27901|app: 0|req: 828/8027] 114.240.252.79 () {50 vars in 1138 bytes} [Sun Jul 23 10:35:59 2017] GET /reg => generated 2476 bytes in 5 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+./app/views.py:49: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=RegFrom()
+[pid: 27910|app: 0|req: 1698/8028] 114.240.252.79 () {58 vars in 1323 bytes} [Sun Jul 23 10:36:24 2017] POST /reg => generated 2883 bytes in 5 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+./app/views.py:49: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=RegFrom()
+[pid: 27909|app: 0|req: 1413/8029] 114.240.252.79 () {58 vars in 1323 bytes} [Sun Jul 23 10:36:27 2017] POST /reg => generated 2891 bytes in 6 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+./app/views.py:49: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=RegFrom()
+[pid: 27910|app: 0|req: 1699/8030] 114.240.252.79 () {58 vars in 1323 bytes} [Sun Jul 23 10:36:48 2017] POST /reg => generated 2883 bytes in 6 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+./app/views.py:49: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=RegFrom()
+[pid: 27909|app: 0|req: 1414/8031] 114.240.252.79 () {58 vars in 1323 bytes} [Sun Jul 23 10:37:03 2017] POST /reg => generated 219 bytes in 104 msecs (HTTP/1.1 302) 3 headers in 125 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 27910|app: 0|req: 1700/8032] 114.240.252.79 () {52 vars in 1171 bytes} [Sun Jul 23 10:37:04 2017] GET /login => generated 1935 bytes in 4 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 27901|app: 0|req: 829/8033] 114.240.252.79 () {58 vars in 1329 bytes} [Sun Jul 23 10:37:14 2017] POST /login => generated 209 bytes in 69 msecs (HTTP/1.1 302) 4 headers in 327 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1701/8034] 114.240.252.79 () {52 vars in 1188 bytes} [Sun Jul 23 10:37:14 2017] GET / => generated 3558 bytes in 7 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1415/8035] 114.240.252.79 () {50 vars in 1170 bytes} [Sun Jul 23 10:37:24 2017] GET /interface => generated 4358 bytes in 11 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1702/8036] 114.240.252.79 () {50 vars in 1193 bytes} [Sun Jul 23 10:37:37 2017] GET /edit_interface/6 => generated 2856 bytes in 8 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1416/8037] 114.240.252.79 () {50 vars in 1186 bytes} [Sun Jul 23 10:37:48 2017] GET /interface => generated 4358 bytes in 9 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27910|app: 0|req: 1703/8038] 114.240.252.79 () {50 vars in 1177 bytes} [Sun Jul 23 10:37:50 2017] GET /test_rep => generated 4755 bytes in 26 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 27909|app: 0|req: 1417/8039] 114.240.252.79 () {50 vars in 1202 bytes} [Sun Jul 23 10:37:57 2017] GET /load/201707211243.log => generated 253 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 9 headers in 359 bytes (0 switches on core 0)
+[pid: 27906|app: 0|req: 702/8040] 114.240.252.79 () {44 vars in 830 bytes} [Sun Jul 23 10:38:02 2017] GET /load/201707211243.log => generated 253 bytes in 1 msecs via sendfile() (HTTP/1.1 200) 9 headers in 359 bytes (0 switches on core 0)
+[pid: 27901|app: 0|req: 830/8041] 219.133.49.206 () {38 vars in 631 bytes} [Sun Jul 23 10:38:03 2017] HEAD /load/201707211243.log => generated 0 bytes in 2 msecs (HTTP/1.1 200) 9 headers in 359 bytes (0 switches on core 0)
+[pid: 27902|app: 0|req: 531/8042] 14.17.37.12 () {38 vars in 774 bytes} [Sun Jul 23 10:38:03 2017] HEAD /load/201707211243.log => generated 0 bytes in 2 msecs (HTTP/1.1 200) 9 headers in 359 bytes (0 switches on core 0)
+[pid: 27907|app: 0|req: 558/8043] 14.17.37.12 () {38 vars in 619 bytes} [Sun Jul 23 10:38:04 2017] GET /load/201707211243.log => generated 253 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 9 headers in 359 bytes (0 switches on core 0)
+[pid: 27904|app: 0|req: 547/8044] 180.163.2.119 () {44 vars in 779 bytes} [Sun Jul 23 10:38:12 2017] GET /load/201707211243.log => generated 253 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 9 headers in 359 bytes (0 switches on core 0)
+[pid: 27905|app: 0|req: 526/8045] 182.140.168.125 () {40 vars in 695 bytes} [Sun Jul 23 10:38:15 2017] GET /load/201707211243.log => generated 253 bytes in 1 msecs via sendfile() (HTTP/1.1 200) 9 headers in 359 bytes (0 switches on core 0)
+...brutally killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+binary reloading uWSGI...
+chdir() to /home/FXTest
+closing all non-uwsgi socket fds > 2 (max_fd = 65535)...
+found fd 3 mapped to socket 0 (127.0.0.1:9191)
+running /usr/local/bin/uwsgi
+[uWSGI] getting INI configuration from /home/FXTest/flaskapi_uwsgi.ini
+*** Starting uWSGI 2.0.15 (32bit) on [Sun Jul 23 10:44:27 2017] ***
+compiled with version: 5.4.0 20160609 on 21 July 2017 17:03:45
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 inherited INET address 127.0.0.1:9191 fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x92157c8
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 703824 bytes (687 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x92157c8 pid: 27150 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+gracefully (RE)spawned uWSGI master process (pid: 27150)
+spawned uWSGI worker 1 (pid: 21607, cores: 1)
+spawned uWSGI worker 2 (pid: 21608, cores: 1)
+spawned uWSGI worker 3 (pid: 21609, cores: 1)
+spawned uWSGI worker 4 (pid: 21610, cores: 1)
+spawned uWSGI worker 5 (pid: 21611, cores: 1)
+spawned uWSGI worker 6 (pid: 21612, cores: 1)
+spawned uWSGI worker 7 (pid: 21613, cores: 1)
+spawned uWSGI worker 8 (pid: 21614, cores: 1)
+spawned uWSGI worker 9 (pid: 21615, cores: 1)
+spawned uWSGI worker 10 (pid: 21616, cores: 1)
+Python auto-reloader enabled
+[pid: 21614|app: 0|req: 1/1] 183.14.29.37 () {46 vars in 823 bytes} [Sun Jul 23 10:44:44 2017] GET / => generated 219 bytes in 13 msecs (HTTP/1.1 302) 3 headers in 125 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 21607|app: 0|req: 1/2] 183.14.29.37 () {46 vars in 833 bytes} [Sun Jul 23 10:44:44 2017] GET /login => generated 1935 bytes in 35 msecs (HTTP/1.1 200) 3 headers in 263 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 2/3] 183.14.29.37 () {48 vars in 1002 bytes} [Sun Jul 23 10:44:44 2017] GET /static/css/bootstrap.css => generated 152842 bytes in 7 msecs via sendfile() (HTTP/1.1 200) 8 headers in 305 bytes (0 switches on core 0)
+[pid: 21614|app: 0|req: 3/4] 183.14.29.37 () {48 vars in 992 bytes} [Sun Jul 23 10:44:44 2017] GET /static/css/main.css => generated 47438 bytes in 6 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 21607|app: 0|req: 2/5] 183.14.29.37 () {48 vars in 992 bytes} [Sun Jul 23 10:44:44 2017] GET /static/css/demo.css => generated 395 bytes in 17 msecs via sendfile() (HTTP/1.1 200) 8 headers in 299 bytes (0 switches on core 0)
+[pid: 21615|app: 0|req: 1/6] 183.14.29.37 () {48 vars in 991 bytes} [Sun Jul 23 10:44:44 2017] GET /static/js/bootstrap.min.js => generated 28631 bytes in 30 msecs via sendfile() (HTTP/1.1 200) 8 headers in 302 bytes (0 switches on core 0)
+*** Starting uWSGI 2.0.12-debian (32bit) on [Sun Jul 23 10:45:49 2017] ***
+compiled with version: 5.3.1 20160412 on 13 April 2016 08:37:19
+os: Linux-4.4.0-79-generic #100-Ubuntu SMP Wed May 17 19:57:27 UTC 2017
+nodename: iZ2zeg872luz0mzt03kfxzZ
+machine: i686
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/FXTest
+writing pidfile to /var/run/uwsgi.pid
+detected binary path: /usr/bin/uwsgi-core
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/FXTest
+your processes number limit is 7738
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+probably another instance of uWSGI is running on the same address (127.0.0.1:9191).
+bind(): Address already in use [core/socket.c line 769]
+[pid: 21614|app: 0|req: 4/7] 114.254.65.66 () {48 vars in 949 bytes} [Sun Jul 23 10:46:01 2017] GET /test_rep => generated 219 bytes in 2 msecs (HTTP/1.1 302) 3 headers in 125 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 21615|app: 0|req: 2/8] 114.254.65.66 () {48 vars in 943 bytes} [Sun Jul 23 10:46:01 2017] GET /login => generated 1935 bytes in 16 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 21614|app: 0|req: 5/9] 114.254.65.66 () {58 vars in 1176 bytes} [Sun Jul 23 10:46:05 2017] POST /login => generated 209 bytes in 125 msecs (HTTP/1.1 302) 4 headers in 331 bytes (1 switches on core 0)
+[pid: 21607|app: 0|req: 3/10] 114.254.65.66 () {52 vars in 1039 bytes} [Sun Jul 23 10:46:05 2017] GET / => generated 3561 bytes in 49 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 6/11] 114.254.65.66 () {50 vars in 1019 bytes} [Sun Jul 23 10:46:07 2017] GET /test_rep => generated 6100 bytes in 42 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 7/12] 114.254.65.66 () {50 vars in 1029 bytes} [Sun Jul 23 10:46:15 2017] GET /adminuser => generated 11063 bytes in 49 msecs (HTTP/1.1 200) 2 headers in 82 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 8/13] 114.254.65.66 () {50 vars in 1012 bytes} [Sun Jul 23 10:46:22 2017] GET / => generated 3561 bytes in 30 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 9/14] 117.151.41.54 () {46 vars in 932 bytes} [Sun Jul 23 10:46:53 2017] GET /IAPTest => generated 233 bytes in 3 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 10/15] 117.151.41.54 () {46 vars in 918 bytes} [Sun Jul 23 10:46:56 2017] GET / => generated 219 bytes in 2 msecs (HTTP/1.1 302) 3 headers in 125 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 21608|app: 0|req: 1/16] 117.151.41.54 () {46 vars in 928 bytes} [Sun Jul 23 10:46:56 2017] GET /login => generated 1935 bytes in 32 msecs (HTTP/1.1 200) 3 headers in 263 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 11/17] 117.151.41.54 () {48 vars in 1073 bytes} [Sun Jul 23 10:46:57 2017] GET /static/css/bootstrap.css => generated 152842 bytes in 2 msecs via sendfile() (HTTP/1.1 200) 8 headers in 305 bytes (0 switches on core 0)
+[pid: 21607|app: 0|req: 4/18] 117.151.41.54 () {48 vars in 1063 bytes} [Sun Jul 23 10:46:57 2017] GET /static/css/demo.css => generated 395 bytes in 12 msecs via sendfile() (HTTP/1.1 200) 8 headers in 299 bytes (0 switches on core 0)
+[pid: 21616|app: 0|req: 1/19] 117.151.41.54 () {48 vars in 1063 bytes} [Sun Jul 23 10:46:57 2017] GET /static/css/main.css => generated 47438 bytes in 42 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 21611|app: 0|req: 1/20] 117.151.41.54 () {48 vars in 1062 bytes} [Sun Jul 23 10:46:57 2017] GET /static/js/bootstrap.min.js => generated 28631 bytes in 43 msecs via sendfile() (HTTP/1.1 200) 8 headers in 302 bytes (0 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 21614|app: 0|req: 12/21] 117.151.41.54 () {58 vars in 1326 bytes} [Sun Jul 23 10:47:01 2017] POST /login => generated 2125 bytes in 25 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 13/22] 114.254.65.66 () {50 vars in 1021 bytes} [Sun Jul 23 10:47:14 2017] GET /adminuser => generated 11063 bytes in 21 msecs (HTTP/1.1 200) 2 headers in 82 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 14/23] 117.151.41.54 () {48 vars in 1083 bytes} [Sun Jul 23 10:47:22 2017] GET / => generated 219 bytes in 3 msecs (HTTP/1.1 302) 3 headers in 125 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 21607|app: 0|req: 5/24] 117.151.41.54 () {48 vars in 1093 bytes} [Sun Jul 23 10:47:22 2017] GET /login => generated 1935 bytes in 5 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 21614|app: 0|req: 15/25] 117.151.41.54 () {58 vars in 1326 bytes} [Sun Jul 23 10:48:13 2017] POST /login => generated 2259 bytes in 102 msecs (HTTP/1.1 200) 3 headers in 263 bytes (1 switches on core 0)
+./app/views.py:30: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  form=LoginFrom()
+[pid: 21614|app: 0|req: 16/26] 117.151.41.54 () {58 vars in 1326 bytes} [Sun Jul 23 10:48:33 2017] POST /login => generated 209 bytes in 102 msecs (HTTP/1.1 302) 4 headers in 335 bytes (1 switches on core 0)
+[pid: 21607|app: 0|req: 6/27] 117.151.41.54 () {52 vars in 1193 bytes} [Sun Jul 23 10:48:33 2017] GET / => generated 3564 bytes in 12 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 17/28] 117.151.41.54 () {50 vars in 1179 bytes} [Sun Jul 23 10:48:43 2017] GET /down_jiekou => generated 10111 bytes in 9 msecs via sendfile() (HTTP/1.1 200) 9 headers in 402 bytes (0 switches on core 0)
+[pid: 21614|app: 0|req: 18/29] 117.151.41.54 () {48 vars in 1116 bytes} [Sun Jul 23 10:49:17 2017] GET / => generated 3564 bytes in 8 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 19/30] 117.151.41.54 () {50 vars in 1175 bytes} [Sun Jul 23 10:49:26 2017] GET /interface => generated 4364 bytes in 31 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 20/31] 117.151.41.54 () {50 vars in 1198 bytes} [Sun Jul 23 10:49:29 2017] GET /edit_interface/6 => generated 2862 bytes in 18 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 21/32] 117.151.41.54 () {48 vars in 1130 bytes} [Sun Jul 23 10:49:35 2017] GET /IAPTest => generated 233 bytes in 2 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 22/33] 117.151.41.54 () {48 vars in 1116 bytes} [Sun Jul 23 10:49:37 2017] GET / => generated 3564 bytes in 12 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 23/34] 117.151.41.54 () {50 vars in 1169 bytes} [Sun Jul 23 10:49:39 2017] GET /yongli => generated 4934 bytes in 31 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 24/35] 117.151.41.54 () {50 vars in 1193 bytes} [Sun Jul 23 10:49:52 2017] GET /make_one_case/8 => generated 221 bytes in 84 msecs (HTTP/1.1 302) 4 headers in 434 bytes (1 switches on core 0)
+[pid: 21607|app: 0|req: 7/36] 117.151.41.54 () {50 vars in 1268 bytes} [Sun Jul 23 10:49:52 2017] GET /yongli => generated 5011 bytes in 46 msecs (HTTP/1.1 200) 3 headers in 296 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 25/37] 117.151.41.54 () {50 vars in 1193 bytes} [Sun Jul 23 10:49:55 2017] GET /make_one_case/8 => generated 221 bytes in 89 msecs (HTTP/1.1 302) 4 headers in 434 bytes (1 switches on core 0)
+[pid: 21607|app: 0|req: 8/38] 117.151.41.54 () {50 vars in 1268 bytes} [Sun Jul 23 10:49:55 2017] GET /yongli => generated 5011 bytes in 13 msecs (HTTP/1.1 200) 3 headers in 296 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 26/39] 117.151.41.54 () {50 vars in 1181 bytes} [Sun Jul 23 10:50:01 2017] GET /adminuser => generated 209 bytes in 4 msecs (HTTP/1.1 302) 4 headers in 454 bytes (1 switches on core 0)
+[pid: 21607|app: 0|req: 9/40] 117.151.41.54 () {50 vars in 1282 bytes} [Sun Jul 23 10:50:01 2017] GET / => generated 3852 bytes in 10 msecs (HTTP/1.1 200) 3 headers in 296 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 27/41] 117.151.41.54 () {50 vars in 1157 bytes} [Sun Jul 23 10:50:03 2017] GET / => generated 3564 bytes in 7 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 28/42] 117.151.41.54 () {50 vars in 1169 bytes} [Sun Jul 23 10:50:06 2017] GET /yongli => generated 4934 bytes in 12 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 21614|app: 0|req: 29/43] 117.151.41.54 () {50 vars in 1181 bytes} [Sun Jul 23 10:50:10 2017] GET /interface => generated 4364 bytes in 12 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
