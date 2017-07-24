@@ -1,0 +1,24 @@
+{%extends 'back.html'%}
+{%block hello%}
+<h3>编辑</h3>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+ <ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<form  action="" method="POST" style="width: 40%;
+    margin-left: 30%;">
+
+<div class="form-group">
+
+<strong>模块名字:</strong>
+    <input type="text" name="model" value="{{ model.model_name }}"></div>
+
+<button type="submit" class="btn btn-primary ">编辑</button>
+</div>
+</form>
+{%endblock%}

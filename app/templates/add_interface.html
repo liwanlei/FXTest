@@ -14,12 +14,18 @@
     margin-left: 30%;">
  {{form.hidden_tag()}}
  {{form.csrf_token}}
-<div class="form-group">
+<span class="form-group">
 <strong>项目名字:</strong>
-{{ form.project_name }}</div>
+    {% for project in  projects %}
+<input type='radio' value="{{  project.project_name }}" name="project">{{ project.project_name }}</span>
+    {% endfor %}
 <div class="form-group">
 <strong>模块名字:</strong>
-{{ form.model_name }}</div>
+<span>
+  {% for model in  models %}
+<input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
+    {% endfor %}
+    </span></div>
 <div class="form-group">
 <strong>接口名字:</strong>
 {{ form.interface_name }}</div>

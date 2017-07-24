@@ -15,7 +15,7 @@
     <span></span>
     <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model">
         <span></span>
-    <input type="submit" value="查询" class="">
+    <input type="submit" value="查询" class="btn btn-default">
     </form>
         <div style="margin-top: 10px">
            <a href="{{url_for('addtestcase')}}"><input type="button" name="" class="btn btn-default" value="添加"></a>
@@ -42,8 +42,8 @@
     <tr>
         <td><input type="checkbox" id='input'></td>
       <td>{{yongli.id}}</td>
-      <td>{{yongli.project}}</td>
-      <td>{{yongli.model}}</td>
+      <td>{{yongli.projects}}</td>
+      <td>{{yongli.models}}</td>
          <td>{{yongli.Interface_url}}</td>
       <td>{{yongli.Interface_meth}}</td>
       <td>{{yongli.Interface_pase}}</td>

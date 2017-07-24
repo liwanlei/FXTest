@@ -1,0 +1,46 @@
+{% extends "back.html" %}
+{% block hello %}
+{% import "fenye.html" as macros %}
+
+   <div>
+    <h2>项目</h2>
+    {% with messages = get_flashed_messages() %}
+{% if messages %}
+ <ul class='flashes'>
+{% for message in messages %}
+<li >{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+        <div style="margin-top: 10px">
+        <a href="{{url_for('add_pro')}}">
+          <input type="button" name="" class="btn btn-default" value="添加">
+        </a>
+  </div>
+   <table class="table table-bordered" style="width:30%">
+  <caption><strong></strong></caption>
+  <thead>
+    <tr>
+      <th>项目名</th>
+        <th>创建者</th>
+        <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for project in projects%}
+    <tr>
+
+      <td>{{project.project_name}}</td>
+    <td>{{ project.users }}</td>
+      <td>
+          <span><a href="{{url_for('edit_pro',id=project.id)}}"><input type="button" value="编辑" class="btn btn-default"></a></span>
+           <span><a href="{{url_for('dele_pro',id=project.id)}}"><input type="button" value="删除" class="btn btn-default"></a></span>
+      </td>
+    </tr>
+{%endfor%}
+  </tbody>
+</table>
+  </div>
+{% endblock %}

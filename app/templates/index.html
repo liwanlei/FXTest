@@ -37,13 +37,31 @@
                        <span class="title">测试报告</span>
 										</p>
                    </div>
+
                </div>
-               <h2 style="margin-left: 26%;">模板</h2>
+           <div class="col-md-3" style=";float: left">
+                   <div class="metric">
+                       <span class="icon"><i class="fa fa-download"></i></span>
+                       <p>
+                       <span class="number">{{ project_cout }}个</span>
+                       <span class="title">项目</span></p>
+                   </div>
+               </div>
+           <div class="col-md-3">
+                   <div class="metric" >
+                       <span class="icon"><i class="fa fa-download"></i></span>
+                       <p>
+                       <span class="number">{{ model_cout }}个</span>
+                       <span class="title">模块</span></p>
+                   </div>
+               </div>
+           </div>
+               <h1 style="margin-left:24%">模板</h1>
                <div style="margin-left:24%">
-                    <h3 >根据这里的版本可以在用例或者接口模块导入相应的测试用例或者测试接口</h3>
+                   <h3 >根据这里的版本可以在<a href="{{ url_for('yongli') }}">用例</a>或者<a href="{{ url_for('interface') }}">测试接口</a>模块导入相应的测试用例或者测试接口</h3>
                     <a href="{{url_for('down_jiekou')}}">接口模板</a>
                     <a href="{{url_for('down_case')}}">测试用例模板</a>
                </div>          
 </div>
-       </div> 
+
 {% endblock %}
