@@ -7,7 +7,7 @@
 from app import  app,db
 from  flask import  redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory
 from werkzeug import secure_filename
-from  app.models import User,Interface,InterfaceTest,TestResult
+from  app.models import User,Interface,InterfaceTest,TestResult,Project,Model
 from app.form import  LoginFrom,RegFrom,InterForm,Interface_yong_Form
 import os,time,datetime,threading
 from app.common.pares_excel_inter import pasre_inter
@@ -15,14 +15,20 @@ from app.common.py_Html import createHtml
 from app.common.requ_case import Api
 from app.test_case.Test_case import ApiTestCase
 from app.common.py_Html import createHtml
+def get_pro_mo():
+    projects=Project.query.all()
+    model=Model.query.all()
+    return  projects,model
 @app.route('/',methods=['GET'])
 def index():
     if not session.get('username'):
         return redirect(url_for('login'))
-    interface_cont=len(Interface.query.all())
-    interfaceTest_cunt=len(InterfaceTest.query.all())
-    resu_cout=len(TestResult.query.all())
-    return  render_template('index.html',yongli=interfaceTest_cunt,jiekou=interface_cont,report=resu_cout)
+    interface_cont=Interface.query.count()
+    interfaceTest_cunt=InterfaceTest.query.count()
+    resu_cout=TestResult.query.count()
+    project_cout=Project.query.count()
+    model_cout=Model.query.count()
+    return  render_template('index.html',yongli=interfaceTest_cunt,jiekou=interface_cont,report=resu_cout,project_cout=project_cout,model_cout=model_cout)
 @app.route('/login',methods=['GET','POST'])
 def login():
     form=LoginFrom()
@@ -104,28 +110,32 @@ def interface_add():
     if not session.get('username'):
         return redirect(url_for('login'))
     form=InterForm()
+    project,models=get_pro_mo()
     if form.validate_on_submit and request.method =="POST":
-        project_name=request.form.get('project_name')
-        model_name=request.form.get('model_name')
+        project_name=request.form.get('project')
+        model_name=request.form.get('model')
         interface_name=request.form.get('interface_name')
         interface_url=request.form.get('interface_url')
         interface_meth=request.form.get('interface_meth')
         interface_par=request.form.get('interface_par')
         interface_bas=request.form.get('interface_bas')
-        if project_name == '' or model_name =='' or interface_name=='' or interface_url =='' or interface_meth=='':
+        if project_name == None or model_name ==None or interface_name=='' or interface_url =='' or interface_meth=='':
             flash(u'请准确的填写接口的各项信息')
-            return render_template('add_interface.html',form=form)
+            return render_template('add_interface.html',form=form,projects=project,models=models)
         user_id=User.query.filter_by(username=session.get('username')).first().id
-        new_interface=Interface(project_name=project_name,models_name=model_name,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id)
+        project_id=Project.query.filter_by(project_name=project_name).first().id
+        models_id=Model.query.filter_by(model_name=model_name).first().id
+        new_interface=Interface(model_id=models_id,projects_id=project_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id)
         db.session.add(new_interface)
         db.session.commit()
         return redirect(url_for('interface'))
-    return render_template('add_interface.html',form=form)
+    return render_template('add_interface.html',form=form,projects=project,models=models)
 @app.route('/edit_interface/<int:id>',methods=['GET','POST'])
 def interfac_edit(id):
     if not session.get('username'):
         return redirect(url_for('login'))
     interface=Interface.query.filter_by(id=id).first()
+    project, models = get_pro_mo()
     if request.method=='POST':
         projecct=request.form.get('project')
         model=request.form.get('model')
@@ -134,10 +144,13 @@ def interfac_edit(id):
         meth=request.form.get('meth')
         reques=request.form.get('reque')
         back=request.form.get('back')
-        if projecct =='' or model=='' or intername=='' or url=='' or meth=='' or back=='':
+        if projecct ==None or model==None or intername=='' or url=='' or meth=='' or back=='':
             flash(u'请确定各项参数都正常填写')
-        interface.project_name=projecct
-        interface.models_name=model
+            return render_template('edit_inter.html', interface=interface, projects=project, models=models)
+        project_id = Project.query.filter_by(project_name=projecct).first().id
+        models_id = Model.query.filter_by(model_name=model).first().id
+        interface.projects_id=project_id
+        interface.model_id=models_id
         interface.Interface_name=intername
         interface.Interface_url=url
         interface.Interface_meth=meth
@@ -146,7 +159,7 @@ def interfac_edit(id):
         interface.Interface_user_id=User.query.filter_by(username=session.get('username')).first().id
         db.session.commit()
         return redirect(url_for('interface'))
-    return render_template('edit_inter.html',interface=interface)
+    return render_template('edit_inter.html',interface=interface,projects=project,models=models)
 @app.route('/dele_inter/<int:id>',methods=['GET','POST'])
 def dele_inter(id):
     if not session.get('username'):
@@ -165,23 +178,26 @@ def addtestcase():
     if not session.get('username'):
         return redirect(url_for('login'))
     form=Interface_yong_Form()
-    if form.validate_on_submit() and request.method=='POST':
-        yongli_nam=request.form.get('yongli_name')
-        mode=request.form.get('model_name')
+    project, models = get_pro_mo()
+    if request.method=='POST' :
+        yongli_nam=request.form.get('project')
+        mode=request.form.get('model')
         interface_name=request.form.get('interface_name')
         interface_url=request.form.get('interface_url')
         interface_meth=request.form.get('interface_meth')
         interface_can=request.form.get('interface_can')
         interface_re=request.form.get('interface_rest')
-        if yongli_nam ==''or mode==''or interface_name=='' or interface_url=='' or interface_meth=='' or interface_re=='':
+        if yongli_nam ==None or mode==None or interface_name=='' or interface_url=='' or interface_meth=='' or interface_re=='':
             flash(u'请准确填写用例')
-            return render_template('add_test_case.html',form=form)
-        newcase=InterfaceTest(project=yongli_nam,model=mode,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+            return render_template('add_test_case.html',form=form,projects=project,models=models)
+        project_id = Project.query.filter_by(project_name=yongli_nam).first().id
+        models_id = Model.query.filter_by(model_name=mode).first().id
+        newcase=InterfaceTest(projects_id=project_id,model_id=models_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
         db.session.add(newcase)
         db.session.commit()
         flash(u'添加用例成功')
         return redirect(url_for('yongli'))
-    return render_template('add_test_case.html',form=form)
+    return render_template('add_test_case.html',form=form,projects=project,models=models)
 @app.route('/delete_case/<int:id>',methods=['GET','POST'])
 def delete_case(id):
     if not session.get('username'):
@@ -199,18 +215,21 @@ def delete_case(id):
 def edit_case(id):
     if not session.get('username'):
         return redirect(url_for('login'))
+    project, models = get_pro_mo()
     edit_case=InterfaceTest.query.filter_by(id=id).first()
     if request.method=='POST':
-        projecct=request.form.get('project')
-        model=request.form.get('model')
+        yongli_nam = request.form.get('project')
+        mode = request.form.get('model')
         url=request.form.get('url')
         meth=request.form.get('meth')
         parme=request.form.get('parme')
         reque=request.form.get('reque')
-        if projecct =='' or model=='' or url=='' or meth=='' or parme=='' or reque=='':
+        if yongli_nam ==None  or mode== None or url=='' or meth=='' or parme=='' or reque=='':
             flash(u'请确定各项参数都正常填写')
-        edit_case.project=projecct
-        edit_case.Interface_name=model
+        projects_id = Project.query.filter_by(project_name=yongli_nam).first().id
+        model_id = Model.query.filter_by(model_name=mode).first().id
+        edit_case.projects_id=projects_id
+        edit_case.model_id=model_id
         edit_case.Interface_url=url
         edit_case.Interface_meth=meth
         edit_case.Interface_pase=parme
@@ -219,7 +238,7 @@ def edit_case(id):
         db.session.commit()
         flash(u'编辑成功')
         return redirect(url_for('yongli'))
-    return render_template('edit_case.html',edit=edit_case)
+    return render_template('edit_case.html',edit=edit_case,projects=project,models=models)
 @app.route('/down_jiekou',methods=['GET'])
 def down_jiekou():
     if not session.get('username'):
@@ -245,10 +264,12 @@ def daoru_inter():
         if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
             filename='jiekou.xlsx'
             file.save(filename)
-            project_name,model_name,interface_name,interface_url,interface_meth,interface_par,interface_bas=pasre_inter(filename)
+            model_names,project_name,model_name,interface_name,interface_url,interface_meth,interface_par,interface_bas=pasre_inter(filename)
             try:
                 for i in range(len(project_name)):
-                    new_interface=Interface(project_name=str(project_name[i]),models_name=str(model_name[i]),Interface_name=str(interface_name[i]),Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+                    projects_id = Project.query.filter_by(project_name=project_name[i]).first().id
+                    model_id = Model.query.filter_by(model_name=model_name[i]).first().id
+                    new_interface=Interface(projects_id=projects_id,model_id=model_id,Interface_name=str(interface_name[i]),Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                     db.session.add(new_interface)
                 db.session.commit()
                 flash(u'导入成功')
@@ -268,10 +289,12 @@ def daoru_case():
         if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
             filename='jiekoucase.xlsx'
             file.save(filename)
-            project_name, model_name, interface_name, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(filename)
+            jiekou_bianhao,project_nam, model_nam, interface_name, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(filename)
             try:
-                for i in range(len(project_name)):
-                    new_interface = InterfaceTest(project=str(project_name[i]), model=str(model_name[i]),Interface_name=str(interface_name[i]), Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),Interface_assert=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+                for i in range(len(project_nam)):
+                    projects_id = Project.query.filter_by(project_name=project_nam[i]).first().id
+                    model_id = Model.query.filter_by(model_name=model_nam[i]).first().id
+                    new_interface = InterfaceTest(projects_id=projects_id, model_id=model_id,Interface_name=str(interface_name[i]), Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),Interface_assert=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                     db.session.add(new_interface)
                 db.session.commit()
                 flash(u'导入成功')
@@ -423,7 +446,9 @@ def ser_yongli():
         if projecct =='' and model  =='':
             flash(u'请输入搜索的内容')
             return redirect(url_for('yongli'))
-        interd=InterfaceTest.query.filter(InterfaceTest.model.like('%'+model+'%'),InterfaceTest.project.like('%'+projecct+'%')).all()
+        projects_id = Project.query.filter_by(project_name=projecct).first().id
+        model_id = Model.query.filter_by(model_name=model).first().id
+        interd=InterfaceTest.query.filter(InterfaceTest.model_id.like(model_id),InterfaceTest.projects_id.like(projects_id)).all()
         if len(interd)<1:
             flash(u'搜索的内容没有找到')
             return redirect(url_for('yongli'))
@@ -439,7 +464,9 @@ def ser_inter():
         if projecct =='' and model  =='':
             flash(u'请输入搜索的内容')
             return redirect(url_for('interface'))
-        interd=Interface.query.filter(Interface.models_name.like('%'+model+'%'),Interface.project_name.like('%'+projecct+'%')).all()
+        projects_id = Project.query.filter_by(project_name=projecct).first().id
+        model_id = Model.query.filter_by(model_name=model).first().id
+        interd=Interface.query.filter(Interface.model_id.like(model),Interface.projects_id.like(projecct)).all()
         if len(interd)<1:
             flash(u'搜索的内容不存在')
             return redirect(url_for('interface'))
@@ -506,23 +533,147 @@ def duoyongli():
         for case in me:
             case_one=InterfaceTest.query.filter_by(id=case).first()
             id_list.append(case_one.id)
-            projecct_list.append(case_one.project)
-            model_list.append(case_one.model)
+            projecct_list.append(case_one.projects)
+            model_list.append(case_one.models)
             Interface_url_list.append(case_one.Interface_url)
             Interface_name_list.append(case_one.Interface_name)
             Interface_meth_list.append(case_one.Interface_meth)
             Interface_pase_list.append(case_one.Interface_pase)
             Interface_assert_list.append(case_one.Interface_assert)
-        apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file)
-        result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
-        endtime=datetime.datetime.now()
-        end = time.time()
-        createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
-        hour=end-star
-        user_id=User.query.filter_by(username=session.get('username')).first().id
-        new_reust=TestResult(Test_user_id=user_id,test_num=result_toal,pass_num=result_pass,fail_num=result_fail,test_time=starttime,hour_time=hour,test_rep=(day+'.html'),test_log=(day+'.log'))
-        db.session.add(new_reust)
-        db.session.commit()
-        flash(u'测试已经完成')
-        return redirect(url_for('interface'))
+        try:
+            apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file)
+            result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
+            endtime=datetime.datetime.now()
+            end = time.time()
+            createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
+            hour=end-star
+            user_id=User.query.filter_by(username=session.get('username')).first().id
+            new_reust=TestResult(Test_user_id=user_id,test_num=result_toal,pass_num=result_pass,fail_num=result_fail,test_time=starttime,hour_time=hour,test_rep=(day+'.html'),test_log=(day+'.log'))
+            db.session.add(new_reust)
+            db.session.commit()
+            flash(u'测试已经完成')
+            return redirect(url_for('interface'))
+        except:
+            flash(u'测试失败，请检查您的测试用例单个执行是否出错')
+            return redirect(url_for('interface'))
     return redirect(url_for('interface'))
+@app.route('/project',methods=['GET','POST'])
+def project():
+    if not  session.get('username'):
+        return  redirect(url_for('login'))
+    projects=Project.query.all()
+    return  render_template('project.html',projects=projects)
+@app.route('/model',methods=['GET','POST'])
+def model():
+    if not  session.get('username'):
+        return  redirect(url_for('login'))
+    models=Model.query.all()
+    return  render_template('model.html',projects=models)
+@app.route('/add_moel',methods=['GET','POST'])
+def add_moel():
+    if not  session.get('username'):
+        return  redirect(url_for('login'))
+    if request.method=="POST":
+        model=request.form.get('project')
+        if model=='':
+            flash(u'请添加您的模块名')
+            return render_template('add_moel.html')
+        user_id=User.query.filter_by(username=session.get('username')).first().id
+        models=Model.query.filter_by(model_name=model).first()
+        if models:
+            flash(u'模块不能重复')
+            return render_template('add_moel.html')
+        new_moel=Model(model_name=model,model_user_id=user_id)
+        db.session.add(new_moel)
+        db.session.commit()
+        flash(u'添加成功!')
+        return  redirect(url_for('model'))
+    return  render_template('add_moel.html')
+@app.route('/add_pro',methods=['GET','POST'])
+def add_pro():
+    if not  session.get('username'):
+        return  redirect(url_for('login'))
+    if request.method=="POST":
+        model=request.form.get('project')
+        if model=='':
+            flash(u'请添加您的项目名')
+            return render_template('add_pro.html')
+        user_id=User.query.filter_by(username=session.get('username')).first().id
+        projec=Project.query.filter_by(project_name=model).first()
+        if projec:
+            flash(u'项目不能重复')
+            return render_template('add_pro.html')
+        new_moel=Project(project_name=model,project_user_id=user_id)
+        db.session.add(new_moel)
+        db.session.commit()
+        flash(u'添加成功!')
+        return  redirect(url_for('project'))
+    return  render_template('add_pro.html')
+@app.route('/dele_moel/<int:id>',methods=['GET','POST'])
+def dele_moel(id):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    model=Model.query.filter_by(id=id).first()
+    user=User.query.filter_by(username=session.get('username')).first()
+    if user.id==model.model_user_id or user.level==1:
+        db.session.delete(model)
+        db.session.commit()
+        flash(u'删除成功')
+        return redirect(url_for('model'))
+    flash(u'您没有权限删除这个模块')
+    return redirect(url_for('model'))
+@app.route('/dele_pro/<int:id>',methods=['GET','POST'])
+def dele_pro(id):
+    if not session.get('username'):
+        return redirect(url_for('login'))
+    proje=Project.query.filter_by(id=id).first()
+    user=User.query.filter_by(username=session.get('username')).first()
+    if user.id==proje.project_user_id or user.level==1:
+        db.session.delete(proje)
+        db.session.commit()
+        flash(u'删除成功')
+        return redirect(url_for('project'))
+    flash(u'您没有权限删除这个项目')
+    return redirect(url_for('project'))
+@app.route('/edit_moel/<int:id>',methods=['GET','POST'])
+def edit_moel(id):
+    if not session.get('username'):
+        return  redirect(url_for('login'))
+    user = User.query.filter_by(username=session.get('username')).first()
+    model=Model.query.filter_by(id=id).first()
+    if request.method=="POST":
+        ed_mode=request.form.get('model')
+        if ed_mode=='':
+            flash(u'请添加模块名')
+            return render_template('edit_model.html', model=model)
+        models = Model.query.filter_by(model_name=ed_mode).first()
+        if models:
+            flash(u'模块不能重复')
+            return render_template('edit_model.html', model=model)
+        model.model_name=ed_mode
+        db.session.commit()
+        flash(u'编辑成功')
+        return  redirect(url_for('model'))
+    return  render_template('edit_model.html',model=model)
+@app.route('/edit_pro/<int:id>',methods=['GET','POST'])
+def edit_pro(id):
+    if not session.get('username'):
+        return  redirect(url_for('login'))
+    user = User.query.filter_by(username=session.get('username')).first()
+    project=Project.query.filter_by(id=id).first()
+    if request.method=="POST":
+        ed_mode=request.form.get('project')
+        if ed_mode=='':
+            flash(u'请添加项目')
+            return render_template('edit_pro.html', project=project)
+        models = Project.query.filter_by(project_name=ed_mode).first()
+        if models:
+            flash(u'项目不能重复')
+            return render_template('edit_pro.html', project=project)
+        project.project_name=ed_mode
+        db.session.commit()
+        flash(u'编辑成功')
+        return  redirect(url_for('project'))
+    return  render_template('edit_pro.html',project=project)
+
+

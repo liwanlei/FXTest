@@ -15,11 +15,14 @@
 
 <div class="form-group">
 <strong>项目名字:</strong>
-<input type="text" name="project" value="{{interface.project_name}}">
-</div>
+{% for project in  projects %}
+<input type='radio' value="{{  project.project_name }}" name="project">{{ project.project_name }}
+    {% endfor %}
 <div class="form-group">
 <strong>模块名字:</strong>
-<input type="text" name="model" value="{{interface.models_name}}" >
+  {% for model in  models %}
+<input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}</div>
+    {% endfor %}
 </div>
 <div class="form-group">
 <strong>接口名字:</strong>
@@ -41,7 +44,7 @@
 <strong>返回示例:</strong>
 <input type="text" name="back" value="{{interface.Interface_back}}">
 </div>
-<button type="submit" class="btn btn-primary ">添加</button>
+<button type="submit" class="btn btn-primary ">编辑</button>
 </div>
 </form>
 {%endblock%}

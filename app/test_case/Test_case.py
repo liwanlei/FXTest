@@ -21,7 +21,6 @@ class ApiTestCase():
         for case in range(len(self.url)):
             api=Api(url=self.url[case],fangshi=self.meth[case],params=self.parm[case])
             apijson=api.getJson()
-            apicode=api.getcode()
             self.log_can.info_log(u'input:接口地址：%s,参数:%s,实际返回:%s,预期:%s'%(self.url[case],self.parm[case],apijson,self.assert_test[case]))
             come=comp_dict(apijson,eval(self.assert_test[case]))
             if come== 'True':
@@ -35,8 +34,3 @@ class ApiTestCase():
                 self.bask_list.append(apijson)
                 self.result_pf.append('fail')
         return self.result_toal ,self.result_pass,self.result_fail,self.result_pf,self.bask_list
-
-
-
-
-

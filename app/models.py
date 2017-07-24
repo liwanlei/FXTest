@@ -16,6 +16,8 @@ class User(db.Model):
     status=db.Column(db.Integer(),default=0)
     level=db.Column(db.Integer(),default=0)
     phone = db.relationship('TestResult', backref='users', lazy='dynamic')
+    project=db.relationship('Project',backref='users', lazy='dynamic')
+    model = db.relationship('Model', backref='users', lazy='dynamic')
     def __repr__(self):
         return  self.username
     def set_password(self,password):
@@ -25,8 +27,8 @@ class User(db.Model):
 class Interface(db.Model):
     __tablename__='interfaces'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
-    project_name=db.Column(db.String(252))
-    models_name=db.Column(db.String(252))
+    model_id=db.Column(db.Integer(),db.ForeignKey('models.id'))
+    projects_id=db.Column(db.Integer(),db.ForeignKey('projects.id'))
     Interface_name=db.Column(db.String(252))
     Interface_url=db.Column(db.String(252))
     Interface_meth= db.Column(db.String(252),default='GET')
@@ -38,8 +40,8 @@ class Interface(db.Model):
 class InterfaceTest(db.Model):
     __tablename__='interfacetests'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    project=db.Column(db.String(252))
-    model=db.Column(db.String(252))
+    model_id=db.Column(db.Integer(),db.ForeignKey('models.id'))
+    projects_id=db.Column(db.Integer(),db.ForeignKey('projects.id'))
     Interface_name= db.Column(db.String(252))
     Interface_url = db.Column(db.String(252))
     Interface_meth = db.Column(db.String(252))
@@ -62,3 +64,23 @@ class TestResult(db.Model):
     test_log=db.Column(db.String(252))
     def __repr__(self):
         return  self.id
+class Project(db.Model):#项目
+    __tablename__='projects'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    project_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    project_name=db.Column(db.String(252))
+    status=db.Column(db.Integer(),default=0)
+    Interfacetest = db.relationship('InterfaceTest', backref='projects', lazy='dynamic')
+    Interface = db.relationship('Interface', backref='projects', lazy='dynamic')
+    def __repr__(self):
+        return  self.project_name
+class Model(db.Model):#模块
+    __tablename__ ='models'
+    id=db.Column(db.Integer,primary_key=True,autoincrement=True)
+    model_name = db.Column(db.String(256))
+    model_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    status = db.Column(db.Integer(),default=0)
+    Interfacetest = db.relationship('InterfaceTest', backref='models', lazy='dynamic')
+    Interface = db.relationship('Interface', backref='models', lazy='dynamic')
+    def __repr__(self):
+        return  self.model_name

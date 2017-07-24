@@ -14,11 +14,16 @@
     margin-left: 30%;">
 <div class="form-group">
 <strong>项目:</strong>
-<input type="text" name="project" value="{{edit.project}}">
-</div>
+ {% for project in  projects %}
+<input type='radio' value="{{  project.project_name }}" name="project">{{ project.project_name }}
+    {% endfor %}</div>
 <div class="form-group">
-<strong>模块:</strong>
-<input type="text" name="model" value="{{edit.model}}" >
+<strong>模块名字:</strong>
+<span>
+  {% for model in  models %}
+<input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
+  {% endfor %}
+    </span>
 </div>
 <div class="form-group">
 <strong>接口名字:</strong>
