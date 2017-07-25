@@ -129,10 +129,10 @@ def interface_add():
             new_interface=Interface(model_id=models_id,projects_id=project_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id)
             db.session.add(new_interface)
             db.session.commit()
-            flash('添加成功')
+            flash(u'添加成功')
             return redirect(url_for('interface'))
         except:
-            flash('添加失败')
+            flash(u'添加失败')
             return render_template('add_interface.html',form=form,projects=project,models=models)
     return render_template('add_interface.html',form=form,projects=project,models=models)
 @app.route('/edit_interface/<int:id>',methods=['GET','POST'])
@@ -204,7 +204,7 @@ def addtestcase():
             flash(u'添加用例成功')
             return redirect(url_for('yongli'))
         except:
-            flash('添加失败')
+            flash(u'添加失败')
             return render_template('add_test_case.html',form=form,projects=project,models=models)
     return render_template('add_test_case.html',form=form,projects=project,models=models)
 @app.route('/delete_case/<int:id>',methods=['GET','POST'])
