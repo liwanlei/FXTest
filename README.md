@@ -12,6 +12,7 @@
 ####   7。用户管理。 可以查询用户，添加用户，冻结用户，取消管理，重置密码。非管理员不能进入这个界面。
 # 有问题可以联系我：QQ:952943386 email:leileili126@163.com
 # 微信打赏
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/weixin.png)
  ----------------
 ##    效果图如下：
 ### 目录：
