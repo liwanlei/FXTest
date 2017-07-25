@@ -1,6 +1,21 @@
 {%extends 'back.html'%}
 {%block hello%}
-<h2>添加用户</h2>
+<div class="tpl-content-wrapper">
+            <div class="tpl-content-page-title">
+                
+            </div>
+            
+            <div class="tpl-portlet-components">
+                <div class="portlet-title">
+                    <div class="caption font-green bold">
+                        <span class="am-icon-code"></span> 添加用户
+                    </div>
+                    <div class="tpl-portlet-input tpl-fz-ml">
+                        <div class="portlet-input input-small input-inline">
+                            <div class="input-icon right">
+                                </div>
+                        </div>
+                    </div></div>
 {% with messages = get_flashed_messages()%}
 {% if messages%}
 <ul class='flashes'>
@@ -13,18 +28,22 @@
 <form method="POST" action="{{url_for('add_user')}}">
  <div>
  <div class="form-group">
-<strong>用户名:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="text" name="user" ></div>
+<strong>用户名:</strong>
+<input type="text" name="user" placeholder="请输入用户"></div>
+<span>&nbsp;</span>
  <div class="form-group">
-<strong>登录密码  :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="password" name="password" ></div>
+<strong>登录密码  :</strong>
+<input type="password" name="password" placeholder="请输入密码"></div>
+<span>&nbsp;</span>
 <div class="form-group">
 <strong>再次输入密码:</strong>
-<input type="password" name="password1" ></div>
+<input type="password" name="password1"placeholder="请输入密码" ></div>
+<span>&nbsp;</span>
 <div class="form-group">
-<strong>输入邮箱:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="text" name="email" ></div>
-<button type="submit" class="btn btn-primary" style="margin-left: 26%;">添加</button>
+<strong>输入邮箱:</strong>
+<input type="text" name="email" placeholder="请输入邮箱"></div>
+<span>&nbsp;</span>
+<button type="submit" class="am-btn am-btn-primary" style="margin-left: 26%;">添加</button>
 </form>
 </div>
 {%endblock%}

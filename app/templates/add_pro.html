@@ -1,11 +1,29 @@
 {%extends 'back.html'%}
 {%block hello%}
-<h3>添加项目</h3>
+<div class="tpl-content-wrapper">
+            <div class="tpl-content-page-title">
+                
+            </div>
+            
+            <div class="tpl-portlet-components">
+                <div class="portlet-title">
+                    <div class="caption font-green bold">
+                        <span class="am-icon-code"></span> 添加项目
+                    </div>
+                    <div class="tpl-portlet-input tpl-fz-ml">
+                        <div class="portlet-input input-small input-inline">
+                            <div class="input-icon right">
+                                </div>
+                        </div>
+                    </div>
+
+
+                </div>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
  <ul class='flashes'>
 {% for message in messages %}
-<li >{{ message }}</li>
+<li style="color:red">{{ message }}</li>
 {% endfor %}
 </ul>
 {% endif %}
@@ -15,8 +33,9 @@
 
 <div class="form-group">
 <strong>项目名字:</strong>
-    <input type="text" name="project"></div>
-<button type="submit" class="btn btn-primary ">添加</button>
+    <input type="text" name="project"  placeholder="填写项目名">
+    </div>
+<button type="submit" class="am-btn am-btn-primary ">添加</button>
 </div>
 </form>
 {%endblock%}

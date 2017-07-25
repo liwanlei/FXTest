@@ -1,8 +1,16 @@
 {% extends "back.html" %}
 {% block hello %}
 {% import "fenye.html" as macros %}
-    <div>
-    <h2>用例</h2>
+   <div class="tpl-content-wrapper">
+            <div class="tpl-content-page-title">
+           
+            </div>
+            <div class="tpl-portlet-components">
+                <div class="portlet-title">
+                    <div class="caption font-green bold">
+                        <span class="am-icon-code"></span> 用例
+                    </div>
+                    </div>
      {% with messages = get_flashed_messages() %}
 {% if messages %}
  <ul class='flashes'>
@@ -12,18 +20,18 @@
 {% endif %}
 {% endwith %}
     <form method="POST" action="{{url_for('ser_yongli')}}">
-     <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project">
+     <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project" placeholder="查询所属项目">
     <span></span>
-    <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model">
+    <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model"  placeholder="查询所属模块">
         <span></span>
     <input type="submit" value="查询" class="btn btn-default">
     </form>
     <form method="POST" action="{{url_for('duoyongli')}}">
         <div style="margin-top: 10px">
-           <a href="{{url_for('addtestcase')}}"><input type="button" name="" class="btn btn-default" value="添加"></a>
-            <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="btn btn-default" value="导入"></a> 
-        <button class="btn btn-default">批量执行</button></div>
-   <table class="table table-bordered" style="width:70%">
+           <a href="{{url_for('addtestcase')}}"><input type="button" name="" class="am-btn am-btn-default am-btn-success" value="添加"></a>
+            <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="am-btn am-btn-default am-btn-success" value="导入"></a> 
+        <button class="am-btn am-btn-default am-btn-success">批量执行</button></div>
+   <table class="am-table am-table-striped am-table-hover table-main" style="width:70%">
   <caption><strong>用例</strong></caption>
   <thead>
     <tr>
@@ -47,10 +55,12 @@
       <td>{{yongli.Interface_meth}}</td>
       <td>{{yongli.Interface_pase}}</td>
          <td>{{yongli.Interface_assert}}</td>
-      <td><p>
-        <span><a href="{{url_for('edit_case',id=yongli.id)}}"><input type="button" value="编辑" class="btn btn-default"></a></span>
-        <span> <a href="{{url_for('delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-default"></a></span>
-       <span><a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="执行"class="btn btn-default"></a></span>
+      <td>
+      <div class="am-btn-toolbar">
+   <div class="am-btn-group am-btn-group-xs">
+        <a href="{{url_for('edit_case',id=yongli.id)}}"><input type="button" value="编辑" class="btn btn-default"></a>
+       <a href="{{url_for('delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-default"></a>
+     <a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="执行"class="btn btn-default"></a></div></div>
       </td>
     </tr>
     {%endfor%}
