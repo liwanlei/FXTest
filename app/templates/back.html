@@ -7,7 +7,7 @@
     <link href="{{url_for('static',filename='css/admin.css')}}"  rel="stylesheet">
     <link href="{{url_for('static',filename='css/app.css')}}"  rel="stylesheet">
     <link href="{{url_for('static',filename='css/bootstrap.min.css')}}"  rel="stylesheet">
-    <link rel="icon" href="{{url_for('static',filename='img/logo.png')}}" type="image/x-icon"/> 
+    <link rel="icon" href="{{url_for('static',filename='img/logo.png')}}" type="image/x-icon"> 
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
 </head>
 <body style='background-color: papayawhip;'>
@@ -15,7 +15,7 @@
     <header class="am-topbar am-topbar-inverse admin-header">
         <div class="am-topbar-brand">
             <a href="javascript:;" class="tpl-logo">
-                <img src="static/img/logo.png" alt="">
+                <img src="{{url_for('static',filename='img/logo.png')}}" alt="">
             </a>
         </div>
         </div>
