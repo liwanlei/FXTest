@@ -111,7 +111,7 @@ def interface_add():
         return redirect(url_for('login'))
     form=InterForm()
     project,models=get_pro_mo()
-    if form.validate_on_submit and request.method =="POST":
+    if form.validate_on_submit() and request.method =="POST":
         project_name=request.form.get('project')
         model_name=request.form.get('model')
         interface_name=request.form.get('interface_name')
@@ -125,10 +125,15 @@ def interface_add():
         user_id=User.query.filter_by(username=session.get('username')).first().id
         project_id=Project.query.filter_by(project_name=project_name).first().id
         models_id=Model.query.filter_by(model_name=model_name).first().id
-        new_interface=Interface(model_id=models_id,projects_id=project_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id)
-        db.session.add(new_interface)
-        db.session.commit()
-        return redirect(url_for('interface'))
+        try:
+            new_interface=Interface(model_id=models_id,projects_id=project_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id)
+            db.session.add(new_interface)
+            db.session.commit()
+            flash('添加成功')
+            return redirect(url_for('interface'))
+        except:
+            flash('添加失败')
+            return render_template('add_interface.html',form=form,projects=project,models=models)
     return render_template('add_interface.html',form=form,projects=project,models=models)
 @app.route('/edit_interface/<int:id>',methods=['GET','POST'])
 def interfac_edit(id):
@@ -179,7 +184,7 @@ def addtestcase():
         return redirect(url_for('login'))
     form=Interface_yong_Form()
     project, models = get_pro_mo()
-    if request.method=='POST' :
+    if request.method=='POST' and form.validate_on_submit() :
         yongli_nam=request.form.get('project')
         mode=request.form.get('model')
         interface_name=request.form.get('interface_name')
@@ -192,11 +197,15 @@ def addtestcase():
             return render_template('add_test_case.html',form=form,projects=project,models=models)
         project_id = Project.query.filter_by(project_name=yongli_nam).first().id
         models_id = Model.query.filter_by(model_name=mode).first().id
-        newcase=InterfaceTest(projects_id=project_id,model_id=models_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
-        db.session.add(newcase)
-        db.session.commit()
-        flash(u'添加用例成功')
-        return redirect(url_for('yongli'))
+        try:
+            newcase=InterfaceTest(projects_id=project_id,model_id=models_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+            db.session.add(newcase)
+            db.session.commit()
+            flash(u'添加用例成功')
+            return redirect(url_for('yongli'))
+        except:
+            flash('添加失败')
+            return render_template('add_test_case.html',form=form,projects=project,models=models)
     return render_template('add_test_case.html',form=form,projects=project,models=models)
 @app.route('/delete_case/<int:id>',methods=['GET','POST'])
 def delete_case(id):
