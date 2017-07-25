@@ -448,7 +448,7 @@ def ser_yongli():
             return redirect(url_for('yongli'))
         projects_id = Project.query.filter_by(project_name=projecct).first().id
         model_id = Model.query.filter_by(model_name=model).first().id
-        interd=InterfaceTest.query.filter(InterfaceTest.model_id.like(model_id),InterfaceTest.projects_id.like(projects_id)).all()
+        interd=InterfaceTest.query.filter(InterfaceTest.model_id.like('%'+str(model_id)+'%'),InterfaceTest.projects_id.like('%'+str(projects_id)+'%')).all()
         if len(interd)<1:
             flash(u'搜索的内容没有找到')
             return redirect(url_for('yongli'))
@@ -466,8 +466,8 @@ def ser_inter():
             return redirect(url_for('interface'))
         projects_id = Project.query.filter_by(project_name=projecct).first().id
         model_id = Model.query.filter_by(model_name=model).first().id
-        interd=Interface.query.filter(Interface.model_id.like(model),Interface.projects_id.like(projecct)).all()
-        if len(interd)<1:
+        interd=Interface.query.filter(Interface.model_id.like('%'+str(model_id)+'%'),Interface.projects_id.like('%'+str(projects_id)+'%')).all()
+        if len(interd)<=0:
             flash(u'搜索的内容不存在')
             return redirect(url_for('interface'))
         return render_template('ser_inter.html',inte=interd)
@@ -552,11 +552,11 @@ def duoyongli():
             db.session.add(new_reust)
             db.session.commit()
             flash(u'测试已经完成')
-            return redirect(url_for('interface'))
+            return redirect(url_for('test_rep'))
         except:
             flash(u'测试失败，请检查您的测试用例单个执行是否出错')
-            return redirect(url_for('interface'))
-    return redirect(url_for('interface'))
+            return redirect(url_for('yongli'))
+    return redirect(url_for('yongli'))
 @app.route('/project',methods=['GET','POST'])
 def project():
     if not  session.get('username'):
@@ -645,16 +645,16 @@ def edit_moel(id):
         ed_mode=request.form.get('model')
         if ed_mode=='':
             flash(u'请添加模块名')
-            return render_template('edit_model.html', model=model)
+            return render_template('edit_model.html', mode=model)
         models = Model.query.filter_by(model_name=ed_mode).first()
         if models:
             flash(u'模块不能重复')
-            return render_template('edit_model.html', model=model)
+            return render_template('edit_model.html', mode=model)
         model.model_name=ed_mode
         db.session.commit()
         flash(u'编辑成功')
         return  redirect(url_for('model'))
-    return  render_template('edit_model.html',model=model)
+    return  render_template('edit_model.html',mode=model)
 @app.route('/edit_pro/<int:id>',methods=['GET','POST'])
 def edit_pro(id):
     if not session.get('username'):

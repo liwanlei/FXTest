@@ -1,25 +1,37 @@
 {% extends "back.html" %}
 {% block hello %}
 {% import "fenye.html" as macros %}
-
-   <div>
-    <h2>项目</h2>
-    {% with messages = get_flashed_messages() %}
+ <div class="tpl-content-wrapper">
+            <div class="tpl-content-page-title">
+                {% with messages = get_flashed_messages() %}
 {% if messages %}
  <ul class='flashes'>
 {% for message in messages %}
-<li >{{ message }}</li>
+<li style="color:red" >{{ message }}</li>
 {% endfor %}
 </ul>
 {% endif %}
 {% endwith %}
-
-        <div style="margin-top: 10px">
-        <a href="{{url_for('add_pro')}}">
-          <input type="button" name="" class="btn btn-default" value="添加">
-        </a>
-  </div>
-   <table class="table table-bordered" style="width:30%">
+            </div>
+            <div class="tpl-portlet-components">
+                <div class="portlet-title">
+                    <div class="caption font-green bold">
+                        <span class="am-icon-code"></span> 项目
+                    </div>
+</div>
+<div class="tpl-block">
+                    <div class="am-g">
+                        <div class="am-u-sm-12 am-u-md-6">
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                   
+                                <a href="{{url_for('add_pro')}}"> <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+   <table class="am-table am-table-striped am-table-hover table-main" style="width:30%">
   <caption><strong></strong></caption>
   <thead>
     <tr>
@@ -31,7 +43,6 @@
   <tbody>
   {%for project in projects%}
     <tr>
-
       <td>{{project.project_name}}</td>
     <td>{{ project.users }}</td>
       <td>
@@ -43,4 +54,5 @@
   </tbody>
 </table>
   </div>
+  
 {% endblock %}

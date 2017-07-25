@@ -1,24 +1,36 @@
 {%extends 'back.html'%}
 {%block hello%}
-<h3>添加接口</h3>
+<div class="tpl-content-wrapper">
+            <div class="tpl-content-page-title">
+           
+            </div>
+            <div class="tpl-portlet-components">
+                <div class="portlet-title">
+                    <div class="caption font-green bold">
+                        <span class="am-icon-code"></span> 添加接口
+                    </div>
+                    </div>
+                     
+
 {% with messages = get_flashed_messages() %}
 {% if messages %}
  <ul class='flashes'>
 {% for message in messages %}
-<li >{{ message }}</li>
+<li style="color:red">{{ message }}</li>
 {% endfor %}
 </ul>
 {% endif %}
 {% endwith %}
-<form  action="{{ url_for('interface_add') }}" method="POST" style="width: 40%;
-    margin-left: 30%;">
+<form  action="{{ url_for('interface_add') }}" method="POST" >
  {{form.hidden_tag()}}
  {{form.csrf_token}}
-<span class="form-group">
+ <div class="form-group">
 <strong>项目名字:</strong>
     {% for project in  projects %}
-<input type='radio' value="{{  project.project_name }}" name="project">{{ project.project_name }}</span>
-    {% endfor %}
+<input type='radio' value="{{  project.project_name }}" name="project"
+style="user-name">{{ project.project_name }}
+    {% endfor %}</div><span>&nbsp;</span>
+<span>&nbsp;</span>
 <div class="form-group">
 <strong>模块名字:</strong>
 <span>
@@ -26,22 +38,29 @@
 <input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
     {% endfor %}
     </span></div>
+    <span>&nbsp;</span>
 <div class="form-group">
 <strong>接口名字:</strong>
 {{ form.interface_name }}</div>
+<span>&nbsp;</span>
 <div class="form-group">
 <strong>接口地址:</strong>
 {{ form.interface_url }}</div>
+<span>&nbsp;</span>
 <div class="form-group">
 <strong>请求方式:</strong>
 {{ form.interface_meth }}</div>
+<span>&nbsp;</span>
 <div class="form-group">
 <strong>请求示例:</strong>
 {{ form.interface_par}}</div>
+<span>&nbsp;</span>
+<span>&nbsp;</span>
 <div class="form-group">
 <strong>返回示例:</strong>
 {{ form.interface_bas }}</div>
-<button type="submit" class="btn btn-primary ">添加</button>
+
+<button type="submit" class="am-btn am-btn-primary ">添加</button>
 </div>
 </form>
 {%endblock%}
