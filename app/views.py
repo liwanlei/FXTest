@@ -111,7 +111,7 @@ def interface_add():
         return redirect(url_for('login'))
     form=InterForm()
     project,models=get_pro_mo()
-    if form.validate_on_submit() and request.method =="POST":
+    if form.validate_on_submit and request.method =="POST":
         project_name=request.form.get('project')
         model_name=request.form.get('model')
         interface_name=request.form.get('interface_name')
@@ -184,7 +184,7 @@ def addtestcase():
         return redirect(url_for('login'))
     form=Interface_yong_Form()
     project, models = get_pro_mo()
-    if request.method=='POST' and form.validate_on_submit() :
+    if request.method=='POST' and form.validate_on_submit :
         yongli_nam=request.form.get('project')
         mode=request.form.get('model')
         interface_name=request.form.get('interface_name')
@@ -204,7 +204,7 @@ def addtestcase():
             flash(u'添加用例成功')
             return redirect(url_for('yongli'))
         except:
-            flash(u'添加失败')
+            flash(u'添加用例失败')
             return render_template('add_test_case.html',form=form,projects=project,models=models)
     return render_template('add_test_case.html',form=form,projects=project,models=models)
 @app.route('/delete_case/<int:id>',methods=['GET','POST'])
@@ -235,6 +235,7 @@ def edit_case(id):
         reque=request.form.get('reque')
         if yongli_nam ==None  or mode== None or url=='' or meth=='' or parme=='' or reque=='':
             flash(u'请确定各项参数都正常填写')
+            return render_template('edit_case.html',edit=edit_case,projects=project,models=models)
         projects_id = Project.query.filter_by(project_name=yongli_nam).first().id
         model_id = Model.query.filter_by(model_name=mode).first().id
         edit_case.projects_id=projects_id
