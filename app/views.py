@@ -440,11 +440,15 @@ def ser_user():
         if user=='':
             flash(u'请输入您要查询的用户')
             return redirect(url_for('adminuser'))
-        use=User.query.filter(User.username.like('%'+user+'%')).all()
-        if len(use)<=0:
+        try:
+            use=User.query.filter(User.username.like('%'+user+'%')).all()
+            if len(use)<=0:
+                flash(u'没有找到您输入的用户')
+                return redirect(url_for('adminuser'))
+            return render_template('user_ser.html',users=use)
+        except:
             flash(u'没有找到您输入的用户')
             return redirect(url_for('adminuser'))
-        return render_template('user_ser.html',users=use)
     return redirect(url_for('adminuser'))
 @app.route('/ser_yongli',methods=['GET','POST'])
 def ser_yongli():
@@ -456,13 +460,17 @@ def ser_yongli():
         if projecct =='' and model  =='':
             flash(u'请输入搜索的内容')
             return redirect(url_for('yongli'))
-        projects_id = Project.query.filter_by(project_name=projecct).first().id
-        model_id = Model.query.filter_by(model_name=model).first().id
-        interd=InterfaceTest.query.filter(InterfaceTest.model_id.like('%'+str(model_id)+'%'),InterfaceTest.projects_id.like('%'+str(projects_id)+'%')).all()
-        if len(interd)<1:
+        try:
+            projects_id = Project.query.filter_by(project_name=projecct).first().id
+            model_id = Model.query.filter_by(model_name=model).first().id
+            interd=InterfaceTest.query.filter(InterfaceTest.model_id.like('%'+str(model_id)+'%'),InterfaceTest.projects_id.like('%'+str(projects_id)+'%')).all()
+            if len(interd)<1:
+                flash(u'搜索的内容没有找到')
+                return redirect(url_for('yongli'))
+            return render_template('ser_yonglo.html',yonglis=interd)
+        except:
             flash(u'搜索的内容没有找到')
             return redirect(url_for('yongli'))
-        return render_template('ser_yonglo.html',yonglis=interd)
     return redirect(url_for('yongli'))
 @app.route('/ser_inter',methods=['GET','POST'])
 def ser_inter():
@@ -474,13 +482,17 @@ def ser_inter():
         if projecct =='' and model  =='':
             flash(u'请输入搜索的内容')
             return redirect(url_for('interface'))
-        projects_id = Project.query.filter_by(project_name=projecct).first().id
-        model_id = Model.query.filter_by(model_name=model).first().id
-        interd=Interface.query.filter(Interface.model_id.like('%'+str(model_id)+'%'),Interface.projects_id.like('%'+str(projects_id)+'%')).all()
-        if len(interd)<=0:
+        try:
+            projects_id = Project.query.filter_by(project_name=projecct).first().id
+            model_id = Model.query.filter_by(model_name=model).first().id
+            interd=Interface.query.filter(Interface.model_id.like('%'+str(model_id)+'%'),Interface.projects_id.like('%'+str(projects_id)+'%')).all()
+            if len(interd)<=0:
+                flash(u'搜索的内容不存在')
+                return redirect(url_for('interface'))
+            return render_template('ser_inter.html',inte=interd)
+        except:
             flash(u'搜索的内容不存在')
             return redirect(url_for('interface'))
-        return render_template('ser_inter.html',inte=interd)
     return redirect(url_for('interface'))
 @app.route('/test_rep',methods=['GET','POST'])
 @app.route('/test_rep/<int:page>',methods=['GET','POST'])
