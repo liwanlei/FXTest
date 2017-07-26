@@ -518,6 +518,7 @@ def make_one_case(id):
     try:
         if result==eval(case.Interface_assert):
             flash(u'用例测试通过')
+            print(result)
             return redirect(url_for('yongli'))
         flash(u'用例测试失败')
         return redirect(url_for('yongli'))
