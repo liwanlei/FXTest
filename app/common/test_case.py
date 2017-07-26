@@ -8,7 +8,7 @@ class reques():
     def get(self, url):#get消息
         try:
             r = requests.get(url, headers=self.headers)
-            # r.encoding = 'UTF-8'
+            r.encoding = 'UTF-8'
             json_response = json.loads(r.text)
             return json_response
         except Exception as e:

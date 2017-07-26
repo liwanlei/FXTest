@@ -21,10 +21,7 @@ class Api():
 		elif self.fangsh=='DELETE' or self.fangsh=='delete':
 			liwanlei=requ.delfile(self.url,self.param)
 		return  liwanlei
-	# def getcode(self):
-	# 	print(self.testapi())
-	# 	code=self.testapi()['error_code']
-	# 	return code
+	
 	def getJson(self):
 		json_data=self.testapi()
 		return json_data
