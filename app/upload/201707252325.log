@@ -1,0 +1,1 @@
+2017-07-25 23:25:01,105 - 测试日志 - INFO - input:接口地址：萨达萨达,参数:萨达萨达,实际返回:{u'status': u'error', u'message': u'Object Not Found', u'rate_limit': {u'hourly_remaining': 119, u'used': 1, u'hourly_quota': 120}},预期:萨达萨达
