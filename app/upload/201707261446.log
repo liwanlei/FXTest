@@ -1,0 +1,1 @@
+2017-07-26 14:46:46,641 - 测试日志 - INFO - input:接口地址：http://120.25.230.113:8080/api/v1/login,参数:{'username': '13566666666', "password": 'qwe213'},实际返回:{u'message': u'request data type invalid', u'code': 2002, u'data': None, u'errors': None},预期:1001
