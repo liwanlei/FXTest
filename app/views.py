@@ -13,6 +13,7 @@ import os,time,datetime,threading
 from app.common.pares_excel_inter import pasre_inter
 from app.common.py_Html import createHtml
 from app.common.requ_case import Api
+from app.common.dict_com import assert_in
 from app.test_case.Test_case import ApiTestCase
 from app.common.py_Html import createHtml
 def get_pro_mo():
@@ -299,7 +300,7 @@ def daoru_case():
         if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
             filename='jiekoucase.xlsx'
             file.save(filename)
-            jiekou_bianhao,project_nam, model_nam, interface_name, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(filename)
+            jiekou_bianhao,interface_name,project_nam, model_nam, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(filename)
             try:
                 for i in range(len(project_nam)):
                     projects_id = Project.query.filter_by(project_name=project_nam[i]).first().id
@@ -515,10 +516,10 @@ def make_one_case(id):
     case=InterfaceTest.query.filter_by(id=id).first()
     me=Api(url=case.Interface_url,fangshi=case.Interface_meth,params=case.Interface_pase)
     result=me.testapi()
+    retur_re=assert_in(case.Interface_assert,result)
     try:
-        if result==eval(case.Interface_assert):
+        if retur_re=='pass':
             flash(u'用例测试通过')
-            print(result)
             return redirect(url_for('yongli'))
         flash(u'用例测试失败')
         return redirect(url_for('yongli'))

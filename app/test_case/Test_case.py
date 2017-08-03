@@ -2,7 +2,7 @@
 # @Date    : 2017-07-20 21:06:16
 # @Author  : lileilei
 from app.common.requ_case import Api
-from app.common.dict_com import comp_dict
+from app.common.dict_com import assert_in
 from app.common.log import log_t
 class ApiTestCase():
     def __init__(self,inteface_url,inteface_meth,inteface_parm,inteface_assert,file):
@@ -22,8 +22,9 @@ class ApiTestCase():
             api=Api(url=self.url[case],fangshi=self.meth[case],params=self.parm[case])
             apijson=api.getJson()
             self.log_can.info_log(u'input:接口地址：%s,参数:%s,实际返回:%s,预期:%s'%(self.url[case],self.parm[case],apijson,self.assert_test[case]))
-            come=comp_dict(apijson,eval(self.assert_test[case]))
-            if come==True:
+            # come=comp_dict(apijson,eval(self.assert_test[case]))
+            come=assert_in(self.assert_test[case],apijson)
+            if come=='pass':
                 self.result_pass+=1
                 self.result_toal+=1
                 self.bask_list.append(apijson)

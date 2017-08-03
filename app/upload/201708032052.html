@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>接口测试报告</title>
+		<style type="text/css">
+			td{ width:40px; height:50px;}
+		</style>
+	</head>
+	<body>
+	
+<div style='width: 1170px;margin-left: 15%'>
+<h1>接口测试的结果</h1>
+		<p><strong>开始时间:</strong> 2017-08-03 20:52:07.215147</p>
+		<p><strong>结束时间:</strong> 2017-08-03 20:52:07.755178</p>
+		<p><strong>耗时:</strong> 0:00:00.540031</p>
+		<p><strong>结果:</strong>
+			<span >Pass: <strong >1</strong>
+			Fail: <strong >2</strong>
+			        </span></p>                  
+			    <p ><strong>测试详情如下</strong></p>  </div> 
+
+
+        <p>&nbsp;</p>
+        <table border='2'cellspacing='1' cellpadding='1' width='70%'align="center" >
+		<tr >
+            <td ><strong>用例ID&nbsp;</strong></td>
+            <td><strong>项目</strong></td>
+            <td><strong>模块</strong></td>
+            <td><strong>url</strong></td>
+            <td><strong>请求方式</strong></td>
+            <td><strong>参数</strong></td>
+            <td><strong>预期</strong></td>
+            <td><strong>实际返回</strong></td>  
+            <td><strong>结果</strong></td>
+        </tr>
+     
+        <tr>
+            <td>14</td>
+            <td>ming</td>
+            <td>test</td>
+            <td>http://www.tuling123.com/openapi/api</td>
+            <td>POST</td>
+            <td></td>
+            <td>code=40001</td>
+            <td>{'code': 40007, 'text': '您的请求内容为空。'}</td>
+            <td> <td bgcolor="fail">fail</td></td>
+        </tr>
+        
+    
+        <tr>
+            <td>15</td>
+            <td>ming</td>
+            <td>test</td>
+            <td>http://www.tuling123.com/openapi/api
+</td>
+            <td>POST</td>
+            <td></td>
+            <td>code=40002</td>
+            <td>{'code': 40007, 'text': '您的请求内容为空。'}</td>
+            <td> <td bgcolor="fail">fail</td></td>
+        </tr>
+        
+    
+        <tr>
+            <td>16</td>
+            <td>ming</td>
+            <td>test</td>
+            <td>https://api.douban.com/v2/photo/:id</td>
+            <td>GET</td>
+            <td></td>
+            <td>code=1001&msg=uri_not_found</td>
+            <td>{'msg': 'uri_not_found', 'code': 1001, 'request': 'GET /v2/photo/:id'}</td>
+            <td> <td bgcolor="green">pass</td></td>
+        </tr>
+        
+    
+	</table>
+    </body>
+    </html>
