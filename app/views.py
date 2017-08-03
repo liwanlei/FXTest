@@ -275,7 +275,7 @@ def daoru_inter():
         if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
             filename='jiekou.xlsx'
             file.save(filename)
-            model_names,project_name,model_name,interface_name,interface_url,interface_meth,interface_par,interface_bas=pasre_inter(filename)
+            jiekou_bianhao,interface_name,project_nam, model_nam, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(filename)
             try:
                 for i in range(len(project_name)):
                     projects_id = Project.query.filter_by(project_name=project_name[i]).first().id

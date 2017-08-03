@@ -1,0 +1,2 @@
+2017-08-03 21:35:11,352 - 测试日志 - INFO - input:接口地址：https://api.douban.com/v2/photo/:id,参数:,实际返回:{u'msg': u'uri_not_found', u'code': 1001, u'request': u'GET /v2/photo/:id'},预期:code=1001&msg=uri_not_found
+2017-08-03 21:35:11,394 - 测试日志 - INFO - input:接口地址：https://api.douban.com/v2/photo/:id,参数:1,实际返回:{u'msg': u'uri_not_found', u'code': 1001, u'request': u'GET /v2/photo/:id'},预期:code=1001&msg=uri_n北京

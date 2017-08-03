@@ -1,0 +1,1 @@
+2017-08-03 21:41:44,994 - 测试日志 - INFO - input:接口地址：http://www.tuling123.com/openapi/api,参数:{ 'key':'APIKEY', “info”:“你好”, “userid”:“123456” },实际返回:None,预期:code=40007
