@@ -1,0 +1,2 @@
+2017-08-09 21:05:50,921 - 测试日志 - INFO - input:接口地址：https://api.douban.com/v2/photo/:id,参数:1,实际返回:{'msg': 'uri_not_found', 'code': 1001, 'request': 'GET /v2/photo/:id'},预期:code=1001&msg=uri_not_found
+2017-08-09 21:05:50,991 - 测试日志 - INFO - input:接口地址：https://api.douban.com/v2/photo/:id,参数:安达市大所多,实际返回:{'msg': 'uri_not_found', 'code': 1001, 'request': 'GET /v2/photo/:id'},预期:code=1001

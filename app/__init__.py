@@ -22,4 +22,4 @@ bootstrap=Bootstrap(app)
 db=SQLAlchemy(app)
 #cache=Cache(app,config={'CACHE_TYPE':'simpleade'})
 #app.permanent_session_lifetime=timedelta(minutes=50*60)
-from  app import  views ,models
+from  app import  views ,models,url

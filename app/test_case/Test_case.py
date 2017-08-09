@@ -22,7 +22,6 @@ class ApiTestCase():
             api=Api(url=self.url[case],fangshi=self.meth[case],params=self.parm[case])
             apijson=api.getJson()
             self.log_can.info_log(u'input:接口地址：%s,参数:%s,实际返回:%s,预期:%s'%(self.url[case],self.parm[case],apijson,self.assert_test[case]))
-            # come=comp_dict(apijson,eval(self.assert_test[case]))
             come=assert_in(self.assert_test[case],apijson)
             if come=='pass':
                 self.result_pass+=1
