@@ -131,7 +131,7 @@ class InterfaceaddView(MethodView):
             interface_par=request.form.get('interface_par')
             interface_bas=request.form.get('interface_bas')
             if project_name == None or model_name ==None or interface_name=='' or interface_url =='' or interface_meth=='':
-                flash(u'请准确的填写接口的各项信息')
+                flash(u'请完整填写接口的各项信息')
                 return render_template('add_interface.html',form=form,projects=project,models=models)
             user_id=User.query.filter_by(username=session.get('username')).first().id
             project_id=Project.query.filter_by(project_name=project_name).first().id
@@ -253,7 +253,7 @@ class EditcaseView(View):
             meth=request.form.get('meth')
             parme=request.form.get('parme')
             reque=request.form.get('reque')
-            if yongli_nam ==None  or mode== None or url=='' or meth=='' or parme=='' or reque=='':
+            if yongli_nam ==None  or mode== None or url=='' or meth==''  or reque=='':
                 flash(u'请确定各项参数都正常填写')
                 return render_template('edit_case.html',edit=edit_case,projects=project,models=models)
             projects_id = Project.query.filter_by(project_name=yongli_nam).first().id
@@ -297,9 +297,9 @@ class DaoruinterView(View):
                 file.save(filename)
                 jiekou_bianhao,interface_name,project_nam, model_nam, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(filename)
                 try:
-                    for i in range(len(project_name)):
-                        projects_id = Project.query.filter_by(project_name=project_name[i]).first().id
-                        model_id = Model.query.filter_by(model_name=model_name[i]).first().id
+                    for i in range(len(jiekou_bianhao)):
+                        projects_id = Project.query.filter_by(project_name=project_nam[i]).first().id
+                        model_id = Model.query.filter_by(model_name=project_nam[i]).first().id
                         new_interface=Interface(projects_id=projects_id,model_id=model_id,Interface_name=str(interface_name[i]),Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                         db.session.add(new_interface)
                     db.session.commit()
