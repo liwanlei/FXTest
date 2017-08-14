@@ -5,8 +5,10 @@
 from flask_migrate import Migrate,MigrateCommand
 from flask_script import  Manager
 from app import db,app
+from app.models import Role
 manage=Manager(app)
 migrate=Migrate(app,db)
 manage.add_command('db',MigrateCommand)
 if __name__=='__main__':
-    manage.run()
+    #manage.run()
+	Role.insert_roles()
