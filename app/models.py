@@ -7,6 +7,39 @@
 from app import  db
 import datetime
 from werkzeug.security import check_password_hash,generate_password_hash
+class Permisson:
+    FOLLOW = 0x01             
+    COMMENT = 0x02           
+    WRITE_ARTICLES = 0x04     
+    MODERATE_COMMENTS = 0x08  
+    ADMINISTRATOR = 0xff
+class Role(db.Model):
+    __tablename__='roles'
+    id=db.Column(db.Integer(),primary_key=True)
+    name = db.Column(db.String(), nullable=True, unique=True)
+    default = db.Column(db.Boolean(), default=False)     
+    permissions = db.Column(db.Integer())                
+    users = db.relationship('User', backref='itsrole')                                        
+    @staticmethod
+    def insert_roles():
+        roles = {
+            'User':(Permisson.FOLLOW|Permisson.COMMENT|
+                    Permisson.WRITE_ARTICLES, True),
+            'Administrator':(0xff, False)}
+        for r in roles:
+            role = Role.query.filter_by(name=r).first()
+            if role is None:
+                role = Role(name=r)
+            role.permissions = roles[r][0]
+            role.default = roles[r][1]
+            db.session.add(role)
+        db.session.commit()
+class Work(db.Model):
+    __tablename__='works'
+    id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
+    name=db.Column(db.String(),unique=True)
+    def __repr__(self):
+        return  self.username
 class User(db.Model):
     __tablename__='users'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
@@ -15,11 +48,18 @@ class User(db.Model):
     user_email=db.Column(db.String(64),unique=True)
     status=db.Column(db.Integer(),default=0)
     level=db.Column(db.Integer(),default=0)
+    work_id=db.Column(db.Integer(),db.ForeignKey('works.id'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id'))
     phone = db.relationship('TestResult', backref='users', lazy='dynamic')
     project=db.relationship('Project',backref='users', lazy='dynamic')
     model = db.relationship('Model', backref='users', lazy='dynamic')
     def __repr__(self):
         return  self.username
+    def can(self, permissions):         
+        return self.itsrole is not None and \
+               (self.itsrole.permissions & permissions) == permissions
+    def is_administrator(self):     
+        return self.can(Permisson.ADMINISTRATOR)
     def set_password(self,password):
         self.password=generate_password_hash(password)
     def check_password(self,password):
