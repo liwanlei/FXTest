@@ -23,15 +23,13 @@
                     <div class="am-g">
                         <div class="am-u-sm-12 am-u-md-6">
                             <div class="am-btn-toolbar">
-                                <div class="am-btn-group am-btn-group-xs">
-                                   
+                                <div class="am-btn-group am-btn-group-xs"> 
                                 <a href="{{url_for('add_pro')}}"> <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
-   <table class="am-table am-table-striped am-table-hover table-main" style="width:30%">
+<table class="am-table am-table-striped am-table-hover table-main" style="width:30%">
   <caption><strong></strong></caption>
   <thead>
     <tr>
@@ -46,13 +44,13 @@
       <td>{{project.project_name}}</td>
     <td>{{ project.users }}</td>
       <td>
-          <span><a href="{{url_for('edit_pro',id=project.id)}}"><input type="button" value="编辑" class="btn btn-default"></a></span>
-           <span><a href="{{url_for('dele_pro',id=project.id)}}"><input type="button" value="删除" class="btn btn-default"></a></span>
+          <span><a href="{{url_for('edit_pro',id=project.id)}}"><input type="button" value="编辑" class="btn btn-default"></a></span>  {%if current_user.role_id !=1 and
+          current_user.role_id !=None  %}
+           <span><a href="{{url_for('dele_pro',id=project.id)}}"><input type="button" value="删除" class="btn btn-default"></a></span>{%endif%}
       </td>
     </tr>
 {%endfor%}
   </tbody>
 </table>
   </div>
-  
 {% endblock %}

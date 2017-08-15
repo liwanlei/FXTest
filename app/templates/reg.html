@@ -14,64 +14,67 @@
 			<div class="vertical-align-middle" >
 					<div class="left" style="text-align: center">
 							<h1>注册</h1>
-							</div>
-                            {% with messages = get_flashed_messages() %}
-                                  {% if messages %}
-                                    <ul class=flashes>
-                                    {% for message in messages %}
-                                      <li >{{ message }}</li>
-                                    {% endfor %}
+							</div>{% with messages = get_flashed_messages() %}{% if messages %}
+            <ul class=flashes style="text-align:center;color:red">
+                    {% for message in messages %}
+                        <li >{{ message }}</li>
+                          {% endfor %}
                                     </ul>
-                                  {% endif %}
-                                {% endwith %}
-                                {% block body %}{% endblock %}
-							<form class="form-auth-small" action="{{ url_for('reg') }}" method="POST" style="width: 40%;
+                                {% endif %}
+                               {% endwith %}
+                            {% block body %}{% endblock %}
+	<form class="form-auth-small" action="{{ url_for('reg') }}" method="POST" style="width: 40%;
     margin-left: 30%;">
-                                {{form.hidden_tag()}}
+                    {{form.hidden_tag()}}
 								<div class="form-group">
-                                    {{ form.username.label }}
-                                    {% if form.username.errors %}
-                                    {% for e in form.username.errors %}
-                                      <p class="help-block">{{ e }}</p>
+                          {{ form.username.label }}
+                        {% if form.username.errors %}
+                      {% for e in form.username.errors %}
+                          <p class="help-block">{{ e }}</p>
                                     {% endfor %}
                                   {% endif %}
-									{{ form.username(class='form-control') }}
+							{{ form.username(class='form-control') }}
                                 </div>
 								<div class="form-group">
-                                    {{ form.password.label }}
-                                      {% if form.password.errors %}
-                                    {% for e in form.password.errors %}
-                                      <p class="help-block">{{ e }}</p>
-                                    {% endfor %}
+                    {{ form.password.label }}
+                    {% if form.password.errors %}
+                      {% for e in form.password.errors %}
+                            <p class="help-block">{{ e }}</p>
+                                {% endfor %}
                                   {% endif %}
 									{{ form.password(class='form-control') }}
 								</div>
-                                    <div class="form-group">
-                                          {% if form.se_password.errors %}
-                                    {% for e in form.se_password.errors %}
-                                      <p class="help-block">{{ e }}</p>
-                                    {% endfor %}
-                                  {% endif %}
-                                        {{ form.se_password.label }}
-									{{ form.se_password(class='form-control') }}
+                        <div class="form-group">
+                            {% if form.se_password.errors %}
+                      {% for e in form.se_password.errors %}
+                          <p class="help-block">{{ e }}</p>
+                                  {% endfor %}
+                              {% endif %}
+                               {{ form.se_password.label }}
+								{{ form.se_password(class='form-control') }}
 								</div>
-                                    <div class="form-group">
-                                        {{ form.email.label }}
-                                          {% if form.email.errors %}
-                                    {% for e in form.email.errors %}
-                                      <p class="help-block">{{ e }}</p>
+                  <div class="form-group">
+                              {{ form.email.label }}
+                                {% if form.email.errors %}
+                           {% for e in form.email.errors %}
+                          <p class="help-block">{{ e }}</p>
                                     {% endfor %}
                                   {% endif %}
 									{{ form.email(class='form-control') }}
 								</div>
-
+                 <div class="form-group">
+         {{ form.work.label }}
+               {% if form.work.errors %}
+                  {% for e in form.work.errors %}
+                      <p class="help-block">{{ e }}</p>
+                                    {% endfor %}
+                                  {% endif %}
+                  {{ form.work }}
+                </div>
 								<button type="submit" class="btn btn-primary btn-lg btn-block">注册</button>
-
 							</form>
-
 						</div>
 					</div>
-
 					<div class="clearfix"></div>
 				</div>
 			</div>

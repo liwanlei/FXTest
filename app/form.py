@@ -7,17 +7,24 @@
 @time: 2017/7/13 16:42
 """
 from flask_wtf import  Form
-from wtforms import  StringField,SubmitField,DateTimeField,validators,IntegerField,FileField,PasswordField
+from wtforms import  StringField,SubmitField,DateTimeField,validators,IntegerField,FileField,PasswordField,SelectField
+from wtforms.validators import Email
+from app.models import Work
+choice_list=[]
+work_list=Work.query.all()
+for i in range(len(work_list)):
+    choice_list.append((work_list[i].id,work_list[i].name))
 class LoginFrom(Form):
     username=StringField(u'用户名',[validators.Length(min=4, max=16,message=u'用户名长度在4-16位'),validators.DataRequired()],render_kw={'placeholder':u'请输入用户名'})
     password=PasswordField(u'密码',[validators.length(min=8,max=16,message=u'密码长度8-16位'),validators.DataRequired()],render_kw={'placeholder':u'请输入密码'})
 class RegFrom(Form):
-    username = StringField(u'注册用户名', [validators.Length(min=4, max=16, message=u'用户名长度在4-16位'), validators.DataRequired()],render_kw={'placeholder': u'请输入用户名'})
-    password = PasswordField(u'注册密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],render_kw={'placeholder': u'请输入密码'})
-    se_password = PasswordField(u'再次输入密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
+    username = StringField(u'注册用户名', [validators.Length(min=4, max=16, message=u'用户名长度在4-16位'), validators.DataRequired(message=u'请输入用户名')],render_kw={'placeholder': u'请输入用户名'})
+    password = PasswordField(u'注册密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired(message=u'请输入密码')],render_kw={'placeholder': u'请输入密码'})
+    se_password = PasswordField(u'再次输入密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired(message=u'请输入确认密码')],
                              render_kw={'placeholder': u'请输入密码'})
-    email=StringField(u'输入注册邮箱', [ validators.DataRequired()],
+    email=StringField(u'输入注册邮箱', [ validators.DataRequired(message=u'请输入邮箱'),Email(message=u'邮箱格式不对')],
                            render_kw={'placeholder': u'请输入邮箱'})
+    work=SelectField(u'选择职位',choices=choice_list,coerce=int,validators=[validators.DataRequired(message=u"项目名称不能为空")])
 class XugaiFrom(Form):
     password = PasswordField(u'密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
                              render_kw={'placeholder': u'请输入原密码'})
@@ -43,3 +50,8 @@ class Interface_yong_Form(Form):
     interface_meth = StringField(u'请求方式', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口请求方式'})
     interface_can=StringField(u'请求参数', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口请求参数'})
     interface_rest = StringField(u'请求预期', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口预期'})
+class Set_email_Form(Form):
+    send_email=StringField(u'请输入邮箱', [ validators.DataRequired(message=u'请输入邮箱'),Email(message=u'邮箱格式不对')],
+                           render_kw={'placeholder': u'请输入邮箱'})
+    password=StringField(u'请输入安全密码：', [validators.DataRequired(message='请输入安全密码')],render_kw={'placeholder': u'请输入邮箱安全密码'})
+    

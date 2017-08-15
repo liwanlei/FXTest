@@ -11,14 +11,12 @@
 {% endif %}
 {% endwith %}
  <div class="tpl-content-wrapper">
-            <div class="tpl-content-page-title">
-            </div>
+            <div class="tpl-content-page-title"></div>
             <div class="tpl-portlet-components">
                 <div class="portlet-title">
-                    <div class="caption font-green bold">
-                        <span class="am-icon-code"></span> 管理用户
-                    </div>
- </div>
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 管理用户
+                    </div></div>
     <form method="POST" action="{{url_for('ser_user')}}">
      <strong  style="">用户名</strong>
      <input type="text" name="user"placeholder="查询的用户">
@@ -37,6 +35,7 @@
       <th>用户id</th>
       <th>用户名</th>
       <th>用户邮箱</th>
+      <th>用户职位</th>
          <th>用户状态</th>
          <th>管理</th>
         <th>操作</th>
@@ -48,12 +47,13 @@
       <td>{{user.id}}</td>
       <td>{{user.username}}</td>
       <td>{{user.user_email}}</td>
+      <td>{{user.works}}</td>
 {% if user.status !=1%}
          <td><a href="{{url_for('fre_ad',id=user.id)}}"><input type="button" value="冻结" class="btn btn-default"></a></td>
          {%else%}
          <td><a href="{{url_for('fre_re',id=user.id)}}"><input type="button" value="解冻" class="btn btn-default"></a></td>
       {%endif%}
-      {% if user.level !=1%}
+      {% if user.role_id!=2%}
       <td><a href="{{url_for('set_ad',id=user.id)}}"><input type="button" value="设置管理" class="btn btn-default"></a></td>
        {%else%}
         <td><a href="{{url_for('del_ad',id=user.id)}}"><input type="button" value="取消管理" class="btn btn-default"></a></td>
@@ -66,6 +66,6 @@
   </tbody>
 </table></div>
  <div class="am-cf">
-                {{ macros.pagination_widget(pagination,'.adminuser') }}</div>
+                {{ macros.pagination_widget(pagination,'.adminuserpage') }}</div>
   </div></div>
 {% endblock %}

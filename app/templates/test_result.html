@@ -30,13 +30,15 @@
       <th>测试数量</th>
       <th>通过</th>
       <th>失败</th>
-         <th>跳过</th>
          <th>测试时间</th>
          <th>测试耗时</th>
          <th>评分</th>
          <th>测试用户</th>
           <th>报告下载</th>
           <th>日志下载</th>
+          {%if current_user.role_id !=1 and
+          current_user.role_id !=None  %}
+          <th>操作</th>{%endif%}
     </tr>
   </thead>
   <tbody>
@@ -45,18 +47,20 @@
       <td>{{yong.test_num}}</td>
       <td>{{yong.pass_num}}</td>
       <td>{{yong.fail_num}}</td>
-         <td>{{yong.skip_num}}</td>
       <td>{{yong.test_time}}</td>
       <td>{{yong.hour_time}}</td>
          <td>{{(yong.pass_num)/(yong.test_num)}}</td>
          <td>{{yong.users}}</td>
         <td><a href="{{url_for('load',filename= yong.test_rep)}}">报告下载</a></td>
          <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
+         {%if current_user.role_id !=1 and
+          current_user.role_id !=None  %}
+          <th><a href="{{url_for('deletre',id=yong.id)}}"><input type="button" value="删除" class="btn btn-default"></a></th>{%endif%}
     </tr>
     {%endfor%}
   </tbody>
 </table>
  <p class="pagination" style="margin-left: 24%;">
-     {{macros.pagination_widget(pagination,'.test_rep')}}</p>
+     {{macros.pagination_widget(pagination,'.test_repppage')}}</p>
 </div>
 {% endblock %} 

@@ -13,12 +13,16 @@ from flask_login import  LoginManager
 from flask_moment import  Moment
 #from flask_cache import Cache
 from flask_bootstrap import  Bootstrap
+from flask_login import LoginManager
 from config import lod
 app=Flask(__name__)
 moment=Moment(app)
 conf=lod()
+loginManager = LoginManager(app)
 app.config.from_object(conf)
 bootstrap=Bootstrap(app)
+loginManager.session_protection = "strong"
+loginManager.login_view='login'
 db=SQLAlchemy(app)
 #cache=Cache(app,config={'CACHE_TYPE':'simpleade'})
 #app.permanent_session_lifetime=timedelta(minutes=50*60)

@@ -38,8 +38,9 @@ class Work(db.Model):
     __tablename__='works'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
     name=db.Column(db.String(),unique=True)
+    user= db.relationship('User', backref='works', lazy='dynamic')
     def __repr__(self):
-        return  self.username
+        return  self.name
 class User(db.Model):
     __tablename__='users'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
@@ -47,12 +48,12 @@ class User(db.Model):
     password=db.Column(db.String(252))
     user_email=db.Column(db.String(64),unique=True)
     status=db.Column(db.Integer(),default=0)
-    level=db.Column(db.Integer(),default=0)
     work_id=db.Column(db.Integer(),db.ForeignKey('works.id'))
     role_id = db.Column(db.Integer(), db.ForeignKey('roles.id'))
     phone = db.relationship('TestResult', backref='users', lazy='dynamic')
     project=db.relationship('Project',backref='users', lazy='dynamic')
     model = db.relationship('Model', backref='users', lazy='dynamic')
+    email=db.relationship('EmailReport', backref='users', lazy='dynamic')
     def __repr__(self):
         return  self.username
     def can(self, permissions):         
@@ -64,6 +65,14 @@ class User(db.Model):
         self.password=generate_password_hash(password)
     def check_password(self,password):
         return  check_password_hash(self.password,password)
+    def is_authenticated(self):
+        return True
+    def is_active(self): 
+        return True
+    def is_anonymous(self):
+        return False
+    def get_id(self):
+        return self.id
 class Interface(db.Model):
     __tablename__='interfaces'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
@@ -104,7 +113,7 @@ class TestResult(db.Model):
     test_log=db.Column(db.String(252))
     def __repr__(self):
         return  self.id
-class Project(db.Model):#项目
+class Project(db.Model):
     __tablename__='projects'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     project_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
@@ -114,7 +123,7 @@ class Project(db.Model):#项目
     Interface = db.relationship('Interface', backref='projects', lazy='dynamic')
     def __repr__(self):
         return  self.project_name
-class Model(db.Model):#模块
+class Model(db.Model):
     __tablename__ ='models'
     id=db.Column(db.Integer,primary_key=True,autoincrement=True)
     model_name = db.Column(db.String(256))
@@ -124,3 +133,13 @@ class Model(db.Model):#模块
     Interface = db.relationship('Interface', backref='models', lazy='dynamic')
     def __repr__(self):
         return  self.model_name
+class EmailReport(db.Model):
+    __tablename__='emailReports'
+    id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
+    email_re_user_id = db.Column(db.Integer(),db.ForeignKey('users.id'))
+    send_email=db.Column(db.String(64))
+    send_email_password=db.Column(db.String(64))
+    to_email=db.Column(db.String())
+    default_set=db.Column(db.Boolean(),default=False)
+    def __repr__(self):
+        return self.send_email

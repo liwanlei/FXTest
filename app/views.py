@@ -7,8 +7,8 @@
 from app import  app,db
 from  flask import  redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory
 from werkzeug import secure_filename
-from  app.models import User,Interface,InterfaceTest,TestResult,Project,Model
-from app.form import  LoginFrom,RegFrom,InterForm,Interface_yong_Form
+from  app.models import *
+from app.form import  *
 import os,time,datetime,threading
 from app.common.pares_excel_inter import pasre_inter
 from app.common.py_Html import createHtml
@@ -17,14 +17,19 @@ from app.common.dict_com import assert_in
 from app.test_case.Test_case import ApiTestCase
 from app.common.py_Html import createHtml
 from flask.views import MethodView,View
+from flask_login import current_user,login_required,login_user,logout_user
+from app.common.decorators import admin_required,permission_required
+from app import loginManager
+@loginManager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 def get_pro_mo():
     projects=Project.query.all()
     model=Model.query.all()
     return  projects,model
 class Indexview(MethodView):
+    @login_required
     def get(self):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         interface_cont=Interface.query.count()
         interfaceTest_cunt=InterfaceTest.query.count()
         resu_cout=TestResult.query.count()
@@ -44,6 +49,7 @@ class LoginView(MethodView):
             if user:
                 if user.check_password(password=password)==True:
                     if user.status==0:
+                        login_user(user)
                         session['username']=username
                         return  redirect(url_for('index'))
                     flash(u'用户冻结，请联系管理员')
@@ -64,6 +70,10 @@ class RegView(MethodView):
             pasword=request.form.get('password')
             setpasswod=request.form.get('se_password')
             email=request.form.get('email')
+            wrok=request.form.get('work')
+            if usernmae =='' or email =='':
+                flash(u'请准确填写用户信息')
+                return render_template('reg.html',form=form)
             if pasword !=setpasswod:
                 flash(u'请确认两次密码输入是否一致')
                 return render_template('reg.html',form=form)
@@ -77,6 +87,7 @@ class RegView(MethodView):
                 return render_template('reg.html', form=form)
             new_user=User(username=usernmae,user_email=email)
             new_user.set_password(pasword)
+            new_user.work_id=wrok
             db.session.add(new_user)
             db.session.commit()
             return  redirect(url_for('login'))
@@ -84,29 +95,30 @@ class RegView(MethodView):
 class LogtView(MethodView):
     def get(self):
         session.clear()
+        logout_user()
         return redirect(url_for('login'))
 class InterfaceView(MethodView):
+    @login_required
     def get(self,page=1):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         pagination=Interface.query.paginate(page, per_page=20,error_out=False)
         inter=pagination.items
         return  render_template('interface.html',inte=inter,pagination=pagination)
 class YongliView(MethodView):
     def get(self,page=1):
+        project=Project.query.all()
+        models=Model.query.all()
         if not session.get('username'):
             return redirect(url_for('login'))
         pagination=InterfaceTest.query.paginate(page, per_page=30,error_out=False)
         yongli=pagination.items
-        return  render_template('interface_yongli.html',yonglis=yongli,pagination=pagination)
+        return  render_template('interface_yongli.html',yonglis=yongli,pagination=pagination,projects=project,models=models)
 class AdminuserView(MethodView):
+    @admin_required
+    @login_required
     def get(self,page=1):
         if not session.get('username'):
             return redirect(url_for('login'))
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.level!=1:
-            flash(u'您没有权限进入管理中心')
-            return redirect(url_for('index'))
         pagination=User.query.paginate(page, per_page=20,error_out=False)
         users=pagination.items
         return render_template('useradmin.html',users=users,pagination=pagination)
@@ -188,7 +200,7 @@ class DeleinterView(MethodView):
             return redirect(url_for('login'))
         interface=Interface.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.id==interface.Interface_user_id or user.level==1:
+        if user.id==interface.Interface_user_id or user.role_id==2:
             db.session.delete(interface)
             db.session.commit()
             flash(u'删除成功')
@@ -232,7 +244,7 @@ class Deletecase(View):
             return redirect(url_for('login'))
         testcase=InterfaceTest.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
-        if testcase.Interface_user_id==user.id or user.level==1:
+        if testcase.Interface_user_id==user.id or user.role_id==2:
             db.session.delete(testcase)
             db.session.commit()
             flash(u'删除成功')
@@ -323,7 +335,7 @@ class DaorucaseView(View):
                 file.save(filename)
                 jiekou_bianhao,interface_name,project_nam, model_nam, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(filename)
                 try:
-                    for i in range(len(project_nam)):
+                    for i in range(len(jiekou_bianhao)):
                         projects_id = Project.query.filter_by(project_name=project_nam[i]).first().id
                         model_id = Model.query.filter_by(model_name=model_nam[i]).first().id
                         new_interface = InterfaceTest(projects_id=projects_id, model_id=model_id,Interface_name=str(interface_name[i]), Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),Interface_assert=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
@@ -339,76 +351,76 @@ class DaorucaseView(View):
         return  render_template('daoru_case.html')
 class AdduserView(View):
     methods=['GET','POST']
+    @admin_required
     def dispatch_request(self):
-        if not session.get('username'):
-            return  redirect(url_for('login'))
+        wrok=Work.query.all()
         if request.method =='POST':
             user=request.form.get('user')
             password=request.form.get('password')
             password1=request.form.get('password1')
             email=request.form.get('email')
+            work=request.form.get('work')
+            if email =='' or user =='':
+                flash(u'请准确填写用户信息')
+                return render_template('add_user.html',wroks=wrok)
             if password!= password1:
                 flash(u'请确定两次密码是否一致')
-                return render_template('add_user.html')
+                return render_template('add_user.html',wroks=wrok)
             use=User.query.filter_by(username=user).first()
             if use:
                 flash(u'用户已经存在')
-                return render_template('add_user.html')
+                return render_template('add_user.html',wroks=wrok)
             emai=User.query.filter_by(user_email=email).first()
             if emai:
                 flash(u'邮箱已经存在')
-                return render_template('add_user.html')
+                return render_template('add_user.html',wroks=wrok)
             new_user=User(username=user,user_email=email)
             new_user.set_password(password)
+            new_user.work_id=work
             db.session.add(new_user)
             db.session.commit()
             flash(u'添加成功')
             return redirect(url_for('adminuser'))
-        return render_template('add_user.html')
+        return render_template('add_user.html',wroks=wrok)
 class SetadView(View):
     methods=['GET','POST']
+    @admin_required
+    @login_required
     def dispatch_request(self,id):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.level !=1:
+        if user.role_id!=2:
             flash(u'您不是管理员，无法设置！')
             return redirect(url_for('adminuser'))
         new_ad=User.query.filter_by(id=id).first()
-        if new_ad.level==1:
+        if new_ad.role_id==2:
             flash(u'已经是管理员，无需设置')
             return redirect(url_for('adminuser'))
-        new_ad.level=1
+        new_ad.role_id=2
         db.session.commit()
         flash(u'已经是管理员')
         return redirect(url_for('adminuser'))
 class DeladView(View):
     methods=['GET','POST']
+    @admin_required
     def dispatch_request(self,id):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.level !=1:
+        if user.role_id!=2:
             flash(u'您不是管理员，无法取消管理！')
             return redirect(url_for('adminuser'))
         new_ad=User.query.filter_by(id=id).first()
-        if new_ad.level==0:
-            flash(u'已经不是管理员，无需设置')
-            return redirect(url_for('adminuser'))
         if new_ad==user:
             flash(u'自己不能取消自己的管理员')
             return redirect(url_for('adminuser'))
-        new_ad.level=0
+        new_ad.role_id=1
         db.session.commit()
         flash(u'已经取消管理员权限')
         return redirect(url_for('adminuser'))
 class FreadView(View):
     methods=['GET','POST']
+    @admin_required
     def dispatch_request(self,id):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.level !=1:
+        if user.role_id!=2:
             flash(u'您不是管理员，无法冻结！')
             return redirect(url_for('adminuser'))
         new_ad=User.query.filter_by(id=id).first()
@@ -424,11 +436,10 @@ class FreadView(View):
         return redirect(url_for('adminuser'))
 class FrereView(View):
     methods=['GET','POST']
+    @admin_required
     def dispatch_request(self,id):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.level !=1:
+        if user.role_id!=2:
             flash(u'您不是管理员，无法解冻！')
             return redirect(url_for('adminuser'))
         new_ad=User.query.filter_by(id=id).first()
@@ -444,11 +455,12 @@ class FrereView(View):
         return redirect(url_for('adminuser'))
 class RedpassView(View):
     methods=['GET','POST']
+    @admin_required
     def dispatch_request(self,id):
         if not session.get('username'):
             return redirect(url_for('login'))
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.level !=1:
+        if user.role_id!=2:
             flash(u'您不是管理员，重置密码！')
             return redirect(url_for('adminuser'))
         new_ad=User.query.filter_by(id=id).first()
@@ -461,9 +473,8 @@ class RedpassView(View):
         return redirect(url_for('adminuser'))
 class SeruserView(View):
     methods=['GET','POST']
+    @admin_required
     def dispatch_request(self):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         if request.method=='POST':
             user=request.form.get('user')
             if user=='':
@@ -482,25 +493,21 @@ class SeruserView(View):
 class SeryongliView(View):
     methods=['GET','POST']
     def dispatch_request(self):
+        project=Project.query.all()
+        models=Model.query.all()
         if not session.get('username'):
             return redirect(url_for('login'))
         if request.method=='POST':
             projecct=request.form.get('project')
             model=request.form.get('model')
-            if projecct =='' and model  =='':
-                flash(u'请输入搜索的内容')
-                return redirect(url_for('yongli'))
-            try:
-                projects_id = Project.query.filter_by(project_name=projecct).first().id
-                model_id = Model.query.filter_by(model_name=model).first().id
-                interd=InterfaceTest.query.filter(InterfaceTest.model_id.like('%'+str(model_id)+'%'),InterfaceTest.projects_id.like('%'+str(projects_id)+'%')).all()
-                if len(interd)<1:
-                    flash(u'搜索的内容没有找到')
-                    return redirect(url_for('yongli'))
-                return render_template('ser_yonglo.html',yonglis=interd)
-            except:
-                flash(u'搜索的内容没有找到')
-                return redirect(url_for('yongli'))
+            if projecct =='':
+                interd=InterfaceTest.query.filter(InterfaceTest.model_id==int(model)).all()
+                return render_template('ser_yonglo.html',yonglis=interd,projects=project,models=models)
+            if model =='':
+                interd=InterfaceTest.query.filter(InterfaceTest.projects_id==int(projecct)).all()
+                return render_template('ser_yonglo.html',yonglis=interd,projects=project,models=models)
+            interd=InterfaceTest.query.filter(InterfaceTest.projects_id==int(projecct),InterfaceTest.model_id==int(model)).all()
+            return render_template('ser_yonglo.html',yonglis=interd,projects=project,models=models)
         return redirect(url_for('yongli'))
 class SerinterView(View):
     methods=['GET','POST']
@@ -672,12 +679,12 @@ class AddproView(View):
         return  render_template('add_pro.html')
 class DelemodelView(View):
     methods=['GET','POST']
+    @admin_required
+    @login_required
     def dispatch_request(self,id):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         model=Model.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.id==model.model_user_id or user.level==1:
+        if user.role_id==2:
             db.session.delete(model)
             db.session.commit()
             flash(u'删除成功')
@@ -686,12 +693,12 @@ class DelemodelView(View):
         return redirect(url_for('model'))
 class DeleproView(View):
     methods=['GET','POST']
+    @admin_required
+    @login_required
     def dispatch_request(self,id):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         proje=Project.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.id==proje.project_user_id or user.level==1:
+        if user.role_id==2:
             db.session.delete(proje)
             db.session.commit()
             flash(u'删除成功')
@@ -711,9 +718,6 @@ class EditmoelView(View):
                 flash(u'请添加模块名')
                 return render_template('edit_model.html', mode=model)
             models = Model.query.filter_by(model_name=ed_mode).first()
-            if models:
-                flash(u'模块不能重复')
-                return render_template('edit_model.html', mode=model)
             model.model_name=ed_mode
             db.session.commit()
             flash(u'编辑成功')
@@ -732,11 +736,44 @@ class EditproView(View):
                 flash(u'请添加项目')
                 return render_template('edit_pro.html', project=project)
             models = Project.query.filter_by(project_name=ed_mode).first()
-            if models:
-                flash(u'项目不能重复')
-                return render_template('edit_pro.html', project=project)
             project.project_name=ed_mode
             db.session.commit()
             flash(u'编辑成功')
             return  redirect(url_for('project'))
         return  render_template('edit_pro.html',project=project)
+class DeleteResultView(View):
+    methods=['GET','POST']
+    @admin_required
+    @login_required
+    def dispatch_request(self,id):
+        delTest=TestResult.query.filter_by(id=id).first()
+        user=User.query.filter_by(username=session.get('username')).first()
+        if user.role_id==2:
+            db.session.delete(delTest)
+            db.session.commit()
+            flash('删除成功')
+            return redirect(url_for('test_rep'))
+        flash('您没有权限去删除测试报告')
+        return redirect(url_for('test_rep'))
+class Set_emaiView(MethodView):
+    def get(self):
+        user=User.query.filter_by(username=session.get('username')).first().id
+        email_report=EmailReport.query.filter_by(email_re_user_id=user).all()
+        if len(email_report)<=1:
+            return render_template('set_send.html',errmessage=u'您还没有设置发送测试报告邮件')
+        return render_template('set_send.html')
+class Add_emaiView(MethodView):
+    def get(self):
+        form=Set_email_Form()
+        return render_template('add_emali.html',form=form)
+    def post(self):
+        form=Set_email_Form()
+        if form.validate_on_submit():
+            email=request.form.get('send_email')
+            password=request.form.get('password')
+            shi_f=request.form.get('checkbox')
+            resv_email=request.form.get('email')
+            if email =='' or password=='' or resv_email=='':
+                flash('请准确填写信息')
+                return render_template('add_emali.html',form=form)
+        return render_template('add_emali.html',form=form)

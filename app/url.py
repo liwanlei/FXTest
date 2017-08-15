@@ -43,3 +43,6 @@ app.add_url_rule('/dele_moel/<int:id>',view_func=DelemodelView.as_view('dele_moe
 app.add_url_rule('/dele_pro/<int:id>',view_func=DeleproView.as_view('dele_pro'))
 app.add_url_rule('/edit_moel/<int:id>',view_func=EditmoelView.as_view('edit_moel'))
 app.add_url_rule('/edit_pro/<int:id>',view_func=EditproView.as_view('edit_pro'))
+app.add_url_rule('/deletre/<int:id>',view_func=DeleteResultView.as_view('deletre'))
+app.add_url_rule('/seting',view_func=Set_emaiView.as_view('setting'))
+app.add_url_rule('/add_emai',view_func=Add_emaiView.as_view('add_emai'))
