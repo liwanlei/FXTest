@@ -756,16 +756,19 @@ class DeleteResultView(View):
         flash('您没有权限去删除测试报告')
         return redirect(url_for('test_rep'))
 class Set_emaiView(MethodView):
+    @login_required
     def get(self):
         user=User.query.filter_by(username=session.get('username')).first().id
         email_report=EmailReport.query.filter_by(email_re_user_id=user).all()
-        if len(email_report)<=1:
+        if len(email_report)<=0:
             return render_template('set_send.html',errmessage=u'您还没有设置发送测试报告邮件')
-        return render_template('set_send.html')
+        return render_template('set_send.html',email_reports=email_report)
 class Add_emaiView(MethodView):
+    @login_required
     def get(self):
         form=Set_email_Form()
         return render_template('add_emali.html',form=form)
+    @login_required
     def post(self):
         form=Set_email_Form()
         if form.validate_on_submit():
@@ -773,7 +776,111 @@ class Add_emaiView(MethodView):
             password=request.form.get('password')
             shi_f=request.form.get('checkbox')
             resv_email=request.form.get('email')
+            resv_email=(str(resv_email).split(','))
             if email =='' or password=='' or resv_email=='':
                 flash('请准确填写信息')
                 return render_template('add_emali.html',form=form)
+            user_id=current_user.id
+            if shi_f =='on':
+                shi_f=True
+                user_is=EmailReport.query.filter_by(email_re_user_id=user_id,default_set=True).first()
+                if user_is:
+                    flash('只能有一个为默认设置')
+                    return render_template('add_emali.html',form=form)
+                email_new=EmailReport(email_re_user_id=int(user_id),send_email=str(email),send_email_password=str(password),to_email=str(resv_email),default_set=True)
+                db.session.add(email_new)
+                db.session.commit()
+                flash('成功设置一个默认配置')
+                return redirect(url_for('setting'))
+            email_new=EmailReport(email_re_user_id=int(user_id),send_email=str(email),send_email_password=str(password),to_email=str(resv_email))
+            db.session.add(email_new)
+            db.session.commit()
+            flash('成功设置一个配置')
+            return redirect(url_for('setting'))
         return render_template('add_emali.html',form=form)
+class DeleteView(View):
+    methods=['GET','POST']
+    @login_required
+    def dispatch_request(self,id):
+        email_re=EmailReport.query.filter_by(id=id).first()
+        user_id=current_user.id
+        if email_re.email_re_user_id==int(user_id):
+            db.session.delete(email_re)
+            db.session.commit()
+            flash('删除成功')
+            return redirect(url_for('setting'))
+        flash('您没有权限删除')
+        return redirect(url_for('setting'))
+class EditemailView(MethodView):
+    @login_required
+    def get(self,id):
+        emai=EmailReport.query.filter_by(id=id).first()
+        return render_template('edit_emali.html',emai=emai)
+    @login_required
+    def post(self,id):
+        emai=EmailReport.query.filter_by(id=id).first()
+        email=request.form.get('send_email')
+        password=request.form.get('password')
+        shi_f=request.form.get('checkbox')
+        resv_email=request.form.get('email')
+        resv_email=(str(resv_email).split(','))
+        if email =='' or password=='' or resv_email=='':
+            flash('请准确填写信息')
+            return render_template('edit_emali.html',emai=emai)
+        user_id=current_user.id
+        if shi_f =='on':
+            shi_f=True
+            user_is=EmailReport.query.filter_by(email_re_user_id=user_id,default_set=True).first()
+            if user_is:
+                flash('只能有一个为默认设置')
+                return render_template('edit_emali.html',emai=emai)
+            emai.email_re_user_id=int(user_id)
+            emai.send_email=str(email)
+            emai.send_email_password=str(password)
+            emai.to_email=str(resv_email)
+            emai.default_set=True
+            db.session.commit()
+            flash('编辑成功')
+            return redirect(url_for('setting'))
+        emai.email_re_user_id=int(user_id)
+        emai.send_email=str(email)
+        emai.send_email_password=str(password)
+        emai.to_email=str(resv_email)
+        db.session.commit()
+        flash('编辑成功')
+        return redirect(url_for('setting'))
+class QuzhiMoView(View):
+    methods=['GET','POST']
+    @login_required
+    def dispatch_request(self,id):
+        del_em=EmailReport.query.filter_by(id=id).first()
+        if del_em:
+            if int(current_user.id)==del_em.email_re_user_id:
+                del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True).all()
+                del_em.default_set=False
+                db.session.commit()
+                flash('取消默认成功')
+                return redirect(url_for('setting'))
+            flash('您没有权限来取消')
+            return redirect(url_for('setting'))
+        flash('你要取消的默认不存在')
+        return redirect(url_for('setting'))
+class ShezhiMoView(View):
+    methods=['GET','POST']
+    @login_required
+    def dispatch_request(self,id):
+        shezi_em=EmailReport.query.filter_by(id=id).first()
+        if shezi_em:
+            if int(current_user.id)==shezi_em.email_re_user_id:
+                del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True).all()
+                if len(del_e)>0:
+                    flash('一个账户只能有一个默认设置')
+                    return redirect(url_for('setting'))
+                shezi_em.default_set=True
+                db.session.commit()
+                flash('设置默认成功')
+                return redirect(url_for('setting'))
+            flash('您没有权限来设置')
+            return redirect(url_for('setting'))
+        flash('你要设置的默认邮箱配置不存在')
+        return redirect(url_for('setting'))

@@ -36,11 +36,13 @@
 </select>
     <input type="submit" value="查询" class="btn btn-default">
     </form>
+    <form method="POST" action="{{url_for('duoyongli')}}">
         <div style="margin-top: 10px">
            <a href="{{url_for('addtestcase')}}"><input type="button" name="" class="btn btn-default" value="添加"></a>
             <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="btn btn-default" value="导入"></a>
-        <button class="btn btn-default">批量执行</button></div>
-
+        <button class="btn btn-default">批量执行</button>
+        <label><input name="checkbox" type="checkbox" > </label>
+<strong>发送邮件报告</strong></div>
    <table class="table table-bordered" style="width:70%">
   <caption><strong>用例</strong></caption>
   <thead>
@@ -67,14 +69,15 @@
       <td>{{yongli.Interface_meth}}</td>
       <td>{{yongli.Interface_pase}}</td>
          <td>{{yongli.Interface_assert}}</td>
-      <td><p>
+      <td>
         <span><a href="{{url_for('edit_case',id=yongli.id)}}"><input type="button" value="编辑" class="btn btn-default"></a></span>
         <span> <a href="{{url_for('delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-default"></a></span>
-       <span><input type="button" value="执行"class="btn btn-default"></span>
+        <a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="执行"class="btn btn-default"></a></span>
       </td>
     </tr>
     {%endfor%}
   </tbody>
 </table>
+</form>
 </div>
 {% endblock %} 

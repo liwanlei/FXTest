@@ -30,13 +30,13 @@
                     <strong></strong>
 
   <caption><strong>发送测试报告设置</strong></caption>
-  <table class="am-table am-table-striped am-table-hover table-main" style="width:30%">
+  <table class="am-table am-table-striped am-table-hover table-main" >
   {%if errmessage%}
   <h1>{{errmessage}}</h1>
   {%else%}
   <caption><strong></strong></caption>
   
-  <thead>
+  <thead >
     <tr>
         <th></th>
       <th>发送邮箱</th>
@@ -47,19 +47,28 @@
     </tr>
   </thead>
   <tbody>
-  {%for yongli in yonglis%}
+  {%for email in email_reports%}
     <tr>
-        <td><input type="checkbox"  name="yongli" value="{{yongli.id}}"></td>
-      <td>{{yongli.projects}}</td>
-      <td>{{yongli.models}}</td>
-         <td>{{yongli.Interface_url}}</td>
-      <td>{{yongli.Interface_meth}}</td>
+    <td></td>
+        <td>{{email.send_email}}></td>
+      <td>{{email.send_email_password}}</td>
+      <td>{{email.to_email}}</td>
+      {%if email.default_set !=True%}
+         <td></td>
+         {%else%}
+         <td> 默认设置</td>
+         {%endif%}
       <td>
       <div class="am-btn-toolbar">
    <div class="am-btn-group am-btn-group-xs">
-        <a href="{{url_for('edit_case',id=yongli.id)}}"><input type="button" value="编辑" class="btn btn-default"></a>
-       <a href="{{url_for('delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-default"></a>
-     <a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="设置默认"class="btn btn-default"></a></div></div>
+        <a href="{{url_for('editemail',id=email.id)}}"><input type="button" value="编辑" class="btn btn-default"></a>
+       <a href="{{url_for('delemail',id=email.id)}}"><input type="button" value="删除"class="btn btn-default"></a>
+       {%if email.default_set !=True%}
+         <a href="{{url_for('shezhi',id=email.id)}}"><input type="button" value="设置默认"class="btn btn-default"></a>
+         {%else%}
+        <a href="{{url_for('quzhi',id=email.id)}}"><input type="button" value="取消默认"class="btn btn-default"></a>
+         {%endif%}
+     </div></div>
       </td>
     </tr>
     {%endfor%}
