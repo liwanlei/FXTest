@@ -22,7 +22,7 @@
 {% endfor %}
 {% endif %}
 {% endwith %}
-    
+    <!--<div id="main" style="width: 600px;height:400px;"></div> -->
    <table class="am-table am-table-striped am-table-hover table-main" style="width:70%">
   <caption><strong></strong></caption>
   <thead>
@@ -49,7 +49,7 @@
       <td>{{yong.fail_num}}</td>
       <td>{{yong.test_time}}</td>
       <td>{{yong.hour_time}}</td>
-         <td>{{(yong.pass_num)/(yong.test_num)}}</td>
+         <td >{{(yong.pass_num)/(yong.test_num)}}</td>
          <td>{{yong.users}}</td>
         <td><a href="{{url_for('load',filename= yong.test_rep)}}">报告下载</a></td>
          <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
@@ -63,4 +63,63 @@
  <p class="pagination" style="margin-left: 24%;">
      {{macros.pagination_widget(pagination,'.test_repppage')}}</p>
 </div>
+<!--
+<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+        var option = {
+    title: {
+        text: '测试结果',
+        subtext: '每次测试结果汇总'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['项目1','项目2']
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            dataZoom: {
+                yAxisIndex: 'none'
+            },
+            dataView: {readOnly: false},
+            magicType: {type: ['line', 'bar']},
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+    xAxis:  {
+        type: 'category',
+        boundaryGap: false,
+        data: ['2012-17-17','2012-17-17','2012-17-17','2012-17-17','2012-17-17']
+    },
+    yAxis: {
+        type: 'value',
+        axisLabel: {
+            formatter: '{value} %'
+        }
+    },
+    series: [
+        {
+            name:'项目1',
+            type:'line',
+            data:[100, 80, 60, 33, 90, 40, 10],
+            
+        },
+        {
+            name:'项目2',
+            type:'line',
+            data:[10, 20, 30, 50, 30, 20, 10],
+            
+   
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>-->
 {% endblock %} 

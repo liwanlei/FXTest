@@ -5,7 +5,7 @@
 @time: 2017/7/13 16:42
 """
 from app import  app,db
-from  flask import  redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory
+from  flask import  redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory,jsonify
 from werkzeug import secure_filename
 from  app.models import *
 from app.form import  *
@@ -16,6 +16,7 @@ from app.common.requ_case import Api
 from app.common.dict_com import assert_in
 from app.test_case.Test_case import ApiTestCase
 from app.common.py_Html import createHtml
+from app.common.send_email import send_emails 
 from flask.views import MethodView,View
 from flask_login import current_user,login_required,login_user,logout_user
 from app.common.decorators import admin_required,permission_required
@@ -582,6 +583,7 @@ class DuoyongliView(View):
         if os.path.exists(filepath) is False:
             os.system(r'touch %s' % filepath)
         if request.method=='POST':
+            f=request.form.get('checkbox')
             me=request.form.getlist('yongli')
             if len(me)<=1:
                 flash(u'请选择一个以上的用例来执行')
@@ -604,6 +606,34 @@ class DuoyongliView(View):
                 Interface_meth_list.append(case_one.Interface_meth)
                 Interface_pase_list.append(case_one.Interface_pase)
                 Interface_assert_list.append(case_one.Interface_assert)
+            if (len(set(projecct_list)))>1:
+                flash('目前单次只能执行一个项目')
+                return redirect(url_for('yongli'))
+            if f =='on':
+                email=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True).first()
+                if email:
+                    try:
+                        apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file)
+                        result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
+                        endtime=datetime.datetime.now()
+                        end = time.time()
+                        createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
+                        hour=end-star
+                        user_id=User.query.filter_by(username=session.get('username')).first().id
+                        new_reust=TestResult(Test_user_id=user_id,test_num=result_toal,pass_num=result_pass,fail_num=result_fail,test_time=starttime,hour_time=hour,test_rep=(day+'.html'),test_log=(day+'.log'))
+                        db.session.add(new_reust)
+                        db.session.commit()
+                        m=send_emails(sender=email.send_email,receivers=email.to_email,password=email.send_email_password,smtp=email.stmp_email,port=email.port,fujian1=file,fujian2=filepath,subject=u'%s用例执行测试报告'%day,url='http://127.0.0.1:5000/test_rep')
+                        if m==False:
+                            flash(u'发送邮件失败，请检查您默认的邮件设置是否正确')
+                            return redirect(url_for('test_rep'))
+                        flash(u'测试已经完成，并且给您默认设置发送了测试报告')
+                        return redirect(url_for('test_rep'))
+                    except:
+                        flash(u'测试失败，请检查您的测试用例单个执行是否出错')
+                        return redirect(url_for('yongli'))
+                flash(u'无法完成，需要去您的个人设置去设置一个默认的邮件发送')
+                return redirect(url_for('yongli'))
             try:
                 apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file)
                 result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
@@ -751,9 +781,9 @@ class DeleteResultView(View):
         if user.role_id==2:
             db.session.delete(delTest)
             db.session.commit()
-            flash('删除成功')
+            flash(u'删除成功')
             return redirect(url_for('test_rep'))
-        flash('您没有权限去删除测试报告')
+        flash(u'您没有权限去删除测试报告')
         return redirect(url_for('test_rep'))
 class Set_emaiView(MethodView):
     @login_required
@@ -777,25 +807,27 @@ class Add_emaiView(MethodView):
             shi_f=request.form.get('checkbox')
             resv_email=request.form.get('email')
             resv_email=(str(resv_email).split(','))
-            if email =='' or password=='' or resv_email=='':
-                flash('请准确填写信息')
+            port=request.form.get('port')
+            stmp_email=request.form.get('stmp_email')
+            if email =='' or password=='' or resv_email=='' or post=='' or stmp_email =='':
+                flash(u'请准确填写信息')
                 return render_template('add_emali.html',form=form)
             user_id=current_user.id
             if shi_f =='on':
                 shi_f=True
                 user_is=EmailReport.query.filter_by(email_re_user_id=user_id,default_set=True).first()
                 if user_is:
-                    flash('只能有一个为默认设置')
+                    flash(u'只能有一个为默认设置')
                     return render_template('add_emali.html',form=form)
-                email_new=EmailReport(email_re_user_id=int(user_id),send_email=str(email),send_email_password=str(password),to_email=str(resv_email),default_set=True)
+                email_new=EmailReport(email_re_user_id=int(user_id),send_email=str(email),send_email_password=str(password),to_email=str(resv_email),default_set=True,port=int(port),stmp_email=str(stmp_email))
                 db.session.add(email_new)
                 db.session.commit()
-                flash('成功设置一个默认配置')
+                flash(u'成功设置一个默认配置')
                 return redirect(url_for('setting'))
             email_new=EmailReport(email_re_user_id=int(user_id),send_email=str(email),send_email_password=str(password),to_email=str(resv_email))
             db.session.add(email_new)
             db.session.commit()
-            flash('成功设置一个配置')
+            flash(u'成功设置一个配置')
             return redirect(url_for('setting'))
         return render_template('add_emali.html',form=form)
 class DeleteView(View):
@@ -807,9 +839,9 @@ class DeleteView(View):
         if email_re.email_re_user_id==int(user_id):
             db.session.delete(email_re)
             db.session.commit()
-            flash('删除成功')
+            flash(u'删除成功')
             return redirect(url_for('setting'))
-        flash('您没有权限删除')
+        flash(u'您没有权限删除')
         return redirect(url_for('setting'))
 class EditemailView(MethodView):
     @login_required
@@ -824,30 +856,36 @@ class EditemailView(MethodView):
         shi_f=request.form.get('checkbox')
         resv_email=request.form.get('email')
         resv_email=(str(resv_email).split(','))
-        if email =='' or password=='' or resv_email=='':
-            flash('请准确填写信息')
+        stmp_em=request.form.get('stmp')
+        port=request.form.get('port')
+        if email =='' or password=='' or resv_email=='' or stmp_em =='' or port =='':
+            flash(u'请准确填写信息')
             return render_template('edit_emali.html',emai=emai)
         user_id=current_user.id
         if shi_f =='on':
             shi_f=True
             user_is=EmailReport.query.filter_by(email_re_user_id=user_id,default_set=True).first()
             if user_is:
-                flash('只能有一个为默认设置')
+                flash(u'只能有一个为默认设置')
                 return render_template('edit_emali.html',emai=emai)
             emai.email_re_user_id=int(user_id)
             emai.send_email=str(email)
             emai.send_email_password=str(password)
             emai.to_email=str(resv_email)
+            emai.stmp_email=str(stmp_em)
+            emai.port=int(port)
             emai.default_set=True
             db.session.commit()
-            flash('编辑成功')
+            flash(u'编辑成功')
             return redirect(url_for('setting'))
         emai.email_re_user_id=int(user_id)
         emai.send_email=str(email)
         emai.send_email_password=str(password)
         emai.to_email=str(resv_email)
+        emai.stmp_email=str(stmp_em)
+        emai.port=int(port)
         db.session.commit()
-        flash('编辑成功')
+        flash(u'编辑成功')
         return redirect(url_for('setting'))
 class QuzhiMoView(View):
     methods=['GET','POST']
@@ -859,11 +897,11 @@ class QuzhiMoView(View):
                 del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True).all()
                 del_em.default_set=False
                 db.session.commit()
-                flash('取消默认成功')
+                flash(u'取消默认成功')
                 return redirect(url_for('setting'))
-            flash('您没有权限来取消')
+            flash(u'您没有权限来取消')
             return redirect(url_for('setting'))
-        flash('你要取消的默认不存在')
+        flash(u'你要取消的默认不存在')
         return redirect(url_for('setting'))
 class ShezhiMoView(View):
     methods=['GET','POST']
@@ -874,13 +912,28 @@ class ShezhiMoView(View):
             if int(current_user.id)==shezi_em.email_re_user_id:
                 del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True).all()
                 if len(del_e)>0:
-                    flash('一个账户只能有一个默认设置')
+                    flash(u'一个账户只能有一个默认设置')
                     return redirect(url_for('setting'))
                 shezi_em.default_set=True
                 db.session.commit()
-                flash('设置默认成功')
+                flash(u'设置默认成功')
                 return redirect(url_for('setting'))
-            flash('您没有权限来设置')
+            flash(u'您没有权限来设置')
             return redirect(url_for('setting'))
-        flash('你要设置的默认邮箱配置不存在')
+        flash(u'你要设置的默认邮箱配置不存在')
         return redirect(url_for('setting'))
+class TestrepoView(MethodView):
+    @login_required
+    def get(self):
+        user_test=TestResult.query.filter_by(Test_user_id=int(current_user.id)).all()
+        project=[]
+        test_prco=[]
+        riqi=[]
+        for i in range(len(user_test)):
+            project.append((user_test[i]).projects.project_name)
+            test_prco.append({(user_test[i]).projects.project_name:(int(user_test[i].pass_num)/int(user_test[i].test_num))*100})
+            riqi.append( user_test[i].test_time.strftime( '%y-%m-%d %H:%M'))
+        print(riqi)
+        return jsonify({'data':list(set(project)),'num':test_prco,'riqi':riqi}) 
+    def post(self):
+        pass

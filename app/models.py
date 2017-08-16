@@ -106,19 +106,21 @@ class TestResult(db.Model):
     test_num=db.Column(db.Integer())
     pass_num=db.Column(db.Integer())
     fail_num = db.Column(db.Integer())
+    projects_id=db.Column(db.Integer(),db.ForeignKey('projects.id'))
     skip_num=db.Column(db.Integer())
     test_time=db.Column(db.DateTime(),default=datetime.datetime.now())
     hour_time=db.Column(db.Integer())
     test_rep=db.Column(db.String(252))
     test_log=db.Column(db.String(252))
     def __repr__(self):
-        return  self.id
+        return  self.test_log
 class Project(db.Model):
     __tablename__='projects'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     project_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
     project_name=db.Column(db.String(252))
     status=db.Column(db.Integer(),default=0)
+    TestResult = db.relationship('TestResult', backref='projects', lazy='dynamic')
     Interfacetest = db.relationship('InterfaceTest', backref='projects', lazy='dynamic')
     Interface = db.relationship('Interface', backref='projects', lazy='dynamic')
     def __repr__(self):
@@ -139,6 +141,8 @@ class EmailReport(db.Model):
     email_re_user_id = db.Column(db.Integer(),db.ForeignKey('users.id'))
     send_email=db.Column(db.String(64))
     send_email_password=db.Column(db.String(64))
+    stmp_email=db.Column(db.String(64))
+    port=db.Column(db.Integer())
     to_email=db.Column(db.String())
     default_set=db.Column(db.Boolean(),default=False)
     def __repr__(self):

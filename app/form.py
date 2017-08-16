@@ -54,4 +54,6 @@ class Set_email_Form(Form):
     send_email=StringField(u'请输入邮箱', [ validators.DataRequired(message=u'请输入邮箱'),Email(message=u'邮箱格式不对')],
                            render_kw={'placeholder': u'请输入邮箱'})
     password=StringField(u'请输入安全密码：', [validators.DataRequired(message='请输入安全密码')],render_kw={'placeholder': u'请输入邮箱安全密码'})
+    stmp_email=StringField(u'请输入stmp地址：', [validators.DataRequired(message='请输入stmp地址：')],render_kw={'placeholder': u'请输入stmp地址：'})
+    port=StringField(u'请输入stmp的端口号：', [validators.DataRequired(message='请输入stmp的端口号：')],render_kw={'placeholder': u'请输入stmp的端口号：'})
     

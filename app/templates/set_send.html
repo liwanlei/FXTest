@@ -42,6 +42,8 @@
       <th>发送邮箱</th>
       <th>安全密码</th>
          <th>接受邮件人</th>
+         <th>stmp服务器</th>
+         <th>端口号</th>
          <th>是否为默认设置</th>
         <th >操作</th>
     </tr>
@@ -53,6 +55,8 @@
         <td>{{email.send_email}}></td>
       <td>{{email.send_email_password}}</td>
       <td>{{email.to_email}}</td>
+      <td>{{email.stmp_email}}</td>
+      <td>{{email.port}}</td>
       {%if email.default_set !=True%}
          <td></td>
          {%else%}
