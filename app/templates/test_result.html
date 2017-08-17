@@ -22,7 +22,7 @@
 {% endfor %}
 {% endif %}
 {% endwith %}
-    <!--<div id="main" style="width: 600px;height:400px;"></div> -->
+    <div id="main" style="width: 800px;height:400px;"></div> 
    <table class="am-table am-table-striped am-table-hover table-main" style="width:70%">
   <caption><strong></strong></caption>
   <thead>
@@ -44,12 +44,12 @@
   <tbody>
   {%for yong in inte%}
     <tr>
-      <td>{{yong.test_num}}</td>
-      <td>{{yong.pass_num}}</td>
-      <td>{{yong.fail_num}}</td>
-      <td>{{yong.test_time}}</td>
+      <td id='test_num' class='test_num' >{{yong.test_num}}</td>
+      <td id='pass_num' class='pass_num'>{{yong.pass_num}}</td>
+      <td id='fail_num' class='fail_num'>{{yong.fail_num}}</td>
+      <td class='test_date'>{{yong.test_time}}</td>
       <td>{{yong.hour_time}}</td>
-         <td >{{(yong.pass_num)/(yong.test_num)}}</td>
+         <td class='proce'>{{(yong.pass_num)/(yong.test_num)}}</td>
          <td>{{yong.users}}</td>
         <td><a href="{{url_for('load',filename= yong.test_rep)}}">报告下载</a></td>
          <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
@@ -63,63 +63,128 @@
  <p class="pagination" style="margin-left: 24%;">
      {{macros.pagination_widget(pagination,'.test_repppage')}}</p>
 </div>
-<!--
+
 <script type="text/javascript">
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
-        // 指定图表的配置项和数据
-        var option = {
+    var dom = document.getElementById("main");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
     title: {
-        text: '测试结果',
-        subtext: '每次测试结果汇总'
+        text: '测试数据',
+        subtext: '为单次测试所占的百分比，数据来源于之前测试数据'
     },
     tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            label: {
+                backgroundColor: '#283b56'
+            }
+        }
     },
     legend: {
-        data:['项目1','项目2']
+        data:['通过率', '失败率']
+    },
+	color:['green', 'red'],
+	grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
     },
     toolbox: {
         show: true,
         feature: {
-            dataZoom: {
-                yAxisIndex: 'none'
-            },
             dataView: {readOnly: false},
-            magicType: {type: ['line', 'bar']},
             restore: {},
             saveAsImage: {}
         }
     },
-    xAxis:  {
-        type: 'category',
-        boundaryGap: false,
-        data: ['2012-17-17','2012-17-17','2012-17-17','2012-17-17','2012-17-17']
+    dataZoom: {
+        show: false,
+        start: 0,
+        end: 100
     },
-    yAxis: {
-        type: 'value',
-        axisLabel: {
-            formatter: '{value} %'
-        }
-    },
-    series: [
+    xAxis: [
         {
-            name:'项目1',
-            type:'line',
-            data:[100, 80, 60, 33, 90, 40, 10],
-            
+            type: 'category',
+            boundaryGap: true,
+            data: (function (){
+                var now = document.getElementsByClassName('test_date');
+                var res = [];
+                for (var i=0;i<now.length;i++)  {
+                    res.push((now[i].innerHTML).substring(0,18) );
+                }
+                return res;
+            })()
         },
         {
-            name:'项目2',
+            type: 'category',
+            boundaryGap: true,
+            data: (function (){
+                var now = document.getElementsByClassName('test_date');
+                var res = [];
+                for (var i=0;i<now.length;i++)  {
+                    res.push((now[i].innerHTML).substring(0,18) );
+                }
+                return res;
+            })()
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            scale: true,
+            name: '',
+            max: 100,
+            min: 0,
+            boundaryGap: [0.5, 0.2]
+        },
+        {
+            type: 'value',
+            scale: true,
+            name: '',
+            max: 100,
+            min: 0,
+            boundaryGap: [0.5, 0.2]
+        }
+    ],
+    series: [
+        {
+            name:'通过率',
+            type:'bar',
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            data:(function (){
+                var res = [];
+                var data = document.getElementsByClassName('proce');
+			
+                for (var i=0;i<data.length;i++)  {
+                    res.push((data[i].innerHTML)*100);
+                }
+                return res;
+            })()
+        },
+        {
+            name:'失败率',
             type:'line',
-            data:[10, 20, 30, 50, 30, 20, 10],
-            
-   
+            data:(function (){
+                var res = [];
+                var data = document.getElementsByClassName('fail_num');
+				var test_num=document.getElementsByClassName('test_num');
+                for (var i=0;i<data.length;i++)  {
+                    res.push(parseFloat((data[i].innerHTML)/(test_num[i].innerHTML))*100);
+                }
+                return res;
+            })()
         }
     ]
 };
 
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-    </script>-->
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+    </script>
 {% endblock %} 
