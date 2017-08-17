@@ -7,7 +7,7 @@
 @time: 2017/6/5 17:04
 """
 import  os
-import sys  
+# import sys  
 # reload(sys)  
 # sys.setdefaultencoding('utf8') 
 titles=u'接口测试'
@@ -88,9 +88,9 @@ def relust(titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuq
         relus=' '
         for i in range(len(name)):
             relus+=(ceshixiangqing(id[i],name[i],key[i],coneent[i],url[i],meth[i],yuqi[i],json[i],relust[i]))
-        text=title(titles)+connent.decode('utf-8')+time(starttime,endtime,passge,fail)+shanghai+relus+weibu
+        text=title(titles)+connent+time(starttime,endtime,passge,fail)+shanghai+relus+weibu
     else:
-        text=title(titles)+connent.decode('utf-8')+time(starttime,endtime,passge,fail)+shanghai+ceshixiangqing(id,name,key,coneent,url,meth,int(yuqi),json,relust)+weibu
+        text=title(titles)+connent+time(starttime,endtime,passge,fail)+shanghai+ceshixiangqing(id,name,key,coneent,url,meth,int(yuqi),json,relust)+weibu
     return text
 def createHtml(filepath,titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuqi,json,relusts):
 	texts=relust(titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuqi,json,relusts)

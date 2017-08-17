@@ -9,6 +9,8 @@
     <link href="{{url_for('static',filename='css/bootstrap.min.css')}}"  rel="stylesheet">
     <link rel="icon" href="{{url_for('static',filename='img/logo.png')}}" type="image/x-icon"> 
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+	<script src="{{url_for('static',filename='js/echarts.common.min.js')}}"></script>
+	
 </head>
 <body style='background-color: papayawhip;'>
     <header class="am-topbar am-topbar-inverse admin-header">
@@ -22,8 +24,8 @@
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">    
                 <li class="am-hide-sm-only"></a></li>
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
-                    <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="tpl-header-list-user-nick">{{session.username}}</span><span class="tpl-header-list-user-ico"></span>
+                    <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('setting')}}">
+                        <span class="tpl-header-list-user-nick" >{{session.username}}</span><span class="tpl-header-list-user-ico"></span>
                     </a>
                 </li>
                 <li><a href="{{url_for('logt')}}" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
@@ -72,12 +74,15 @@
                             <span>测试报告</span>
                         </a>
                     </li>
+                      {%if current_user.role_id !=1 and
+          current_user.role_id !=None  %}
 					<li class="tpl-left-nav-item">
                         <a href="{{url_for('adminuser')}}" class="nav-link tpl-left-nav-link-list">
                             <span class="glyphicon glyphicon-user"></span>
 							<span>用户管理</span>
                         </a>
                     </li>
+                 {%endif%}
                 </ul>
             </div>
         </div>
@@ -87,7 +92,6 @@
         {%block fen%}
         {%endblock%}
 <div style='text-align: center;'>
-
 <h3>版权雷子所有，联系qq：952943386 qq交流群：194704520</h3></div>
 </body>
 </html>

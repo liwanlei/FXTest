@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-08-09 20:05:32
 # @Author  : lileilei
-from app.views import (Indexview,LoginView,RegView,LogtView,InterfaceView,
-    YongliView,AdminuserView,InterfaceaddView,EditInterfaceView,
-    DeleinterView,AddtestcaseView,Deletecase,EditcaseView,DaoruinterView,
-    DaorucaseView,AdduserView,SetadView,DeladView,FreadView,FrereView,
-    RedpassView,SeruserView,SeryongliView,SerinterView,TestrepView,
-    LoadView,MakeonecaseView,DuoyongliView,ProjectView,ModelView,
-    AddmodelView,AddproView,DelemodelView,
-    DeleproView,EditmoelView,EditproView)
+from app.views import *
 from app import app
 app.add_url_rule('/',view_func=Indexview.as_view('index'))
 app.add_url_rule('/login',view_func=LoginView.as_view('login'))
@@ -50,3 +43,11 @@ app.add_url_rule('/dele_moel/<int:id>',view_func=DelemodelView.as_view('dele_moe
 app.add_url_rule('/dele_pro/<int:id>',view_func=DeleproView.as_view('dele_pro'))
 app.add_url_rule('/edit_moel/<int:id>',view_func=EditmoelView.as_view('edit_moel'))
 app.add_url_rule('/edit_pro/<int:id>',view_func=EditproView.as_view('edit_pro'))
+app.add_url_rule('/deletre/<int:id>',view_func=DeleteResultView.as_view('deletre'))
+app.add_url_rule('/seting',view_func=Set_emaiView.as_view('setting'))
+app.add_url_rule('/add_emai',view_func=Add_emaiView.as_view('add_emai'))
+app.add_url_rule('/delemail/<int:id>',view_func=DeleteView.as_view('delemail'))
+app.add_url_rule('/editemail/<int:id>',view_func=EditemailView.as_view('editemail'))
+app.add_url_rule('/quzhi/<int:id>',view_func=QuzhiMoView.as_view('quzhi'))
+app.add_url_rule('/shezhi/<int:id>',view_func=ShezhiMoView.as_view('shezhi'))
+app.add_url_rule('/user_test',view_func=TestrepoView.as_view('usertest'))
