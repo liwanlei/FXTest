@@ -17,15 +17,26 @@
 ##    效果图如下：
 ### 目录：
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/项目目录.png)
+
+### 新目录：
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/%E6%96%B0%E7%9B%AE%E5%BD%95.png)
+
 ### 效果图：
+#### 用户登录
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/denglu.png)
 #### 首页
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/首页.png)
+#### 项目界面
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/%E9%A1%B9%E7%9B%AE.png)
+#### 模块界面
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/%E8%8E%AB%E5%B0%85.png)
 #### 接口界面
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/接口.png)
 #### 测试用例界面
-![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/用例.png)
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B.png)
 #### 测试报告界面
-![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/测试报告界面.png)
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A.png)
 #### 用户管理界面
-![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/用户管理界面.png)
-
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86.png)
+#### 用户设置默认邮件界面
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/%E9%82%AE%E4%BB%B6%E8%AE%BE%E7%BD%AE.png)
