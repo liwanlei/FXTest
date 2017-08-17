@@ -1,7 +1,8 @@
 # IAPTest测试平台
  flask + Python3  实现的的API自动化测试平台（http接口，json格式参数）
  ----------------
-####  这里主要实现的是api接口，接口测试用例，测试报告，用户管理。主要有一下功能。
+# 旧版功能：
+### 这里主要实现的是api接口，接口测试用例，测试报告，用户管理。主要有一下功能。
 ## 功能：
 ####   1.用户注册，
 ####   2.用户登录，
@@ -10,6 +11,15 @@
 ####   5.用例界面。 可以在界面添加测试用例，可以去批量导入，用例有变动的时候，可以去编辑下用例，用例输入错误，可以去删除测试用例，可以进行用例的搜索，单个的用例可以单独执行，批量执行的测试用例会单独生成测试报告，在测试报告界面可以下载，看结果
 ####   6.测试报告，展示批量执行的测试用例，可以去下载测试日志，和测试报告，
 ####   7。用户管理。 可以查询用户，添加用户，冻结用户，取消管理，重置密码。非管理员不能进入这个界面。
+# 新版功能：
+## 增加功能：
+### 1.增加注册选择岗位
+### 2.项目模块，功能模块只有管理员才能删除
+### 3.只有管理员才能进入用户管理模块
+### 4.可以选择发送邮件，必须有默认邮箱
+###  5.点击右上角用户名可以去设置默认邮箱，可以设置多个邮件接受的，但是只能设置一个默认的，默认发送邮件测试报告
+### 6.增加可视化的测试结果，依靠百度开源的可视化框架。地址：http://echarts.baidu.com
+
 # 有问题可以联系我：QQ:952943386 email:leileili126@163.com
 # 微信打赏
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/weixin.png)
@@ -24,6 +34,8 @@
 ### 效果图：
 #### 用户登录
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/denglu.png)
+#### 用户注册
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/zhuce.png)
 #### 首页
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/首页.png)
 #### 项目界面
@@ -40,3 +52,7 @@
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86.png)
 #### 用户设置默认邮件界面
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/%E9%82%AE%E4%BB%B6%E8%AE%BE%E7%BD%AE.png)
+#### 测试报告下载后html格式的报告
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/ceshibaogao.png)
+#### 测试日志
+![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/log.png)
