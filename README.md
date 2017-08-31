@@ -20,7 +20,7 @@
 ###  5.点击右上角用户名可以去设置默认邮箱，可以设置多个邮件接受的，但是只能设置一个默认的，默认发送邮件测试报告
 ### 6.增加可视化的测试结果，依靠百度开源的可视化框架。地址：http://echarts.baidu.com
 
-# 有问题可以联系我：QQ:952943386 email:leileili126@163.com
+# 有问题可以联系我：QQ:952943386 email:leileili126@163.com  qq群：194704520
 # 微信打赏
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/weixin.png)
  ----------------
