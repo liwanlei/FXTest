@@ -41,12 +41,12 @@
   <tbody>
   {%for project in projects%}
     <tr>
-      <td>{{project.project_name}}</td>
-    <td>{{ project.users }}</td>
+      <td><label class="" style="background-color: white"><strong>{{project.project_name}}</strong></label></td>
+    <td><label class="label-primary" style="background: white">{{ project.users }}</label></td>
       <td>
-          <span><a href="{{url_for('edit_pro',id=project.id)}}"><input type="button" value="编辑" class="btn btn-default"></a></span>  {%if current_user.role_id !=1 and
+          <span><a href="{{url_for('edit_pro',id=project.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a></span>  {%if current_user.role_id !=1 and
           current_user.role_id !=None  %}
-           <span><a href="{{url_for('dele_pro',id=project.id)}}"><input type="button" value="删除" class="btn btn-default"></a></span>{%endif%}
+           <span><a href="{{url_for('dele_pro',id=project.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
       </td>
     </tr>
 {%endfor%}

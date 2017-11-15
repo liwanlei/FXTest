@@ -65,12 +65,12 @@
       <td>
       <div class="am-btn-toolbar">
    <div class="am-btn-group am-btn-group-xs">
-        <a href="{{url_for('editemail',id=email.id)}}"><input type="button" value="编辑" class="btn btn-default"></a>
-       <a href="{{url_for('delemail',id=email.id)}}"><input type="button" value="删除"class="btn btn-default"></a>
+        <a href="{{url_for('editemail',id=email.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
+       <a href="{{url_for('delemail',id=email.id)}}"><input type="button" value="删除"class="btn btn-danger"></a>
        {%if email.default_set !=True%}
-         <a href="{{url_for('shezhi',id=email.id)}}"><input type="button" value="设置默认"class="btn btn-default"></a>
+         <a href="{{url_for('shezhi',id=email.id)}}"><input type="button" value="设置默认"class="btn btn-primary"></a>
          {%else%}
-        <a href="{{url_for('quzhi',id=email.id)}}"><input type="button" value="取消默认"class="btn btn-default"></a>
+        <a href="{{url_for('quzhi',id=email.id)}}"><input type="button" value="取消默认"class="btn btn-bottom"></a>
          {%endif%}
      </div></div>
       </td>

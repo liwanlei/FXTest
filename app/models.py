@@ -84,6 +84,7 @@ class Interface(db.Model):
     Interface_par=db.Column(db.String(252))
     Interface_back=db.Column(db.String(252))
     Interface_user_id=db.Column(db.Integer(),db.ForeignKey('users.id'))
+    status=db.Column(db.Boolean(),default=False)
     def __repr__(self):
         return  self.Interface_name
 class InterfaceTest(db.Model):
@@ -97,6 +98,7 @@ class InterfaceTest(db.Model):
     Interface_pase = db.Column(db.String(252))
     Interface_assert=db.Column(db.String(252))
     Interface_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.yongli_name
 class TestResult(db.Model):
@@ -112,6 +114,7 @@ class TestResult(db.Model):
     hour_time=db.Column(db.Integer())
     test_rep=db.Column(db.String(252))
     test_log=db.Column(db.String(252))
+    status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.test_log
 class Project(db.Model):
@@ -123,6 +126,7 @@ class Project(db.Model):
     TestResult = db.relationship('TestResult', backref='projects', lazy='dynamic')
     Interfacetest = db.relationship('InterfaceTest', backref='projects', lazy='dynamic')
     Interface = db.relationship('Interface', backref='projects', lazy='dynamic')
+    status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.project_name
 class Model(db.Model):
@@ -133,6 +137,7 @@ class Model(db.Model):
     status = db.Column(db.Integer(),default=0)
     Interfacetest = db.relationship('InterfaceTest', backref='models', lazy='dynamic')
     Interface = db.relationship('Interface', backref='models', lazy='dynamic')
+    status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.model_name
 class EmailReport(db.Model):
@@ -145,5 +150,6 @@ class EmailReport(db.Model):
     port=db.Column(db.Integer())
     to_email=db.Column(db.String())
     default_set=db.Column(db.Boolean(),default=False)
+    status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return self.send_email

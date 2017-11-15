@@ -48,51 +48,21 @@ class LoginView(MethodView):
             password=request.form.get('password')
             user=User.query.filter_by(username=username).first()
             if user:
-                if user.check_password(password=password)==True:
-                    if user.status==0:
-                        login_user(user)
-                        session['username']=username
-                        return  redirect(url_for('index'))
-                    flash(u'用户冻结，请联系管理员')
+                if user.status==False:
+                    if user.check_password(password=password)==True:
+                        if user.status==0:
+                            login_user(user)
+                            session['username']=username
+                            return  redirect(url_for('index'))
+                        flash(u'用户冻结，请联系管理员')
+                        return render_template('login.html', form=form)
+                    flash(u'用户名密码错误')
                     return render_template('login.html', form=form)
-                flash(u'用户名密码错误')
+                flash(u'用户已经冻结，请联系管理员！')
                 return render_template('login.html', form=form)
             flash(u'用户名不存在')
             return  render_template('login.html',form=form)
         return  render_template('login.html',form=form)
-class RegView(MethodView):
-    def get(self):
-        form=RegFrom()
-        return  render_template('reg.html',form=form)
-    def post(self):
-        form=RegFrom()
-        if request.method=='POST' and form.validate_on_submit():
-            usernmae=request.form.get('username')
-            pasword=request.form.get('password')
-            setpasswod=request.form.get('se_password')
-            email=request.form.get('email')
-            wrok=request.form.get('work')
-            if usernmae =='' or email =='':
-                flash(u'请准确填写用户信息')
-                return render_template('reg.html',form=form)
-            if pasword !=setpasswod:
-                flash(u'请确认两次密码输入是否一致')
-                return render_template('reg.html',form=form)
-            user=User.query.filter_by(username=usernmae).first()
-            if user:
-                flash(u'用户名已经存在')
-                return render_template('reg.html', form=form)
-            emai=User.query.filter_by(user_email=email).first()
-            if emai:
-                flash(u'邮箱已经注册')
-                return render_template('reg.html', form=form)
-            new_user=User(username=usernmae,user_email=email)
-            new_user.set_password(pasword)
-            new_user.work_id=wrok
-            db.session.add(new_user)
-            db.session.commit()
-            return  redirect(url_for('login'))
-        return  render_template('reg.html',form=form)
 class LogtView(MethodView):
     def get(self):
         session.clear()
@@ -101,7 +71,7 @@ class LogtView(MethodView):
 class InterfaceView(MethodView):
     @login_required
     def get(self,page=1):
-        pagination=Interface.query.paginate(page, per_page=20,error_out=False)
+        pagination=Interface.query.filter_by(status=False).paginate(page, per_page=20,error_out=False)
         inter=pagination.items
         return  render_template('interface.html',inte=inter,pagination=pagination)
 class YongliView(MethodView):
@@ -110,7 +80,7 @@ class YongliView(MethodView):
         models=Model.query.all()
         if not session.get('username'):
             return redirect(url_for('login'))
-        pagination=InterfaceTest.query.paginate(page, per_page=30,error_out=False)
+        pagination=InterfaceTest.query.filter_by(status=False).paginate(page, per_page=30,error_out=False)
         yongli=pagination.items
         return  render_template('interface_yongli.html',yonglis=yongli,pagination=pagination,projects=project,models=models)
 class AdminuserView(MethodView):
@@ -120,7 +90,7 @@ class AdminuserView(MethodView):
         if not session.get('username'):
             return redirect(url_for('login'))
         user=User.query.filter_by(username=session.get('username')).first()
-        pagination=User.query.paginate(page, per_page=20,error_out=False)
+        pagination=User.query.filter_by(status=False).paginate(page, per_page=20,error_out=False)
         users=pagination.items
         return render_template('useradmin.html',users=users,pagination=pagination)
 class InterfaceaddView(MethodView):
@@ -202,7 +172,7 @@ class DeleinterView(MethodView):
         interface=Interface.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
         if user.id==interface.Interface_user_id or user.role_id==2:
-            db.session.delete(interface)
+            interface.status=True
             db.session.commit()
             flash(u'删除成功')
             return redirect(url_for('interface'))
@@ -246,7 +216,7 @@ class Deletecase(View):
         testcase=InterfaceTest.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
         if testcase.Interface_user_id==user.id or user.role_id==2:
-            db.session.delete(testcase)
+            testcase.status=True
             db.session.commit()
             flash(u'删除成功')
             return redirect(url_for('yongli'))
@@ -656,14 +626,14 @@ class ProjectView(View):
     def dispatch_request(self):
         if not  session.get('username'):
             return  redirect(url_for('login'))
-        projects=Project.query.all()
+        projects=Project.query.filter_by(status=False).all()
         return  render_template('project.html',projects=projects)
 class ModelView(View):
     methods=['GET','POST']
     def dispatch_request(self):
         if not  session.get('username'):
             return  redirect(url_for('login'))
-        models=Model.query.all()
+        models=Model.query.filter_by(status=False).all()
         return  render_template('model.html',projects=models)
 class AddmodelView(View):
     methods=['GET','POST']
@@ -715,7 +685,7 @@ class DelemodelView(View):
         model=Model.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id==2:
-            db.session.delete(model)
+            model.status=True
             db.session.commit()
             flash(u'删除成功')
             return redirect(url_for('model'))
@@ -729,7 +699,7 @@ class DeleproView(View):
         proje=Project.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id==2:
-            db.session.delete(proje)
+            proje.status=True
             db.session.commit()
             flash(u'删除成功')
             return redirect(url_for('project'))
@@ -779,7 +749,7 @@ class DeleteResultView(View):
         delTest=TestResult.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id==2:
-            db.session.delete(delTest)
+            delTest.status=True
             db.session.commit()
             flash(u'删除成功')
             return redirect(url_for('test_rep'))
@@ -837,7 +807,7 @@ class DeleteView(View):
         email_re=EmailReport.query.filter_by(id=id).first()
         user_id=current_user.id
         if email_re.email_re_user_id==int(user_id):
-            db.session.delete(email_re)
+            email_re.status=True
             db.session.commit()
             flash(u'删除成功')
             return redirect(url_for('setting'))
@@ -933,7 +903,4 @@ class TestrepoView(MethodView):
             project.append((user_test[i]).projects.project_name)
             test_prco.append({(user_test[i]).projects.project_name:(int(user_test[i].pass_num)/int(user_test[i].test_num))*100})
             riqi.append( user_test[i].test_time.strftime( '%y-%m-%d %H:%M'))
-        print(riqi)
-        return jsonify({'data':list(set(project)),'num':test_prco,'riqi':riqi}) 
-    def post(self):
-        pass
+        return jsonify({'data':list(set(project)),'num':test_prco,'riqi':riqi})

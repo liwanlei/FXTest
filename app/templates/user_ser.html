@@ -42,26 +42,27 @@
   </thead>
   <tbody>
   {%for user in users%}
-    <tr>
+   <tr>
       <td>{{user.id}}</td>
-      <td>{{user.username}}</td>
-      <td>{{user.user_email}}</td>
+      <td><label class="label label-default">{{user.username}}</label></td>
+      <td><label class="label label-primary">{{user.user_email}}</label></td>
+      <td><label class="label label-info">{{user.works}}</label></td>
 {% if user.status !=1%}
-         <td><a href="{{url_for('fre_ad',id=user.id)}}"><input type="button" value="冻结" class="btn btn-default"></a></td>
+         <td><a href="{{url_for('fre_ad',id=user.id)}}"><input type="button" value="冻结" class="btn btn-success"></a></td>
          {%else%}
-         <td><a href="{{url_for('fre_re',id=user.id)}}"><input type="button" value="解冻" class="btn btn-default"></a></td>
+         <td><a href="{{url_for('fre_re',id=user.id)}}"><input type="button" value="解冻" class="btn btn-danger"></a></td>
       {%endif%}
-      {% if user.level !=1%}
-      <td><a href="{{url_for('set_ad',id=user.id)}}"><input type="button" value="设置管理" class="btn btn-default"></a></td>
+      {% if user.role_id!=2%}
+      <td><a href="{{url_for('set_ad',id=user.id)}}"><input type="button" value="设置管理" class="btn btn-danger"></a></td>
        {%else%}
-        <td><a href="{{url_for('del_ad',id=user.id)}}"><input type="button" value="取消管理" class="btn btn-default"></a></td>
+        <td><a href="{{url_for('del_ad',id=user.id)}}"><input type="button" value="取消管理" class="btn btn-success"></a></td>
         {%endif%}
       <td>
-          <span><input type="button" value="重置密码" class="btn btn-default"></span>
+          <span><a href="{{url_for('red_pass',id=user.id)}}"><input type="button" value="重置密码" class="btn btn-warning"></a></span>
       </td>
     </tr>
 {%endfor%}
   </tbody>
-</table>
+</table></div>
  </div>
 {% endblock %}

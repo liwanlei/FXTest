@@ -5,7 +5,6 @@ from app.views import *
 from app import app
 app.add_url_rule('/',view_func=Indexview.as_view('index'))
 app.add_url_rule('/login',view_func=LoginView.as_view('login'))
-app.add_url_rule('/reg',view_func=RegView.as_view('reg'))
 app.add_url_rule('/logt',view_func=LogtView.as_view('logt'))
 app.add_url_rule('/interface',view_func=InterfaceView.as_view('interface'))
 app.add_url_rule('/interface/<int:page>',view_func=InterfaceView.as_view('interfaspa'))

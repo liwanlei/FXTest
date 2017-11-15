@@ -22,8 +22,8 @@
 {% endfor %}
 {% endif %}
 {% endwith %}
-    <div id="main" style="width: 800px;height:400px;"></div> 
-   <table class="am-table am-table-striped am-table-hover table-main" style="width:70%">
+    <div id="main" style="width: 800px;height:400px;margin-left: 12%"></div>
+   <table class="am-table am-table-striped am-table-hover table-main" style="width:60%;margin-left: 11%">
   <caption><strong></strong></caption>
   <thead>
     <tr>
@@ -45,23 +45,24 @@
   {%for yong in inte%}
     <tr>
       <td id='test_num' class='test_num' >{{yong.test_num}}</td>
-      <td id='pass_num' class='pass_num'>{{yong.pass_num}}</td>
+      <td id='pass_num' class='pass_num'><label class="label label-success">{{yong.pass_num}}</label></td>
       <td id='fail_num' class='fail_num'>{{yong.fail_num}}</td>
       <td class='test_date'>{{yong.test_time}}</td>
       <td>{{yong.hour_time}}</td>
          <td class='proce'>{{(yong.pass_num)/(yong.test_num)}}</td>
-         <td>{{yong.users}}</td>
+         <td><label class="label-info">{{yong.users}}</label></td>
         <td><a href="{{url_for('load',filename= yong.test_rep)}}">报告下载</a></td>
          <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
          {%if current_user.role_id !=1 and
           current_user.role_id !=None  %}
-          <th><a href="{{url_for('deletre',id=yong.id)}}"><input type="button" value="删除" class="btn btn-default"></a></th>{%endif%}
+          <th><a href="{{url_for('deletre',id=yong.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></th>{%endif%}
     </tr>
     {%endfor%}
   </tbody>
 </table>
  <p class="pagination" style="margin-left: 24%;">
      {{macros.pagination_widget(pagination,'.test_repppage')}}</p>
+
 </div>
 
 <script type="text/javascript">

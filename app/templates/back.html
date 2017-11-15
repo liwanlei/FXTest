@@ -10,9 +10,9 @@
     <link rel="icon" href="{{url_for('static',filename='img/logo.png')}}" type="image/x-icon"> 
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
 	<script src="{{url_for('static',filename='js/echarts.common.min.js')}}"></script>
-	
+	<script src="{{url_for('static',filename='js/app.js')}}"></script>
 </head>
-<body style='background-color: papayawhip;'>
+<body style="background-color: #f5f5f5" >
     <header class="am-topbar am-topbar-inverse admin-header">
         <div class="am-topbar-brand">
             <a href="javascript:;" class="tpl-logo">
@@ -32,14 +32,14 @@
             </ul>
         </div>
     </header>
-<div class="tpl-page-container tpl-page-header-fixed">
-        <div class="tpl-left-nav tpl-left-nav-hover">
+<div class="tpl-page-container tpl-page-header-fixed" >
+        <div class="tpl-left-nav tpl-left-nav-hover" >
             <div class="tpl-left-nav-title">
             </div>
             <div class="tpl-left-nav-list">
                 <ul class="tpl-left-nav-menu">
                     <li class="tpl-left-nav-item">
-                        <a href="{{url_for('index')}}" class="nav-link active">
+                        <a href="{{url_for('index')}}" class="nav-link ">
                             <i class="am-icon-home"></i>
                             <span>首页</span>
                         </a>
@@ -91,7 +91,7 @@
          </div>
         {%block fen%}
         {%endblock%}
-<div style='text-align: center;'>
+<div style='text-align: center;margin-bottom: auto'>
 <h3>版权雷子所有，联系qq：952943386 qq交流群：194704520</h3></div>
 </body>
 </html>

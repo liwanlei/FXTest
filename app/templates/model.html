@@ -45,9 +45,9 @@
       <td>{{project.model_name}}</td>
     <td>{{project.users}}</td>
       <td>
-        <span><a href="{{url_for('edit_moel',id=project.id)}}"><input type="button" value="编辑" class="btn btn-default"></a></span>  {%if current_user.role_id !=1 and
+        <span><a href="{{url_for('edit_moel',id=project.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a></span>  {%if current_user.role_id !=1 and
           current_user.role_id !=None  %}
-           <span><a href="{{url_for('dele_moel',id=project.id)}}"><input type="button" value="删除" class="btn btn-default"></a></span>{%endif%}
+           <span><a href="{{url_for('dele_moel',id=project.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
       </td>
     </tr>
 {%endfor%}
