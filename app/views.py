@@ -13,7 +13,6 @@ import os,time,datetime,threading
 from app.common.pares_excel_inter import pasre_inter
 from app.common.py_Html import createHtml
 from app.common.requ_case import Api
-from app.common.dict_com import assert_in
 from app.test_case.Test_case import ApiTestCase
 from app.common.py_Html import createHtml
 from app.common.send_email import send_emails 

@@ -1,7 +1,7 @@
 from  app.common.testFengzhuang import TestApi
-from  Public.get_excel import datacel,makedata
-from  Public.log import LOG,logger
-from Public.panduan import assertre
+from  app.common.makedata import makedata
+from  app.common.log import LOG,logger
+from app.common.panduan import assertre
 import ddt,unittest,time,os
 data_test=makedata()
 @ddt.ddt
