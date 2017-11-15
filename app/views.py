@@ -13,6 +13,7 @@ import os,time,datetime,threading
 from app.common.pares_excel_inter import pasre_inter
 from app.common.py_Html import createHtml
 from app.common.requ_case import Api
+from app.common.panduan import assert_in
 from app.test_case.Test_case import ApiTestCase
 from app.common.py_Html import createHtml
 from app.common.send_email import send_emails 
@@ -523,7 +524,7 @@ class MakeonecaseView(View):
         if not session.get('username'):
             return redirect(url_for('login'))
         case=InterfaceTest.query.filter_by(id=id).first()
-        me=Api(url=case.Interface_url,fangshi=case.Interface_meth,params=case.Interface_pase)
+        me=Api(url=case.Interface_url,fangshi=case.Interface_meth,params=case.Interface_pase,headers=case.Interface_headers)
         result=me.testapi()
         retur_re=assert_in(case.Interface_assert,result)
         try:
@@ -564,6 +565,7 @@ class DuoyongliView(View):
             Interface_meth_list=[]
             Interface_pase_list=[]
             Interface_assert_list=[]
+            Interface_headers_list=[]
             id_list=[]
             for case in me:
                 case_one=InterfaceTest.query.filter_by(id=case).first()
@@ -575,6 +577,7 @@ class DuoyongliView(View):
                 Interface_meth_list.append(case_one.Interface_meth)
                 Interface_pase_list.append(case_one.Interface_pase)
                 Interface_assert_list.append(case_one.Interface_assert)
+                Interface_headers_list.append(case_one.Interface_headers)
             if (len(set(projecct_list)))>1:
                 flash('目前单次只能执行一个项目')
                 return redirect(url_for('yongli'))
@@ -582,7 +585,7 @@ class DuoyongliView(View):
                 email=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True).first()
                 if email:
                     try:
-                        apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file)
+                        apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file,Interface_headers_list)
                         result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
                         endtime=datetime.datetime.now()
                         end = time.time()
@@ -604,7 +607,7 @@ class DuoyongliView(View):
                 flash(u'无法完成，需要去您的个人设置去设置一个默认的邮件发送')
                 return redirect(url_for('yongli'))
             try:
-                apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file)
+                apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file,Interface_headers_list)
                 result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
                 endtime=datetime.datetime.now()
                 end = time.time()

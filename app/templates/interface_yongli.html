@@ -55,7 +55,7 @@
   </thead>
   <tbody>
   {%for yongli in yonglis%}
-    <tr>
+    <tr >
         <td><input type="checkbox"  name="yongli" value="{{yongli.id}}"></td>
       <td>{{yongli.projects}}</td>
       <td>{{yongli.models}}</td>
@@ -68,7 +68,18 @@
    <div class="am-btn-group am-btn-group-xs">
         <a href="{{url_for('edit_case',id=yongli.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
        <a href="{{url_for('delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-danger"></a>
-     <a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="执行"class="btn btn-block"></a></div></div>
+       {% if yongli.Interface_is_tiaoshi ==0 %}
+     <a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="调试"class="btn btn-default"></a>
+      {% else %}
+       {% if yongli.Interface_tiaoshi_shifou==0 and yongli.Interface_is_tiaoshi ==1 %}
+       <a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="调试"class="btn btn-success"></a>
+       {% elif  yongli.Interface_tiaoshi_shifou==1 and yongli.Interface_is_tiaoshi ==1 %}
+       <a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="调试"class="btn btn-danger"></a>
+       {% endif %}
+{% endif %}
+   </div></div>
+
+
       </td>
     </tr>
     {%endfor%}

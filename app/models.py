@@ -83,6 +83,7 @@ class Interface(db.Model):
     Interface_meth= db.Column(db.String(252),default='GET')
     Interface_par=db.Column(db.String(252))
     Interface_back=db.Column(db.String(252))
+    Interface_headers = db.Column(db.String(252))
     Interface_user_id=db.Column(db.Integer(),db.ForeignKey('users.id'))
     status=db.Column(db.Boolean(),default=False)
     def __repr__(self):
@@ -97,10 +98,13 @@ class InterfaceTest(db.Model):
     Interface_meth = db.Column(db.String(252))
     Interface_pase = db.Column(db.String(252))
     Interface_assert=db.Column(db.String(252))
+    Interface_headers = db.Column(db.String(252))
+    Interface_is_tiaoshi=db.Column(db.Boolean(),default=False)
+    Interface_tiaoshi_shifou=db.Column(db.Boolean(),default=True,nullable=True)
     Interface_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
-        return  self.yongli_name
+        return  self.Interface_name
 class TestResult(db.Model):
     __tablename__='tstresults'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
