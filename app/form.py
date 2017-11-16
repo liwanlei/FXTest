@@ -56,4 +56,7 @@ class Set_email_Form(Form):
     password=StringField(u'请输入安全密码：', [validators.DataRequired(message='请输入安全密码')],render_kw={'placeholder': u'请输入邮箱安全密码'})
     stmp_email=StringField(u'请输入stmp地址：', [validators.DataRequired(message='请输入stmp地址：')],render_kw={'placeholder': u'请输入stmp地址：'})
     port=StringField(u'请输入stmp的端口号：', [validators.DataRequired(message='请输入stmp的端口号：')],render_kw={'placeholder': u'请输入stmp的端口号：'})
-    
+class Interface_Env(Form):
+    project = StringField(u'项目', [validators.DataRequired(message='请填写项目')], render_kw={'placeholder': u'请输入接口项目名称'})
+    envtion=StringField(u'测试环境url', [validators.DataRequired(message='请输入测试环境url')], render_kw={'placeholder': u'测试环境url'})
+    desc=StringField(u'测试环境描述',[validators.DataRequired(message='请输入测试环境描述')], render_kw={'placeholder': u'测试环境描述'})

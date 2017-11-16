@@ -278,12 +278,12 @@ class DaoruinterView(View):
             if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
                 filename='jiekou.xlsx'
                 file.save(filename)
-                jiekou_bianhao,interface_name,project_nam, model_nam, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(filename)
+                jiekou_bianhao,interface_name,project_nam, model_nam, interface_url, interface_header,interface_meth, interface_par, interface_bas = pasre_inter(filename)
                 try:
                     for i in range(len(jiekou_bianhao)):
                         projects_id = Project.query.filter_by(project_name=project_nam[i]).first().id
                         model_id = Model.query.filter_by(model_name=project_nam[i]).first().id
-                        new_interface=Interface(projects_id=projects_id,model_id=model_id,Interface_name=str(interface_name[i]),Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+                        new_interface=Interface(projects_id=projects_id,model_id=model_id,Interface_name=str(interface_name[i]),Interface_url=str(interface_url[i]),Interface_headers=str(interface_header[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                         db.session.add(new_interface)
                     db.session.commit()
                     flash(u'导入成功')
@@ -304,12 +304,12 @@ class DaorucaseView(View):
             if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
                 filename='jiekoucase.xlsx'
                 file.save(filename)
-                jiekou_bianhao,interface_name,project_nam, model_nam, interface_url, interface_meth, interface_par, interface_bas = pasre_inter(filename)
+                jiekou_bianhao,interface_name,project_nam, model_nam, interface_url,interfac_header, interface_meth, interface_par, interface_bas = pasre_inter(filename)
                 try:
                     for i in range(len(jiekou_bianhao)):
                         projects_id = Project.query.filter_by(project_name=project_nam[i]).first().id
                         model_id = Model.query.filter_by(model_name=model_nam[i]).first().id
-                        new_interface = InterfaceTest(projects_id=projects_id, model_id=model_id,Interface_name=str(interface_name[i]), Interface_url=str(interface_url[i]),Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),Interface_assert=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+                        new_interface = InterfaceTest(projects_id=projects_id, model_id=model_id,Interface_name=str(interface_name[i]), Interface_url=str(interface_url[i]),Interface_headers=interfac_header[i],Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),Interface_assert=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                         db.session.add(new_interface)
                     db.session.commit()
                     flash(u'导入成功')
@@ -589,7 +589,7 @@ class DuoyongliView(View):
                         result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
                         endtime=datetime.datetime.now()
                         end = time.time()
-                        createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
+                        createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,headers=Interface_headers_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
                         hour=end-star
                         user_id=User.query.filter_by(username=session.get('username')).first().id
                         new_reust=TestResult(Test_user_id=user_id,test_num=result_toal,pass_num=result_pass,fail_num=result_fail,test_time=starttime,hour_time=hour,test_rep=(day+'.html'),test_log=(day+'.log'))
@@ -611,7 +611,7 @@ class DuoyongliView(View):
                 result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
                 endtime=datetime.datetime.now()
                 end = time.time()
-                createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,key=model_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
+                createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,headers=Interface_headers_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
                 hour=end-star
                 user_id=User.query.filter_by(username=session.get('username')).first().id
                 new_reust=TestResult(Test_user_id=user_id,test_num=result_toal,pass_num=result_pass,fail_num=result_fail,test_time=starttime,hour_time=hour,test_rep=(day+'.html'),test_log=(day+'.log'))

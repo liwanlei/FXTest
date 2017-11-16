@@ -1,4 +1,0 @@
-2017-08-03 20:52:07,638 - 测试日志 - INFO - input:接口地址：http://www.tuling123.com/openapi/api,参数:,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40001
-2017-08-03 20:52:07,669 - 测试日志 - INFO - input:接口地址：http://www.tuling123.com/openapi/api
-,参数:,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40002
-2017-08-03 20:52:07,755 - 测试日志 - INFO - input:接口地址：https://api.douban.com/v2/photo/:id,参数:,实际返回:{'msg': 'uri_not_found', 'code': 1001, 'request': 'GET /v2/photo/:id'},预期:code=1001&msg=uri_not_found

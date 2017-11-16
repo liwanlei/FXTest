@@ -50,7 +50,7 @@
       <td class='test_date'>{{yong.test_time}}</td>
       <td>{{yong.hour_time}}</td>
          <td class='proce'>{{(yong.pass_num)/(yong.test_num)}}</td>
-         <td><label class="label-info">{{yong.users}}</label></td>
+         <td>{{yong.users}}</td>
         <td><a href="{{url_for('load',filename= yong.test_rep)}}">报告下载</a></td>
          <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
          {%if current_user.role_id !=1 and

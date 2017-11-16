@@ -1,2 +1,0 @@
-2017-11-15 16:43:16,494 - 测试日志 - INFO - input:接口地址：http://www.tuling123.com/openapi/api,参数:第三方割发代首法规的法规,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007
-2017-11-15 16:43:20,023 - 测试日志 - INFO - input:接口地址：http://www.tuling123.com/openapi/api,参数:的方式公司的分公司电饭锅,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007

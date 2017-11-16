@@ -1,2 +1,0 @@
-2017-07-21 23:10:27,712 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index,参数:None,实际返回:{u'reason': u'APPKEY\u9519\u8bef\u6216\u4e3a\u7a7a ', u'error_code': 10001, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}
-2017-07-21 23:10:27,922 - 测试日志 - INFO - input:接口地址：http://op.juhe.cn/robot/index	,参数:,实际返回:{u'reason': u'\xe6\x8e\xa5\xe5\x8f\xa3\xe5\x9c\xb0\xe5\x9d\x80\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8', u'error_code': 10022, u'result': None},预期:{'reason': 'APPKEY错误或为空 ', 'result': None, 'error_code': 10001}

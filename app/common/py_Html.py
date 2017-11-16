@@ -46,10 +46,10 @@ shanghai=u'''
 		<tr >
             <td ><strong>用例ID&nbsp;</strong></td>
             <td><strong>项目</strong></td>
-            <td><strong>模块</strong></td>
             <td><strong>url</strong></td>
             <td><strong>请求方式</strong></td>
             <td><strong>参数</strong></td>
+            <td><strong>headers</strong></td>
             <td><strong>预期</strong></td>
             <td><strong>实际返回</strong></td>  
             <td><strong>结果</strong></td>
@@ -63,7 +63,7 @@ def passfail(tend):
     else:
         htl='<td bgcolor="#8b0000">error</td>'
     return htl
-def ceshixiangqing(id,name,key,coneent,url,meth,yuqi,json,relust):
+def ceshixiangqing(id,name,coneent,url,meth,yuqi,json,relust,headers):
     xiangqing='''
         <tr>
             <td>%s</td>
@@ -77,22 +77,22 @@ def ceshixiangqing(id,name,key,coneent,url,meth,yuqi,json,relust):
             %s
         </tr>
         
-    '''%(id,name,key,coneent,url,meth,yuqi,json,(passfail(relust)))
+    '''%(id,name,coneent,url,meth,headers,yuqi,json,(passfail(relust)))
     return xiangqing
 weibu='''
 	</table>
     </body>
     </html>'''
-def relust(titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuqi,json,relust):
+def relust(titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth,yuqi,json,relust):
     if type(name) ==list:
         relus=' '
         for i in range(len(name)):
-            relus+=(ceshixiangqing(id[i],name[i],key[i],coneent[i],url[i],meth[i],yuqi[i],json[i],relust[i]))
+            relus+=(ceshixiangqing(id[i],name[i],coneent=coneent[i],url=url[i],headers=headers[i],meth=meth[i],yuqi=yuqi[i],json=json[i],relust=relust[i]))
         text=title(titles)+connent+time(starttime,endtime,passge,fail)+shanghai+relus+weibu
     else:
-        text=title(titles)+connent+time(starttime,endtime,passge,fail)+shanghai+ceshixiangqing(id,name,key,coneent,url,meth,int(yuqi),json,relust)+weibu
+        text=title(titles)+connent+time(starttime,endtime,passge,fail)+shanghai+ceshixiangqing(id=id,name=name,headers=headers,coneent=coneent,url=url,meth=meth,yuqi=int(yuqi),json=json,relust=relust)+weibu
     return text
-def createHtml(filepath,titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuqi,json,relusts):
-	texts=relust(titles,starttime,endtime,passge,fail,id,name,key,coneent,url,meth,yuqi,json,relusts)
+def createHtml(filepath,titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth,yuqi,json,relusts):
+	texts=relust(titles=titles,starttime=starttime,endtime=endtime,passge=passge,fail=fail,id=id,name=name,headers=headers,coneent=coneent,url=url,meth=meth,yuqi=yuqi,json=json,relust=relusts)
 	with open(filepath,'wb') as f:
 		f.write(texts.encode())

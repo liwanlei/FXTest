@@ -54,6 +54,7 @@ class User(db.Model):
     project=db.relationship('Project',backref='users', lazy='dynamic')
     model = db.relationship('Model', backref='users', lazy='dynamic')
     email=db.relationship('EmailReport', backref='users', lazy='dynamic')
+    huanjing = db.relationship('Interfacehuan', backref='users', lazy='dynamic')
     def __repr__(self):
         return  self.username
     def can(self, permissions):         
@@ -130,6 +131,7 @@ class Project(db.Model):
     TestResult = db.relationship('TestResult', backref='projects', lazy='dynamic')
     Interfacetest = db.relationship('InterfaceTest', backref='projects', lazy='dynamic')
     Interface = db.relationship('Interface', backref='projects', lazy='dynamic')
+    Interfacehuan = db.relationship('Interfacehuan', backref='projects', lazy='dynamic')
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.project_name
@@ -157,3 +159,15 @@ class EmailReport(db.Model):
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return self.send_email
+class Interfacehuan(db.Model):
+    __tablename__='ceshihuanjing'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    make_user=db.Column(db.Integer(),db.ForeignKey('users.id'))
+    url=db.Column(db.String(255))
+    desc=db.Column(db.String(255))
+    project=db.Column(db.Integer(),db.ForeignKey('projects.id'))
+    status = db.Column(db.Boolean(), default=False)
+    def __repr__(self):
+        return self.url
+
+
