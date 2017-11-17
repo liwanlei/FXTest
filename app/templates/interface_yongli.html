@@ -39,7 +39,7 @@
 <label><input name="checkbox" type="checkbox" > </label>
 <strong>发送邮件报告</strong>
         </div>
-   <table class="am-table am-table-striped am-table-hover table-main" style="width:70%">
+   <table class="am-table am-table-striped am-table-hover table-main" style="width:80%">
   <caption><strong>用例</strong></caption>
   <thead>
     <tr>
@@ -47,6 +47,7 @@
       <th>项目名称</th>
       <th>模块名称</th>
          <th>接口地址</th>
+        <th>请求头</th>
          <th>请求方式</th>
          <th>参数</th>
          <th>预期</th>
@@ -60,6 +61,7 @@
       <td>{{yongli.projects}}</td>
       <td>{{yongli.models}}</td>
          <td>{{yongli.Interface_url}}</td>
+    <td>{{ yongli.Interface_headers }}</td>
       <td>{{yongli.Interface_meth}}</td>
       <td>{{yongli.Interface_pase}}</td>
          <td>{{yongli.Interface_assert}}</td>

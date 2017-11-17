@@ -75,6 +75,7 @@ class InterfaceView(MethodView):
         inter=pagination.items
         return  render_template('interface.html',inte=inter,pagination=pagination)
 class YongliView(MethodView):
+    @login_required
     def get(self,page=1):
         project=Project.query.all()
         models=Model.query.all()
@@ -94,12 +95,14 @@ class AdminuserView(MethodView):
         users=pagination.items
         return render_template('useradmin.html',users=users,pagination=pagination)
 class InterfaceaddView(MethodView):
+    @login_required
     def get(self):
         if not session.get('username'):
             return redirect(url_for('login'))
         form=InterForm()
         project,models=get_pro_mo()
         return render_template('add_interface.html',form=form,projects=project,models=models)
+    @login_required
     def post(self):
         if not session.get('username'):
             return redirect(url_for('login'))
@@ -130,12 +133,14 @@ class InterfaceaddView(MethodView):
                 return render_template('add_interface.html',form=form,projects=project,models=models)
         return render_template('add_interface.html',form=form,projects=project,models=models)
 class EditInterfaceView(MethodView):
+    @login_required
     def get(self,id):
         if not session.get('username'):
             return redirect(url_for('login'))
         interface=Interface.query.filter_by(id=id).first()
         project, models = get_pro_mo()
         return render_template('edit_inter.html',interface=interface,projects=project,models=models)
+    @login_required
     def post(self,id):
         if not session.get('username'):
             return redirect(url_for('login'))
@@ -166,6 +171,7 @@ class EditInterfaceView(MethodView):
             return redirect(url_for('interface'))
         return render_template('edit_inter.html',interface=interface,projects=project,models=models)
 class DeleinterView(MethodView):
+    @login_required
     def get(self,id):
         if not session.get('username'):
             return redirect(url_for('login'))
@@ -180,6 +186,7 @@ class DeleinterView(MethodView):
         return redirect(url_for('interface'))
 class AddtestcaseView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self):
         if not session.get('username'):
             return redirect(url_for('login'))
@@ -224,6 +231,7 @@ class Deletecase(View):
         return redirect(url_for('yongli'))
 class EditcaseView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self,id):
         if not session.get('username'):
             return redirect(url_for('login'))
@@ -278,11 +286,11 @@ class DaoruinterView(View):
             if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
                 filename='jiekou.xlsx'
                 file.save(filename)
-                jiekou_bianhao,interface_name,project_nam, model_nam, interface_url, interface_header,interface_meth, interface_par, interface_bas = pasre_inter(filename)
+                jiekou_bianhao,project_nam,model_nam,interface_name,interface_url, interface_header,interface_meth, interface_par, interface_bas = pasre_inter(filename)
                 try:
                     for i in range(len(jiekou_bianhao)):
                         projects_id = Project.query.filter_by(project_name=project_nam[i]).first().id
-                        model_id = Model.query.filter_by(model_name=project_nam[i]).first().id
+                        model_id = Model.query.filter_by(model_name=model_nam[i]).first().id
                         new_interface=Interface(projects_id=projects_id,model_id=model_id,Interface_name=str(interface_name[i]),Interface_url=str(interface_url[i]),Interface_headers=str(interface_header[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                         db.session.add(new_interface)
                     db.session.commit()
@@ -463,6 +471,7 @@ class SeruserView(View):
         return redirect(url_for('adminuser'))
 class SeryongliView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self):
         project=Project.query.all()
         models=Model.query.all()
@@ -482,6 +491,7 @@ class SeryongliView(View):
         return redirect(url_for('yongli'))
 class SerinterView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self):
         if not session.get('username'):
             return redirect(url_for('login'))
@@ -505,6 +515,7 @@ class SerinterView(View):
         return redirect(url_for('interface'))
 class TestrepView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self,page=1):
         if not session.get('username'):
             return redirect(url_for('login'))
@@ -520,6 +531,7 @@ class LoadView(View):
         return response
 class MakeonecaseView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self,id):
         if not session.get('username'):
             return redirect(url_for('login'))
@@ -538,6 +550,7 @@ class MakeonecaseView(View):
             return redirect(url_for('yongli'))
 class DuoyongliView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self):
         if not session.get('username'):
             return redirect(url_for('login'))
@@ -625,6 +638,7 @@ class DuoyongliView(View):
         return redirect(url_for('yongli'))
 class ProjectView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self):
         if not  session.get('username'):
             return  redirect(url_for('login'))
@@ -632,13 +646,13 @@ class ProjectView(View):
         return  render_template('project.html',projects=projects)
 class ModelView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self):
-        if not  session.get('username'):
-            return  redirect(url_for('login'))
         models=Model.query.filter_by(status=False).all()
         return  render_template('model.html',projects=models)
 class AddmodelView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self):
         if not  session.get('username'):
             return  redirect(url_for('login'))
@@ -660,6 +674,7 @@ class AddmodelView(View):
         return  render_template('add_moel.html')
 class AddproView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self):
         if not  session.get('username'):
             return  redirect(url_for('login'))
@@ -709,6 +724,7 @@ class DeleproView(View):
         return redirect(url_for('project'))
 class EditmoelView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self,id):
         if not session.get('username'):
             return  redirect(url_for('login'))
@@ -727,6 +743,7 @@ class EditmoelView(View):
         return  render_template('edit_model.html',mode=model)
 class EditproView(View):
     methods=['GET','POST']
+    @login_required
     def dispatch_request(self,id):
         if not session.get('username'):
             return  redirect(url_for('login'))
@@ -906,3 +923,80 @@ class TestrepoView(MethodView):
             test_prco.append({(user_test[i]).projects.project_name:(int(user_test[i].pass_num)/int(user_test[i].test_num))*100})
             riqi.append( user_test[i].test_time.strftime( '%y-%m-%d %H:%M'))
         return jsonify({'data':list(set(project)),'num':test_prco,'riqi':riqi})
+class ADDTesteventView(MethodView):
+    @login_required
+    def get(self):
+        peoject,modesl=get_pro_mo()
+        forms=Interface_Env()
+        return render_template('add_even.html', form=forms,projects=peoject)
+    @login_required
+    def post(self):
+        peoject, modesl = get_pro_mo()
+        forms = Interface_Env()
+        if forms.validate_on_submit:
+            peoject=request.form['project']
+            url=request.form['envtion']
+            desc=request.form['desc']
+            user_id = current_user.id
+            if peoject =='' or url=='' or desc =='':
+                flash('请准确填写测试环境的信息')
+                return redirect(url_for('addevent'))
+            url_old=Interfacehuan.query.filter_by(url=url).first()
+            if url_old:
+                flash('测试环境必须是相互独立的')
+                return redirect(url_for('addevent'))
+            end=Interfacehuan()
+            end.url=url
+            end.desc=desc
+            end.project=peoject
+            end.make_user=user_id
+            db.session.add(end)
+            return redirect(url_for('yongli'))
+        return render_template('add_even.html', form=forms, projects=peoject)
+class TesteventVies(MethodView):
+    @login_required
+    def get(self):
+        events=Interfacehuan.query.filter_by(status=False).all()
+        return render_template('events.html',events=events)
+class DeleteEventViews(MethodView):
+    @login_required
+    def get(self,id):
+        event=Interfacehuan.query.filter_by(id=id).first()
+        user_id = current_user.id
+        if event.make_user==user_id or current_user.role_id==2:
+            event.status=True
+            db.session.commit()
+            flash('删除成功')
+            return  redirect(url_for('ceshihuanjing'))
+        flash('权利不足以删除！')
+        return  redirect(url_for('ceshihuanjing'))
+class EditEventViews(MethodView):
+    @login_required
+    def get(self,id):
+        project,models=get_pro_mo()
+        event=Interfacehuan.query.filter_by(id=id).first()
+        return  render_template('edit_events.html',enents=event,projects=project)
+    def post(self,id):
+        project, models = get_pro_mo()
+        event = Interfacehuan.query.filter_by(id=id).first()
+        projectd=request.form['project']
+        url=request.form['url']
+        desc=request.form['desc']
+        ueris=current_user.id
+        event.url=url
+        event.desc=desc
+        event.project=projectd
+        event.make_user=ueris
+        try:
+            db.session.commit()
+            return  redirect(url_for('ceshihuanjing'))
+        except:
+            flash('编辑出现问题，重新编辑')
+            return render_template('edit_events.html', enents=event, projects=project)
+        return render_template('edit_events.html', enents=event, projects=project)
+class MockViews(MethodView):
+    @login_required
+    def get(self,page=1):
+        mock=Mockserver.query.filter_by(delete=False).paginate(page, per_page=20,error_out=False)
+        inter = mock.items
+        return render_template('mockserver.html',inte=inter,pagination=mock)

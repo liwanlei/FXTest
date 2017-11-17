@@ -2,7 +2,7 @@
 """
 @author: lileilei
 @file: manage.py
-@time: 2017/7/13 16:39g
+@time: 2017/7/13 16:39
 """
 from  app import  app
 if __name__ == '__main__':

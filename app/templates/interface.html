@@ -31,7 +31,7 @@
             <a href="{{url_for('daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn am-btn-default am-btn-success"></a>
        </div>
 
-   <table class="am-table am-table-striped am-table-hover table-main" style="width:70%">
+   <table class="am-table am-table-hover table-main" style="width:80%">
   
   <thead>
     <tr>
@@ -40,6 +40,7 @@
       <th>所属模块</th>
          <th>接口名称</th>
          <th>接口地址</th>
+        <th>接口headers</th>
          <th>接口请求方法</th>
          <th>接口请求参数</th>
          <th>接口返回参数</th>
@@ -50,10 +51,11 @@
   {%for inter in inte%}
     <tr>
       <td>{{inter.id}}</td>
-      <td>{{inter.projects}}</td>
+      <td><label class="label-important">{{inter.projects}}</label></td>
       <td>{{inter.models}}</td>
          <td>{{inter.Interface_name}}</td>
       <td>{{inter.Interface_url}}</td>
+        <td>{{ inter.Interface_headers }}</td>
       <td>{{inter.Interface_meth}}</td>
          <td>{{inter.Interface_par}}</td>
       <td>{{inter.Interface_back}}</td>

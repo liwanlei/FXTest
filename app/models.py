@@ -55,6 +55,7 @@ class User(db.Model):
     model = db.relationship('Model', backref='users', lazy='dynamic')
     email=db.relationship('EmailReport', backref='users', lazy='dynamic')
     huanjing = db.relationship('Interfacehuan', backref='users', lazy='dynamic')
+    mock = db.relationship('Mockserver', backref='users', lazy='dynamic')
     def __repr__(self):
         return  self.username
     def can(self, permissions):         
@@ -169,5 +170,34 @@ class Interfacehuan(db.Model):
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return self.url
-
+class Mockserver(db.Model):
+    __tablename__='mockserver'
+    id = db.Column(db.Integer, primary_key=True)
+    make_uers = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    project=db.Column(db.String(255))
+    name=db.Column(db.String(55))
+    path=db.Column(db.String(252))
+    methods = db.Column(db.String(50))
+    headers=db.Column(db.String(500))
+    description = db.Column(db.String(50))
+    fanhui=db.Column(db.String(500))
+    params = db.Column(db.String(500))
+    rebacktype=db.Column(db.String(32))
+    update_time = db.Column(db.DateTime(),default=datetime.datetime.now())
+    status = db.Column(db.Boolean(),default=False)
+    delete=db.Column(db.Boolean(),default=False)
+    ischeck = db.Column(db.Boolean(),default=False)
+    is_headers=db.Column(db.Boolean(),default=False)
+    def __repr__(self):
+        return self.name
+class Task(db.Model):
+    __tablename__ = 'tasks'
+    id = db.Column(db.Integer, primary_key=True)
+    makeuser=db.Column(db.Integer(),db.ForeignKey('users.id'))
+    taskname=db.Column(db.String(52))
+    taskdesc=db.Column(db.String(252))
+    taskdetime=db.Column(db.DateTime(),default=datetime.datetime.now())
+    status=db.Column(db.Boolean(),default=False)
+    def __repr__(self):
+        return  self.taskname
 

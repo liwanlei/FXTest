@@ -16,7 +16,7 @@
     <header class="am-topbar am-topbar-inverse admin-header">
         <div class="am-topbar-brand">
             <a href="javascript:;" class="tpl-logo">
-                <img src="{{url_for('static',filename='img/logo.png')}}" alt="">
+                <img src="{{url_for('static',filename='img/logo.png')}}" alt="" >
             </a>
         </div>
         </div>
@@ -50,15 +50,21 @@
                             <span>项目</span>
                         </a>
                     </li>
+                <li class="tpl-left-nav-item">
+                        <a href="{{ url_for('ceshihuanjing') }}" class="nav-link tpl-left-nav-link-list">
+                            <i class="am-icon-internet-explorer"></i>
+                            <span>测试环境</span>
+                        </a>
+                    </li>
                     <li class="tpl-left-nav-item">
                         <a href="{{url_for('model')}}" class="nav-link tpl-left-nav-link-list">
-                            <i class="am-icon-table"></i>
+                            <i class="am-icon-adn"></i>
                             <span>模块</span>
                         </a>
                     </li>
                     <li class="tpl-left-nav-item">
                         <a href="{{url_for('interface')}}" class="nav-link tpl-left-nav-link-list">
-                            <i class="am-icon-wpforms"></i>
+                            <i class="am-icon-internet-explorer"></i>
                             <span>接口</span>
                         </a>
                     </li>
@@ -68,9 +74,21 @@
                             <span>测试用例</span>
                         </a>
                     </li>
+                    <li class="tpl-left-nav-item">
+                        <a href="#" class="nav-link tpl-left-nav-link-list">
+                            <i class="am-icon-tasks"></i>
+                            <span>定时任务</span>
+                        </a>
+                    </li>
+                <li class="tpl-left-nav-item">
+                        <a href="{{ url_for('mockserver') }}" class="nav-link tpl-left-nav-link-list" target="_blank">
+                            <i class="am-icon-server"></i>
+                            <span>mock-server</span>
+                        </a>
+                    </li>
 					<li class="tpl-left-nav-item">
                         <a href="{{url_for('test_rep')}}" class="nav-link tpl-left-nav-link-list">
-                            <i class="glyphicon glyphicon-book"></i>
+                            <i class="am-icon-file"></i>
                             <span>测试报告</span>
                         </a>
                     </li>
@@ -78,7 +96,7 @@
           current_user.role_id !=None  %}
 					<li class="tpl-left-nav-item">
                         <a href="{{url_for('adminuser')}}" class="nav-link tpl-left-nav-link-list">
-                            <span class="glyphicon glyphicon-user"></span>
+                            <span class=" am-icon-user"></span>
 							<span>用户管理</span>
                         </a>
                     </li>

@@ -10,7 +10,7 @@
                         <span class="am-icon-code"></span> 添加接口
                     </div>
                     </div>
-                     
+
 
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -28,7 +28,7 @@
 <strong>项目名字:</strong>
     {% for project in  projects %}
 <input type='radio' value="{{  project.project_name }}" name="project"
-style="user-name">{{ project.project_name }}
+style="">{{ project.project_name }}
     {% endfor %}</div><span>&nbsp;</span>
 <span>&nbsp;</span>
 <div class="form-group">
@@ -61,6 +61,6 @@ style="user-name">{{ project.project_name }}
 {{ form.interface_bas }}</div>
 
 <button type="submit" class="am-btn am-btn-primary ">添加</button>
-</div>
-</form>
+</form></div>
+</div></div>
 {%endblock%}

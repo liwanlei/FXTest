@@ -1,6 +1,6 @@
 {%extends 'back.html'%}
 {%block hello%}
-<div class="tpl-content-wrapper">
+    <div class="tpl-content-wrapper">
             <div class="tpl-content-page-title">
            
             </div>
@@ -10,6 +10,7 @@
                         <span class="am-icon-code"></span> 添加测试报告邮件
                     </div>
                     </div>
+
 {% with messages = get_flashed_messages() %}
 {% if messages %}
  <ul class='flashes'>
@@ -48,6 +49,6 @@
 <input type="text" name="email" placeholder="请输入接受邮箱"> <text style="color: lightsteelblue;">多个邮箱请用逗号隔开</text>
 </div>
 <button type="submit" class="am-btn am-btn-primary ">添加</button>
-</div>
-</form>
+</form></div></div>
+       </div>
 {%endblock%}
