@@ -71,7 +71,7 @@ class LogtView(MethodView):
 class InterfaceView(MethodView):
     @login_required
     def get(self,page=1):
-        pagination=Interface.query.filter_by(status=False).paginate(page, per_page=20,error_out=False)
+        pagination=Interface.query.filter_by(status=False).order_by('-id').paginate(page, per_page=20,error_out=False)
         inter=pagination.items
         return  render_template('interface.html',inte=inter,pagination=pagination)
 class YongliView(MethodView):
@@ -81,7 +81,7 @@ class YongliView(MethodView):
         models=Model.query.all()
         if not session.get('username'):
             return redirect(url_for('login'))
-        pagination=InterfaceTest.query.filter_by(status=False).paginate(page, per_page=30,error_out=False)
+        pagination=InterfaceTest.query.filter_by(status=False).order_by('-id').paginate(page, per_page=30,error_out=False)
         yongli=pagination.items
         return  render_template('interface_yongli.html',yonglis=yongli,pagination=pagination,projects=project,models=models)
 class AdminuserView(MethodView):
@@ -460,7 +460,7 @@ class SeruserView(View):
                 flash(u'请输入您要查询的用户')
                 return redirect(url_for('adminuser'))
             try:
-                use=User.query.filter(User.username.like('%'+user+'%')).all()
+                use=User.query.filter(User.username.like('%'+user+'%')).order_by('-id').all()
                 if len(use)<=0:
                     flash(u'没有找到您输入的用户')
                     return redirect(url_for('adminuser'))
@@ -486,7 +486,7 @@ class SeryongliView(View):
             if model =='':
                 interd=InterfaceTest.query.filter(InterfaceTest.projects_id==int(projecct)).all()
                 return render_template('ser_yonglo.html',yonglis=interd,projects=project,models=models)
-            interd=InterfaceTest.query.filter(InterfaceTest.projects_id==int(projecct),InterfaceTest.model_id==int(model)).all()
+            interd=InterfaceTest.query.filter(InterfaceTest.projects_id==int(projecct),InterfaceTest.model_id==int(model)).order_by('-id').all()
             return render_template('ser_yonglo.html',yonglis=interd,projects=project,models=models)
         return redirect(url_for('yongli'))
 class SerinterView(View):
@@ -519,7 +519,7 @@ class TestrepView(View):
     def dispatch_request(self,page=1):
         if not session.get('username'):
             return redirect(url_for('login'))
-        pagination=TestResult.query.paginate(page, per_page=20,error_out=False)
+        pagination=TestResult.query.order_by('-id').paginate(page, per_page=20,error_out=False)
         inter=pagination.items
         return render_template('test_result.html',inte=inter,pagination=pagination)
 class LoadView(View):
@@ -642,13 +642,13 @@ class ProjectView(View):
     def dispatch_request(self):
         if not  session.get('username'):
             return  redirect(url_for('login'))
-        projects=Project.query.filter_by(status=False).all()
+        projects=Project.query.filter_by(status=False).order_by('-id').all()
         return  render_template('project.html',projects=projects)
 class ModelView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
-        models=Model.query.filter_by(status=False).all()
+        models=Model.query.filter_by(status=False).order_by('-id').all()
         return  render_template('model.html',projects=models)
 class AddmodelView(View):
     methods=['GET','POST']
@@ -911,18 +911,6 @@ class ShezhiMoView(View):
             return redirect(url_for('setting'))
         flash(u'你要设置的默认邮箱配置不存在')
         return redirect(url_for('setting'))
-class TestrepoView(MethodView):
-    @login_required
-    def get(self):
-        user_test=TestResult.query.filter_by(Test_user_id=int(current_user.id)).all()
-        project=[]
-        test_prco=[]
-        riqi=[]
-        for i in range(len(user_test)):
-            project.append((user_test[i]).projects.project_name)
-            test_prco.append({(user_test[i]).projects.project_name:(int(user_test[i].pass_num)/int(user_test[i].test_num))*100})
-            riqi.append( user_test[i].test_time.strftime( '%y-%m-%d %H:%M'))
-        return jsonify({'data':list(set(project)),'num':test_prco,'riqi':riqi})
 class ADDTesteventView(MethodView):
     @login_required
     def get(self):
@@ -956,7 +944,7 @@ class ADDTesteventView(MethodView):
 class TesteventVies(MethodView):
     @login_required
     def get(self):
-        events=Interfacehuan.query.filter_by(status=False).all()
+        events=Interfacehuan.query.filter_by(status=False).order_by('-id').all()
         return render_template('events.html',events=events)
 class DeleteEventViews(MethodView):
     @login_required
@@ -997,6 +985,105 @@ class EditEventViews(MethodView):
 class MockViews(MethodView):
     @login_required
     def get(self,page=1):
-        mock=Mockserver.query.filter_by(delete=False).paginate(page, per_page=20,error_out=False)
+        mock=Mockserver.query.filter_by(delete=False).order_by('-id').paginate(page, per_page=20,error_out=False)
         inter = mock.items
         return render_template('mockserver.html',inte=inter,pagination=mock)
+class AddmockViews(MethodView):
+    @login_required
+    def get(self):
+        return  render_template('addmockserver.html')
+    @login_required
+    def post(self):
+        project=request.form['project']
+        name=request.form['name']
+        desc=request.form['desc']
+        path=request.form['path']
+        methods=request.form['meth']
+        types=request.form['type']
+        headers=request.form['headers']
+        parm=request.form['parm']
+        back=request.form['back']
+        is_check=request.form['checkout']
+        is_headers=request.form['checkouheaders']
+        kaiqi_is=request.form['kaiqi']
+        if project =='':
+            flash('项目名称不能为空')
+            return render_template('addmockserver.html')
+        if name =='':
+            flash('接口名称不能为空')
+            return render_template('addmockserver.html')
+        if path =='':
+            flash('项目路径不能为空')
+            return render_template('addmockserver.html')
+        if methods =='':
+            flash('请求方式不能为空')
+            return render_template('addmockserver.html')
+        if types =='':
+            flash('类型不能为空')
+            return render_template('addmockserver.html')
+        if parm =='':
+            flash('参数不能为空')
+            return render_template('addmockserver.html')
+        if back =='':
+            flash('返回不能为空')
+            return render_template('addmockserver.html')
+        is_path=Mockserver.query.filter_by(path=path).first()
+        if is_path:
+            flash('路径已经存在!')
+            return render_template('addmockserver.html')
+        name_is=Mockserver.query.filter_by(name=name).first()
+        if name_is:
+            flash('接口已经存在!')
+            return render_template('addmockserver.html')
+        if is_check =='是':
+            is_check=True
+        else:is_check=False
+        if is_headers=='是':
+            is_headers=True
+        else:is_headers=False
+        if kaiqi_is=='是':
+            is_kaiqi=True
+        else:is_kaiqi=False
+        new_mock=Mockserver(name=name)
+        new_mock.make_uers=current_user.id
+        new_mock.project =project
+        new_mock.path =path
+        new_mock.methods =methods
+        new_mock.headers =headers
+        new_mock.description =desc
+        new_mock.fanhui =back
+        new_mock.params =parm
+        new_mock.rebacktype =types
+        new_mock.status =is_kaiqi
+        new_mock.ischeck =is_check
+        new_mock.is_headers =is_headers
+        new_mock.update_time=datetime.datetime.now()
+        db.session.add(new_mock)
+        try:
+            db.session.commit()
+            return  redirect(url_for('mockserver'))
+        except:
+            flash('添加出现错了，请从新添加')
+            return  redirect(url_for('addmock'))
+        return render_template('addmockserver.html')
+class DeletemockViews(MethodView):
+    @login_required
+    def get(self,id):
+        ded=Mockserver.query.filter_by(id=id).first()
+        if ded:
+            ded.delete=True
+            db.session.commit()
+            flash('删除成功！')
+            return  redirect(url_for('mockserver'))
+        flash('删除异常！！')
+        return redirect(url_for('mockserver'))
+class EditmockserView(MethodView):
+    @login_required
+    def get(self,id):
+        mock=Mockserver.query.filter_by(id=id).first()
+        if not mock:
+            flash('请重新选择编辑的mock')
+            return redirect(url_for('mockserver'))
+        return  render_template('editmock.html',mock=mock)
+    def post(self,id):
+        pass

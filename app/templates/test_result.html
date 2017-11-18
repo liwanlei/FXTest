@@ -18,12 +18,12 @@
 {% if messages %}
  <ul class='flashes'>
 {% for message in messages %}
-<li style="color: red">{{ message }}</li>
+<li style="color: red">{{ message }}</li></ul>
 {% endfor %}
 {% endif %}
 {% endwith %}
     <div id="main" style="width: 800px;height:400px;margin-left: 12%"></div>
-   <table class="am-table am-table-striped am-table-hover table-main" style="width:60%;margin-left: 11%">
+   <table class="am-table am-table-striped am-table-hover table-main" >
   <caption><strong></strong></caption>
   <thead>
     <tr>
@@ -63,8 +63,7 @@
  <p class="pagination" style="margin-left: 24%;">
      {{macros.pagination_widget(pagination,'.test_repppage')}}</p>
 
-</div>
-
+                </div></div>
 <script type="text/javascript">
     var dom = document.getElementById("main");
 var myChart = echarts.init(dom);
