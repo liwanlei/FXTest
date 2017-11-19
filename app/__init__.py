@@ -16,7 +16,7 @@ from flask_bootstrap import  Bootstrap
 from flask_login import LoginManager
 from config import lod
 app=Flask(__name__)
-moment=Moment(app)
+
 conf=lod()
 loginManager = LoginManager(app)
 app.config.from_object(conf)
@@ -24,4 +24,5 @@ bootstrap=Bootstrap(app)
 loginManager.session_protection = "strong"
 loginManager.login_view='login'
 db=SQLAlchemy(app)
+moment=Moment(app)
 from  app import  views ,models,url

@@ -20,3 +20,15 @@ def assert_in(asserqiwang,fanhuijson):
             return 'fail'
     else:
         raise ('请填写期望值')
+def dict_par(doct1,dict2):
+    h=[]
+    l=[]
+    for k, v in doct1.items():
+        h.append(k)
+    for k2,v2 in dict2.items():
+        l.append(k2)
+    if h==l:
+        return True
+    else:
+        return False
+

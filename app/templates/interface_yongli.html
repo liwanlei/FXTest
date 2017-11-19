@@ -1,19 +1,19 @@
 {% extends "back.html" %}
 {% block hello %}
 {% import "fenye.html" as macros %}
-   <div class="tpl-content-wrapper">
+   <div class="tpl-content-wrapper ">
             <div class="tpl-content-page-title">  </div>
-            <p class="tpl-portlet-components">
+       <div class="tpl-portlet-components">
                 <div class="portlet-title">
                     <div class="caption font-green bold">
                         <span class="am-icon-code"></span> 用例
- </div>
- </div>
+                     </div>
+                    </div>
      {% with messages = get_flashed_messages() %}
 {% if messages %}
  <ul class='flashes'>
 {% for message in messages %}
-<li style="color: #b92c28;">{{ message }}</li>
+    <li style="color: #b92c28;">{{ message }}</li></ul>
 {% endfor %}
 {% endif %}
 {% endwith %}
@@ -34,12 +34,12 @@
     <form method="POST" action="{{url_for('duoyongli')}}">
         <div style="margin-top: 10px">
            <a href="{{url_for('addtestcase')}}"><input type="button" name="" class="am-btn am-btn-default am-btn-success" value="添加"></a>
-            <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="am-btn am-btn-default am-btn-success" value="导入"></a> 
+            <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="am-btn am-btn-default am-btn-success" value="导入"></a>
         <button class="am-btn am-btn-default am-btn-success">批量执行</button>
 <label><input name="checkbox" type="checkbox" > </label>
 <strong>发送邮件报告</strong>
         </div>
-   <table class="am-table am-table-striped am-table-hover table-main" >
+   <table class="am-table am-table-striped am-table-hover table-main" style="width: 70%;margin-left: 1px">
   <caption><strong>用例</strong></caption>
   <thead>
     <tr>
@@ -51,7 +51,7 @@
          <th>请求方式</th>
          <th>参数</th>
          <th>预期</th>
-        <th style="width:30px">操作</th>
+        <th >操作</th>
     </tr>
   </thead>
   <tbody>
@@ -80,8 +80,6 @@
        {% endif %}
 {% endif %}
    </div></div>
-
-
       </td>
     </tr>
     {%endfor%}
@@ -90,5 +88,5 @@
 </form>
  <p class="pagination" style="margin-left: 24%;">
   {{macros.pagination_widget(pagination,'.yonglipage')}}
-</p>
+ </p></div></div>
 {% endblock %}

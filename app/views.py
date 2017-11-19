@@ -5,7 +5,7 @@
 @time: 2017/7/13 16:42
 """
 from app import  app,db
-from  flask import  redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory,jsonify
+from  flask import  make_response,redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory,jsonify
 from werkzeug import secure_filename
 from  app.models import *
 from app.form import  *
@@ -21,6 +21,8 @@ from flask.views import MethodView,View
 from flask_login import current_user,login_required,login_user,logout_user
 from app.common.decorators import admin_required,permission_required
 from app import loginManager
+from app.common.dict_com import comp_dict,dict_par
+import  json
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -475,8 +477,6 @@ class SeryongliView(View):
     def dispatch_request(self):
         project=Project.query.all()
         models=Model.query.all()
-        if not session.get('username'):
-            return redirect(url_for('login'))
         if request.method=='POST':
             projecct=request.form.get('project')
             model=request.form.get('model')
@@ -493,8 +493,6 @@ class SerinterView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         if request.method=='POST':
             projecct=request.form.get('project')
             model=request.form.get('model')
@@ -1077,7 +1075,7 @@ class DeletemockViews(MethodView):
             return  redirect(url_for('mockserver'))
         flash('删除异常！！')
         return redirect(url_for('mockserver'))
-class EditmockserView(MethodView):
+class EditmockserView(MethodView):#编辑mack服务
     @login_required
     def get(self,id):
         mock=Mockserver.query.filter_by(id=id).first()
@@ -1086,4 +1084,390 @@ class EditmockserView(MethodView):
             return redirect(url_for('mockserver'))
         return  render_template('editmock.html',mock=mock)
     def post(self,id):
-        pass
+        mock = Mockserver.query.filter_by(id=id).first()
+        if not mock:
+            flash('请重新选择编辑的mock')
+            return redirect(url_for('mockserver'))
+        project = request.form['project']
+        name = request.form['name']
+        desc = request.form['desc']
+        path = request.form['path']
+        methods = request.form['meth']
+        types = request.form['type']
+        headers = request.form['headers']
+        parm = request.form['parm']
+        back = request.form['back']
+        is_check = request.form['checkout']
+        is_headers = request.form['checkouheaders']
+        kaiqi_is = request.form['kaiqi']
+        if is_check =='是':
+            is_check=True
+        else:is_check=False
+        if is_headers=='是':
+            is_headers=True
+        else:is_headers=False
+        if kaiqi_is=='是':
+            is_kaiqi=True
+        else:is_kaiqi=False
+        mock.make_uers = current_user.id
+        mock.project = project
+        mock.path = path
+        mock.methods = methods
+        mock.headers = headers
+        mock.description = desc
+        mock.fanhui = back
+        mock.params = parm
+        mock.rebacktype = types
+        mock.status = is_kaiqi
+        mock.ischeck = is_check
+        mock.is_headers = is_headers
+        mock.update_time = datetime.datetime.now()
+        try:
+            db.session.commit()
+            flash('编辑成功！')
+            return  redirect(url_for('mockserver'))
+        except:
+            flash('编辑出现状况，请你看看')
+            return render_template('editmock.html', mock=mock)
+        return render_template('editmock.html', mock=mock)
+class MakemockserverView(MethodView):#做一个mock服务
+    def get(self,path):#get请求方法
+        huoqupath=Mockserver.query.filter_by(path=path,status=True).first()
+        heders=request.headers
+        method=request.method
+        if not huoqupath:
+            abort(404)
+        if method.lower() !=huoqupath.methods:
+            return  jsonify({'code':'-1','message':'请求方式错误!','data':''})
+        if huoqupath.is_headers==True:
+            if comp_dict(heders,huoqupath.headers) ==True:
+                if huoqupath.ischeck==True:
+                    paerm = request.values.to_dict()
+                    if dict_par(paerm,huoqupath.params)==True:
+                        if huoqupath.rebacktype == 'json':
+                            try:
+                                json_fan = json.dumps(huoqupath.fanhui)
+                                return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                            except:
+                                return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                        elif huoqupath.rebacktype == 'xml':
+                            response = make_response(huoqupath.fanhui)
+                            response.content_type = 'application/xml'
+                            return response
+                        else:
+                            return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                    else:
+                        return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                else:
+                    if huoqupath.rebacktype=='json':
+                        try:
+                            json_fan=json.dumps(huoqupath.fanhui)
+                            return  jsonify({'code': '1', 'message': 'successs', 'data':json_fan})
+                        except:
+                            return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                    elif huoqupath.rebacktype =='xml':
+                        response=make_response(huoqupath.fanhui)
+                        response.content_type='application/xml'
+                        return response
+                    else:
+                        return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+            else:
+                return jsonify({'code': '-3', 'message': '安全校验失败!', 'data': ''})
+        if huoqupath.ischeck == True:
+            paerm = request.values.to_dict()
+            if dict_par(paerm, huoqupath.params) == True:
+                if huoqupath.rebacktype == 'json':
+                    try:
+                        json_fan = json.dumps(huoqupath.fanhui)
+                        return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                    except:
+                        return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                elif huoqupath.rebacktype == 'xml':
+                    response = make_response(huoqupath.fanhui)
+                    response.content_type = 'application/xml'
+                    return response
+                else:
+                    return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+            else:
+                return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+        else:
+            if huoqupath.rebacktype == 'json':
+                try:
+                    json_fan = json.dumps(huoqupath.fanhui)
+                    return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                except:
+                    return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+            elif huoqupath.rebacktype == 'xml':
+                response = make_response(huoqupath.fanhui)
+                response.content_type = 'application/xml'
+                return response
+            else:
+                return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''}) #
+    def post(self,path):#post请求方法
+        huoqupath = Mockserver.query.filter_by(path=path,status=True).first()
+        heders = request.headers
+        method = request.method
+        if not huoqupath:
+            abort(404)
+        if method.lower() != huoqupath.methods:
+            return jsonify({'code': '-1', 'message': '请求方式错误!', 'data': ''})
+        if huoqupath.is_headers == True:
+            if comp_dict(heders, huoqupath.headers) == True:
+                if huoqupath.ischeck == True:
+                    paerm = request.values.to_dict()
+                    if dict_par(paerm, huoqupath.params) == True:
+                        if huoqupath.rebacktype == 'json':
+                            try:
+                                json_fan = json.dumps(huoqupath.fanhui)
+                                return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                            except:
+                                return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                        elif huoqupath.rebacktype == 'xml':
+                            response = make_response(huoqupath.fanhui)
+                            response.content_type = 'application/xml'
+                            return response
+                        else:
+                            return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                    else:
+                        return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                else:
+                    if huoqupath.rebacktype == 'json':
+                        try:
+                            json_fan = json.dumps(huoqupath.fanhui)
+                            return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                        except:
+                            return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                    elif huoqupath.rebacktype == 'xml':
+                        response = make_response(huoqupath.fanhui)
+                        response.content_type = 'application/xml'
+                        return response
+                    else:
+                        return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+            else:
+                return jsonify({'code': '-3', 'message': '安全校验失败!', 'data': ''})
+        if huoqupath.ischeck == True:
+            paerm = request.values.to_dict()
+            if dict_par(paerm, huoqupath.params) == True:
+                if huoqupath.rebacktype == 'json':
+                    try:
+                        json_fan = json.dumps(huoqupath.fanhui)
+                        return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                    except:
+                        return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                elif huoqupath.rebacktype == 'xml':
+                    response = make_response(huoqupath.fanhui)
+                    response.content_type = 'application/xml'
+                    return response
+                else:
+                    return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+            else:
+                return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+        else:
+            if huoqupath.rebacktype == 'json':
+                try:
+                    json_fan = json.dumps(huoqupath.fanhui)
+                    return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                except:
+                    return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+            elif huoqupath.rebacktype == 'xml':
+                response = make_response(huoqupath.fanhui)
+                response.content_type = 'application/xml'
+                return response
+            else:
+                return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+    def put(self,path):#put请求方法
+        huoqupath = Mockserver.query.filter_by(path=path,status=True).first()
+        heders = request.headers
+        method = request.method
+        if not huoqupath:
+            abort(404)
+        if method.lower() != huoqupath.methods:
+            return jsonify({'code': '-1', 'message': '请求方式错误!', 'data': ''})
+        if huoqupath.is_headers == True:
+            if comp_dict(heders, huoqupath.headers) == True:
+                if huoqupath.ischeck == True:
+                    paerm = request.values.to_dict()
+                    if dict_par(paerm, huoqupath.params) == True:
+                        if huoqupath.rebacktype == 'json':
+                            try:
+                                json_fan = json.dumps(huoqupath.fanhui)
+                                return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                            except:
+                                return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                        elif huoqupath.rebacktype == 'xml':
+                            response = make_response(huoqupath.fanhui)
+                            response.content_type = 'application/xml'
+                            return response
+                        else:
+                            return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                    else:
+                        return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                else:
+                    if huoqupath.rebacktype == 'json':
+                        try:
+                            json_fan = json.dumps(huoqupath.fanhui)
+                            return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                        except:
+                            return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                    elif huoqupath.rebacktype == 'xml':
+                        response = make_response(huoqupath.fanhui)
+                        response.content_type = 'application/xml'
+                        return response
+                    else:
+                        return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+            else:
+                return jsonify({'code': '-3', 'message': '安全校验失败!', 'data': ''})
+        if huoqupath.ischeck == True:
+            paerm = request.values.to_dict()
+            if dict_par(paerm, huoqupath.params) == True:
+                if huoqupath.rebacktype == 'json':
+                    try:
+                        json_fan = json.dumps(huoqupath.fanhui)
+                        return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                    except:
+                        return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                elif huoqupath.rebacktype == 'xml':
+                    response = make_response(huoqupath.fanhui)
+                    response.content_type = 'application/xml'
+                    return response
+                else:
+                    return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+            else:
+                return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+        else:
+            if huoqupath.rebacktype == 'json':
+                try:
+                    json_fan = json.dumps(huoqupath.fanhui)
+                    return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                except:
+                    return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+            elif huoqupath.rebacktype == 'xml':
+                response = make_response(huoqupath.fanhui)
+                response.content_type = 'application/xml'
+                return response
+            else:
+                return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+    def delete(self,path):#delete请求方法
+        huoqupath = Mockserver.query.filter_by(path=path,status=True).first()
+        heders = request.headers
+        method = request.method
+        if not huoqupath:
+            abort(404)
+        if method.lower() != huoqupath.methods:
+            return jsonify({'code': '-1', 'message': '请求方式错误!', 'data': ''})
+        if huoqupath.is_headers == True:
+            if comp_dict(heders, huoqupath.headers) == True:
+                if huoqupath.ischeck == True:
+                    paerm = request.values.to_dict()
+                    if dict_par(paerm, huoqupath.params) == True:
+                        if huoqupath.rebacktype == 'json':
+                            try:
+                                json_fan = json.dumps(huoqupath.fanhui)
+                                return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                            except:
+                                return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                        elif huoqupath.rebacktype == 'xml':
+                            response = make_response(huoqupath.fanhui)
+                            response.content_type = 'application/xml'
+                            return response
+                        else:
+                            return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                    else:
+                        return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                else:
+                    if huoqupath.rebacktype == 'json':
+                        try:
+                            json_fan = json.dumps(huoqupath.fanhui)
+                            return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                        except:
+                            return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                    elif huoqupath.rebacktype == 'xml':
+                        response = make_response(huoqupath.fanhui)
+                        response.content_type = 'application/xml'
+                        return response
+                    else:
+                        return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+            else:
+                return jsonify({'code': '-3', 'message': '安全校验失败!', 'data': ''})
+        if huoqupath.ischeck == True:
+            paerm = request.values.to_dict()
+            if dict_par(paerm, huoqupath.params) == True:
+                if huoqupath.rebacktype == 'json':
+                    try:
+                        json_fan = json.dumps(huoqupath.fanhui)
+                        return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                    except:
+                        return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                elif huoqupath.rebacktype == 'xml':
+                    response = make_response(huoqupath.fanhui)
+                    response.content_type = 'application/xml'
+                    return response
+                else:
+                    return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+            else:
+                return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+        else:
+            if huoqupath.rebacktype == 'json':
+                try:
+                    json_fan = json.dumps(huoqupath.fanhui)
+                    return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
+                except:
+                    return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+            elif huoqupath.rebacktype == 'xml':
+                response = make_response(huoqupath.fanhui)
+                response.content_type = 'application/xml'
+                return response
+            else:
+                return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+class StartmockView(MethodView):#开启mock服务
+    @login_required
+    def get(self,id):
+        start=Mockserver.query.filter_by(id=id).first()
+        if start:
+            start.status=True
+            try:
+                db.session.commit()
+                flash('mock开启成功，可以正常使用')
+                return  redirect(url_for('mockserver'))
+            except:
+                flash('mock开启失败，疑似库存遭到打击！！')
+                return redirect(url_for('mockserver'))
+        flash('mock的服务开启失败，因为不存在')
+        return redirect(url_for('mockserver'))
+class ClosemockView(MethodView):#关闭mock服务
+    @login_required
+    def get(self,id):
+        start=Mockserver.query.filter_by(id=id).first()
+        if start:
+            start.status=False
+            try:
+                db.session.commit()
+                flash('mock关闭成功，可以正常使用')
+                return  redirect(url_for('mockserver'))
+            except:
+                flash('mock关闭失败，疑似库存遭到打击！！')
+                return redirect(url_for('mockserver'))
+        flash('mock的服务关闭失败，因为不存在')
+        return redirect(url_for('mockserver'))
+class SermockView(View):
+    methods=['GET','POST']
+    @login_required
+    def dispatch_request(self):
+        if request.method=='POST':
+            mock=request.form.get('mock')
+            if mock=='':
+                flash(u'请输入您要查询的mock')
+                return redirect(url_for('mockserver'))
+            try:
+                use=Mockserver.query.filter(Mockserver.name.like('%'+mock+'%')).order_by('-id').all()
+                if len(use)<=0:
+                    flash(u'没有找到您输入的mock接口')
+                    return redirect(url_for('mockserver'))
+                return render_template('serch_mockserver.html',inte=use)
+            except:
+                flash(u'没有找到您输入的mock接口')
+                return redirect(url_for('mockserver'))
+        return redirect(url_for('mockserver'))
+class TimingtasksView(MethodView):
+    def get(self):
+        return render_template('timingtask.html')
