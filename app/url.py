@@ -61,3 +61,4 @@ app.add_url_rule('/mackserver/<string:path>',view_func=MakemockserverView.as_vie
 app.add_url_rule('/closemock/<int:id>',view_func=ClosemockView.as_view('closemock'))
 app.add_url_rule('/startmock/<int:id>',view_func=StartmockView.as_view('startmock'))
 app.add_url_rule('/sermock',view_func=SermockView.as_view('sermock'))
+app.add_url_rule('/timingtask',view_func=TimingtasksView.as_view('timingtask'))

@@ -170,34 +170,43 @@ class Interfacehuan(db.Model):
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return self.url
-class Mockserver(db.Model):
+class Mockserver(db.Model):#mocksever
     __tablename__='mockserver'
     id = db.Column(db.Integer, primary_key=True)
-    make_uers = db.Column(db.Integer(), db.ForeignKey('users.id'))
-    project=db.Column(db.String(255))
-    name=db.Column(db.String(55))
-    path=db.Column(db.String(252))
-    methods = db.Column(db.String(50))
-    headers=db.Column(db.String(500))
-    description = db.Column(db.String(50))
-    fanhui=db.Column(db.String(500))
-    params = db.Column(db.String(500))
-    rebacktype=db.Column(db.String(32))
-    update_time = db.Column(db.DateTime(),default=datetime.datetime.now())
-    status = db.Column(db.Boolean(),default=False)
-    delete=db.Column(db.Boolean(),default=False)
-    ischeck = db.Column(db.Boolean(),default=False)
-    is_headers=db.Column(db.Boolean(),default=False)
+    make_uers = db.Column(db.Integer(), db.ForeignKey('users.id'))#创建人
+    project=db.Column(db.String(255))#项目
+    name=db.Column(db.String(55))#名字
+    path=db.Column(db.String(252))#路径
+    methods = db.Column(db.String(50))#方法
+    headers=db.Column(db.String(500))#请求头
+    description = db.Column(db.String(50))#描述
+    fanhui=db.Column(db.String(500))#返回数据
+    params = db.Column(db.String(500))#参数
+    rebacktype=db.Column(db.String(32))#类型，
+    update_time = db.Column(db.DateTime(),default=datetime.datetime.now())#更新时间
+    status = db.Column(db.Boolean(),default=False)#状态，是否开启
+    delete=db.Column(db.Boolean(),default=False)#是否删除
+    ischeck = db.Column(db.Boolean(),default=False)#是否校验参数
+    is_headers=db.Column(db.Boolean(),default=False)#是否对headers进行校验
     def __repr__(self):
         return self.name
-class Task(db.Model):
+registrations=db.Table('registrations',db.Column('task_id',db.Integer(),db.ForeignKey('tasks.id')),
+                       db.Column('interfacetests_id',db.Integer(),db.ForeignKey('interfacetests.id')))#此表多对多，对应的是测试用例和任务
+class Task(db.Model):#定时任务的
     __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)
-    makeuser=db.Column(db.Integer(),db.ForeignKey('users.id'))
-    taskname=db.Column(db.String(52))
-    taskdesc=db.Column(db.String(252))
-    taskdetime=db.Column(db.DateTime(),default=datetime.datetime.now())
-    status=db.Column(db.Boolean(),default=False)
+    makeuser=db.Column(db.Integer(),db.ForeignKey('users.id'))#创建者
+    taskname=db.Column(db.String(52))#任务名称
+    taskdesc=db.Column(db.String(252))#描述
+    taskstart=db.Column(db.String(252))#任务执行时间
+    taskmakedate=db.Column(db.DateTime(),default=datetime.datetime.now())#任务的创建时间
+    taskrepor_to=db.Column(db.String(252))#收件人邮箱
+    taskrepor_cao=db.Column(db.String(252),nullable=True)#抄送人邮箱
+    task_make_email=db.Column(db.String(252))#维护本计划的人的邮箱
+    status=db.Column(db.Boolean(),default=False)#任务状态，默认正常状态
+    yunxing_status=db.Column(db.String(),default=u'创建')#任务的运行状态，默认是创建
+    interface=db.relationship('InterfaceTest',secondary=registrations,backref=db.backref('tasks'))#多对多到测试用例
     def __repr__(self):
         return  self.taskname
+
 

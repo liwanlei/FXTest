@@ -909,7 +909,7 @@ class ShezhiMoView(View):
             return redirect(url_for('setting'))
         flash(u'你要设置的默认邮箱配置不存在')
         return redirect(url_for('setting'))
-class ADDTesteventView(MethodView):
+class ADDTesteventView(MethodView):#添加测试环境
     @login_required
     def get(self):
         peoject,modesl=get_pro_mo()
@@ -939,12 +939,12 @@ class ADDTesteventView(MethodView):
             db.session.add(end)
             return redirect(url_for('yongli'))
         return render_template('add_even.html', form=forms, projects=peoject)
-class TesteventVies(MethodView):
+class TesteventVies(MethodView):#测试环境首页
     @login_required
     def get(self):
         events=Interfacehuan.query.filter_by(status=False).order_by('-id').all()
         return render_template('events.html',events=events)
-class DeleteEventViews(MethodView):
+class DeleteEventViews(MethodView):#删除测试环境
     @login_required
     def get(self,id):
         event=Interfacehuan.query.filter_by(id=id).first()
@@ -956,7 +956,7 @@ class DeleteEventViews(MethodView):
             return  redirect(url_for('ceshihuanjing'))
         flash('权利不足以删除！')
         return  redirect(url_for('ceshihuanjing'))
-class EditEventViews(MethodView):
+class EditEventViews(MethodView):#编辑测试环境
     @login_required
     def get(self,id):
         project,models=get_pro_mo()
@@ -980,13 +980,13 @@ class EditEventViews(MethodView):
             flash('编辑出现问题，重新编辑')
             return render_template('edit_events.html', enents=event, projects=project)
         return render_template('edit_events.html', enents=event, projects=project)
-class MockViews(MethodView):
+class MockViews(MethodView):#mock服务首页
     @login_required
     def get(self,page=1):
         mock=Mockserver.query.filter_by(delete=False).order_by('-id').paginate(page, per_page=20,error_out=False)
         inter = mock.items
         return render_template('mockserver.html',inte=inter,pagination=mock)
-class AddmockViews(MethodView):
+class AddmockViews(MethodView):#添加mock服务
     @login_required
     def get(self):
         return  render_template('addmockserver.html')
@@ -1064,7 +1064,7 @@ class AddmockViews(MethodView):
             flash('添加出现错了，请从新添加')
             return  redirect(url_for('addmock'))
         return render_template('addmockserver.html')
-class DeletemockViews(MethodView):
+class DeletemockViews(MethodView):#删除mock
     @login_required
     def get(self,id):
         ded=Mockserver.query.filter_by(id=id).first()
@@ -1449,7 +1449,7 @@ class ClosemockView(MethodView):#关闭mock服务
                 return redirect(url_for('mockserver'))
         flash('mock的服务关闭失败，因为不存在')
         return redirect(url_for('mockserver'))
-class SermockView(View):
+class SermockView(View):#搜索mock接口
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
@@ -1468,6 +1468,8 @@ class SermockView(View):
                 flash(u'没有找到您输入的mock接口')
                 return redirect(url_for('mockserver'))
         return redirect(url_for('mockserver'))
-class TimingtasksView(MethodView):
-    def get(self):
-        return render_template('timingtask.html')
+class TimingtasksView(MethodView):#定时任务
+    def get(self,page=1):
+        task = Task.query.filter_by(status=False).order_by('-id').paginate(page, per_page=20, error_out=False)
+        inter = task.items
+        return render_template('timingtask.html',inte=inter,pagination=task)

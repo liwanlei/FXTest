@@ -20,6 +20,44 @@
 {% endfor %}
 {% endif %}
      {% endwith %}
+<div style="margin-top: 10px">
+            <a href="#"><input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success"> </a>
+       </div>
+   <table class="am-table am-table-hover table-main" style="width:100%">
+  <thead>
+    <tr>
+      <th>任务名称</th>
+      <th>描述</th>
+      <th>任务执行时间</th>
+         <th>收件人邮箱</th>
+         <th>抄送人邮箱</th>
+        <th>维护人邮箱</th>
+         <th>任务运行状态</th>
+         <th>创建时间</th>
+         <th>创建者</th>
+        <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+         <td></td>
+      <td></td>
+        <td></td>
+      <td></td>
+         <td></td>
+      <td></td>
+      <td><a ><input type="button" value="编辑" class="btn btn-primary"></a>
+<a ><input type="button" value="删除" class="btn btn-danger"></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+             <p class="pagination" style="margin-left: 24%;">
+  {{macros.pagination_widget(pagination,'.timingtask')}}
+</p>
             </div>
     </div>
             {% endblock %}
