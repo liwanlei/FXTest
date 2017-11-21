@@ -56,6 +56,7 @@ class User(db.Model):
     email=db.relationship('EmailReport', backref='users', lazy='dynamic')
     huanjing = db.relationship('Interfacehuan', backref='users', lazy='dynamic')
     mock = db.relationship('Mockserver', backref='users', lazy='dynamic')
+    task = db.relationship('Task', backref='users', lazy='dynamic')
     def __repr__(self):
         return  self.username
     def can(self, permissions):         
@@ -197,7 +198,6 @@ class Task(db.Model):#定时任务的
     id = db.Column(db.Integer, primary_key=True)
     makeuser=db.Column(db.Integer(),db.ForeignKey('users.id'))#创建者
     taskname=db.Column(db.String(52))#任务名称
-    taskdesc=db.Column(db.String(252))#描述
     taskstart=db.Column(db.String(252))#任务执行时间
     taskmakedate=db.Column(db.DateTime(),default=datetime.datetime.now())#任务的创建时间
     taskrepor_to=db.Column(db.String(252))#收件人邮箱

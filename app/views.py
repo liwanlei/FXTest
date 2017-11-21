@@ -131,6 +131,7 @@ class InterfaceaddView(MethodView):
                 flash(u'添加成功')
                 return redirect(url_for('interface'))
             except:
+                db.session.rollback()
                 flash(u'添加失败')
                 return render_template('add_interface.html',form=form,projects=project,models=models)
         return render_template('add_interface.html',form=form,projects=project,models=models)
@@ -214,6 +215,7 @@ class AddtestcaseView(View):
                 flash(u'添加用例成功')
                 return redirect(url_for('yongli'))
             except:
+                db.session.rollback()
                 flash(u'添加用例失败')
                 return render_template('add_test_case.html',form=form,projects=project,models=models)
         return render_template('add_test_case.html',form=form,projects=project,models=models)
@@ -325,6 +327,7 @@ class DaorucaseView(View):
                     flash(u'导入成功')
                     return redirect(url_for('yongli'))
                 except:
+                    db.session.rollback()
                     flash(u'导入失败，请检查格式是否正确')
                     return render_template('daoru_case.html')
             flash(u'导入失败')
@@ -359,9 +362,14 @@ class AdduserView(View):
             new_user.set_password(password)
             new_user.work_id=work
             db.session.add(new_user)
-            db.session.commit()
-            flash(u'添加成功')
-            return redirect(url_for('adminuser'))
+            try:
+                db.session.commit()
+                flash(u'添加成功')
+                return redirect(url_for('adminuser'))
+            except:
+                db.session.rollback()
+                flash(u'添加过程那么不是快速')
+                return redirect(url_for('adminuser'))
         return render_template('add_user.html',wroks=wrok)
 class SetadView(View):
     methods=['GET','POST']
@@ -688,9 +696,14 @@ class AddproView(View):
                 return render_template('add_pro.html')
             new_moel=Project(project_name=model,project_user_id=user_id)
             db.session.add(new_moel)
-            db.session.commit()
-            flash(u'添加成功!')
-            return  redirect(url_for('project'))
+            try:
+                db.session.commit()
+                flash(u'添加成功!')
+                return  redirect(url_for('project'))
+            except:
+                db.session.rollback()
+                flash(u'添加guo程总是不理想!')
+                return redirect(url_for('project'))
         return  render_template('add_pro.html')
 class DelemodelView(View):
     methods=['GET','POST']
@@ -735,9 +748,14 @@ class EditmoelView(View):
                 return render_template('edit_model.html', mode=model)
             models = Model.query.filter_by(model_name=ed_mode).first()
             model.model_name=ed_mode
-            db.session.commit()
-            flash(u'编辑成功')
-            return  redirect(url_for('model'))
+            try:
+                db.session.commit()
+                flash(u'编辑成功')
+                return  redirect(url_for('model'))
+            except:
+                db.session.rollback()
+                flash(u'编辑zhi路漫漫兮')
+                return redirect(url_for('model'))
         return  render_template('edit_model.html',mode=model)
 class EditproView(View):
     methods=['GET','POST']
@@ -754,9 +772,14 @@ class EditproView(View):
                 return render_template('edit_pro.html', project=project)
             models = Project.query.filter_by(project_name=ed_mode).first()
             project.project_name=ed_mode
-            db.session.commit()
-            flash(u'编辑成功')
-            return  redirect(url_for('project'))
+            try:
+                db.session.commit()
+                flash(u'编辑成功')
+                return  redirect(url_for('project'))
+            except:
+                db.session.rollback()
+                flash(u'编辑出现小异常')
+                return redirect(url_for('project'))
         return  render_template('edit_pro.html',project=project)
 class DeleteResultView(View):
     methods=['GET','POST']
@@ -813,9 +836,14 @@ class Add_emaiView(MethodView):
                 return redirect(url_for('setting'))
             email_new=EmailReport(email_re_user_id=int(user_id),send_email=str(email),send_email_password=str(password),to_email=str(resv_email))
             db.session.add(email_new)
-            db.session.commit()
-            flash(u'成功设置一个配置')
-            return redirect(url_for('setting'))
+            try:
+                db.session.commit()
+                flash(u'成功设置一个配置')
+                return redirect(url_for('setting'))
+            except:
+                db.session.rollback()
+                flash(u'配置过程出现了异军突起')
+                return redirect(url_for('setting'))
         return render_template('add_emali.html',form=form)
 class DeleteView(View):
     methods=['GET','POST']
@@ -862,18 +890,28 @@ class EditemailView(MethodView):
             emai.stmp_email=str(stmp_em)
             emai.port=int(port)
             emai.default_set=True
-            db.session.commit()
-            flash(u'编辑成功')
-            return redirect(url_for('setting'))
+            try:
+                db.session.commit()
+                flash(u'编辑成功')
+                return redirect(url_for('setting'))
+            except:
+                db.session.rollback()
+                flash(u'编辑过程中出现了小抑菌')
+                return redirect(url_for('setting'))
         emai.email_re_user_id=int(user_id)
         emai.send_email=str(email)
         emai.send_email_password=str(password)
         emai.to_email=str(resv_email)
         emai.stmp_email=str(stmp_em)
         emai.port=int(port)
-        db.session.commit()
-        flash(u'编辑成功')
-        return redirect(url_for('setting'))
+        try:
+            db.session.commit()
+            flash(u'编辑成功')
+            return redirect(url_for('setting'))
+        except:
+            db.session.rollback()
+            flash(u'编辑过程中出现了小抑菌')
+            return redirect(url_for('setting'))
 class QuzhiMoView(View):
     methods=['GET','POST']
     @login_required
@@ -937,6 +975,11 @@ class ADDTesteventView(MethodView):#添加测试环境
             end.project=peoject
             end.make_user=user_id
             db.session.add(end)
+            try:
+                db.session.commit()
+                return redirect(url_for('yongli'))
+            except:
+                db.session.rollback()
             return redirect(url_for('yongli'))
         return render_template('add_even.html', form=forms, projects=peoject)
 class TesteventVies(MethodView):#测试环境首页
@@ -977,6 +1020,7 @@ class EditEventViews(MethodView):#编辑测试环境
             db.session.commit()
             return  redirect(url_for('ceshihuanjing'))
         except:
+            db.session.rollback()
             flash('编辑出现问题，重新编辑')
             return render_template('edit_events.html', enents=event, projects=project)
         return render_template('edit_events.html', enents=event, projects=project)
@@ -1061,6 +1105,7 @@ class AddmockViews(MethodView):#添加mock服务
             db.session.commit()
             return  redirect(url_for('mockserver'))
         except:
+            db.session.rollback()
             flash('添加出现错了，请从新添加')
             return  redirect(url_for('addmock'))
         return render_template('addmockserver.html')
@@ -1127,6 +1172,7 @@ class EditmockserView(MethodView):#编辑mack服务
             flash('编辑成功！')
             return  redirect(url_for('mockserver'))
         except:
+            db.session.rollback()
             flash('编辑出现状况，请你看看')
             return render_template('editmock.html', mock=mock)
         return render_template('editmock.html', mock=mock)
@@ -1469,7 +1515,107 @@ class SermockView(View):#搜索mock接口
                 return redirect(url_for('mockserver'))
         return redirect(url_for('mockserver'))
 class TimingtasksView(MethodView):#定时任务
+    @login_required
     def get(self,page=1):
         task = Task.query.filter_by(status=False).order_by('-id').paginate(page, per_page=20, error_out=False)
         inter = task.items
         return render_template('timingtask.html',inte=inter,pagination=task)
+class AddtimingtaskView(MethodView):
+    @login_required
+    def get(self):
+        return  render_template('addtimingtasks.html')
+    @login_required
+    def post(self):
+        taskname=request.form['taskname']
+        tinmingtime=request.form['time']
+        to_email_data=request.form['to_email']
+        cao_email=request.form['cao_email']
+        weihu=request.form['weihu']
+        if taskname =='':
+            flash('任务名不能为空！')
+            return render_template('addtimingtasks.html')
+        if tinmingtime =='':
+            flash('任务执行时间不能为空！')
+            return render_template('addtimingtasks.html')
+        if to_email_data=='':
+            flash('发送给谁邮件不能为空！')
+            return render_template('addtimingtasks.html')
+        if weihu=='':
+            flash('维护人邮件不能为空！')
+            return render_template('addtimingtasks.html')
+        taskname_is = Task.query.filter_by(taskname=taskname).first()
+        if taskname_is:
+            flash('任务已经存在请重新填写！')
+            return render_template('addtimingtasks.html')
+        new_task=Task(taskname=taskname,taskstart=tinmingtime,taskrepor_to=to_email_data,taskrepor_cao=cao_email,task_make_email=weihu,
+                      makeuser=current_user.id)
+        db.session.add(new_task)
+        try:
+            db.session.commit()
+            flash('添加定时任务成功')
+            return  redirect(url_for('timingtask'))
+        except Exception as e:
+            db.session.rollback()
+            flash('添加过程貌似异常艰难！')
+            return redirect(url_for('addtimingtasks'))
+        return render_template('addtimingtasks.html')
+class Editmingtaskview(MethodView):
+    @login_required
+    def get(self,id):
+        task_one=Task.query.filter_by(id=id).first()
+        if not task_one:
+            flash('你编辑的不存在')
+            return  redirect(url_for('timingtask'))
+        return  render_template('Edittimingtasks.html',task_one=task_one)
+    def post(self,id):
+        task_one = Task.query.filter_by(id=id).first()
+        taskname = request.form['taskname']
+        tinmingtime = request.form['time']
+        to_email_data = request.form['to_email']
+        cao_email = request.form['cao_email']
+        weihu = request.form['weihu']
+        if taskname =='':
+            flash('任务名不能为空！')
+            return render_template('addtimingtasks.html')
+        if tinmingtime =='':
+            flash('任务执行时间不能为空！')
+            return render_template('addtimingtasks.html')
+        if to_email_data=='':
+            flash('发送给谁邮件不能为空！')
+            return render_template('addtimingtasks.html')
+        if weihu=='':
+            flash('维护人邮件不能为空！')
+            return render_template('addtimingtasks.html')
+        task_one.taskname=taskname
+        task_one.taskrepor_to=to_email_data
+        task_one.taskrepor_cao=cao_email
+        task_one.task_make_email=weihu
+        task_one.makeuser=current_user.id
+        try:
+            db.session.commit()
+            flash('编辑成功')
+            return  redirect(url_for('timingtask'))
+        except:
+            db.session.rollback()
+            flash('编辑出现问题！')
+            return redirect(url_for('timingtask'))
+        return render_template('Edittimingtasks.html', task_one=task_one)
+class DeteleTaskViee(MethodView):
+    def get(self,id):
+        task_one = Task.query.filter_by(id=id).first()
+        if not task_one:
+            flash('你编辑的不存在')
+            return redirect(url_for('timingtask'))
+        if task_one.status==True:
+            flash('已经删除')
+            return redirect(url_for('timingtask'))
+        task_one.status=True
+        try:
+            db.session.commit()
+            flash('删除任务成功')
+            return redirect(url_for('timingtask'))
+        except:
+            db.session.rollback()
+            flash('删除任务休息了')
+            return redirect(url_for('timingtask'))
+

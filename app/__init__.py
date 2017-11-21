@@ -15,8 +15,8 @@ from flask_moment import  Moment
 from flask_bootstrap import  Bootstrap
 from flask_login import LoginManager
 from config import lod
+from flask_apscheduler import  APScheduler
 app=Flask(__name__)
-
 conf=lod()
 loginManager = LoginManager(app)
 app.config.from_object(conf)

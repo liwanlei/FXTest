@@ -62,3 +62,6 @@ app.add_url_rule('/closemock/<int:id>',view_func=ClosemockView.as_view('closemoc
 app.add_url_rule('/startmock/<int:id>',view_func=StartmockView.as_view('startmock'))
 app.add_url_rule('/sermock',view_func=SermockView.as_view('sermock'))
 app.add_url_rule('/timingtask',view_func=TimingtasksView.as_view('timingtask'))
+app.add_url_rule('/addtimingtasks',view_func=AddtimingtaskView.as_view('addtimingtasks'))
+app.add_url_rule('/editmingtask/<int:id>',view_func=Editmingtaskview.as_view('editmingtask'))
+app.add_url_rule('/deltettask/<int:id>',view_func=DeteleTaskViee.as_view('deltettask'))
