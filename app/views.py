@@ -1622,16 +1622,47 @@ class DeteleTaskViee(MethodView):
             return redirect(url_for('timingtask'))
 @app.route('/gettest',methods=['POST'])
 @login_required
-def gettest():
+def gettest():#ajax获取项目的测试用例
     projec=(request.get_data('project')).decode('utf-8')
     if not projec:
         return []
     proje=Project.query.filter_by(project_name=str(projec)).first()
+    if not proje:
+        return  []
     testyong=InterfaceTest.query.filter_by(projects_id=proje.id).all()
     testyong_list=[]
-    yongli={}
     for i in testyong:
-        yongli['name']=i.Interface_name
-        yongli['id']=i.id
-        testyong_list.append(yongli)
+        testyong_list.append({'name':i.Interface_name,'id':i.id})
     return   jsonify({'data':testyong_list})
+class TestforTaskView(MethodView):
+    def get(self,id):
+        procjet = Project.query.all()
+        task_one=Task.query.filter_by(id=id).first()
+        return  render_template('addtestyongfortask.html',task_one=task_one,procjets=procjet)
+    def post(self,id):
+        procjet = Project.query.all()
+        task_one = Task.query.filter_by(id=id).first()
+        proc_test=request.form.get('project')
+        if proc_test =='':
+            flash(u'不能不添加测试项目！')
+            return render_template('addtestyongfortask.html', task_one=task_one, procjets=procjet)
+        test_yongli=request.form.getlist('testyongli')
+        if test_yongli=='':
+            flash(u'亲你见过只有测试项目没有测试用例的测试任务吗！')
+            return render_template('addtestyongfortask.html', task_one=task_one, procjets=procjet)
+        for oldtask in task_one.interface.all():
+            task_one.interface.remove(oldtask)
+        task_one.prject=Project.query.filter_by(project_name=proc_test).first().id
+        for yongli in test_yongli:
+            task_one.interface.append(InterfaceTest.query.filter_by(id=yongli).first())
+            db.session.add(task_one)
+        try:
+            db.session.commit()
+            flash('任务更新用例成功')
+            return  redirect(url_for('timingtask'))
+        except:
+            flash('任务更新用例失败')
+            return redirect(url_for('timingtask'))
+        return render_template('addtestyongfortask.html', task_one=task_one, procjets=procjet)
+
+

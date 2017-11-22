@@ -28,7 +28,7 @@
     <tr>
       <th>任务名称</th>
       <th>任务执行时间</th>
-        <th>任务包含的用例</th>
+        <th>任务的项目</th>
 {#         <th>收件人邮箱</th>#}
 {#         <th>抄送人邮箱</th>#}
         <th>维护人邮箱</th>
@@ -43,15 +43,22 @@
     <tr>
       <td>{{ inter.taskname }}</td>
       <td>{{ inter.taskstart }}</td>
-        <td>{{ inter.interface.all() }}</td>
-{#      <td>{{ inter.taskrepor_to }}</td>#}
-{#         <td>{{ inter.taskrepor_cao }}</td>#}
-      <td>{{ inter.task_make_email }}</td>
-        <td>{{ inter.yunxing_status }}</td>
+        <td>{{ inter.projects }}</td>
+      <td style="width: 5px">{{ inter.task_make_email }}</td>
+        {% if inter.yunxing_status=='创建' %}
+        <td><a href="#"><input type="button" class="btn btn-default" value="启动"></a></td>
+            {% elif inter.yunxing_status=='运行' %}
+            <td><a href="#"><input type="button" class="btn btn-success" value="暂停"></a>
+            <a href="#"><input type="button" class="btn btn-danger" value="移除"></a></td>
+            {% elif inter.yunxing_status=='暂停' %}
+            <td><a href="#"><input type="button" class="btn btn-success" value="恢复">
+            </a><a href="#"><input type="button" class="btn btn-danger" value="移除"></a></td>
+        {% endif %}
       <td>{{ inter.taskmakedate }}</td>
          <td>{{ inter.users }}</td>
       <td><a href="{{ url_for('editmingtask',id = inter.id )}}"><input type="button" value="编辑" class="btn btn-primary"></a>
 <a  href="{{ url_for('deltettask',id=inter.id) }}"><input type="button" value="删除" class="btn btn-danger"></a>
+          <a  href="{{ url_for('testfortask',id=inter.id) }}"><input type="button" value="用例" class="btn btn-default"></a>
       </td>
     </tr>{% endfor %}
   </tbody>
