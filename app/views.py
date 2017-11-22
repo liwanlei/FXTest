@@ -5,7 +5,7 @@
 @time: 2017/7/13 16:42
 """
 from app import  app,db
-from  flask import  make_response,redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory,jsonify
+from  flask import  make_response,redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory,jsonify,Response
 from werkzeug import secure_filename
 from  app.models import *
 from app.form import  *
@@ -1563,12 +1563,14 @@ class Editmingtaskview(MethodView):
     @login_required
     def get(self,id):
         task_one=Task.query.filter_by(id=id).first()
+        procjet=Project.query.all()
         if not task_one:
             flash('你编辑的不存在')
             return  redirect(url_for('timingtask'))
-        return  render_template('Edittimingtasks.html',task_one=task_one)
+        return  render_template('Edittimingtasks.html',task_one=task_one,porjects=procjet)
     def post(self,id):
         task_one = Task.query.filter_by(id=id).first()
+        procjet = Project.query.all()
         taskname = request.form['taskname']
         tinmingtime = request.form['time']
         to_email_data = request.form['to_email']
@@ -1599,7 +1601,7 @@ class Editmingtaskview(MethodView):
             db.session.rollback()
             flash('编辑出现问题！')
             return redirect(url_for('timingtask'))
-        return render_template('Edittimingtasks.html', task_one=task_one)
+        return render_template('Edittimingtasks.html', task_one=task_one,porjects=procjet)
 class DeteleTaskViee(MethodView):
     def get(self,id):
         task_one = Task.query.filter_by(id=id).first()
@@ -1618,4 +1620,18 @@ class DeteleTaskViee(MethodView):
             db.session.rollback()
             flash('删除任务休息了')
             return redirect(url_for('timingtask'))
-
+@app.route('/gettest',methods=['POST'])
+@login_required
+def gettest():
+    projec=(request.get_data('project')).decode('utf-8')
+    if not projec:
+        return []
+    proje=Project.query.filter_by(project_name=str(projec)).first()
+    testyong=InterfaceTest.query.filter_by(projects_id=proje.id).all()
+    testyong_list=[]
+    yongli={}
+    for i in testyong:
+        yongli['name']=i.Interface_name
+        yongli['id']=i.id
+        testyong_list.append(yongli)
+    return   jsonify({'data':testyong_list})

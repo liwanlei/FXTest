@@ -205,7 +205,7 @@ class Task(db.Model):#定时任务的
     task_make_email=db.Column(db.String(252))#维护本计划的人的邮箱
     status=db.Column(db.Boolean(),default=False)#任务状态，默认正常状态
     yunxing_status=db.Column(db.String(),default=u'创建')#任务的运行状态，默认是创建
-    interface=db.relationship('InterfaceTest',secondary=registrations,backref=db.backref('tasks'))#多对多到测试用例
+    interface=db.relationship('InterfaceTest',secondary=registrations,backref=db.backref('tasks'), lazy='dynamic')#多对多到测试用例
     def __repr__(self):
         return  self.taskname
 

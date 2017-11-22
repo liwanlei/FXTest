@@ -2,6 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <title>API自动化平台</title>
+
     <link href="{{url_for('static',filename='css/amazeui.min.css')}}"  rel="stylesheet">
     <link href="{{url_for('static',filename='css/admin.css')}}"  rel="stylesheet">
     <link href="{{url_for('static',filename='css/app.css')}}"  rel="stylesheet">
@@ -10,6 +11,7 @@
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
 	<script src="{{url_for('static',filename='js/echarts.common.min.js')}}"></script>
 	<script src="{{url_for('static',filename='js/app.js')}}"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body style="background-color: #f5f5f5" >
     <header class="am-topbar am-topbar-inverse admin-header">
@@ -110,5 +112,8 @@
         {%endblock%}
 <div style='text-align: center;margin-bottom: auto'>
 <h3>版权雷子所有，联系qq：952943386 qq交流群：194704520</h3></div>
+
+    {% block js %}  {%endblock%}
+
 </body>
 </html>

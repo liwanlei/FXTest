@@ -39,8 +39,47 @@
     </textarea></p>
      <p style="margin-top: 20px"> <strong>支持人邮件:</strong>
     <input type="text" name="weihu"  placeholder="维护改测试计划的人！" value="{{ task_one.task_make_email }}"></p>
+    <p style="margin-top: 20px">
+        <strong>选择本要执行的测试项目:</strong>
+        <select id="project" >
+            <option>-----------------</option>{% for porject in porjects %}
+            <option >{{ porject.project_name }}</option>{% endfor %}</select>
+    </p>
+
+<p><strong>选择测试用例：</strong>
+    <p ><p id="ceshiyongli"></p></p>
+</p>
 </div>
 <button type="submit" class="am-btn am-btn-primary ">添加</button>
 </form> </div></div>
-    </form></div>
-{%endblock%}
+    </form></div>{%endblock%}
+      {% block js %}
+    <script>
+      $('select#project').change(function ajaxtestyongli() {
+           var  project=document.getElementById('project').value;
+           $.ajax({
+               url:'{{ url_for('gettest') }}',
+               type:'POST',
+               data:project,
+               contentType: 'application/json; charset=UTF-8',
+               processData:false,
+               success:function(testyong){
+                   var message = (testyong['data']);
+                    var city = $("#ceshiyongli");
+                    city.empty();
+				if(message.length) {
+					var len = message.length;
+					for(var i = 0; i < len; i ++) {
+						var obj = message[i];
+						city.append("<input  type='checkbox' class='checkbox-inline' name='testyongli' value='" + obj.name + "'>"+ obj.name );
+					};
+				}
+                },
+                error:function (res) {
+                    console.log(res);
+                    console.log(1);
+                }
+           })
+       });
+    </script>{%endblock%}
+

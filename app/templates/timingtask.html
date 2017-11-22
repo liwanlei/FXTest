@@ -28,8 +28,9 @@
     <tr>
       <th>任务名称</th>
       <th>任务执行时间</th>
-         <th>收件人邮箱</th>
-         <th>抄送人邮箱</th>
+        <th>任务包含的用例</th>
+{#         <th>收件人邮箱</th>#}
+{#         <th>抄送人邮箱</th>#}
         <th>维护人邮箱</th>
          <th>任务运行状态</th>
          <th>创建时间</th>
@@ -42,8 +43,9 @@
     <tr>
       <td>{{ inter.taskname }}</td>
       <td>{{ inter.taskstart }}</td>
-      <td>{{ inter.taskrepor_to }}</td>
-         <td>{{ inter.taskrepor_cao }}</td>
+        <td>{{ inter.interface.all() }}</td>
+{#      <td>{{ inter.taskrepor_to }}</td>#}
+{#         <td>{{ inter.taskrepor_cao }}</td>#}
       <td>{{ inter.task_make_email }}</td>
         <td>{{ inter.yunxing_status }}</td>
       <td>{{ inter.taskmakedate }}</td>
