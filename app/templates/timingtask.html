@@ -45,14 +45,14 @@
       <td>{{ inter.taskstart }}</td>
         <td>{{ inter.projects }}</td>
       <td style="width: 5px">{{ inter.task_make_email }}</td>
-        {% if inter.yunxing_status=='创建' %}
-        <td><a href="#"><input type="button" class="btn btn-default" value="启动"></a></td>
-            {% elif inter.yunxing_status=='运行' %}
-            <td><a href="#"><input type="button" class="btn btn-success" value="暂停"></a>
-            <a href="#"><input type="button" class="btn btn-danger" value="移除"></a></td>
+        {% if inter.yunxing_status=='创建'or inter.yunxing_status=='关闭' %}
+        <td><a href="{{ url_for('starttask',id=inter.id) }}"><input type="button" class="btn btn-default" value="启动"></a></td>
+            {% elif inter.yunxing_status=='启动' %}
+            <td><a href="{{ url_for('zantingtask',id=inter.id) }}"><input type="button" class="btn btn-success" value="暂停"></a>
+            <a href="{{ url_for('yichutask',id=inter.id) }}"><input type="button" class="btn btn-danger" value="移除"></a></td>
             {% elif inter.yunxing_status=='暂停' %}
-            <td><a href="#"><input type="button" class="btn btn-success" value="恢复">
-            </a><a href="#"><input type="button" class="btn btn-danger" value="移除"></a></td>
+            <td><a href="{{ url_for('huifutask',id=inter.id) }}"><input type="button" class="btn btn-success" value="恢复">
+            </a><a href="{{ url_for('yichutask',id=inter.id) }}"><input type="button" class="btn btn-danger" value="移除"></a></td>
         {% endif %}
       <td>{{ inter.taskmakedate }}</td>
          <td>{{ inter.users }}</td>

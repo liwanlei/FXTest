@@ -1,3 +1,0 @@
-2017-11-16 09:10:38,190 - 测试日志 - INFO - input:接口地址：http://www.tuling123.com/openapi/api,参数:asdfasdfadsf,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007
-2017-11-16 09:10:38,218 - 测试日志 - INFO - input:接口地址：http://www.tuling123.com/openapi/api,参数:的广东佛山高大上发个梵蒂冈,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007
-2017-11-16 09:10:38,241 - 测试日志 - INFO - input:接口地址：http://www.tuling123.com/openapi/api,参数:第三方割发代首法规的法规,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007

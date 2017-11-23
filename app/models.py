@@ -116,7 +116,7 @@ class TestResult(db.Model):
     pass_num=db.Column(db.Integer())
     fail_num = db.Column(db.Integer())
     projects_id=db.Column(db.Integer(),db.ForeignKey('projects.id'))
-    skip_num=db.Column(db.Integer())
+    skip_num=db.Column(db.Integer(),nullable=True)
     test_time=db.Column(db.DateTime(),default=datetime.datetime.now())
     hour_time=db.Column(db.Integer())
     test_rep=db.Column(db.String(252))

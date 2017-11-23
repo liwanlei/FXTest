@@ -5,6 +5,8 @@
 @time: 2017/7/13 16:39
 """
 import  os
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from apscheduler.executors.pool import  ProcessPoolExecutor
 class beijing:
 	SECRET_KEY = 'BaSeQuie'
 	basedir=os.path.abspath(os.path.dirname(__file__))
@@ -19,3 +21,12 @@ class beijing:
 		pass
 def lod():
 	return beijing
+class Config(object):
+    JOBS = [ ]
+    SCHEDULER_JOBSTORES = {
+        'default': SQLAlchemyJobStore(url='sqlite:///shebei.db')
+    }
+    SCHEDULER_EXECUTORS = {
+        'processpool': ProcessPoolExecutor(4)
+    }
+    SCHEDULER_API_ENABLED = True

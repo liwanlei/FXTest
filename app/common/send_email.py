@@ -5,7 +5,8 @@ from email.header import Header
 def send_emails(sender,receivers,password,smtp,port,fujian1,fujian2,subject,url):
 	message = MIMEMultipart()
 	mail_msg = """
-	<p>您提交的接口测试已经通过，附件中存放您的测试报告和测试日志，平台测试报告链接如下</p>
+	<h1>接口测试报告</h1>
+	<p>您提交的接口测试已经测试完毕，附件中存放您的测试报告和测试日志，定时测试报告链接如下</p>
 	<p><a href="%s">这是一个链接</a></p>
 	"""%url
 	message['From'] =sender
@@ -28,14 +29,3 @@ def send_emails(sender,receivers,password,smtp,port,fujian1,fujian2,subject,url)
 		return True
 	except Exception as e:
 		return False
-if __name__ == '__main__':
-	sender = 'leileili126@163.com'
-	receivers = ['leileili126@163.com']
-	password='lileilei930423'
-	port=465
-	fujian1='decorators.py'
-	fujian22='py_Html.py'
-	stmp='smtp.163.com'
-	subject=u'测试报告'
-	url='http://127.0.0.1:5000/test_rep'
-	send_email(sender,receivers,password,stmp,port,fujian1,fujian22,subject)

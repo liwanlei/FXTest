@@ -15,7 +15,6 @@ from app.common.py_Html import createHtml
 from app.common.requ_case import Api
 from app.common.panduan import assert_in
 from app.test_case.Test_case import ApiTestCase
-from app.common.py_Html import createHtml
 from app.common.send_email import send_emails 
 from flask.views import MethodView,View
 from flask_login import current_user,login_required,login_user,logout_user
@@ -23,6 +22,59 @@ from app.common.decorators import admin_required,permission_required
 from app import loginManager
 from app.common.dict_com import comp_dict,dict_par
 import  json
+from app import  scheduler
+def addtask(id):#定时任务执行的时候所用的函数
+    in_id=int(id)
+    task=Task.query.filter_by(id=in_id).first()
+    starttime = datetime.datetime.now()
+    star = time.time()
+    day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    file_dir = os.path.join(basedir, 'upload')
+    file = os.path.join(file_dir, (day + '.log'))
+    if os.path.exists(file) is False:
+        os.system('touch %s' % file)
+    filepath = os.path.join(file_dir, (day + '.html'))
+    if os.path.exists(filepath) is False:
+        os.system(r'touch %s' % filepath)
+    projecct_list = []
+    model_list = []
+    Interface_name_list = []
+    Interface_url_list = []
+    Interface_meth_list = []
+    Interface_pase_list = []
+    Interface_assert_list = []
+    Interface_headers_list = []
+    id_list = []
+    for task_yongli in task.interface.all():
+        id_list.append(task_yongli.id)
+        projecct_list.append(task_yongli.projects)
+        model_list.append(task_yongli.models)
+        Interface_url_list.append(task_yongli.Interface_url)
+        Interface_name_list.append(task_yongli.Interface_name)
+        Interface_meth_list.append(task_yongli.Interface_meth)
+        Interface_pase_list.append(task_yongli.Interface_pase)
+        Interface_assert_list.append(task_yongli.Interface_assert)
+        Interface_headers_list.append(task_yongli.Interface_headers)
+    apitest = ApiTestCase(Interface_url_list, Interface_meth_list, Interface_pase_list, Interface_assert_list, file,
+                          Interface_headers_list)
+    result_toal, result_pass, result_fail, relusts, bask_list = apitest.testapi()
+    endtime = datetime.datetime.now()
+    end = time.time()
+    createHtml(titles=u'接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime, passge=result_pass,
+               fail=result_fail, id=id_list, name=projecct_list, headers=Interface_headers_list,
+               coneent=Interface_url_list, url=Interface_meth_list, meth=Interface_pase_list,
+               yuqi=Interface_assert_list, json=bask_list, relusts=relusts)
+    hour = end - star
+    user_id = User.query.filter_by(role_id=2).first().id
+    new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass, fail_num=result_fail,
+                           test_time=starttime, hour_time=hour, test_rep=(day + '.html'), test_log=(day + '.log'))
+    email = EmailReport.query.filter_by(role_id=2, default_set=True).first()
+    send_emails(sender=email.send_email, receivers=task.taskrepor_to, password=email.send_email_password,
+                smtp=email.stmp_email, port=email.port, fujian1=file, fujian2=filepath, subject=u'%s自动用例执行测试报告' % day,
+                url='%stest_rep'%(request.url_root))
+    db.session.add(new_reust)
+    db.session.commit()
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -539,8 +591,6 @@ class MakeonecaseView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         case=InterfaceTest.query.filter_by(id=id).first()
         me=Api(url=case.Interface_url,fangshi=case.Interface_meth,params=case.Interface_pase,headers=case.Interface_headers)
         result=me.testapi()
@@ -558,8 +608,6 @@ class DuoyongliView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
-        if not session.get('username'):
-            return redirect(url_for('login'))
         starttime=datetime.datetime.now()
         star=time.time()
         day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
@@ -1634,7 +1682,7 @@ def gettest():#ajax获取项目的测试用例
     for i in testyong:
         testyong_list.append({'name':i.Interface_name,'id':i.id})
     return   jsonify({'data':testyong_list})
-class TestforTaskView(MethodView):
+class TestforTaskView(MethodView):#为测试任务添加测试用例
     def get(self,id):
         procjet = Project.query.all()
         task_one=Task.query.filter_by(id=id).first()
@@ -1664,5 +1712,64 @@ class TestforTaskView(MethodView):
             flash('任务更新用例失败')
             return redirect(url_for('timingtask'))
         return render_template('addtestyongfortask.html', task_one=task_one, procjets=procjet)
-
-
+class StartTaskView(MethodView):#开始定时任务
+    @login_required
+    def get(self,id):
+        task=Task.query.filter_by(id=id).first()
+        if len(task.interface.all())<=1:
+            flash('定时任务执行过程的测试用例为多用例，请你谅解')
+            return  redirect(url_for('timingtask'))
+        try:
+            scheduler.add_job(func=addtask, id=str(id), args=str(id),trigger=eval(task.taskstart),replace_existing=True)
+            task.yunxing_status='启动'
+            db.session.commit()
+            flash(u'定时任务启动成功！')
+            return  redirect(url_for('timingtask'))
+        except Exception as e:
+            flash(u'定时任务启动失败！请检查任务的各项内容各项内容是否正常')
+            return redirect(url_for('timingtask'))
+class ZantingtaskView(MethodView):#暂停定时任务
+    @login_required
+    def get(self,id):
+        task = Task.query.filter_by(id=id).first()
+        try:
+            scheduler.pause_job(str(id))
+            task.yunxing_status = '暂停'
+            db.session.commit()
+            flash(u'定时任务暂停成功！')
+            return redirect(url_for('timingtask'))
+        except:
+            task.yunxing_status = '创建'
+            db.session.commit()
+            flash(u'定时任务暂停失败！已经为您初始化')
+            return redirect(url_for('timingtask'))
+class HuifutaskView(MethodView):#回复定时任务
+    @login_required
+    def get(self,id):
+        task = Task.query.filter_by(id=id).first()
+        try:
+            scheduler.resume_job(str(id))
+            task.yunxing_status='启动'
+            db.session.commit()
+            flash(u'定时任务恢复成功！')
+            return redirect(url_for('timingtask'))
+        except:
+            task.yunxing_status = '创建'
+            db.session.commit()
+            flash(u'定时任务恢复失败！已经为您初始化')
+            return redirect(url_for('timingtask'))
+class YichuTaskView(MethodView):#移除定时任务
+    @login_required
+    def get(self,id):
+        task = Task.query.filter_by(id=id).first()
+        try:
+            scheduler.delete_job(str(id))
+            task.yunxing_status='关闭'
+            db.session.commit()
+            flash(u'定时任务移除成功！')
+            return redirect(url_for('timingtask'))
+        except:
+            task.yunxing_status = '创建'
+            db.session.commit()
+            flash(u'定时任务移除失败！已经为您初始化')
+            return redirect(url_for('timingtask'))

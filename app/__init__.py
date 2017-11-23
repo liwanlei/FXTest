@@ -25,4 +25,5 @@ loginManager.session_protection = "strong"
 loginManager.login_view='login'
 db=SQLAlchemy(app)
 moment=Moment(app)
+scheduler=APScheduler()
 from  app import  views ,models,url

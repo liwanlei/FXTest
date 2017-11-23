@@ -1,5 +1,0 @@
-2017-11-16 11:10:07,928 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:asdfasdfadsf,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007
-2017-11-16 11:10:07,953 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:的广东佛山高大上发个梵蒂冈,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007
-2017-11-16 11:10:07,978 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:第三方割发代首法规的法规,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007
-2017-11-16 11:10:08,002 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:的方式公司的分公司电饭锅,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007
-2017-11-16 11:10:08,027 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:asdfasdfadsf,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007

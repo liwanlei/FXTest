@@ -66,3 +66,7 @@ app.add_url_rule('/addtimingtasks',view_func=AddtimingtaskView.as_view('addtimin
 app.add_url_rule('/editmingtask/<int:id>',view_func=Editmingtaskview.as_view('editmingtask'))
 app.add_url_rule('/deltettask/<int:id>',view_func=DeteleTaskViee.as_view('deltettask'))
 app.add_url_rule('/testfortask/<int:id>',view_func=TestforTaskView.as_view('testfortask'))
+app.add_url_rule('/starttask/<int:id>',view_func=StartTaskView.as_view('starttask'))
+app.add_url_rule('/zantingtask/<int:id>',view_func=ZantingtaskView.as_view('zantingtask'))
+app.add_url_rule('/huifutask/<int:id>',view_func=HuifutaskView.as_view('huifutask'))
+app.add_url_rule('/yichutask/<int:id>',view_func=YichuTaskView.as_view('yichutask'))
