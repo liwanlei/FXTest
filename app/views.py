@@ -167,17 +167,18 @@ class InterfaceaddView(MethodView):
             model_name=request.form.get('model')
             interface_name=request.form.get('interface_name')
             interface_url=request.form.get('interface_url')
+            interface_header=request.form.get('interface_headers')
             interface_meth=request.form.get('interface_meth')
             interface_par=request.form.get('interface_par')
             interface_bas=request.form.get('interface_bas')
-            if project_name == None or model_name ==None or interface_name=='' or interface_url =='' or interface_meth=='':
+            if project_name == None or model_name ==None or interface_header=='' or interface_name=='' or interface_url =='' or interface_meth=='':
                 flash(u'请完整填写接口的各项信息')
                 return render_template('add_interface.html',form=form,projects=project,models=models)
             user_id=User.query.filter_by(username=session.get('username')).first().id
             project_id=Project.query.filter_by(project_name=project_name).first().id
             models_id=Model.query.filter_by(model_name=model_name).first().id
             try:
-                new_interface=Interface(model_id=models_id,projects_id=project_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id)
+                new_interface=Interface(model_id=models_id,projects_id=project_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id,Interface_headers=interface_header)
                 db.session.add(new_interface)
                 db.session.commit()
                 flash(u'添加成功')
@@ -206,10 +207,11 @@ class EditInterfaceView(MethodView):
             model=request.form.get('model')
             intername=request.form.get('inter_name')
             url=request.form.get('url')
+            headers=request.form.get('headers')
             meth=request.form.get('meth')
             reques=request.form.get('reque')
             back=request.form.get('back')
-            if projecct ==None or model==None or intername=='' or url=='' or meth=='' or back=='':
+            if projecct ==None or model==None or intername=='' or headers =='' or url=='' or meth=='' or back=='':
                 flash(u'请确定各项参数都正常填写')
                 return render_template('edit_inter.html', interface=interface, projects=project, models=models)
             project_id = Project.query.filter_by(project_name=projecct).first().id
@@ -217,6 +219,7 @@ class EditInterfaceView(MethodView):
             interface.projects_id=project_id
             interface.model_id=models_id
             interface.Interface_name=intername
+            interface.Interface_headers=headers
             interface.Interface_url=url
             interface.Interface_meth=meth
             interface.Interface_par=reques
@@ -252,16 +255,17 @@ class AddtestcaseView(View):
             mode=request.form.get('model')
             interface_name=request.form.get('interface_name')
             interface_url=request.form.get('interface_url')
+            interface_header=request.form.get('interface_headers')
             interface_meth=request.form.get('interface_meth')
             interface_can=request.form.get('interface_can')
             interface_re=request.form.get('interface_rest')
-            if yongli_nam ==None or mode==None or interface_name=='' or interface_url=='' or interface_meth=='' or interface_re=='':
+            if yongli_nam ==None or mode==None or interface_name=='' or interface_header==''or interface_url=='' or interface_meth=='' or interface_re=='':
                 flash(u'请准确填写用例')
                 return render_template('add_test_case.html',form=form,projects=project,models=models)
             project_id = Project.query.filter_by(project_name=yongli_nam).first().id
             models_id = Model.query.filter_by(model_name=mode).first().id
             try:
-                newcase=InterfaceTest(projects_id=project_id,model_id=models_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+                newcase=InterfaceTest(projects_id=project_id,model_id=models_id,Interface_name=interface_name,Interface_headers=interface_header,Interface_url=interface_url,Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                 db.session.add(newcase)
                 db.session.commit()
                 flash(u'添加用例成功')
@@ -298,9 +302,10 @@ class EditcaseView(View):
             mode = request.form.get('model')
             url=request.form.get('url')
             meth=request.form.get('meth')
+            headers=request.form.get('headers')
             parme=request.form.get('parme')
             reque=request.form.get('reque')
-            if yongli_nam ==None  or mode== None or url=='' or meth==''  or reque=='':
+            if yongli_nam ==None  or mode== None or url==''or headers=='' or meth==''  or reque=='':
                 flash(u'请确定各项参数都正常填写')
                 return render_template('edit_case.html',edit=edit_case,projects=project,models=models)
             projects_id = Project.query.filter_by(project_name=yongli_nam).first().id
@@ -308,6 +313,7 @@ class EditcaseView(View):
             edit_case.projects_id=projects_id
             edit_case.model_id=model_id
             edit_case.Interface_url=url
+            edit_case.Interface_headers=headers
             edit_case.Interface_meth=meth
             edit_case.Interface_pase=parme
             edit_case.Interface_assert=reque
@@ -1011,11 +1017,11 @@ class ADDTesteventView(MethodView):#添加测试环境
             desc=request.form['desc']
             user_id = current_user.id
             if peoject =='' or url=='' or desc =='':
-                flash('请准确填写测试环境的信息')
+                flash(u'请准确填写测试环境的信息')
                 return redirect(url_for('addevent'))
             url_old=Interfacehuan.query.filter_by(url=url).first()
             if url_old:
-                flash('测试环境必须是相互独立的')
+                flash(u'测试环境必须是相互独立的')
                 return redirect(url_for('addevent'))
             end=Interfacehuan()
             end.url=url
@@ -1043,9 +1049,9 @@ class DeleteEventViews(MethodView):#删除测试环境
         if event.make_user==user_id or current_user.role_id==2:
             event.status=True
             db.session.commit()
-            flash('删除成功')
+            flash(u'删除成功')
             return  redirect(url_for('ceshihuanjing'))
-        flash('权利不足以删除！')
+        flash(u'权利不足以删除！')
         return  redirect(url_for('ceshihuanjing'))
 class EditEventViews(MethodView):#编辑测试环境
     @login_required
@@ -1069,7 +1075,7 @@ class EditEventViews(MethodView):#编辑测试环境
             return  redirect(url_for('ceshihuanjing'))
         except:
             db.session.rollback()
-            flash('编辑出现问题，重新编辑')
+            flash(u'编辑出现问题，重新编辑')
             return render_template('edit_events.html', enents=event, projects=project)
         return render_template('edit_events.html', enents=event, projects=project)
 class MockViews(MethodView):#mock服务首页
@@ -1097,41 +1103,41 @@ class AddmockViews(MethodView):#添加mock服务
         is_headers=request.form['checkouheaders']
         kaiqi_is=request.form['kaiqi']
         if project =='':
-            flash('项目名称不能为空')
+            flash(u'项目名称不能为空')
             return render_template('addmockserver.html')
         if name =='':
-            flash('接口名称不能为空')
+            flash(u'接口名称不能为空')
             return render_template('addmockserver.html')
         if path =='':
-            flash('项目路径不能为空')
+            flash(u'项目路径不能为空')
             return render_template('addmockserver.html')
         if methods =='':
-            flash('请求方式不能为空')
+            flash(u'请求方式不能为空')
             return render_template('addmockserver.html')
         if types =='':
-            flash('类型不能为空')
+            flash(u'类型不能为空')
             return render_template('addmockserver.html')
         if parm =='':
-            flash('参数不能为空')
+            flash(u'参数不能为空')
             return render_template('addmockserver.html')
         if back =='':
-            flash('返回不能为空')
+            flash(u'返回不能为空')
             return render_template('addmockserver.html')
         is_path=Mockserver.query.filter_by(path=path).first()
         if is_path:
-            flash('路径已经存在!')
+            flash(u'路径已经存在!')
             return render_template('addmockserver.html')
         name_is=Mockserver.query.filter_by(name=name).first()
         if name_is:
-            flash('接口已经存在!')
+            flash(u'接口已经存在!')
             return render_template('addmockserver.html')
-        if is_check =='是':
+        if is_check ==u'是':
             is_check=True
         else:is_check=False
-        if is_headers=='是':
+        if is_headers==u'是':
             is_headers=True
         else:is_headers=False
-        if kaiqi_is=='是':
+        if kaiqi_is==u'是':
             is_kaiqi=True
         else:is_kaiqi=False
         new_mock=Mockserver(name=name)
@@ -1154,7 +1160,7 @@ class AddmockViews(MethodView):#添加mock服务
             return  redirect(url_for('mockserver'))
         except:
             db.session.rollback()
-            flash('添加出现错了，请从新添加')
+            flash(u'添加出现错了，请从新添加')
             return  redirect(url_for('addmock'))
         return render_template('addmockserver.html')
 class DeletemockViews(MethodView):#删除mock
@@ -1164,22 +1170,22 @@ class DeletemockViews(MethodView):#删除mock
         if ded:
             ded.delete=True
             db.session.commit()
-            flash('删除成功！')
+            flash(u'删除成功！')
             return  redirect(url_for('mockserver'))
-        flash('删除异常！！')
+        flash(u'删除异常！！')
         return redirect(url_for('mockserver'))
 class EditmockserView(MethodView):#编辑mack服务
     @login_required
     def get(self,id):
         mock=Mockserver.query.filter_by(id=id).first()
         if not mock:
-            flash('请重新选择编辑的mock')
+            flash(u'请重新选择编辑的mock')
             return redirect(url_for('mockserver'))
         return  render_template('editmock.html',mock=mock)
     def post(self,id):
         mock = Mockserver.query.filter_by(id=id).first()
         if not mock:
-            flash('请重新选择编辑的mock')
+            flash(u'请重新选择编辑的mock')
             return redirect(url_for('mockserver'))
         project = request.form['project']
         name = request.form['name']
@@ -1193,13 +1199,13 @@ class EditmockserView(MethodView):#编辑mack服务
         is_check = request.form['checkout']
         is_headers = request.form['checkouheaders']
         kaiqi_is = request.form['kaiqi']
-        if is_check =='是':
+        if is_check ==u'是':
             is_check=True
         else:is_check=False
-        if is_headers=='是':
+        if is_headers==u'是':
             is_headers=True
         else:is_headers=False
-        if kaiqi_is=='是':
+        if kaiqi_is==u'是':
             is_kaiqi=True
         else:is_kaiqi=False
         mock.make_uers = current_user.id
@@ -1217,11 +1223,11 @@ class EditmockserView(MethodView):#编辑mack服务
         mock.update_time = datetime.datetime.now()
         try:
             db.session.commit()
-            flash('编辑成功！')
+            flash(u'编辑成功！')
             return  redirect(url_for('mockserver'))
         except:
             db.session.rollback()
-            flash('编辑出现状况，请你看看')
+            flash(u'编辑出现状况，请你看看')
             return render_template('editmock.html', mock=mock)
         return render_template('editmock.html', mock=mock)
 class MakemockserverView(MethodView):#做一个mock服务
@@ -1232,7 +1238,7 @@ class MakemockserverView(MethodView):#做一个mock服务
         if not huoqupath:
             abort(404)
         if method.lower() !=huoqupath.methods:
-            return  jsonify({'code':'-1','message':'请求方式错误!','data':''})
+            return  jsonify({'code':'-1','message':u'请求方式错误!','data':''})
         if huoqupath.is_headers==True:
             if comp_dict(heders,huoqupath.headers) ==True:
                 if huoqupath.ischeck==True:
@@ -1243,30 +1249,30 @@ class MakemockserverView(MethodView):#做一个mock服务
                                 json_fan = json.dumps(huoqupath.fanhui)
                                 return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                             except:
-                                return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                                return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                         elif huoqupath.rebacktype == 'xml':
                             response = make_response(huoqupath.fanhui)
                             response.content_type = 'application/xml'
                             return response
                         else:
-                            return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                            return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
                     else:
-                        return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                        return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
                 else:
                     if huoqupath.rebacktype=='json':
                         try:
                             json_fan=json.dumps(huoqupath.fanhui)
                             return  jsonify({'code': '1', 'message': 'successs', 'data':json_fan})
                         except:
-                            return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                            return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                     elif huoqupath.rebacktype =='xml':
                         response=make_response(huoqupath.fanhui)
                         response.content_type='application/xml'
                         return response
                     else:
-                        return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                        return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
             else:
-                return jsonify({'code': '-3', 'message': '安全校验失败!', 'data': ''})
+                return jsonify({'code': '-3', 'message': u'安全校验失败!', 'data': ''})
         if huoqupath.ischeck == True:
             paerm = request.values.to_dict()
             if dict_par(paerm, huoqupath.params) == True:
@@ -1275,28 +1281,28 @@ class MakemockserverView(MethodView):#做一个mock服务
                         json_fan = json.dumps(huoqupath.fanhui)
                         return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                     except:
-                        return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                        return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                 elif huoqupath.rebacktype == 'xml':
                     response = make_response(huoqupath.fanhui)
                     response.content_type = 'application/xml'
                     return response
                 else:
-                    return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                    return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
             else:
-                return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
         else:
             if huoqupath.rebacktype == 'json':
                 try:
                     json_fan = json.dumps(huoqupath.fanhui)
                     return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                 except:
-                    return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                    return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
             elif huoqupath.rebacktype == 'xml':
                 response = make_response(huoqupath.fanhui)
                 response.content_type = 'application/xml'
                 return response
             else:
-                return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''}) #
+                return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''}) #
     def post(self,path):#post请求方法
         huoqupath = Mockserver.query.filter_by(path=path,status=True).first()
         heders = request.headers
@@ -1304,7 +1310,7 @@ class MakemockserverView(MethodView):#做一个mock服务
         if not huoqupath:
             abort(404)
         if method.lower() != huoqupath.methods:
-            return jsonify({'code': '-1', 'message': '请求方式错误!', 'data': ''})
+            return jsonify({'code': '-1', 'message': u'请求方式错误!', 'data': ''})
         if huoqupath.is_headers == True:
             if comp_dict(heders, huoqupath.headers) == True:
                 if huoqupath.ischeck == True:
@@ -1315,30 +1321,30 @@ class MakemockserverView(MethodView):#做一个mock服务
                                 json_fan = json.dumps(huoqupath.fanhui)
                                 return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                             except:
-                                return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                                return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                         elif huoqupath.rebacktype == 'xml':
                             response = make_response(huoqupath.fanhui)
                             response.content_type = 'application/xml'
                             return response
                         else:
-                            return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                            return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
                     else:
-                        return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                        return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
                 else:
                     if huoqupath.rebacktype == 'json':
                         try:
                             json_fan = json.dumps(huoqupath.fanhui)
                             return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                         except:
-                            return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                            return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                     elif huoqupath.rebacktype == 'xml':
                         response = make_response(huoqupath.fanhui)
                         response.content_type = 'application/xml'
                         return response
                     else:
-                        return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                        return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
             else:
-                return jsonify({'code': '-3', 'message': '安全校验失败!', 'data': ''})
+                return jsonify({'code': '-3', 'message': u'安全校验失败!', 'data': ''})
         if huoqupath.ischeck == True:
             paerm = request.values.to_dict()
             if dict_par(paerm, huoqupath.params) == True:
@@ -1347,28 +1353,28 @@ class MakemockserverView(MethodView):#做一个mock服务
                         json_fan = json.dumps(huoqupath.fanhui)
                         return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                     except:
-                        return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                        return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                 elif huoqupath.rebacktype == 'xml':
                     response = make_response(huoqupath.fanhui)
                     response.content_type = 'application/xml'
                     return response
                 else:
-                    return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                    return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
             else:
-                return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
         else:
             if huoqupath.rebacktype == 'json':
                 try:
                     json_fan = json.dumps(huoqupath.fanhui)
                     return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                 except:
-                    return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                    return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
             elif huoqupath.rebacktype == 'xml':
                 response = make_response(huoqupath.fanhui)
                 response.content_type = 'application/xml'
                 return response
             else:
-                return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
     def put(self,path):#put请求方法
         huoqupath = Mockserver.query.filter_by(path=path,status=True).first()
         heders = request.headers
@@ -1376,7 +1382,7 @@ class MakemockserverView(MethodView):#做一个mock服务
         if not huoqupath:
             abort(404)
         if method.lower() != huoqupath.methods:
-            return jsonify({'code': '-1', 'message': '请求方式错误!', 'data': ''})
+            return jsonify({'code': '-1', 'message': u'请求方式错误!', 'data': ''})
         if huoqupath.is_headers == True:
             if comp_dict(heders, huoqupath.headers) == True:
                 if huoqupath.ischeck == True:
@@ -1387,30 +1393,30 @@ class MakemockserverView(MethodView):#做一个mock服务
                                 json_fan = json.dumps(huoqupath.fanhui)
                                 return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                             except:
-                                return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                                return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                         elif huoqupath.rebacktype == 'xml':
                             response = make_response(huoqupath.fanhui)
                             response.content_type = 'application/xml'
                             return response
                         else:
-                            return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                            return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
                     else:
-                        return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                        return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
                 else:
                     if huoqupath.rebacktype == 'json':
                         try:
                             json_fan = json.dumps(huoqupath.fanhui)
                             return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                         except:
-                            return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                            return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                     elif huoqupath.rebacktype == 'xml':
                         response = make_response(huoqupath.fanhui)
                         response.content_type = 'application/xml'
                         return response
                     else:
-                        return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                        return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
             else:
-                return jsonify({'code': '-3', 'message': '安全校验失败!', 'data': ''})
+                return jsonify({'code': '-3', 'message': u'安全校验失败!', 'data': ''})
         if huoqupath.ischeck == True:
             paerm = request.values.to_dict()
             if dict_par(paerm, huoqupath.params) == True:
@@ -1419,28 +1425,28 @@ class MakemockserverView(MethodView):#做一个mock服务
                         json_fan = json.dumps(huoqupath.fanhui)
                         return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                     except:
-                        return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                        return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                 elif huoqupath.rebacktype == 'xml':
                     response = make_response(huoqupath.fanhui)
                     response.content_type = 'application/xml'
                     return response
                 else:
-                    return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                    return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
             else:
-                return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
         else:
             if huoqupath.rebacktype == 'json':
                 try:
                     json_fan = json.dumps(huoqupath.fanhui)
                     return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                 except:
-                    return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                    return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
             elif huoqupath.rebacktype == 'xml':
                 response = make_response(huoqupath.fanhui)
                 response.content_type = 'application/xml'
                 return response
             else:
-                return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
     def delete(self,path):#delete请求方法
         huoqupath = Mockserver.query.filter_by(path=path,status=True).first()
         heders = request.headers
@@ -1448,7 +1454,7 @@ class MakemockserverView(MethodView):#做一个mock服务
         if not huoqupath:
             abort(404)
         if method.lower() != huoqupath.methods:
-            return jsonify({'code': '-1', 'message': '请求方式错误!', 'data': ''})
+            return jsonify({'code': '-1', 'message': u'请求方式错误!', 'data': ''})
         if huoqupath.is_headers == True:
             if comp_dict(heders, huoqupath.headers) == True:
                 if huoqupath.ischeck == True:
@@ -1459,30 +1465,30 @@ class MakemockserverView(MethodView):#做一个mock服务
                                 json_fan = json.dumps(huoqupath.fanhui)
                                 return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                             except:
-                                return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                                return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                         elif huoqupath.rebacktype == 'xml':
                             response = make_response(huoqupath.fanhui)
                             response.content_type = 'application/xml'
                             return response
                         else:
-                            return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                            return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
                     else:
-                        return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                        return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
                 else:
                     if huoqupath.rebacktype == 'json':
                         try:
                             json_fan = json.dumps(huoqupath.fanhui)
                             return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                         except:
-                            return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                            return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                     elif huoqupath.rebacktype == 'xml':
                         response = make_response(huoqupath.fanhui)
                         response.content_type = 'application/xml'
                         return response
                     else:
-                        return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                        return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
             else:
-                return jsonify({'code': '-3', 'message': '安全校验失败!', 'data': ''})
+                return jsonify({'code': '-3', 'message': u'安全校验失败!', 'data': ''})
         if huoqupath.ischeck == True:
             paerm = request.values.to_dict()
             if dict_par(paerm, huoqupath.params) == True:
@@ -1491,28 +1497,28 @@ class MakemockserverView(MethodView):#做一个mock服务
                         json_fan = json.dumps(huoqupath.fanhui)
                         return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                     except:
-                        return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                        return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
                 elif huoqupath.rebacktype == 'xml':
                     response = make_response(huoqupath.fanhui)
                     response.content_type = 'application/xml'
                     return response
                 else:
-                    return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                    return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
             else:
-                return jsonify({'code': '-4', 'message': '你输入的参数不正确', 'data': ''})
+                return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
         else:
             if huoqupath.rebacktype == 'json':
                 try:
                     json_fan = json.dumps(huoqupath.fanhui)
                     return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
                 except:
-                    return jsonify({'code': '-2', 'message': '你写入的返回不能正常json！请检查', 'data': ''})
+                    return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
             elif huoqupath.rebacktype == 'xml':
                 response = make_response(huoqupath.fanhui)
                 response.content_type = 'application/xml'
                 return response
             else:
-                return jsonify({'code': '-2', 'message': '你写入的类型目前系统不支持', 'data': ''})
+                return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
 class StartmockView(MethodView):#开启mock服务
     @login_required
     def get(self,id):
@@ -1521,12 +1527,12 @@ class StartmockView(MethodView):#开启mock服务
             start.status=True
             try:
                 db.session.commit()
-                flash('mock开启成功，可以正常使用')
+                flash(u'mock开启成功，可以正常使用')
                 return  redirect(url_for('mockserver'))
             except:
-                flash('mock开启失败，疑似库存遭到打击！！')
+                flash(u'mock开启失败，疑似库存遭到打击！！')
                 return redirect(url_for('mockserver'))
-        flash('mock的服务开启失败，因为不存在')
+        flash(u'mock的服务开启失败，因为不存在')
         return redirect(url_for('mockserver'))
 class ClosemockView(MethodView):#关闭mock服务
     @login_required
@@ -1536,12 +1542,12 @@ class ClosemockView(MethodView):#关闭mock服务
             start.status=False
             try:
                 db.session.commit()
-                flash('mock关闭成功，可以正常使用')
+                flash(u'mock关闭成功，可以正常使用')
                 return  redirect(url_for('mockserver'))
             except:
-                flash('mock关闭失败，疑似库存遭到打击！！')
+                flash(u'mock关闭失败，疑似库存遭到打击！！')
                 return redirect(url_for('mockserver'))
-        flash('mock的服务关闭失败，因为不存在')
+        flash(u'mock的服务关闭失败，因为不存在')
         return redirect(url_for('mockserver'))
 class SermockView(View):#搜索mock接口
     methods=['GET','POST']
@@ -1580,31 +1586,31 @@ class AddtimingtaskView(MethodView):
         cao_email=request.form['cao_email']
         weihu=request.form['weihu']
         if taskname =='':
-            flash('任务名不能为空！')
+            flash(u'任务名不能为空！')
             return render_template('addtimingtasks.html')
         if tinmingtime =='':
-            flash('任务执行时间不能为空！')
+            flash(u'任务执行时间不能为空！')
             return render_template('addtimingtasks.html')
         if to_email_data=='':
-            flash('发送给谁邮件不能为空！')
+            flash(u'发送给谁邮件不能为空！')
             return render_template('addtimingtasks.html')
         if weihu=='':
-            flash('维护人邮件不能为空！')
+            flash(u'维护人邮件不能为空！')
             return render_template('addtimingtasks.html')
         taskname_is = Task.query.filter_by(taskname=taskname).first()
         if taskname_is:
-            flash('任务已经存在请重新填写！')
+            flash(u'任务已经存在请重新填写！')
             return render_template('addtimingtasks.html')
         new_task=Task(taskname=taskname,taskstart=tinmingtime,taskrepor_to=to_email_data,taskrepor_cao=cao_email,task_make_email=weihu,
                       makeuser=current_user.id)
         db.session.add(new_task)
         try:
             db.session.commit()
-            flash('添加定时任务成功')
+            flash(u'添加定时任务成功')
             return  redirect(url_for('timingtask'))
         except Exception as e:
             db.session.rollback()
-            flash('添加过程貌似异常艰难！')
+            flash(u'添加过程貌似异常艰难！')
             return redirect(url_for('addtimingtasks'))
         return render_template('addtimingtasks.html')
 class Editmingtaskview(MethodView):
@@ -1613,7 +1619,7 @@ class Editmingtaskview(MethodView):
         task_one=Task.query.filter_by(id=id).first()
         procjet=Project.query.all()
         if not task_one:
-            flash('你编辑的不存在')
+            flash(u'你编辑的不存在')
             return  redirect(url_for('timingtask'))
         return  render_template('Edittimingtasks.html',task_one=task_one,porjects=procjet)
     def post(self,id):
@@ -1625,16 +1631,16 @@ class Editmingtaskview(MethodView):
         cao_email = request.form['cao_email']
         weihu = request.form['weihu']
         if taskname =='':
-            flash('任务名不能为空！')
+            flash(u'任务名不能为空！')
             return render_template('addtimingtasks.html')
         if tinmingtime =='':
-            flash('任务执行时间不能为空！')
+            flash(u'任务执行时间不能为空！')
             return render_template('addtimingtasks.html')
         if to_email_data=='':
-            flash('发送给谁邮件不能为空！')
+            flash(u'发送给谁邮件不能为空！')
             return render_template('addtimingtasks.html')
         if weihu=='':
-            flash('维护人邮件不能为空！')
+            flash(u'维护人邮件不能为空！')
             return render_template('addtimingtasks.html')
         task_one.taskname=taskname
         task_one.taskrepor_to=to_email_data
@@ -1643,30 +1649,30 @@ class Editmingtaskview(MethodView):
         task_one.makeuser=current_user.id
         try:
             db.session.commit()
-            flash('编辑成功')
+            flash(u'编辑成功')
             return  redirect(url_for('timingtask'))
         except:
             db.session.rollback()
-            flash('编辑出现问题！')
+            flash(u'编辑出现问题！')
             return redirect(url_for('timingtask'))
         return render_template('Edittimingtasks.html', task_one=task_one,porjects=procjet)
 class DeteleTaskViee(MethodView):
     def get(self,id):
         task_one = Task.query.filter_by(id=id).first()
         if not task_one:
-            flash('你编辑的不存在')
+            flash(u'你编辑的不存在')
             return redirect(url_for('timingtask'))
         if task_one.status==True:
-            flash('已经删除')
+            flash(u'已经删除')
             return redirect(url_for('timingtask'))
         task_one.status=True
         try:
             db.session.commit()
-            flash('删除任务成功')
+            flash(u'删除任务成功')
             return redirect(url_for('timingtask'))
         except:
             db.session.rollback()
-            flash('删除任务休息了')
+            flash(u'删除任务休息了')
             return redirect(url_for('timingtask'))
 @app.route('/gettest',methods=['POST'])
 @login_required
@@ -1706,10 +1712,10 @@ class TestforTaskView(MethodView):#为测试任务添加测试用例
             db.session.add(task_one)
         try:
             db.session.commit()
-            flash('任务更新用例成功')
+            flash(u'任务更新用例成功')
             return  redirect(url_for('timingtask'))
         except:
-            flash('任务更新用例失败')
+            flash(u'任务更新用例失败')
             return redirect(url_for('timingtask'))
         return render_template('addtestyongfortask.html', task_one=task_one, procjets=procjet)
 class StartTaskView(MethodView):#开始定时任务
@@ -1717,11 +1723,11 @@ class StartTaskView(MethodView):#开始定时任务
     def get(self,id):
         task=Task.query.filter_by(id=id).first()
         if len(task.interface.all())<=1:
-            flash('定时任务执行过程的测试用例为多用例，请你谅解')
+            flash(u'定时任务执行过程的测试用例为多用例，请你谅解')
             return  redirect(url_for('timingtask'))
         try:
             scheduler.add_job(func=addtask, id=str(id), args=str(id),trigger=eval(task.taskstart),replace_existing=True)
-            task.yunxing_status='启动'
+            task.yunxing_status=u'启动'
             db.session.commit()
             flash(u'定时任务启动成功！')
             return  redirect(url_for('timingtask'))
@@ -1734,12 +1740,12 @@ class ZantingtaskView(MethodView):#暂停定时任务
         task = Task.query.filter_by(id=id).first()
         try:
             scheduler.pause_job(str(id))
-            task.yunxing_status = '暂停'
+            task.yunxing_status = u'暂停'
             db.session.commit()
             flash(u'定时任务暂停成功！')
             return redirect(url_for('timingtask'))
         except:
-            task.yunxing_status = '创建'
+            task.yunxing_status = u'创建'
             db.session.commit()
             flash(u'定时任务暂停失败！已经为您初始化')
             return redirect(url_for('timingtask'))
@@ -1749,12 +1755,12 @@ class HuifutaskView(MethodView):#回复定时任务
         task = Task.query.filter_by(id=id).first()
         try:
             scheduler.resume_job(str(id))
-            task.yunxing_status='启动'
+            task.yunxing_status=u'启动'
             db.session.commit()
             flash(u'定时任务恢复成功！')
             return redirect(url_for('timingtask'))
         except:
-            task.yunxing_status = '创建'
+            task.yunxing_status = u'创建'
             db.session.commit()
             flash(u'定时任务恢复失败！已经为您初始化')
             return redirect(url_for('timingtask'))
@@ -1764,12 +1770,12 @@ class YichuTaskView(MethodView):#移除定时任务
         task = Task.query.filter_by(id=id).first()
         try:
             scheduler.delete_job(str(id))
-            task.yunxing_status='关闭'
+            task.yunxing_status=u'关闭'
             db.session.commit()
             flash(u'定时任务移除成功！')
             return redirect(url_for('timingtask'))
         except:
-            task.yunxing_status = '创建'
+            task.yunxing_status = u'创建'
             db.session.commit()
             flash(u'定时任务移除失败！已经为您初始化')
             return redirect(url_for('timingtask'))

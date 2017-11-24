@@ -25,7 +25,7 @@ def send_emails(sender,receivers,password,smtp,port,fujian1,fujian2,subject,url)
 		smtpObj = smtplib.SMTP_SSL(smtp,port)
 		smtpObj.login(sender,password)
 		smtpObj.sendmail(sender,receivers, message.as_string())
-		print ("邮件发送成功")
+		print (u"邮件发送成功")
 		return True
 	except Exception as e:
 		return False

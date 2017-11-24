@@ -23,10 +23,4 @@ def lod():
 	return beijing
 class Config(object):
     JOBS = [ ]
-    SCHEDULER_JOBSTORES = {
-        'default': SQLAlchemyJobStore(url='sqlite:///shebei.db')
-    }
-    SCHEDULER_EXECUTORS = {
-        'processpool': ProcessPoolExecutor(4)
-    }
     SCHEDULER_API_ENABLED = True

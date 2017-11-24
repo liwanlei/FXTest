@@ -28,6 +28,3 @@ def pasre_inter(filename):
 		interface_bas.append(me.cell(i,8).value)
 		i+=1
 	return jiekou_bianhao,interface_name,project_name,model_name,interface_url,interface_header,interface_meth,interface_par,interface_bas
-
-
-

@@ -22,7 +22,7 @@ def assert_in(asserqiwang,fanhuijson):
         else:
             return 'fail'
     else:
-        raise ('请填写期望值')
+        raise (u'请填写期望值')
 def dict_par(doct1,dict2):
     h=[]
     l=[]
