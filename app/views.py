@@ -90,11 +90,11 @@ class Indexview(MethodView):
         resu_cout=TestResult.query.count()
         project_cout=Project.query.count()
         model_cout=Model.query.count()
-        return  render_template('index.html',yongli=interfaceTest_cunt,jiekou=interface_cont,report=resu_cout,project_cout=project_cout,model_cout=model_cout)
+        return  render_template('home/index.html', yongli=interfaceTest_cunt, jiekou=interface_cont, report=resu_cout, project_cout=project_cout, model_cout=model_cout)
 class LoginView(MethodView):
     def get(self):
         form=LoginFrom()
-        return render_template('login.html', form=form)
+        return render_template('home/login.html', form=form)
     def post(self):
         form=LoginFrom()
         if request.method=='POST' and form.validate_on_submit():
@@ -109,14 +109,14 @@ class LoginView(MethodView):
                             session['username']=username
                             return  redirect(url_for('index'))
                         flash(u'用户冻结，请联系管理员')
-                        return render_template('login.html', form=form)
+                        return render_template('home/login.html', form=form)
                     flash(u'用户名密码错误')
-                    return render_template('login.html', form=form)
+                    return render_template('home/login.html', form=form)
                 flash(u'用户已经冻结，请联系管理员！')
-                return render_template('login.html', form=form)
+                return render_template('home/login.html', form=form)
             flash(u'用户名不存在')
-            return  render_template('login.html',form=form)
-        return  render_template('login.html',form=form)
+            return  render_template('home/login.html', form=form)
+        return  render_template('home/login.html', form=form)
 class LogtView(MethodView):
     def get(self):
         session.clear()
@@ -127,7 +127,7 @@ class InterfaceView(MethodView):
     def get(self,page=1):
         pagination=Interface.query.filter_by(status=False).order_by('-id').paginate(page, per_page=20,error_out=False)
         inter=pagination.items
-        return  render_template('interface.html',inte=inter,pagination=pagination)
+        return  render_template('home/interface.html', inte=inter, pagination=pagination)
 class YongliView(MethodView):
     @login_required
     def get(self,page=1):
@@ -137,7 +137,7 @@ class YongliView(MethodView):
             return redirect(url_for('login'))
         pagination=InterfaceTest.query.filter_by(status=False).order_by('-id').paginate(page, per_page=30,error_out=False)
         yongli=pagination.items
-        return  render_template('interface_yongli.html',yonglis=yongli,pagination=pagination,projects=project,models=models)
+        return  render_template('home/interface_yongli.html', yonglis=yongli, pagination=pagination, projects=project, models=models)
 class AdminuserView(MethodView):
     @admin_required
     @login_required
@@ -147,7 +147,7 @@ class AdminuserView(MethodView):
         user=User.query.filter_by(username=session.get('username')).first()
         pagination=User.query.filter_by(status=False).paginate(page, per_page=20,error_out=False)
         users=pagination.items
-        return render_template('useradmin.html',users=users,pagination=pagination)
+        return render_template('home/useradmin.html', users=users, pagination=pagination)
 class InterfaceaddView(MethodView):
     @login_required
     def get(self):
@@ -155,7 +155,7 @@ class InterfaceaddView(MethodView):
             return redirect(url_for('login'))
         form=InterForm()
         project,models=get_pro_mo()
-        return render_template('add_interface.html',form=form,projects=project,models=models)
+        return render_template('add/add_interface.html', form=form, projects=project, models=models)
     @login_required
     def post(self):
         if not session.get('username'):
@@ -173,7 +173,7 @@ class InterfaceaddView(MethodView):
             interface_bas=request.form.get('interface_bas')
             if project_name == None or model_name ==None or interface_header=='' or interface_name=='' or interface_url =='' or interface_meth=='':
                 flash(u'请完整填写接口的各项信息')
-                return render_template('add_interface.html',form=form,projects=project,models=models)
+                return render_template('add/add_interface.html', form=form, projects=project, models=models)
             user_id=User.query.filter_by(username=session.get('username')).first().id
             project_id=Project.query.filter_by(project_name=project_name).first().id
             models_id=Model.query.filter_by(model_name=model_name).first().id
@@ -186,8 +186,8 @@ class InterfaceaddView(MethodView):
             except:
                 db.session.rollback()
                 flash(u'添加失败')
-                return render_template('add_interface.html',form=form,projects=project,models=models)
-        return render_template('add_interface.html',form=form,projects=project,models=models)
+                return render_template('add/add_interface.html', form=form, projects=project, models=models)
+        return render_template('add/add_interface.html', form=form, projects=project, models=models)
 class EditInterfaceView(MethodView):
     @login_required
     def get(self,id):
@@ -195,7 +195,7 @@ class EditInterfaceView(MethodView):
             return redirect(url_for('login'))
         interface=Interface.query.filter_by(id=id).first()
         project, models = get_pro_mo()
-        return render_template('edit_inter.html',interface=interface,projects=project,models=models)
+        return render_template('edit/edit_inter.html', interface=interface, projects=project, models=models)
     @login_required
     def post(self,id):
         if not session.get('username'):
@@ -213,7 +213,7 @@ class EditInterfaceView(MethodView):
             back=request.form.get('back')
             if projecct ==None or model==None or intername=='' or headers =='' or url=='' or meth=='' or back=='':
                 flash(u'请确定各项参数都正常填写')
-                return render_template('edit_inter.html', interface=interface, projects=project, models=models)
+                return render_template('edit/edit_inter.html', interface=interface, projects=project, models=models)
             project_id = Project.query.filter_by(project_name=projecct).first().id
             models_id = Model.query.filter_by(model_name=model).first().id
             interface.projects_id=project_id
@@ -227,7 +227,7 @@ class EditInterfaceView(MethodView):
             interface.Interface_user_id=User.query.filter_by(username=session.get('username')).first().id
             db.session.commit()
             return redirect(url_for('interface'))
-        return render_template('edit_inter.html',interface=interface,projects=project,models=models)
+        return render_template('edit/edit_inter.html', interface=interface, projects=project, models=models)
 class DeleinterView(MethodView):
     @login_required
     def get(self,id):
@@ -261,7 +261,7 @@ class AddtestcaseView(View):
             interface_re=request.form.get('interface_rest')
             if yongli_nam ==None or mode==None or interface_name=='' or interface_header==''or interface_url=='' or interface_meth=='' or interface_re=='':
                 flash(u'请准确填写用例')
-                return render_template('add_test_case.html',form=form,projects=project,models=models)
+                return render_template('add/add_test_case.html', form=form, projects=project, models=models)
             project_id = Project.query.filter_by(project_name=yongli_nam).first().id
             models_id = Model.query.filter_by(model_name=mode).first().id
             try:
@@ -273,8 +273,8 @@ class AddtestcaseView(View):
             except:
                 db.session.rollback()
                 flash(u'添加用例失败')
-                return render_template('add_test_case.html',form=form,projects=project,models=models)
-        return render_template('add_test_case.html',form=form,projects=project,models=models)
+                return render_template('add/add_test_case.html', form=form, projects=project, models=models)
+        return render_template('add/add_test_case.html', form=form, projects=project, models=models)
 class Deletecase(View):
     methods=['GET','POST']
     def dispatch_request(self,id):
@@ -307,7 +307,7 @@ class EditcaseView(View):
             reque=request.form.get('reque')
             if yongli_nam ==None  or mode== None or url==''or headers=='' or meth==''  or reque=='':
                 flash(u'请确定各项参数都正常填写')
-                return render_template('edit_case.html',edit=edit_case,projects=project,models=models)
+                return render_template('edit/edit_case.html', edit=edit_case, projects=project, models=models)
             projects_id = Project.query.filter_by(project_name=yongli_nam).first().id
             model_id = Model.query.filter_by(model_name=mode).first().id
             edit_case.projects_id=projects_id
@@ -321,7 +321,7 @@ class EditcaseView(View):
             db.session.commit()
             flash(u'编辑成功')
             return redirect(url_for('yongli'))
-        return render_template('edit_case.html',edit=edit_case,projects=project,models=models)
+        return render_template('edit/edit_case.html', edit=edit_case, projects=project, models=models)
 @app.route('/down_jiekou',methods=['GET'])
 def down_jiekou():
     if not session.get('username'):
@@ -404,18 +404,18 @@ class AdduserView(View):
             work=request.form.get('work')
             if email =='' or user =='':
                 flash(u'请准确填写用户信息')
-                return render_template('add_user.html',wroks=wrok)
+                return render_template('add/add_user.html', wroks=wrok)
             if password!= password1:
                 flash(u'请确定两次密码是否一致')
-                return render_template('add_user.html',wroks=wrok)
+                return render_template('add/add_user.html', wroks=wrok)
             use=User.query.filter_by(username=user).first()
             if use:
                 flash(u'用户已经存在')
-                return render_template('add_user.html',wroks=wrok)
+                return render_template('add/add_user.html', wroks=wrok)
             emai=User.query.filter_by(user_email=email).first()
             if emai:
                 flash(u'邮箱已经存在')
-                return render_template('add_user.html',wroks=wrok)
+                return render_template('add/add_user.html', wroks=wrok)
             new_user=User(username=user,user_email=email)
             new_user.set_password(password)
             new_user.work_id=work
@@ -428,7 +428,7 @@ class AdduserView(View):
                 db.session.rollback()
                 flash(u'添加过程那么不是快速')
                 return redirect(url_for('adminuser'))
-        return render_template('add_user.html',wroks=wrok)
+        return render_template('add/add_user.html', wroks=wrok)
 class SetadView(View):
     methods=['GET','POST']
     @admin_required
@@ -532,7 +532,7 @@ class SeruserView(View):
                 if len(use)<=0:
                     flash(u'没有找到您输入的用户')
                     return redirect(url_for('adminuser'))
-                return render_template('user_ser.html',users=use)
+                return render_template('home/user_ser.html', users=use)
             except:
                 flash(u'没有找到您输入的用户')
                 return redirect(url_for('adminuser'))
@@ -548,12 +548,12 @@ class SeryongliView(View):
             model=request.form.get('model')
             if projecct =='':
                 interd=InterfaceTest.query.filter(InterfaceTest.model_id==int(model)).all()
-                return render_template('ser_yonglo.html',yonglis=interd,projects=project,models=models)
+                return render_template('home/ser_yonglo.html', yonglis=interd, projects=project, models=models)
             if model =='':
                 interd=InterfaceTest.query.filter(InterfaceTest.projects_id==int(projecct)).all()
-                return render_template('ser_yonglo.html',yonglis=interd,projects=project,models=models)
+                return render_template('home/ser_yonglo.html', yonglis=interd, projects=project, models=models)
             interd=InterfaceTest.query.filter(InterfaceTest.projects_id==int(projecct),InterfaceTest.model_id==int(model)).order_by('-id').all()
-            return render_template('ser_yonglo.html',yonglis=interd,projects=project,models=models)
+            return render_template('home/ser_yonglo.html', yonglis=interd, projects=project, models=models)
         return redirect(url_for('yongli'))
 class SerinterView(View):
     methods=['GET','POST']
@@ -572,7 +572,7 @@ class SerinterView(View):
                 if len(interd)<=0:
                     flash(u'搜索的内容不存在')
                     return redirect(url_for('interface'))
-                return render_template('ser_inter.html',inte=interd)
+                return render_template('home/ser_inter.html', inte=interd)
             except:
                 flash(u'搜索的内容不存在')
                 return redirect(url_for('interface'))
@@ -585,7 +585,7 @@ class TestrepView(View):
             return redirect(url_for('login'))
         pagination=TestResult.query.order_by('-id').paginate(page, per_page=20,error_out=False)
         inter=pagination.items
-        return render_template('test_result.html',inte=inter,pagination=pagination)
+        return render_template('home/test_result.html', inte=inter, pagination=pagination)
 class LoadView(View):
     methods=['GET']
     def dispatch_request(self,filename):
@@ -703,13 +703,13 @@ class ProjectView(View):
         if not  session.get('username'):
             return  redirect(url_for('login'))
         projects=Project.query.filter_by(status=False).order_by('-id').all()
-        return  render_template('project.html',projects=projects)
+        return  render_template('home/project.html', projects=projects)
 class ModelView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
         models=Model.query.filter_by(status=False).order_by('-id').all()
-        return  render_template('model.html',projects=models)
+        return  render_template('home/model.html', projects=models)
 class AddmodelView(View):
     methods=['GET','POST']
     @login_required
@@ -720,18 +720,18 @@ class AddmodelView(View):
             model=request.form.get('project')
             if model=='':
                 flash(u'请添加您的模块名')
-                return render_template('add_moel.html')
+                return render_template('add/add_moel.html')
             user_id=User.query.filter_by(username=session.get('username')).first().id
             models=Model.query.filter_by(model_name=model).first()
             if models:
                 flash(u'模块不能重复')
-                return render_template('add_moel.html')
+                return render_template('add/add_moel.html')
             new_moel=Model(model_name=model,model_user_id=user_id)
             db.session.add(new_moel)
             db.session.commit()
             flash(u'添加成功!')
             return  redirect(url_for('model'))
-        return  render_template('add_moel.html')
+        return  render_template('add/add_moel.html')
 class AddproView(View):
     methods=['GET','POST']
     @login_required
@@ -742,12 +742,12 @@ class AddproView(View):
             model=request.form.get('project')
             if model=='':
                 flash(u'请添加您的项目名')
-                return render_template('add_pro.html')
+                return render_template('add/add_pro.html')
             user_id=User.query.filter_by(username=session.get('username')).first().id
             projec=Project.query.filter_by(project_name=model).first()
             if projec:
                 flash(u'项目不能重复')
-                return render_template('add_pro.html')
+                return render_template('add/add_pro.html')
             new_moel=Project(project_name=model,project_user_id=user_id)
             db.session.add(new_moel)
             try:
@@ -758,7 +758,7 @@ class AddproView(View):
                 db.session.rollback()
                 flash(u'添加guo程总是不理想!')
                 return redirect(url_for('project'))
-        return  render_template('add_pro.html')
+        return  render_template('add/add_pro.html')
 class DelemodelView(View):
     methods=['GET','POST']
     @admin_required
@@ -799,7 +799,7 @@ class EditmoelView(View):
             ed_mode=request.form.get('model')
             if ed_mode=='':
                 flash(u'请添加模块名')
-                return render_template('edit_model.html', mode=model)
+                return render_template('edit/edit_model.html', mode=model)
             models = Model.query.filter_by(model_name=ed_mode).first()
             model.model_name=ed_mode
             try:
@@ -810,7 +810,7 @@ class EditmoelView(View):
                 db.session.rollback()
                 flash(u'编辑zhi路漫漫兮')
                 return redirect(url_for('model'))
-        return  render_template('edit_model.html',mode=model)
+        return  render_template('edit/edit_model.html', mode=model)
 class EditproView(View):
     methods=['GET','POST']
     @login_required
@@ -823,7 +823,7 @@ class EditproView(View):
             ed_mode=request.form.get('project')
             if ed_mode=='':
                 flash(u'请添加项目')
-                return render_template('edit_pro.html', project=project)
+                return render_template('edit/edit_pro.html', project=project)
             models = Project.query.filter_by(project_name=ed_mode).first()
             project.project_name=ed_mode
             try:
@@ -834,7 +834,7 @@ class EditproView(View):
                 db.session.rollback()
                 flash(u'编辑出现小异常')
                 return redirect(url_for('project'))
-        return  render_template('edit_pro.html',project=project)
+        return  render_template('edit/edit_pro.html', project=project)
 class DeleteResultView(View):
     methods=['GET','POST']
     @admin_required
@@ -855,13 +855,13 @@ class Set_emaiView(MethodView):
         user=User.query.filter_by(username=session.get('username')).first().id
         email_report=EmailReport.query.filter_by(email_re_user_id=user).all()
         if len(email_report)<=0:
-            return render_template('set_send.html',errmessage=u'您还没有设置发送测试报告邮件')
-        return render_template('set_send.html',email_reports=email_report)
+            return render_template('home/set_send.html', errmessage=u'您还没有设置发送测试报告邮件')
+        return render_template('home/set_send.html', email_reports=email_report)
 class Add_emaiView(MethodView):
     @login_required
     def get(self):
         form=Set_email_Form()
-        return render_template('add_emali.html',form=form)
+        return render_template('add/add_emali.html', form=form)
     @login_required
     def post(self):
         form=Set_email_Form()
@@ -875,14 +875,14 @@ class Add_emaiView(MethodView):
             stmp_email=request.form.get('stmp_email')
             if email =='' or password=='' or resv_email=='' or post=='' or stmp_email =='':
                 flash(u'请准确填写信息')
-                return render_template('add_emali.html',form=form)
+                return render_template('add/add_emali.html', form=form)
             user_id=current_user.id
             if shi_f =='on':
                 shi_f=True
                 user_is=EmailReport.query.filter_by(email_re_user_id=user_id,default_set=True).first()
                 if user_is:
                     flash(u'只能有一个为默认设置')
-                    return render_template('add_emali.html',form=form)
+                    return render_template('add/add_emali.html', form=form)
                 email_new=EmailReport(email_re_user_id=int(user_id),send_email=str(email),send_email_password=str(password),to_email=str(resv_email),default_set=True,port=int(port),stmp_email=str(stmp_email))
                 db.session.add(email_new)
                 db.session.commit()
@@ -898,14 +898,14 @@ class Add_emaiView(MethodView):
                 db.session.rollback()
                 flash(u'配置过程出现了异军突起')
                 return redirect(url_for('setting'))
-        return render_template('add_emali.html',form=form)
+        return render_template('add/add_emali.html', form=form)
 class DeleteView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
         email_re=EmailReport.query.filter_by(id=id).first()
         user_id=current_user.id
-        if email_re.email_re_user_id==int(user_id):
+        if email_re.email_re_user_id==int(user_id) or current_user.role_id==2:
             email_re.status=True
             db.session.commit()
             flash(u'删除成功')
@@ -916,7 +916,7 @@ class EditemailView(MethodView):
     @login_required
     def get(self,id):
         emai=EmailReport.query.filter_by(id=id).first()
-        return render_template('edit_emali.html',emai=emai)
+        return render_template('edit/edit_emali.html', emai=emai)
     @login_required
     def post(self,id):
         emai=EmailReport.query.filter_by(id=id).first()
@@ -929,14 +929,14 @@ class EditemailView(MethodView):
         port=request.form.get('port')
         if email =='' or password=='' or resv_email=='' or stmp_em =='' or port =='':
             flash(u'请准确填写信息')
-            return render_template('edit_emali.html',emai=emai)
+            return render_template('edit/edit_emali.html', emai=emai)
         user_id=current_user.id
         if shi_f =='on':
             shi_f=True
             user_is=EmailReport.query.filter_by(email_re_user_id=user_id,default_set=True).first()
             if user_is:
                 flash(u'只能有一个为默认设置')
-                return render_template('edit_emali.html',emai=emai)
+                return render_template('edit/edit_emali.html', emai=emai)
             emai.email_re_user_id=int(user_id)
             emai.send_email=str(email)
             emai.send_email_password=str(password)
@@ -1006,7 +1006,7 @@ class ADDTesteventView(MethodView):#添加测试环境
     def get(self):
         peoject,modesl=get_pro_mo()
         forms=Interface_Env()
-        return render_template('add_even.html', form=forms,projects=peoject)
+        return render_template('add/add_even.html', form=forms, projects=peoject)
     @login_required
     def post(self):
         peoject, modesl = get_pro_mo()
@@ -1035,12 +1035,12 @@ class ADDTesteventView(MethodView):#添加测试环境
             except:
                 db.session.rollback()
             return redirect(url_for('yongli'))
-        return render_template('add_even.html', form=forms, projects=peoject)
+        return render_template('add/add_even.html', form=forms, projects=peoject)
 class TesteventVies(MethodView):#测试环境首页
     @login_required
     def get(self):
         events=Interfacehuan.query.filter_by(status=False).order_by('-id').all()
-        return render_template('events.html',events=events)
+        return render_template('home/events.html', events=events)
 class DeleteEventViews(MethodView):#删除测试环境
     @login_required
     def get(self,id):
@@ -1058,7 +1058,7 @@ class EditEventViews(MethodView):#编辑测试环境
     def get(self,id):
         project,models=get_pro_mo()
         event=Interfacehuan.query.filter_by(id=id).first()
-        return  render_template('edit_events.html',enents=event,projects=project)
+        return  render_template('edit/edit_events.html', enents=event, projects=project)
     def post(self,id):
         project, models = get_pro_mo()
         event = Interfacehuan.query.filter_by(id=id).first()
@@ -1076,18 +1076,18 @@ class EditEventViews(MethodView):#编辑测试环境
         except:
             db.session.rollback()
             flash(u'编辑出现问题，重新编辑')
-            return render_template('edit_events.html', enents=event, projects=project)
-        return render_template('edit_events.html', enents=event, projects=project)
+            return render_template('edit/edit_events.html', enents=event, projects=project)
+        return render_template('edit/edit_events.html', enents=event, projects=project)
 class MockViews(MethodView):#mock服务首页
     @login_required
     def get(self,page=1):
         mock=Mockserver.query.filter_by(delete=False).order_by('-id').paginate(page, per_page=20,error_out=False)
         inter = mock.items
-        return render_template('mockserver.html',inte=inter,pagination=mock)
+        return render_template('home/mockserver.html', inte=inter, pagination=mock)
 class AddmockViews(MethodView):#添加mock服务
     @login_required
     def get(self):
-        return  render_template('addmockserver.html')
+        return  render_template('add/addmockserver.html')
     @login_required
     def post(self):
         project=request.form['project']
@@ -1104,33 +1104,33 @@ class AddmockViews(MethodView):#添加mock服务
         kaiqi_is=request.form['kaiqi']
         if project =='':
             flash(u'项目名称不能为空')
-            return render_template('addmockserver.html')
+            return render_template('add/addmockserver.html')
         if name =='':
             flash(u'接口名称不能为空')
-            return render_template('addmockserver.html')
+            return render_template('add/addmockserver.html')
         if path =='':
             flash(u'项目路径不能为空')
-            return render_template('addmockserver.html')
+            return render_template('add/addmockserver.html')
         if methods =='':
             flash(u'请求方式不能为空')
-            return render_template('addmockserver.html')
+            return render_template('add/addmockserver.html')
         if types =='':
             flash(u'类型不能为空')
-            return render_template('addmockserver.html')
+            return render_template('add/addmockserver.html')
         if parm =='':
             flash(u'参数不能为空')
-            return render_template('addmockserver.html')
+            return render_template('add/addmockserver.html')
         if back =='':
             flash(u'返回不能为空')
-            return render_template('addmockserver.html')
+            return render_template('add/addmockserver.html')
         is_path=Mockserver.query.filter_by(path=path).first()
         if is_path:
             flash(u'路径已经存在!')
-            return render_template('addmockserver.html')
+            return render_template('add/addmockserver.html')
         name_is=Mockserver.query.filter_by(name=name).first()
         if name_is:
             flash(u'接口已经存在!')
-            return render_template('addmockserver.html')
+            return render_template('add/addmockserver.html')
         if is_check ==u'是':
             is_check=True
         else:is_check=False
@@ -1162,7 +1162,7 @@ class AddmockViews(MethodView):#添加mock服务
             db.session.rollback()
             flash(u'添加出现错了，请从新添加')
             return  redirect(url_for('addmock'))
-        return render_template('addmockserver.html')
+        return render_template('add/addmockserver.html')
 class DeletemockViews(MethodView):#删除mock
     @login_required
     def get(self,id):
@@ -1181,7 +1181,7 @@ class EditmockserView(MethodView):#编辑mack服务
         if not mock:
             flash(u'请重新选择编辑的mock')
             return redirect(url_for('mockserver'))
-        return  render_template('editmock.html',mock=mock)
+        return  render_template('edit/editmock.html', mock=mock)
     def post(self,id):
         mock = Mockserver.query.filter_by(id=id).first()
         if not mock:
@@ -1228,8 +1228,8 @@ class EditmockserView(MethodView):#编辑mack服务
         except:
             db.session.rollback()
             flash(u'编辑出现状况，请你看看')
-            return render_template('editmock.html', mock=mock)
-        return render_template('editmock.html', mock=mock)
+            return render_template('edit/editmock.html', mock=mock)
+        return render_template('edit/editmock.html', mock=mock)
 class MakemockserverView(MethodView):#做一个mock服务
     def get(self,path):#get请求方法
         huoqupath=Mockserver.query.filter_by(path=path,status=True).first()
@@ -1563,7 +1563,7 @@ class SermockView(View):#搜索mock接口
                 if len(use)<=0:
                     flash(u'没有找到您输入的mock接口')
                     return redirect(url_for('mockserver'))
-                return render_template('serch_mockserver.html',inte=use)
+                return render_template('home/serch_mockserver.html', inte=use)
             except:
                 flash(u'没有找到您输入的mock接口')
                 return redirect(url_for('mockserver'))
@@ -1573,11 +1573,11 @@ class TimingtasksView(MethodView):#定时任务
     def get(self,page=1):
         task = Task.query.filter_by(status=False).order_by('-id').paginate(page, per_page=20, error_out=False)
         inter = task.items
-        return render_template('timingtask.html',inte=inter,pagination=task)
+        return render_template('home/timingtask.html', inte=inter, pagination=task)
 class AddtimingtaskView(MethodView):
     @login_required
     def get(self):
-        return  render_template('addtimingtasks.html')
+        return  render_template('add/addtimingtasks.html')
     @login_required
     def post(self):
         taskname=request.form['taskname']
@@ -1587,20 +1587,20 @@ class AddtimingtaskView(MethodView):
         weihu=request.form['weihu']
         if taskname =='':
             flash(u'任务名不能为空！')
-            return render_template('addtimingtasks.html')
+            return render_template('add/addtimingtasks.html')
         if tinmingtime =='':
             flash(u'任务执行时间不能为空！')
-            return render_template('addtimingtasks.html')
+            return render_template('add/addtimingtasks.html')
         if to_email_data=='':
             flash(u'发送给谁邮件不能为空！')
-            return render_template('addtimingtasks.html')
+            return render_template('add/addtimingtasks.html')
         if weihu=='':
             flash(u'维护人邮件不能为空！')
-            return render_template('addtimingtasks.html')
+            return render_template('add/addtimingtasks.html')
         taskname_is = Task.query.filter_by(taskname=taskname).first()
         if taskname_is:
             flash(u'任务已经存在请重新填写！')
-            return render_template('addtimingtasks.html')
+            return render_template('add/addtimingtasks.html')
         new_task=Task(taskname=taskname,taskstart=tinmingtime,taskrepor_to=to_email_data,taskrepor_cao=cao_email,task_make_email=weihu,
                       makeuser=current_user.id)
         db.session.add(new_task)
@@ -1612,7 +1612,7 @@ class AddtimingtaskView(MethodView):
             db.session.rollback()
             flash(u'添加过程貌似异常艰难！')
             return redirect(url_for('addtimingtasks'))
-        return render_template('addtimingtasks.html')
+        return render_template('add/addtimingtasks.html')
 class Editmingtaskview(MethodView):
     @login_required
     def get(self,id):
@@ -1621,7 +1621,7 @@ class Editmingtaskview(MethodView):
         if not task_one:
             flash(u'你编辑的不存在')
             return  redirect(url_for('timingtask'))
-        return  render_template('Edittimingtasks.html',task_one=task_one,porjects=procjet)
+        return  render_template('edit/Edittimingtasks.html', task_one=task_one, porjects=procjet)
     def post(self,id):
         task_one = Task.query.filter_by(id=id).first()
         procjet = Project.query.all()
@@ -1632,16 +1632,16 @@ class Editmingtaskview(MethodView):
         weihu = request.form['weihu']
         if taskname =='':
             flash(u'任务名不能为空！')
-            return render_template('addtimingtasks.html')
+            return render_template('add/addtimingtasks.html')
         if tinmingtime =='':
             flash(u'任务执行时间不能为空！')
-            return render_template('addtimingtasks.html')
+            return render_template('add/addtimingtasks.html')
         if to_email_data=='':
             flash(u'发送给谁邮件不能为空！')
-            return render_template('addtimingtasks.html')
+            return render_template('add/addtimingtasks.html')
         if weihu=='':
             flash(u'维护人邮件不能为空！')
-            return render_template('addtimingtasks.html')
+            return render_template('add/addtimingtasks.html')
         task_one.taskname=taskname
         task_one.taskrepor_to=to_email_data
         task_one.taskrepor_cao=cao_email
@@ -1655,7 +1655,7 @@ class Editmingtaskview(MethodView):
             db.session.rollback()
             flash(u'编辑出现问题！')
             return redirect(url_for('timingtask'))
-        return render_template('Edittimingtasks.html', task_one=task_one,porjects=procjet)
+        return render_template('edit/Edittimingtasks.html', task_one=task_one, porjects=procjet)
 class DeteleTaskViee(MethodView):
     def get(self,id):
         task_one = Task.query.filter_by(id=id).first()
@@ -1692,18 +1692,18 @@ class TestforTaskView(MethodView):#为测试任务添加测试用例
     def get(self,id):
         procjet = Project.query.all()
         task_one=Task.query.filter_by(id=id).first()
-        return  render_template('addtestyongfortask.html',task_one=task_one,procjets=procjet)
+        return  render_template('add/addtestyongfortask.html', task_one=task_one, procjets=procjet)
     def post(self,id):
         procjet = Project.query.all()
         task_one = Task.query.filter_by(id=id).first()
         proc_test=request.form.get('project')
         if proc_test =='':
             flash(u'不能不添加测试项目！')
-            return render_template('addtestyongfortask.html', task_one=task_one, procjets=procjet)
+            return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=procjet)
         test_yongli=request.form.getlist('testyongli')
         if test_yongli=='':
             flash(u'亲你见过只有测试项目没有测试用例的测试任务吗！')
-            return render_template('addtestyongfortask.html', task_one=task_one, procjets=procjet)
+            return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=procjet)
         for oldtask in task_one.interface.all():
             task_one.interface.remove(oldtask)
         task_one.prject=Project.query.filter_by(project_name=proc_test).first().id
@@ -1717,7 +1717,7 @@ class TestforTaskView(MethodView):#为测试任务添加测试用例
         except:
             flash(u'任务更新用例失败')
             return redirect(url_for('timingtask'))
-        return render_template('addtestyongfortask.html', task_one=task_one, procjets=procjet)
+        return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=procjet)
 class StartTaskView(MethodView):#开始定时任务
     @login_required
     def get(self,id):

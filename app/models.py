@@ -7,7 +7,7 @@
 from app import  db
 import datetime
 from werkzeug.security import check_password_hash,generate_password_hash
-class Permisson:
+class Permisson:#这里的权限我是复制flask开发博客里面的，可以根据需求去修改
     FOLLOW = 0x01             
     COMMENT = 0x02           
     WRITE_ARTICLES = 0x04     
@@ -124,7 +124,7 @@ class TestResult(db.Model):
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.test_log
-class Project(db.Model):
+class Project(db.Model):#项目
     __tablename__='projects'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     project_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
@@ -138,7 +138,7 @@ class Project(db.Model):
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.project_name
-class Model(db.Model):
+class Model(db.Model):#模块，有的接口是根据模块来划分的
     __tablename__ ='models'
     id=db.Column(db.Integer,primary_key=True,autoincrement=True)
     model_name = db.Column(db.String(256))
@@ -162,7 +162,7 @@ class EmailReport(db.Model):
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return self.send_email
-class Interfacehuan(db.Model):
+class Interfacehuan(db.Model):#测试环境
     __tablename__='ceshihuanjing'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     make_user=db.Column(db.Integer(),db.ForeignKey('users.id'))
