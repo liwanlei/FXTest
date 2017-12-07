@@ -25,7 +25,7 @@
                                   {% endif %}
                                 {% endwith %}
                                 {% block body %}{% endblock %}
-							<form class="form-auth-small" action="{{ url_for('login') }}" method="POST" style="width: 40%;
+							<form class="form-auth-small" action="{{ url_for('home.login') }}" method="POST" style="width: 40%;
     margin-left: 30%;">
                                 {{form.hidden_tag()}}
 								<div class="form-group">

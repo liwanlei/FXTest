@@ -25,11 +25,11 @@
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">    
                 <li class="am-hide-sm-only"></li>
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
-                    <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('setting')}}">
+                    <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('user.setting')}}">
                         <span class="tpl-header-list-user-nick" >{{session.username}}</span><span class="tpl-header-list-user-ico"></span>
                     </a>
                 </li>
-                <li><a href="{{url_for('logt')}}" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+                <li><a href="{{url_for('home.logt')}}" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
             </ul>
         </div>
     </header>
@@ -40,55 +40,55 @@
             <div class="tpl-left-nav-list">
                 <ul class="tpl-left-nav-menu">
                     <li class="tpl-left-nav-item">
-                        <a href="{{url_for('index')}}" class="nav-link ">
+                        <a href="{{url_for('home.index')}}" class="nav-link ">
                             <i class="am-icon-home"></i>
                             <span>首页</span>
                         </a>
                     </li>
                     <li class="tpl-left-nav-item">
-                        <a href="{{url_for('project')}}" class="nav-link tpl-left-nav-link-list">
+                        <a href="{{url_for('home.project')}}" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-bar-chart"></i>
                             <span>项目</span>
                         </a>
                     </li>
                 <li class="tpl-left-nav-item">
-                        <a href="{{ url_for('ceshihuanjing') }}" class="nav-link tpl-left-nav-link-list">
+                        <a href="{{ url_for('home.ceshihuanjing') }}" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-internet-explorer"></i>
                             <span>测试环境</span>
                         </a>
                     </li>
                     <li class="tpl-left-nav-item">
-                        <a href="{{url_for('model')}}" class="nav-link tpl-left-nav-link-list">
+                        <a href="{{url_for('home.model')}}" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-adn"></i>
                             <span>模块</span>
                         </a>
                     </li>
                     <li class="tpl-left-nav-item">
-                        <a href="{{url_for('interface')}}" class="nav-link tpl-left-nav-link-list">
+                        <a href="{{url_for('home.interface')}}" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-internet-explorer"></i>
                             <span>接口</span>
                         </a>
                     </li>
                     <li class="tpl-left-nav-item">
-                        <a href="{{url_for('yongli')}}" class="nav-link tpl-left-nav-link-list">
+                        <a href="{{url_for('home.yongli')}}" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-key"></i>
                             <span>测试用例</span>
                         </a>
                     </li>
                     <li class="tpl-left-nav-item">
-                        <a href="{{ url_for('timingtask') }}" class="nav-link tpl-left-nav-link-list">
+                        <a href="{{ url_for('home.timingtask') }}" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-tasks"></i>
                             <span>定时任务</span>
                         </a>
                     </li>
                 <li class="tpl-left-nav-item">
-                        <a href="{{ url_for('mockserver') }}" class="nav-link tpl-left-nav-link-list" target="_blank">
+                        <a href="{{ url_for('home.mockserver') }}" class="nav-link tpl-left-nav-link-list" target="_blank">
                             <i class="am-icon-server"></i>
                             <span>mock-server</span>
                         </a>
                     </li>
 					<li class="tpl-left-nav-item">
-                        <a href="{{url_for('test_rep')}}" class="nav-link tpl-left-nav-link-list">
+                        <a href="{{url_for('home.test_rep')}}" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-file"></i>
                             <span>测试报告</span>
                         </a>
@@ -96,7 +96,7 @@
                       {%if current_user.role_id !=1 and
           current_user.role_id !=None  %}
 					<li class="tpl-left-nav-item">
-                        <a href="{{url_for('adminuser')}}" class="nav-link tpl-left-nav-link-list">
+                        <a href="{{url_for('home.adminuser')}}" class="nav-link tpl-left-nav-link-list">
                             <span class=" am-icon-user"></span>
 							<span>用户管理</span>
                         </a>

@@ -16,14 +16,17 @@ from flask_bootstrap import  Bootstrap
 from flask_login import LoginManager
 from config import lod
 from flask_apscheduler import  APScheduler
+
 app=Flask(__name__)
 conf=lod()
 loginManager = LoginManager(app)
 app.config.from_object(conf)
 bootstrap=Bootstrap(app)
 loginManager.session_protection = "strong"
-loginManager.login_view='login'
+loginManager.login_view='home.login'
 db=SQLAlchemy(app)
 moment=Moment(app)
 scheduler=APScheduler()
+#
+# app.register_blueprint(err)
 from  app import  views ,models,url

@@ -18,7 +18,7 @@
 </ul>
 {% endif %}
 {% endwith %}
-<form  action="{{ url_for('editemail',id=emai.id) }}" method="POST" >
+<form  action="{{ url_for('user.editemail',id=emai.id) }}" method="POST" >
 <div class="form-group">
 <strong>邮箱名字:</strong>
 <input type="text" name="meth" value="{{emai.send_email}}"></div>

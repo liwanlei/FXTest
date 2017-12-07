@@ -14,7 +14,7 @@
 <body style="background-color: #f5f5f5" >
     <header class="am-topbar am-topbar-inverse admin-header">
         <div class="am-topbar-brand">
-            <a href="{{ url_for('index') }}"class="tpl-logo">
+            <a href="{{ url_for('home.index') }}"class="tpl-logo">
                 <img src="{{url_for('static',filename='img/logo.png')}}" alt=""  >
             </a>
         </div>
@@ -22,11 +22,11 @@
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
                 <li class="am-hide-sm-only"></li>
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
-                    <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('setting')}}">
+                    <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('user.setting')}}">
                         <span class="tpl-header-list-user-nick" >{{session.username}}</span><span class="tpl-header-list-user-ico"></span>
                     </a>
                 </li>
-                <li><a href="{{url_for('logt')}}" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+                <li><a href="{{url_for('home.logt')}}" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
             </ul>
         </div>
     </header>
@@ -45,7 +45,7 @@
  <div class="tpl-portlet-components">
      <div >
      <h3 style="text-align: center" >编辑mockserver端口</h3>
-     <form method="POST" style="margin-left: 40%" action="{{ url_for('editmockserver',id=mock.id) }}">
+     <form method="POST" style="margin-left: 40%" action="{{ url_for('mock.editmockserver',id=mock.id) }}">
          <p>项目名字：<input type="text" placeholder="请输入项目名字" name="project" value="{{ mock.project }}"></p>
         <p>接口名字：<input type="text" placeholder="请输入接口名字" name="name" value="{{ mock.name }}"></p>
        <p> 接口描述：<input type="text" placeholder="请输入接口描述" name="desc" value="{{ mock.description }}"></p>

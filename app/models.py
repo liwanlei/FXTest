@@ -4,7 +4,7 @@
 @file: models.py
 @time: 2017/7/13 16:43
 """
-from app import  db
+from  app import  db
 import datetime
 from werkzeug.security import check_password_hash,generate_password_hash
 class Permisson:#这里的权限我是复制flask开发博客里面的，可以根据需求去修改
