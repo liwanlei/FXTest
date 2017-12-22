@@ -30,7 +30,7 @@ def get_pro_mo():
     projects=Project.query.all()
     model=Model.query.all()
     return  projects,model
-class AdduserView(View):
+class AdduserView(View):#添加用户
     methods=['GET','POST']
     @admin_required
     def dispatch_request(self):
@@ -68,7 +68,7 @@ class AdduserView(View):
                 flash(u'添加过程那么不是快速')
                 return redirect(url_for('home.adminuser'))
         return render_template('add/add_user.html', wroks=wrok)
-class SetadView(View):
+class SetadView(View):#设置管理员
     methods=['GET','POST']
     @admin_required
     @login_required
@@ -85,7 +85,7 @@ class SetadView(View):
         db.session.commit()
         flash(u'已经是管理员')
         return redirect(url_for('home.adminuser'))
-class DeladView(View):
+class DeladView(View):#取消管理员
     methods=['GET','POST']
     @admin_required
     def dispatch_request(self,id):
@@ -101,7 +101,7 @@ class DeladView(View):
         db.session.commit()
         flash(u'已经取消管理员权限')
         return redirect(url_for('home.adminuser'))
-class FreadView(View):
+class FreadView(View):#冻结
     methods=['GET','POST']
     @admin_required
     def dispatch_request(self,id):
@@ -120,8 +120,9 @@ class FreadView(View):
         db.session.commit()
         flash(u'已经冻结')
         return redirect(url_for('home.adminuser'))
-class FrereView(View):
+class FrereView(View):#解冻
     methods=['GET','POST']
+    @login_required
     @admin_required
     def dispatch_request(self,id):
         user=User.query.filter_by(username=session.get('username')).first()
@@ -139,7 +140,7 @@ class FrereView(View):
         db.session.commit()
         flash(u'已经解冻')
         return redirect(url_for('home.adminuser'))
-class RedpassView(View):
+class RedpassView(View):#重置密码
     methods=['GET','POST']
     @admin_required
     def dispatch_request(self,id):
@@ -157,7 +158,7 @@ class RedpassView(View):
         db.session.commit()
         flash(u'已经重置！密码：111111')
         return redirect(url_for('home.adminuser'))
-class SeruserView(View):
+class SeruserView(View):#查询用户
     methods=['GET','POST']
     @admin_required
     def dispatch_request(self):
@@ -176,7 +177,7 @@ class SeruserView(View):
                 flash(u'没有找到您输入的用户')
                 return redirect(url_for('home.adminuser'))
         return redirect(url_for('home.adminuser'))
-class Set_emaiView(MethodView):
+class Set_emaiView(MethodView):#设置发送测试报告的邮件的
     @login_required
     def get(self):
         user=User.query.filter_by(username=session.get('username')).first().id
@@ -184,7 +185,7 @@ class Set_emaiView(MethodView):
         if len(email_report)<=0:
             return render_template('home/set_send.html', errmessage=u'您还没有设置发送测试报告邮件')
         return render_template('home/set_send.html', email_reports=email_report)
-class Add_emaiView(MethodView):
+class Add_emaiView(MethodView):#添加邮件
     @login_required
     def get(self):
         form=Set_email_Form()
@@ -226,7 +227,7 @@ class Add_emaiView(MethodView):
                 flash(u'配置过程出现了异军突起')
                 return redirect(url_for('user.setting'))
         return render_template('add/add_emali.html', form=form)
-class DeleteView(View):
+class DeleteView(View):#删除邮件
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
@@ -239,7 +240,7 @@ class DeleteView(View):
             return redirect(url_for('user.setting'))
         flash(u'您没有权限删除')
         return redirect(url_for('user.setting'))
-class EditemailView(MethodView):
+class EditemailView(MethodView):#编辑邮件
     @login_required
     def get(self,id):
         emai=EmailReport.query.filter_by(id=id).first()
@@ -293,7 +294,7 @@ class EditemailView(MethodView):
             db.session.rollback()
             flash(u'编辑过程中出现了小抑菌')
             return redirect(url_for('user.setting'))
-class QuzhiMoView(View):
+class QuzhiMoView(View):#取消默认
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
@@ -309,7 +310,7 @@ class QuzhiMoView(View):
             return redirect(url_for('user.setting'))
         flash(u'你要取消的默认不存在')
         return redirect(url_for('user.setting'))
-class ShezhiMoView(View):
+class ShezhiMoView(View):#设置默认
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):

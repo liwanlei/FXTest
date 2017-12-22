@@ -19,5 +19,4 @@ if __name__ == '__main__':
     app.config.from_object('config')
     scheduler.init_app(app=app)
     scheduler.start()
-
     app.run()

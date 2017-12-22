@@ -4,7 +4,7 @@
 import requests,json
 from app.common.test_feng import reques
 requ=reques()
-liwanlei=[]
+response=[]
 class Api():
 	def __init__(self,url,fangshi,params,headers):
 		self.url=url
@@ -12,17 +12,16 @@ class Api():
 		self.param=params
 		self.headers=headers
 	def testapi(self):
-		global liwanlei
+		global response
 		if self.fangsh=='POST' or self.fangsh=='post':
-			liwanlei=requ.post(url=self.url,params=self.param,headers=self.headers)
+			response=requ.post(url=self.url,params=self.param,headers=self.headers)
 		elif self.fangsh=='GET' or self.fangsh=='get':
-			liwanlei=requ.get(url=self.url,headers=self.headers,parms=self.param)
+			response=requ.get(url=self.url,headers=self.headers,parms=self.param)
 		elif self.fangsh=='PUT' or self.fangsh=='put':
-			liwanlei=requ.putfile(url=self.url,params=self.param,headers=self.headers)
+			response=requ.putfile(url=self.url,params=self.param,headers=self.headers)
 		elif self.fangsh=='DELETE' or self.fangsh=='delete':
-			liwanlei=requ.delfile(url=self.url,params=self.param,headers=self.headers)
-		return  liwanlei
-	
+			response=requ.delfile(url=self.url,params=self.param,headers=self.headers)
+		return  response
 	def getJson(self):
 		json_data=self.testapi()
 		return json_data

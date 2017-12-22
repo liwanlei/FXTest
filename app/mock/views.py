@@ -179,7 +179,7 @@ class MakemockserverView(MethodView):#做一个mock服务
             return  jsonify({'code':'-1','message':u'请求方式错误!','data':''})
         if huoqupath.is_headers==True:
             if comp_dict(heders,huoqupath.headers) ==True:
-                if huoqupath.ischeck==True:
+                if huoqupath.ischeck is True:
                     paerm = request.values.to_dict()
                     if dict_par(paerm,huoqupath.params)==True:
                         if huoqupath.rebacktype == 'json':

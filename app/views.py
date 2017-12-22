@@ -85,7 +85,7 @@ class EditInterfaceView(MethodView):
             meth=request.form.get('meth')
             reques=request.form.get('reque')
             back=request.form.get('back')
-            if projecct ==None or model==None or intername=='' or headers =='' or url=='' or meth=='' or back=='':
+            if projecct is None or model is None or intername=='' or headers =='' or url=='' or meth=='' or back=='':
                 flash(u'请确定各项参数都正常填写')
                 return render_template('edit/edit_inter.html', interface=interface, projects=project, models=models)
             project_id = Project.query.filter_by(project_name=projecct).first().id
@@ -129,7 +129,7 @@ class AddtestcaseView(View):
             interface_meth=request.form.get('interface_meth')
             interface_can=request.form.get('interface_can')
             interface_re=request.form.get('interface_rest')
-            if yongli_nam ==None or mode==None or interface_name=='' or interface_header==''or interface_url=='' or interface_meth=='' or interface_re=='':
+            if yongli_nam is None or mode is None or interface_name=='' or interface_header==''or interface_url=='' or interface_meth=='' or interface_re=='':
                 flash(u'请准确填写用例')
                 return render_template('add/add_test_case.html', form=form, projects=project, models=models)
             project_id = Project.query.filter_by(project_name=yongli_nam).first().id

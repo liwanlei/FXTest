@@ -26,15 +26,15 @@ def title(titles):
 	return title
 connent=u'''
 <div style='width: 1170px;margin-left: 15%'>
-<h1>接口测试的结果</h1>'''
+<h1>FXTest 测试平台接口测试的结果</h1>'''
 def time(starttime,endtime,passge,fail):
 	beijing=u'''
 		<p><strong>开始时间:</strong> %s</p>
 		<p><strong>结束时间:</strong> %s</p>
 		<p><strong>耗时:</strong> %s</p>
 		<p><strong>结果:</strong>
-			<span >Pass: <strong >%s</strong>
-			Fail: <strong >%s</strong>
+			<span >通过: <strong >%s</strong>
+			失败: <strong >%s</strong>
 			        </span></p>                  
 			    <p ><strong>测试详情如下</strong></p>  </div> '''%(starttime,endtime,(endtime-starttime),passge,fail)
 	return beijing

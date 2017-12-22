@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-08-02 21:54:08
 # @Author  : lileilei
-
 def assert_in(asserqiwang,fanhuijson):
     if len(asserqiwang.split('=')) > 1:
         data = asserqiwang.split('&')
@@ -20,6 +19,5 @@ def assertre(asserqingwang):
         result = dict([(item.split('=')) for item in data])
         return result
     else:
-        LOG.info(u'填写测试预期值')
         raise (u'请填写期望值')
 

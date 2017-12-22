@@ -13,7 +13,10 @@ from flask_login import current_user,login_required,login_user,logout_user
 from app.common.decorators import admin_required,permission_required
 from app import loginManager
 from app.common.dict_com import comp_dict,dict_par
-import  json
+import  json,time,os
+from app.common.send_email import send_emails
+from app.common.py_Html import createHtml
+from app.test_case.Test_case import ApiTestCase
 from app import  scheduler
 def addtask(id):#定时任务执行的时候所用的函数
     in_id=int(id)

@@ -128,8 +128,8 @@ class Project(db.Model):#项目
     __tablename__='projects'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     project_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
-    project_name=db.Column(db.String(252))
-    status=db.Column(db.Integer(),default=0)
+    project_name=db.Column(db.String(252))#项目名称
+    status=db.Column(db.Integer(),default=0)#状态
     TestResult = db.relationship('TestResult', backref='projects', lazy='dynamic')
     Interfacetest = db.relationship('InterfaceTest', backref='projects', lazy='dynamic')
     Interface = db.relationship('Interface', backref='projects', lazy='dynamic')
@@ -152,24 +152,24 @@ class Model(db.Model):#模块，有的接口是根据模块来划分的
 class EmailReport(db.Model):
     __tablename__='emailReports'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
-    email_re_user_id = db.Column(db.Integer(),db.ForeignKey('users.id'))
-    send_email=db.Column(db.String(64))
-    send_email_password=db.Column(db.String(64))
-    stmp_email=db.Column(db.String(64))
-    port=db.Column(db.Integer())
-    to_email=db.Column(db.String())
-    default_set=db.Column(db.Boolean(),default=False)
-    status = db.Column(db.Boolean(), default=False)
+    email_re_user_id = db.Column(db.Integer(),db.ForeignKey('users.id'))#设置发送邮件配置的人
+    send_email=db.Column(db.String(64))#发送邮箱的邮件
+    send_email_password=db.Column(db.String(64))#发送邮件的密码
+    stmp_email=db.Column(db.String(64))#stmp服务器
+    port=db.Column(db.Integer())#端口号
+    to_email=db.Column(db.String())#收件人
+    default_set=db.Column(db.Boolean(),default=False)#默认
+    status = db.Column(db.Boolean(), default=False)#状态
     def __repr__(self):
         return self.send_email
 class Interfacehuan(db.Model):#测试环境
     __tablename__='ceshihuanjing'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     make_user=db.Column(db.Integer(),db.ForeignKey('users.id'))
-    url=db.Column(db.String(255))
-    desc=db.Column(db.String(255))
-    project=db.Column(db.Integer(),db.ForeignKey('projects.id'))
-    status = db.Column(db.Boolean(), default=False)
+    url=db.Column(db.String(255))#地址
+    desc=db.Column(db.String(255))#描述
+    project=db.Column(db.Integer(),db.ForeignKey('projects.id'))#环境对应的项目
+    status = db.Column(db.Boolean(), default=False)#状态
     def __repr__(self):
         return self.url
 class Mockserver(db.Model):#mocksever

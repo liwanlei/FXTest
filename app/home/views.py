@@ -21,7 +21,7 @@ def get_pro_mo():
     projects=Project.query.all()
     model=Model.query.all()
     return  projects,model
-class Indexview(MethodView):
+class Indexview(MethodView):#首页
     @login_required
     def get(self):
         interface_cont=Interface.query.count()
@@ -30,7 +30,7 @@ class Indexview(MethodView):
         project_cout=Project.query.count()
         model_cout=Model.query.count()
         return  render_template('home/index.html', yongli=interfaceTest_cunt, jiekou=interface_cont, report=resu_cout, project_cout=project_cout, model_cout=model_cout)
-class LoginView(MethodView):
+class LoginView(MethodView):#登录
     def get(self):
         form=LoginFrom()
         return render_template('home/login.html', form=form)
@@ -56,18 +56,18 @@ class LoginView(MethodView):
             flash(u'用户名不存在')
             return  render_template('home/login.html', form=form)
         return  render_template('home/login.html', form=form)
-class LogtView(MethodView):
+class LogtView(MethodView):#退出
     def get(self):
         session.clear()
         logout_user()
         return redirect(url_for('login'))
-class InterfaceView(MethodView):
+class InterfaceView(MethodView):#接口
     @login_required
     def get(self,page=1):
         pagination=Interface.query.filter_by(status=False).order_by('-id').paginate(page, per_page=20,error_out=False)
         inter=pagination.items
         return  render_template('home/interface.html', inte=inter, pagination=pagination)
-class YongliView(MethodView):
+class YongliView(MethodView):#用例
     @login_required
     def get(self,page=1):
         project=Project.query.all()
