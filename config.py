@@ -7,6 +7,7 @@
 import  os
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import  ProcessPoolExecutor
+PageShow=30#这里配置的就是每个页显示多少
 class beijing:
 	SECRET_KEY = 'BaSeQuie'
 	basedir=os.path.abspath(os.path.dirname(__file__))

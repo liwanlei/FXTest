@@ -14,6 +14,7 @@ from app.common.decorators import admin_required,permission_required
 from app import loginManager
 from app.common.dict_com import comp_dict,dict_par
 import  json
+from config import PageShow
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -64,7 +65,7 @@ class LogtView(MethodView):#退出
 class InterfaceView(MethodView):#接口
     @login_required
     def get(self,page=1):
-        pagination=Interface.query.filter_by(status=False).order_by('-id').paginate(page, per_page=20,error_out=False)
+        pagination=Interface.query.filter_by(status=False).order_by('-id').paginate(page, per_page=int(PageShow),error_out=False)
         inter=pagination.items
         return  render_template('home/interface.html', inte=inter, pagination=pagination)
 class YongliView(MethodView):#用例
@@ -74,7 +75,7 @@ class YongliView(MethodView):#用例
         models=Model.query.all()
         if not session.get('username'):
             return redirect(url_for('home.login'))
-        pagination=InterfaceTest.query.filter_by(status=False).order_by('-id').paginate(page, per_page=30,error_out=False)
+        pagination=InterfaceTest.query.filter_by(status=False).order_by('-id').paginate(page, per_page=int(PageShow),error_out=False)
         yongli=pagination.items
         return  render_template('home/interface_yongli.html', yonglis=yongli, pagination=pagination, projects=project, models=models)
 class AdminuserView(MethodView):
@@ -84,7 +85,7 @@ class AdminuserView(MethodView):
         if not session.get('username'):
             return redirect(url_for('login'))
         user=User.query.filter_by(username=session.get('username')).first()
-        pagination=User.query.filter_by(status=False).paginate(page, per_page=20,error_out=False)
+        pagination=User.query.filter_by(status=False).paginate(page, per_page=int(PageShow),error_out=False)
         users=pagination.items
         return render_template('home/useradmin.html', users=users, pagination=pagination)
 class TestrepView(View):
@@ -93,7 +94,7 @@ class TestrepView(View):
     def dispatch_request(self,page=1):
         if not session.get('username'):
             return redirect(url_for('home.login'))
-        pagination=TestResult.query.order_by('-id').paginate(page, per_page=20,error_out=False)
+        pagination=TestResult.query.order_by('-id').paginate(page, per_page=int(PageShow),error_out=False)
         inter=pagination.items
         return render_template('home/test_result.html', inte=inter, pagination=pagination)
 class ProjectView(View):
@@ -118,12 +119,12 @@ class TesteventVies(MethodView):#测试环境首页
 class MockViews(MethodView):#mock服务首页
     @login_required
     def get(self,page=1):
-        mock=Mockserver.query.filter_by(delete=False).order_by('-id').paginate(page, per_page=20,error_out=False)
+        mock=Mockserver.query.filter_by(delete=False).order_by('-id').paginate(page, per_page=int(PageShow),error_out=False)
         inter = mock.items
         return render_template('home/mockserver.html', inte=inter, pagination=mock)
 class TimingtasksView(MethodView):#定时任务
     @login_required
     def get(self,page=1):
-        task = Task.query.filter_by(status=False).order_by('-id').paginate(page, per_page=20, error_out=False)
+        task = Task.query.filter_by(status=False).order_by('-id').paginate(page, per_page=int(PageShow), error_out=False)
         inter = task.items
         return render_template('home/timingtask.html', inte=inter, pagination=task)
