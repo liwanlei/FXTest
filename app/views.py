@@ -23,6 +23,7 @@ from app import loginManager
 from app.common.dict_com import comp_dict,dict_par
 import  json
 from app import  scheduler
+from app.common.Dingtalk import send_ding
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

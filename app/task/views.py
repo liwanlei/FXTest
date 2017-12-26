@@ -18,6 +18,7 @@ from app.common.send_email import send_emails
 from app.common.py_Html import createHtml
 from app.test_case.Test_case import ApiTestCase
 from app import  scheduler
+from app.common.Dingtalk import send_ding
 def addtask(id):#定时任务执行的时候所用的函数
     in_id=int(id)
     task=Task.query.filter_by(id=in_id).first()
@@ -64,10 +65,7 @@ def addtask(id):#定时任务执行的时候所用的函数
     user_id = User.query.filter_by(role_id=2).first().id
     new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass, fail_num=result_fail,
                            test_time=starttime, hour_time=hour, test_rep=(day + '.html'), test_log=(day + '.log'))
-    email = EmailReport.query.filter_by(role_id=2, default_set=True).first()
-    send_emails(sender=email.send_email, receivers=task.taskrepor_to, password=email.send_email_password,
-                smtp=email.stmp_email, port=email.port, fujian1=file, fujian2=filepath, subject=u'%s自动用例执行测试报告' % day,
-                url='%stest_rep'%(request.url_root))
+    send_ding(content="%s定时任务执行完毕，测试时间：%s，\\n 通过用例：%s，失败用例：%s，\\n,详情见测试平台测试报告！"%(task.taskname,starttime,result_pass,result_fail))
     db.session.add(new_reust)
     db.session.commit()
 @loginManager.user_loader
