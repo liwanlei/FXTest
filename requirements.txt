@@ -4,12 +4,8 @@ celery==4.1.0
 Flask==0.12.1
 Flask-Admin==1.5.0
 Flask-APScheduler==1.7.1
-Flask-Babel==0.11.2
 Flask-Bootstrap==3.3.7.1
-Flask-Cache==0.13.1
 Flask-Login==0.2.11
-Flask-Migrate==2.0.3
-Flask-Script==2.0.5
 Flask-Security==1.7.5
 Flask-SQLAlchemy==2.2
 Jinja2==2.9.6

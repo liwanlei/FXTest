@@ -1,42 +1,42 @@
 {%extends 'back.html' %}
 {%block hello%}
-<div class="tpl-content-wrapper">
-            <div class="tpl-content-page-title"></div>
-            <div class="tpl-portlet-components">
-                <div class="portlet-title">
-                    <div class="caption font-green bold">
-                        <span class="am-icon-code"></span> 添加定时任务
-                    </div>
-                    <div class="tpl-portlet-input tpl-fz-ml">
-                        <div class="portlet-input input-small input-inline">
-                            <div class="input-icon right">
-                                </div>
+    <div class="tpl-content-wrapper">
+        <div class="tpl-content-page-title"></div>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 添加定时任务
+                </div>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                    <div class="portlet-input input-small input-inline">
+                        <div class="input-icon right">
                         </div>
-                    </div></div>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
- <ul class='flashes'>
-{% for message in messages %}
-<li style="color:red" >{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-<form  action="{{ url_for('task.addtimingtasks') }}" method="POST" style="width: 40%;
+                    </div>
+                </div></div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red" >{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form  action="{{ url_for('task.addtimingtasks') }}" method="POST" style="width: 40%;
     margin-left: 30%;">
-<div class="form-group">
- <p style="margin-top: 20px"><strong >任务名称:</strong>
-    <input type="text" name="taskname"  placeholder="请输入任务名！"></p>
-    <p style="margin-top: 20px"><strong>测试时间:</strong>
-    <input type="text" name="time"  placeholder="请输入con表达式！格式如： {'type': 'cron',  'day_of_week':‘mon-fri’, 'hour':'13',  'minute':'14'}"></p>
-   <p style="margin-top: 20px"><strong>邮件主送:</strong>
-    <textarea type="text" name="to_email"  placeholder="测试报告发送谁给，逗号分隔多个！" style="width: 200px;height: 100px;"></textarea></p>
-    <p style="margin-top: 20px"> <strong>邮件抄送:</strong>
-    <textarea type="text" name="cao_email"  placeholder="测试报告抄送的人，用逗号分隔！" style="width: 200px;height: 100px;"></textarea></p>
-     <p style="margin-top: 20px"> <strong>支持人邮件:</strong>
-    <input type="text" name="weihu"  placeholder="维护改测试计划的人！"></p>
-</div>
-<button type="submit" class="am-btn am-btn-primary ">添加</button>
-</form> </div></div>
+                <div class="form-group">
+                    <p style="margin-top: 20px"><strong >任务名称:</strong>
+                        <input type="text" name="taskname"  placeholder="请输入任务名！"></p>
+                    <p style="margin-top: 20px"><strong>测试时间:</strong>
+                        <input type="text" name="time"  placeholder="请输入con表达式！格式如： {'type': 'cron',  'day_of_week':‘mon-fri’, 'hour':'13',  'minute':'14'}"></p>
+                    <p style="margin-top: 20px"><strong>邮件主送:</strong>
+                        <textarea type="text" name="to_email"  placeholder="测试报告发送谁给，逗号分隔多个！" style="width: 200px;height: 100px;"></textarea></p>
+                    <p style="margin-top: 20px"> <strong>邮件抄送:</strong>
+                        <textarea type="text" name="cao_email"  placeholder="测试报告抄送的人，用逗号分隔！" style="width: 200px;height: 100px;"></textarea></p>
+                    <p style="margin-top: 20px"> <strong>支持人邮件:</strong>
+                        <input type="text" name="weihu"  placeholder="维护改测试计划的人！"></p>
+                </div>
+                <button type="submit" class="am-btn am-btn-primary ">添加</button>
+            </form> </div></div>
     </form></div>
 {%endblock%}

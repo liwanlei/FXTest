@@ -14,17 +14,17 @@
                                 </div>
                         </div>
                     </div></div>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<ul class=flashes>
-{% for message in messages %}
-<li >{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-<form method="POST" action="{{url_for('daoru_inter')}}"  enctype=multipart/form-data>
-<input type="file" name="myfile">
-<button type='submit' class="am-btn am-btn-primary">导入</button>
-</form>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class=flashes>
+                            {% for message in messages %}
+                                <li >{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+                <form method="POST" action="{{url_for('daoru_inter')}}"  enctype=multipart/form-data>
+                    <input type="file" name="myfile">
+                    <button type='submit' class="am-btn am-btn-primary">导入</button>
+                </form>
 {%endblock%}

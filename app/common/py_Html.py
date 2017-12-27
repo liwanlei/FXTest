@@ -12,7 +12,7 @@ import  os
 # sys.setdefaultencoding('utf8') 
 titles=u'接口测试'
 def title(titles):
-	title='''<!DOCTYPE html>
+    title='''<!DOCTYPE html>
 	<html lang="en">
 	<head>
 		<meta charset="UTF-8">
@@ -23,12 +23,12 @@ def title(titles):
 	</head>
 	<body>
 	'''%(titles)
-	return title
+    return title
 connent=u'''
 <div style='width: 1170px;margin-left: 15%'>
 <h1>FXTest 测试平台接口测试的结果</h1>'''
 def time(starttime,endtime,passge,fail):
-	beijing=u'''
+    beijing=u'''
 		<p><strong>开始时间:</strong> %s</p>
 		<p><strong>结束时间:</strong> %s</p>
 		<p><strong>耗时:</strong> %s</p>
@@ -37,7 +37,7 @@ def time(starttime,endtime,passge,fail):
 			失败: <strong >%s</strong>
 			        </span></p>                  
 			    <p ><strong>测试详情如下</strong></p>  </div> '''%(starttime,endtime,(endtime-starttime),passge,fail)
-	return beijing
+    return beijing
 shanghai=u'''
 
 
@@ -93,6 +93,6 @@ def relust(titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth
         text=title(titles)+connent+time(starttime,endtime,passge,fail)+shanghai+ceshixiangqing(id=id,name=name,headers=headers,coneent=coneent,url=url,meth=meth,yuqi=int(yuqi),json=json,relust=relust)+weibu
     return text
 def createHtml(filepath,titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth,yuqi,json,relusts):
-	texts=relust(titles=titles,starttime=starttime,endtime=endtime,passge=passge,fail=fail,id=id,name=name,headers=headers,coneent=coneent,url=url,meth=meth,yuqi=yuqi,json=json,relust=relusts)
-	with open(filepath,'wb') as f:
-		f.write(texts.encode())
+    texts=relust(titles=titles,starttime=starttime,endtime=endtime,passge=passge,fail=fail,id=id,name=name,headers=headers,coneent=coneent,url=url,meth=meth,yuqi=yuqi,json=json,relust=relusts)
+    with open(filepath,'wb') as f:
+        f.write(texts.encode())

@@ -19,19 +19,19 @@ class RegFrom(Form):
     username = StringField(u'注册用户名', [validators.Length(min=4, max=16, message=u'用户名长度在4-16位'), validators.DataRequired(message=u'请输入用户名')],render_kw={'placeholder': u'请输入用户名'})
     password = PasswordField(u'注册密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired(message=u'请输入密码')],render_kw={'placeholder': u'请输入密码'})
     se_password = PasswordField(u'再次输入密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired(message=u'请输入确认密码')],
-                             render_kw={'placeholder': u'请输入密码'})
+                                render_kw={'placeholder': u'请输入密码'})
     email=StringField(u'输入注册邮箱', [ validators.DataRequired(message=u'请输入邮箱'),Email(message=u'邮箱格式不对')],
-                           render_kw={'placeholder': u'请输入邮箱'})
+                      render_kw={'placeholder': u'请输入邮箱'})
     work=SelectField(u'选择职位',choices=choice_list,coerce=int,validators=[validators.DataRequired(message=u"项目名称不能为空")])
 class XugaiFrom(Form):
     password = PasswordField(u'密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
                              render_kw={'placeholder': u'请输入原密码'})
     xiu_password = PasswordField(u'密码',
-                                [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
-                                render_kw={'placeholder': u'请输入新密码'})
-    xiu_password_se = PasswordField(u'密码',
                                  [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
-                                 render_kw={'placeholder': u'请再次输入密码'})
+                                 render_kw={'placeholder': u'请输入新密码'})
+    xiu_password_se = PasswordField(u'密码',
+                                    [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
+                                    render_kw={'placeholder': u'请再次输入密码'})
 class InterForm(Form):#接口的表单
     project_name=StringField(u'项目名字', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口所属项目名称'})
     model_name=StringField(u'模块名字', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口所属模块名称'})

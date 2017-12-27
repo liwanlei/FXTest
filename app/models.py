@@ -210,5 +210,3 @@ class Task(db.Model):#定时任务的
     interface=db.relationship('InterfaceTest',secondary=registrations,backref=db.backref('tasks'), lazy='dynamic')#多对多到测试用例
     def __repr__(self):
         return  self.taskname
-
-

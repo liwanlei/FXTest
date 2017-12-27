@@ -1,37 +1,37 @@
 {%extends 'back.html' %}
 {%block hello%}
-<div class="tpl-content-wrapper">
-            <div class="tpl-content-page-title"></div>
-            <div class="tpl-portlet-components">
-                <div class="portlet-title">
-                    <div class="caption font-green bold">
-                        <span class="am-icon-code"></span> 添加测试环境</div></div>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
- <ul class='flashes'>
-{% for message in messages %}
-<li style="color:red">{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-<form  action="{{ url_for('addevent') }}" method="POST" >
- {{form.hidden_tag()}}
- {{form.csrf_token}}
- <div class="form-group">
-<strong>项目名字:</strong>
-        <select name="project"> {% for project in  projects %}<option>{{  project.project_name }}</option>{% endfor %}</select>
-    </div><span>&nbsp;</span>
-<span>&nbsp;</span>
-<div class="form-group">
-<strong>测试环境url:</strong>
-{{ form.envtion }}</div>
-<span>&nbsp;</span>
-<div class="form-group">
-<strong>测试环境描述:</strong>
-{{ form.desc }}</div>
-<span>&nbsp;</span>
-<button type="submit" class="am-btn am-btn-primary ">添加</button>
-</form></div>
-</div></div>
+    <div class="tpl-content-wrapper">
+        <div class="tpl-content-page-title"></div>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 添加测试环境</div></div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form  action="{{ url_for('addevent') }}" method="POST" >
+                {{form.hidden_tag()}}
+                {{form.csrf_token}}
+                <div class="form-group">
+                    <strong>项目名字:</strong>
+                    <select name="project"> {% for project in  projects %}<option>{{  project.project_name }}</option>{% endfor %}</select>
+                </div><span>&nbsp;</span>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>测试环境url:</strong>
+                    {{ form.envtion }}</div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>测试环境描述:</strong>
+                    {{ form.desc }}</div>
+                <span>&nbsp;</span>
+                <button type="submit" class="am-btn am-btn-primary ">添加</button>
+            </form></div>
+    </div></div>
 {%endblock%}

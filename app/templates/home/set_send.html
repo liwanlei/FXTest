@@ -1,82 +1,82 @@
 {% extends "back.html" %}
 {% block hello %}
-   <div class="tpl-content-wrapper">
-            <div class="tpl-content-page-title">  </div>
-            <div class="tpl-portlet-components">
-                <div class="portlet-title">
-                    <div class="caption font-green bold">
-                        <span class="am-icon-code"></span>个人设置
- </div>
- </div>
-     {% with messages = get_flashed_messages() %}
-{% if messages %}
- <ul class='flashes'>
-{% for message in messages %}
-<li style="color: #b92c28;">{{ message }}</li>
-{% endfor %}
-{% endif %}</ul>
-{% endwith %}
-<div class="tpl-block">
-<div class="am-g">
-                        <div class="am-u-sm-12 am-u-md-6">
-                            <div class="am-btn-toolbar">
-                                <div class="am-btn-group am-btn-group-xs"> 
-                                <a href="{{url_for('user.add_emai')}}"> <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
-                                </div>
-                            </div>
-                        </div>
+    <div class="tpl-content-wrapper">
+    <div class="tpl-content-page-title">  </div>
+    <div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-code"></span>个人设置
+        </div>
+    </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class='flashes'>
+            {% for message in messages %}
+                <li style="color: #b92c28;">{{ message }}</li>
+            {% endfor %}
+        {% endif %}</ul>
+    {% endwith %}
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-12 am-u-md-6">
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs">
+                        <a href="{{url_for('user.add_emai')}}"> <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
                     </div>
-                    <strong></strong>
-                    <strong></strong>
+                </div>
+            </div>
+        </div>
+        <strong></strong>
+        <strong></strong>
 
-  <caption><strong>发送测试报告设置</strong></caption>
-  <table class="am-table am-table-striped am-table-hover table-main" >
-  {%if errmessage%}
-  <h1>{{errmessage}}</h1>
-  {%else%}
-  <caption><strong></strong></caption>
+        <caption><strong>发送测试报告设置</strong></caption>
+        <table class="am-table am-table-striped am-table-hover table-main" >
+            {%if errmessage%}
+                <h1>{{errmessage}}</h1>
+            {%else%}
+                <caption><strong></strong></caption>
   
-  <thead >
-    <tr>
-        <th></th>
-      <th>发送邮箱</th>
-      <th>安全密码</th>
-         <th>接受邮件人</th>
-         <th>stmp服务器</th>
-         <th>端口号</th>
-         <th>是否为默认设置</th>
-        <th >操作</th>
-    </tr>
-  </thead>
-  <tbody>
-  {%for email in email_reports%}
-    <tr>
-    <td></td>
-        <td>{{email.send_email}}></td>
-      <td>{{email.send_email_password}}</td>
-      <td>{{email.to_email}}</td>
-      <td>{{email.stmp_email}}</td>
-      <td>{{email.port}}</td>
-      {%if email.default_set !=True%}
-         <td></td>
-         {%else%}
-         <td> 默认设置</td>
-         {%endif%}
-      <td>
-      <div class="am-btn-toolbar">
-   <div class="am-btn-group am-btn-group-xs">
-        <a href="{{url_for('user.editemail',id=email.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
-       <a href="{{url_for('user.delemail',id=email.id)}}"><input type="button" value="删除"class="btn btn-danger"></a>
-       {%if email.default_set !=True%}
-         <a href="{{url_for('user.shezhi',id=email.id)}}"><input type="button" value="设置默认"class="btn btn-primary"></a>
-         {%else%}
-        <a href="{{url_for('user.quzhi',id=email.id)}}"><input type="button" value="取消默认"class="btn btn-bottom"></a>
-         {%endif%}
-     </div></div>
-      </td>
-    </tr>
-    {%endfor%}
-  </tbody>
-</table>{%endif%}
-</div>
+                <thead >
+                <tr>
+                    <th></th>
+                    <th>发送邮箱</th>
+                    <th>安全密码</th>
+                    <th>接受邮件人</th>
+                    <th>stmp服务器</th>
+                    <th>端口号</th>
+                    <th>是否为默认设置</th>
+                    <th >操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for email in email_reports%}
+                    <tr>
+                        <td></td>
+                        <td>{{email.send_email}}></td>
+                        <td>{{email.send_email_password}}</td>
+                        <td>{{email.to_email}}</td>
+                        <td>{{email.stmp_email}}</td>
+                        <td>{{email.port}}</td>
+                        {%if email.default_set !=True%}
+                            <td></td>
+                        {%else%}
+                            <td> 默认设置</td>
+                        {%endif%}
+                        <td>
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <a href="{{url_for('user.editemail',id=email.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
+                                    <a href="{{url_for('user.delemail',id=email.id)}}"><input type="button" value="删除"class="btn btn-danger"></a>
+                                    {%if email.default_set !=True%}
+                                        <a href="{{url_for('user.shezhi',id=email.id)}}"><input type="button" value="设置默认"class="btn btn-primary"></a>
+                                    {%else%}
+                                        <a href="{{url_for('user.quzhi',id=email.id)}}"><input type="button" value="取消默认"class="btn btn-bottom"></a>
+                                    {%endif%}
+                                </div></div>
+                        </td>
+                    </tr>
+                {%endfor%}
+                </tbody>
+                </table>{%endif%}
+    </div></div></div>
 {% endblock %} 

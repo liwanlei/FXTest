@@ -1,60 +1,60 @@
 {% extends "back.html" %}
 {% block hello %}
-{% import "fenye.html" as macros %}
- <div class="tpl-content-wrapper">
-            <div class="tpl-content-page-title">
-                {% with messages = get_flashed_messages() %}
-{% if messages %}
- <ul class='flashes'>
-{% for message in messages %}
-<li style="color:red" >{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
+    {% import "fenye.html" as macros %}
+    <div class="tpl-content-wrapper">
+        <div class="tpl-content-page-title">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red" >{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span><strong>测试环境</strong>
+                </div>
             </div>
-            <div class="tpl-portlet-components">
-                <div class="portlet-title">
-                    <div class="caption font-green bold">
-                        <span class="am-icon-code"></span><strong>测试环境</strong>
-                    </div>
-</div>
-<div class="tpl-block">
-                    <div class="am-g">
-                        <div class="am-u-sm-12 am-u-md-6">
-                            <div class="am-btn-toolbar">
-                                <div class="am-btn-group am-btn-group-xs">
+            <div class="tpl-block">
+                <div class="am-g">
+                    <div class="am-u-sm-12 am-u-md-6">
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
                                 <a href="{{url_for('addevent')}}"> <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
-                                </div>
                             </div>
                         </div>
                     </div>
-<table class="am-table am-table-striped am-table-hover table-main" style="width:70%">
-  <caption><strong></strong></caption>
-  <thead>
-    <tr>
-      <th>所属项目</th>
-        <th>测试环境地址</th>
-        <th>测试环境描述</th>
-        <th>添加者</th>
-        <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-  {%for ebent in events%}
-    <tr>
-      <td><label class="" style="background-color: white"><strong>{{ebent.project}}</strong></label></td>
-    <td><label class="label-primary" style="background: white">{{ ebent.url }}</label></td>
-    <td> <label class="label-primary" style="background: white">{{ ebent.desc }}</label></td>
-       <td>   <label class="label-primary" style="background: white">{{ ebent.users }}</label></td>
-     <td>
-          <span><a href="{{ url_for('editevents',id=ebent.id) }}"><input type="button" value="编辑" class="btn btn-primary"></a></span>
-         {%if current_user.role_id !=1 and current_user.role_id !=None  %}
-           <span><a href="{{ url_for ('delete',id=ebent.id)  }}"><input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
-      </td>
-    </tr>
-{%endfor%}
-  </tbody>
-</table>
-  </div>
+                </div>
+                <table class="am-table am-table-striped am-table-hover table-main" style="width:70%">
+                    <caption><strong></strong></caption>
+                    <thead>
+                    <tr>
+                        <th>所属项目</th>
+                        <th>测试环境地址</th>
+                        <th>测试环境描述</th>
+                        <th>添加者</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {%for ebent in events%}
+                        <tr>
+                            <td><label class="" style="background-color: white"><strong>{{ebent.project}}</strong></label></td>
+                            <td><label class="label-primary" style="background: white">{{ ebent.url }}</label></td>
+                            <td> <label class="label-primary" style="background: white">{{ ebent.desc }}</label></td>
+                            <td>   <label class="label-primary" style="background: white">{{ ebent.users }}</label></td>
+                            <td>
+                                <span><a href="{{ url_for('editevents',id=ebent.id) }}"><input type="button" value="编辑" class="btn btn-primary"></a></span>
+                                {%if current_user.role_id !=1 and current_user.role_id !=None  %}
+                                    <span><a href="{{ url_for ('delete',id=ebent.id)  }}"><input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
+                            </td>
+                        </tr>
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
 {% endblock %}

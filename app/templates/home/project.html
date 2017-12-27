@@ -1,56 +1,56 @@
 {% extends "back.html" %}
 {% block hello %}
-{% import "fenye.html" as macros %}
- <div class="tpl-content-wrapper">
-            <div class="tpl-content-page-title">
-                {% with messages = get_flashed_messages() %}
-{% if messages %}
- <ul class='flashes'>
-{% for message in messages %}
-<li style="color:red" >{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
+    {% import "fenye.html" as macros %}
+    <div class="tpl-content-wrapper">
+        <div class="tpl-content-page-title">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red" >{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 项目
+                </div>
             </div>
-            <div class="tpl-portlet-components">
-                <div class="portlet-title">
-                    <div class="caption font-green bold">
-                        <span class="am-icon-code"></span> 项目
-                    </div>
-</div>
-<div class="tpl-block">
-                    <div class="am-g">
-                        <div class="am-u-sm-12 am-u-md-6">
-                            <div class="am-btn-toolbar">
-                                <div class="am-btn-group am-btn-group-xs"> 
+            <div class="tpl-block">
+                <div class="am-g">
+                    <div class="am-u-sm-12 am-u-md-6">
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
                                 <a href="{{url_for('add_pro')}}"> <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
-                                </div>
                             </div>
                         </div>
                     </div>
-<table class="am-table am-table-striped am-table-hover table-main" >
-  <caption><strong></strong></caption>
-  <thead>
-    <tr>
-      <th>项目名</th>
-        <th>创建者</th>
-        <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-  {%for project in projects%}
-    <tr>
-      <td><label class="" style="background-color: white"><strong>{{project.project_name}}</strong></label></td>
-    <td><label class="label-primary" style="background: white">{{ project.users }}</label></td>
-      <td>
-          <span><a href="{{url_for('edit_pro',id=project.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a></span>  {%if current_user.role_id !=1 and
+                </div>
+                <table class="am-table am-table-striped am-table-hover table-main" >
+                    <caption><strong></strong></caption>
+                    <thead>
+                    <tr>
+                        <th>项目名</th>
+                        <th>创建者</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {%for project in projects%}
+                        <tr>
+                            <td><label class="" style="background-color: white"><strong>{{project.project_name}}</strong></label></td>
+                            <td><label class="label-primary" style="background: white">{{ project.users }}</label></td>
+                            <td>
+                                <span><a href="{{url_for('edit_pro',id=project.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a></span>  {%if current_user.role_id !=1 and
           current_user.role_id !=None  %}
-           <span><a href="{{url_for('dele_pro',id=project.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
-      </td>
-    </tr>
-{%endfor%}
-  </tbody>
-</table>
-  </div>
+                                <span><a href="{{url_for('dele_pro',id=project.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
+                            </td>
+                        </tr>
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
 {% endblock %}

@@ -15,18 +15,12 @@ from app.common.py_Html import createHtml
 from app.common.requ_case import Api
 from app.common.panduan import assert_in
 from app.test_case.Test_case import ApiTestCase
-from app.common.send_email import send_emails 
+from app.common.send_email import send_emails
 from flask.views import MethodView,View
 from flask_login import current_user,login_required,login_user,logout_user
 from app.common.decorators import admin_required,permission_required
 from app import loginManager
-from app.common.dict_com import comp_dict,dict_par
-import  json
-from app import  scheduler
 from app.common.Dingtalk import send_ding
-@loginManager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 def get_pro_mo():
     projects=Project.query.all()
     model=Model.query.all()
@@ -342,7 +336,7 @@ class DuoyongliView(View):
         if os.path.exists(filepath) is False:
             os.system(r'touch %s' % filepath)
         if request.method=='POST':
-            f=request.form.get('checkbox')
+            f_dingding=request.form.get('dingding')
             me=request.form.getlist('yongli')
             if len(me)<=1:
                 flash(u'请选择一个以上的用例来执行')
@@ -369,46 +363,49 @@ class DuoyongliView(View):
                 Interface_headers_list.append(case_one.Interface_headers)
             if (len(set(projecct_list)))>1:
                 flash('目前单次只能执行一个项目')
-                return redirect(url_for('yongli'))
-            if f =='on':
-                email=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True).first()
-                if email:
-                    try:
-                        apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file,Interface_headers_list)
-                        result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
-                        endtime=datetime.datetime.now()
-                        end = time.time()
-                        createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,headers=Interface_headers_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
-                        hour=end-star
-                        user_id=User.query.filter_by(username=session.get('username')).first().id
-                        new_reust=TestResult(Test_user_id=user_id,test_num=result_toal,pass_num=result_pass,fail_num=result_fail,test_time=starttime,hour_time=hour,test_rep=(day+'.html'),test_log=(day+'.log'))
-                        db.session.add(new_reust)
-                        db.session.commit()
-                        m=send_emails(sender=email.send_email,receivers=email.to_email,password=email.send_email_password,smtp=email.stmp_email,port=email.port,fujian1=file,fujian2=filepath,subject=u'%s用例执行测试报告'%day,url='http://127.0.0.1:5000/test_rep')
-                        if m==False:
+                return redirect(url_for('duoyongli'))
+            try:
+                apitest = ApiTestCase(Interface_url_list, Interface_meth_list, Interface_pase_list,
+                                      Interface_assert_list, file, Interface_headers_list)
+                result_toal, result_pass, result_fail, relusts, bask_list = apitest.testapi()
+                endtime = datetime.datetime.now()
+                end = time.time()
+                createHtml(titles=u'接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
+                           passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
+                           headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
+                           meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts)
+                hour = end - star
+                user_id = User.query.filter_by(username=session.get('username')).first().id
+                new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
+                                       fail_num=result_fail, test_time=starttime, hour_time=hour,
+                                       test_rep=(day + '.html'), test_log=(day + '.log'))
+                db.session.add(new_reust)
+                db.session.commit()
+                if f_dingding == 'email':
+                    email = EmailReport.query.filter_by(email_re_user_id=int(current_user.id), default_set=True).first()
+                    if email:
+                        m = send_emails(sender=email.send_email, receivers=email.to_email,
+                                        password=email.send_email_password,
+                                        smtp=email.stmp_email, port=email.port, fujian1=file, fujian2=filepath,
+                                        subject=u'%s用例执行测试报告' % day, url='http://127.0.0.1:5000/test_rep')
+                        if m == False:
                             flash(u'发送邮件失败，请检查您默认的邮件设置是否正确')
                             return redirect(url_for('home.test_rep'))
                         flash(u'测试已经完成，并且给您默认设置发送了测试报告')
                         return redirect(url_for('home.test_rep'))
-                    except:
-                        flash(u'测试失败，请检查您的测试用例单个执行是否出错')
+                    flash(u'无法完成，需要去您的个人设置去设置一个默认的邮件发送')
+                    return redirect(url_for('home.yongli'))
+                if f_dingding=='dingding':
+                    send=send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告"%(result_pass,result_fail))
+                    if send is True:
+                        flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
                         return redirect(url_for('home.yongli'))
-                flash(u'无法完成，需要去您的个人设置去设置一个默认的邮件发送')
-                return redirect(url_for('home.yongli'))
-            try:
-                apitest=ApiTestCase(Interface_url_list,Interface_meth_list,Interface_pase_list,Interface_assert_list,file,Interface_headers_list)
-                result_toal,result_pass,result_fail,relusts,bask_list=apitest.testapi()
-                endtime=datetime.datetime.now()
-                end = time.time()
-                createHtml(titles=u'接口测试报告',filepath=filepath,starttime=starttime,endtime=endtime,passge=result_pass,fail=result_fail,id=id_list,name=projecct_list,headers=Interface_headers_list,coneent=Interface_url_list,url=Interface_meth_list,meth=Interface_pase_list,yuqi=Interface_assert_list,json=bask_list,relusts=relusts)
-                hour=end-star
-                user_id=User.query.filter_by(username=session.get('username')).first().id
-                new_reust=TestResult(Test_user_id=user_id,test_num=result_toal,pass_num=result_pass,fail_num=result_fail,test_time=starttime,hour_time=hour,test_rep=(day+'.html'),test_log=(day+'.log'))
-                db.session.add(new_reust)
-                db.session.commit()
-                flash(u'测试已经完成')
+                    flash(u'测试报告发送钉钉讨论群失败！请检查相关配置！')
+                    return redirect(url_for('home.yongli'))
+                flash(u'测试已经完成，测试报告已经生成')
                 return redirect(url_for('home.test_rep'))
-            except:
+            except Exception as e:
+                print(e)
                 flash(u'测试失败，请检查您的测试用例单个执行是否出错')
                 return redirect(url_for('home.yongli'))
         return redirect(url_for('home.yongli'))

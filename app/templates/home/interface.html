@@ -1,72 +1,72 @@
 {% extends "back.html" %}
 {% block hello %}
-{% import "fenye.html" as macros %}
-<div class="tpl-content-wrapper">
-            <div class="tpl-content-page-title">
-            </div>
-            <div class="tpl-portlet-components">
-                <div class="portlet-title">
-                    <div class="caption font-green bold">
-                        <span class="am-icon-code"></span> 接口
-                    </div>
+    {% import "fenye.html" as macros %}
+    <div class="tpl-content-wrapper">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 接口
                 </div>
-                {% with messages = get_flashed_messages() %}
-            {% if messages %}
-             <ul class='flashes'>
-            {% for message in messages %}
-            <li style="color:red">{{ message }}</li>
-            {% endfor %}
-            {% endif %}
-</ul>
-{% endwith %}
-    <form method="POST" action="{{url_for('ser_inter')}}">
-     <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project"  placeholder="请输入查询的项目">
-    <span></span>
-    <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model"  placeholder="查询的模块">
-        <span></span>
-    <input type="submit" value="查询" class="am-btn-success">
-    </form>
-        <div style="margin-top: 10px">
-            <a href="{{url_for('interface_add')}}"><input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success"> </a>
-            <a href="{{url_for('daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn am-btn-default am-btn-success"></a>
-       </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                    {% for message in messages %}
+                        <li style="color:red">{{ message }}</li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+            {% endwith %}
+            <form method="POST" action="{{url_for('ser_inter')}}">
+                <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project"  placeholder="请输入查询的项目">
+                <span></span>
+                <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model"  placeholder="查询的模块">
+                <span></span>
+                <input type="submit" value="查询" class="am-btn-success">
+            </form>
+            <div style="margin-top: 10px">
+                <a href="{{url_for('interface_add')}}"><input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success"> </a>
+                <a href="{{url_for('daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn am-btn-default am-btn-success"></a>
+            </div>
 
-   <table class="am-table am-table-hover table-main" style="width:100%">
+            <table class="am-table am-table-hover table-main" style="width:100%">
   
-  <thead>
-    <tr>
-      <th>接口id</th>
-      <th>项目名称</th>
-      <th>所属模块</th>
-         <th>接口名称</th>
-         <th>接口地址</th>
-        <th>接口headers</th>
-         <th>接口请求方法</th>
-         <th>接口请求参数</th>
-         <th>接口返回参数</th>
-        <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-  {%for inter in inte%}
-    <tr>
-      <td>{{inter.id}}</td>
-      <td><label class="label-important">{{inter.projects}}</label></td>
-      <td>{{inter.models}}</td>
-         <td>{{inter.Interface_name}}</td>
-      <td>{{inter.Interface_url}}</td>
-        <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ inter.Interface_headers }}</td>
-      <td>{{inter.Interface_meth}}</td>
-         <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{inter.Interface_par}}</td>
-      <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{inter.Interface_back}}</td>
-      <td><a href="{{url_for('interfac_edit',id=inter.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
-<a href="{{url_for('dele_inter',id=inter.id)}}"><input type="button" value="删除" class="btn btn-danger"></a>
-      </td>
-    </tr>
-{%endfor%}
-  </tbody>
-</table>
-  <p class="pagination" style="margin-left: 24%;">
-  {{macros.pagination_widget(pagination,'.interfaspa')}}
-</p>
+                <thead>
+                <tr>
+                    <th>接口id</th>
+                    <th>项目名称</th>
+                    <th>所属模块</th>
+                    <th>接口名称</th>
+                    <th>接口地址</th>
+                    <th>接口headers</th>
+                    <th>接口请求方法</th>
+                    <th>接口请求参数</th>
+                    <th>接口返回参数</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for inter in inte%}
+                    <tr>
+                        <td>{{inter.id}}</td>
+                        <td><label class="label-important">{{inter.projects}}</label></td>
+                        <td>{{inter.models}}</td>
+                        <td>{{inter.Interface_name}}</td>
+                        <td>{{inter.Interface_url}}</td>
+                        <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ inter.Interface_headers }}</td>
+                        <td>{{inter.Interface_meth}}</td>
+                        <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{inter.Interface_par}}</td>
+                        <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{inter.Interface_back}}</td>
+                        <td><a href="{{url_for('interfac_edit',id=inter.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
+                            <a href="{{url_for('dele_inter',id=inter.id)}}"><input type="button" value="删除" class="btn btn-danger"></a>
+                        </td>
+                    </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+            <p class="pagination" style="margin-left: 24%;">
+                {{macros.pagination_widget(pagination,'.interfaspa')}}
+            </p></div></div>
 {% endblock %}

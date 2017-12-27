@@ -1,0 +1,3 @@
+2017-12-27 09:51:43,280 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:63,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007
+2017-12-27 09:51:43,306 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:62,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007
+2017-12-27 09:51:43,330 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:61,实际返回:{'code': 40007, 'text': '您的请求内容为空。'},预期:code=40007

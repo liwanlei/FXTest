@@ -10,13 +10,10 @@ from  flask import  Flask
 from flask_admin import  Admin,AdminIndexView
 from  flask_sqlalchemy import  SQLAlchemy
 from flask_login import  LoginManager
-from flask_moment import  Moment
-#from flask_cache import Cache
 from flask_bootstrap import  Bootstrap
 from flask_login import LoginManager
 from config import lod
 from flask_apscheduler import  APScheduler
-
 app=Flask(__name__)
 conf=lod()
 loginManager = LoginManager(app)
@@ -24,9 +21,7 @@ app.config.from_object(conf)
 bootstrap=Bootstrap(app)
 loginManager.session_protection = "strong"
 loginManager.login_view='home.login'
+loginManager.login_message=u'系统必须登录，请登录您的平台账号！'
 db=SQLAlchemy(app)
-moment=Moment(app)
 scheduler=APScheduler()
-#
-# app.register_blueprint(err)
 from  app import  views ,models,url

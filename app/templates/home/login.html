@@ -10,39 +10,39 @@
 </head>
 <body style="    background-color: beige;">
 <div id="wrapper">
-		<div class="vertical-align-wrap">
-			<div class="vertical-align-middle">
-							<div class="header " style="">
-								<h1 style="text-align: center;">登录</h1>
-							</div>
-                            {% with messages = get_flashed_messages() %}
-                                  {% if messages %}
-                                    <p class='flashes' style='text-align:center;color:red;'>
-                                    {% for message in messages %}
-                                      <li style="text-align:center;color:red">{{ message }}</li>
-                                    {% endfor %}
-                                    </p>
-                                  {% endif %}
-                                {% endwith %}
-                                {% block body %}{% endblock %}
-							<form class="form-auth-small" action="{{ url_for('home.login') }}" method="POST" style="width: 40%;
+    <div class="vertical-align-wrap">
+        <div class="vertical-align-middle">
+            <div class="header " style="">
+                <h1 style="text-align: center;">登录</h1>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <p class='flashes' style='text-align:center;color:red;'>
+                        {% for message in messages %}
+                            <li style="text-align:center;color:red">{{ message }}</li>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            {% endwith %}
+            {% block body %}{% endblock %}
+            <form class="form-auth-small" action="{{ url_for('home.login') }}" method="POST" style="width: 40%;
     margin-left: 30%;">
-                                {{form.hidden_tag()}}
-								<div class="form-group">
-                                    {% if form.username.errors %}
-                                    {% for e in form.username.errors %}
-                                    <p class="flashes">{{ e }}</p>
-                                    {% endfor %}
-                                {% endif %}
-									{{ form.username(class='form-control') }}
-								<div class="form-group">
-									{{ form.password(class='form-control') }}
-								</div>
-								<button type="submit" class="btn btn-primary btn-lg btn-block">登录</button>
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    {% if form.username.errors %}
+                        {% for e in form.username.errors %}
+                            <p class="flashes">{{ e }}</p>
+                        {% endfor %}
+                    {% endif %}
+                    {{ form.username(class='form-control') }}
+                    <div class="form-group">
+                        {{ form.password(class='form-control') }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">登录</button>
 
-                                </div>
+                </div>
 
-							</form>
-                            </div>
+            </form>
+        </div></div></div>
 </body>
 </html>

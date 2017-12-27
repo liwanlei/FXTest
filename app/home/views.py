@@ -47,7 +47,8 @@ class LoginView(MethodView):#登录
                         if user.status==0:
                             login_user(user)
                             session['username']=username
-                            return  redirect(url_for('home.index'))
+                            next =request.args.get('next')
+                            return  redirect(next or url_for('home.index'))
                         flash(u'用户冻结，请联系管理员')
                         return render_template('home/login.html', form=form)
                     flash(u'用户名密码错误')
@@ -61,7 +62,7 @@ class LogtView(MethodView):#退出
     def get(self):
         session.clear()
         logout_user()
-        return redirect(url_for('login'))
+        return redirect(url_for('home.login'))
 class InterfaceView(MethodView):#接口
     @login_required
     def get(self,page=1):

@@ -9,23 +9,11 @@ from  flask import  make_response,redirect,request,render_template,session,url_f
 from werkzeug import secure_filename
 from  app.models import *
 from app.form import  *
-import os,time,datetime,threading
-from app.common.pares_excel_inter import pasre_inter
-from app.common.py_Html import createHtml
-from app.common.requ_case import Api
-from app.common.panduan import assert_in
-from app.test_case.Test_case import ApiTestCase
-from app.common.send_email import send_emails
+import os,time,datetime,json
 from flask.views import MethodView,View
 from flask_login import current_user,login_required,login_user,logout_user
 from app.common.decorators import admin_required,permission_required
 from app import loginManager
-from app.common.dict_com import comp_dict,dict_par
-import  json
-from app import  scheduler
-@loginManager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 def get_pro_mo():
     projects=Project.query.all()
     model=Model.query.all()

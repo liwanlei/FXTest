@@ -3,93 +3,93 @@
            {% with messages = get_flashed_messages() %}
                                   {% if messages %}
                                     <ul class=flashes>
-                                    {% for message in messages %}
-                                      <li style="color:red">{{ message }}</li>
-                                    {% endfor %}
+                                        {% for message in messages %}
+                                            <li style="color:red">{{ message }}</li>
+                                        {% endfor %}
                                     </ul>
                                   {% endif %}
-                                {% endwith %}
-                <div class="tpl-content-wrapper">
-            <div class="row">
-                <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
-                    <div class="dashboard-stat blue">
-                        <div class="visual">
-                            <i class="am-icon-comments-o"></i>
-                        </div>
-                        <div class="details">
-                            <div class="number"> {{project_cout}} </div>
-                            <div class="desc"> 项目 </div>
-                        </div>
-                        <a class="more" href="{{url_for('home.project')}}"> 查看项目
-                    <i class="m-icon-swapright m-icon-white"></i>
-                </a>
+           {% endwith %}
+    <div class="tpl-content-wrapper">
+        <div class="row">
+            <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                <div class="dashboard-stat blue">
+                    <div class="visual">
+                        <i class="am-icon-comments-o"></i>
                     </div>
-                </div>
-                <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
-                    <div class="dashboard-stat red">
-                        <div class="visual">
-                            <i class="am-icon-bar-chart-o"></i>
-                        </div>
-                        <div class="details">
-                            <div class="number"> {{model_cout}} </div>
-                            <div class="desc"> 模块 </div>
-                        </div>
-                        <a class="more" href="{{url_for('home.model')}}"> 查看更多
-                    <i class="m-icon-swapright m-icon-white"></i>
-                </a>
+                    <div class="details">
+                        <div class="number"> {{project_cout}} </div>
+                        <div class="desc"> 项目 </div>
                     </div>
-                </div>
-                <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
-                    <div class="dashboard-stat green">
-                        <div class="visual">
-                            <i class="am-icon-apple"></i>
-                        </div>
-                        <div class="details">
-                            <div class="number"> {{jiekou}} </div>
-                            <div class="desc"> 接口 </div>
-                        </div>
-                        <a class="more" href="{{url_for('home.interface')}}"> 查看更多
-                    <i class="m-icon-swapright m-icon-white"></i>
-                </a>
-                    </div>
-                </div>
-                <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
-                    <div class="dashboard-stat purple">
-                        <div class="visual">
-                            <i class="am-icon-android"></i>
-                        </div>
-                        <div class="details">
-                            <div class="number"> {{yongli}} </div>
-                            <div class="desc"> 测试用例 </div>
-                        </div>
-                        <a class="more" href="{{url_for('home.yongli')}}"> 查看更多
-                    <i class="m-icon-swapright m-icon-white"></i>
-                </a>
-                    </div>
+                    <a class="more" href="{{url_for('home.project')}}"> 查看项目
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </a>
                 </div>
             </div>
-			<div class="row">
-                <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
-                    <div class="dashboard-stat blue">
-                        <div class="visual">
-                            <i class="am-icon-comments-o"></i>
-                        </div>
-                        <div class="details">
-                            <div class="number"> {{report}} </div>
-                            <div class="desc"> 测试报告 </div>
-                        </div>
-                        <a class="more" href="{{url_for('home.test_rep')}}"> 更多
-                    <i class="m-icon-swapright m-icon-white"></i>
-                </a>
+            <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                <div class="dashboard-stat red">
+                    <div class="visual">
+                        <i class="am-icon-bar-chart-o"></i>
                     </div>
+                    <div class="details">
+                        <div class="number"> {{model_cout}} </div>
+                        <div class="desc"> 模块 </div>
+                    </div>
+                    <a class="more" href="{{url_for('home.model')}}"> 查看更多
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </a>
                 </div>
             </div>
-                        
-</div>
- <h1 style="margin-left:13%">模板</h1>
-               <div style="margin-left:13%">
-                   <h3 >根据这里的版本可以在<a href="{{ url_for('home.yongli') }}">用例</a>或者<a href="{{ url_for('home.interface') }}">测试接口</a>模块导入相应的测试用例或者测试接口</h3>
-                    <a href="{{url_for('down_jiekou')}}">接口模板</a>
-                    <a href="{{url_for('down_case')}}">测试用例模板</a>
-               </div>    
+            <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                <div class="dashboard-stat green">
+                    <div class="visual">
+                        <i class="am-icon-apple"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number"> {{jiekou}} </div>
+                        <div class="desc"> 接口 </div>
+                    </div>
+                    <a class="more" href="{{url_for('home.interface')}}"> 查看更多
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                <div class="dashboard-stat purple">
+                    <div class="visual">
+                        <i class="am-icon-android"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number"> {{yongli}} </div>
+                        <div class="desc"> 测试用例 </div>
+                    </div>
+                    <a class="more" href="{{url_for('home.yongli')}}"> 查看更多
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                <div class="dashboard-stat blue">
+                    <div class="visual">
+                        <i class="am-icon-comments-o"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number"> {{report}} </div>
+                        <div class="desc"> 测试报告 </div>
+                    </div>
+                    <a class="more" href="{{url_for('home.test_rep')}}"> 更多
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <h1 style="margin-left:13%">模板</h1>
+    <div style="margin-left:13%">
+        <h3 >根据这里的版本可以在<a href="{{ url_for('home.yongli') }}">用例</a>或者<a href="{{ url_for('home.interface') }}">测试接口</a>模块导入相应的测试用例或者测试接口</h3>
+        <a href="{{url_for('down_jiekou')}}">接口模板</a>
+        <a href="{{url_for('down_case')}}">测试用例模板</a>
+    </div>
 {% endblock %}

@@ -1,69 +1,69 @@
 {%extends 'back.html' %}
 {%block hello%}
-<div class="tpl-content-wrapper">
-            <div class="tpl-content-page-title">
-            </div>
-            <div class="tpl-portlet-components">
-                <div class="portlet-title">
-                    <div class="caption font-green bold">
-                        <span class="am-icon-code"></span> 添加测试用用例
-                    </div>
-                    <div class="tpl-portlet-input tpl-fz-ml">
-                        <div class="portlet-input input-small input-inline">
-                            <div class="input-icon right">
-                                </div>
+    <div class="tpl-content-wrapper">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 添加测试用用例
+                </div>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                    <div class="portlet-input input-small input-inline">
+                        <div class="input-icon right">
                         </div>
-                    </div></div>
-{% with messages = get_flashed_messages()%}
-{% if messages%}
-<ul class='flashes'>
-{% for message in messages %}
-<li style="color:red">{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-<form method="POST" action="{{url_for('addtestcase')}}">
- {{form.hidden_tag()}}
- {{form.csrf_token}}
- <div>
- <div class="form-group">
-<strong>项目名字:</strong>
-    {% for project in  projects %}
-<input type='radio' value="{{  project.project_name }}" name="project">{{ project.project_name }}
-    {% endfor %}</div><span>&nbsp;</span>
-<div class="form-group">
-<strong>模块名字:</strong>
-  {% for model in  models %}
-<input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
-    {% endfor %}
-</div>
-<span>&nbsp;</span>
- <div class="form-group">
-<strong>接口名字:</strong>
-{{ form.interface_name }}</div>
-<span>&nbsp;</span>
- <div class="form-group">
-<strong>接口url:</strong>
-{{ form.interface_url }}</div>
-<span>&nbsp;</span>
-  <div class="form-group">
-<strong>接口headers:</strong>
-{{ form.interface_headers }}</div>
-<span>&nbsp;</span>
- <div class="form-group">
-<strong>请求方式:</strong>
-{{ form.interface_meth }}</div>
-<span>&nbsp;</span>
- <div class="form-group" >
-<strong>请求参数:</strong>
-{{ form.interface_can }}</div>
-<span>&nbsp;</span>
- <div class="form-group" >
-<strong>请求预期:</strong>
-{{ form.interface_rest }}</div>
-<span>&nbsp;</span>
-<button type="submit" class="am-btn am-btn-primary" >添加</button>
-</form>
-</div>
+                    </div>
+                </div></div>
+            {% with messages = get_flashed_messages()%}
+                {% if messages%}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="{{url_for('addtestcase')}}">
+                {{form.hidden_tag()}}
+                {{form.csrf_token}}
+                <div>
+                    <div class="form-group">
+                        <strong>项目名字:</strong>
+                        {% for project in  projects %}
+                            <input type='radio' value="{{  project.project_name }}" name="project">{{ project.project_name }}
+                        {% endfor %}</div><span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>模块名字:</strong>
+                        {% for model in  models %}
+                            <input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
+                        {% endfor %}
+                    </div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>接口名字:</strong>
+                        {{ form.interface_name }}</div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>接口url:</strong>
+                        {{ form.interface_url }}</div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>接口headers:</strong>
+                        {{ form.interface_headers }}</div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>请求方式:</strong>
+                        {{ form.interface_meth }}</div>
+                    <span>&nbsp;</span>
+                    <div class="form-group" >
+                        <strong>请求参数:</strong>
+                        {{ form.interface_can }}</div>
+                    <span>&nbsp;</span>
+                    <div class="form-group" >
+                        <strong>请求预期:</strong>
+                        {{ form.interface_rest }}</div>
+                    <span>&nbsp;</span>
+                    <button type="submit" class="am-btn am-btn-primary" >添加</button>
+                </div></form>
+        </div></div>
 {%endblock%}

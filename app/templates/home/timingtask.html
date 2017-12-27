@@ -1,71 +1,71 @@
 {% extends "back.html" %}
 {% block hello %}
-{% import "fenye.html" as macros %}
+    {% import "fenye.html" as macros %}
     <div class="tpl-content-wrapper">
-            <div class="tpl-content-page-title">
-            </div>
-            <div class="tpl-portlet-components">
-                <div class="portlet-title">
-                    <div class="caption font-green bold">
-                        <span class="am-icon-code"></span> 定时任务
-                    </div>
-                    <div class="tpl-portlet-input tpl-fz-ml">
-                    </div>
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 定时任务
                 </div>
-     {% with messages = get_flashed_messages() %}
-{% if messages %}
- <ul class='flashes'>
-{% for message in messages %}
-<li style="color: red">{{ message }}</li></ul>
-{% endfor %}
-{% endif %}
-     {% endwith %}
-<div style="margin-top: 10px">
-            <a href="{{ url_for('task.addtimingtasks') }}"><input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success"> </a>
-       </div>
-   <table class="am-table am-table-hover table-main" style="width:100%">
-  <thead>
-    <tr>
-      <th>任务名称</th>
-      <th>任务执行时间</th>
-        <th>任务的项目</th>
-{#         <th>收件人邮箱</th>#}
-{#         <th>抄送人邮箱</th>#}
-        <th>维护人邮箱</th>
-         <th>任务运行状态</th>
-         <th>创建时间</th>
-         <th>创建者</th>
-        <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for inter in inte %}
-    <tr>
-      <td>{{ inter.taskname }}</td>
-      <td>{{ inter.taskstart }}</td>
-        <td>{{ inter.projects }}</td>
-      <td style="width: 5px">{{ inter.task_make_email }}</td>
-        {% if inter.yunxing_status=='创建'or inter.yunxing_status=='关闭' %}
-        <td><a href="{{ url_for('task.starttask',id=inter.id) }}"><input type="button" class="btn btn-default" value="启动"></a></td>
-            {% elif inter.yunxing_status=='启动' %}
-            <td><a href="{{ url_for('task.zantingtask',id=inter.id) }}"><input type="button" class="btn btn-success" value="暂停"></a>
-            <a href="{{ url_for('task.yichutask',id=inter.id) }}"><input type="button" class="btn btn-danger" value="移除"></a></td>
-            {% elif inter.yunxing_status=='暂停' %}
-            <td><a href="{{ url_for('task.huifutask',id=inter.id) }}"><input type="button" class="btn btn-success" value="恢复">
-            </a><a href="{{ url_for('task.yichutask',id=inter.id) }}"><input type="button" class="btn btn-danger" value="移除"></a></td>
-        {% endif %}
-      <td>{{ inter.taskmakedate }}</td>
-         <td>{{ inter.users }}</td>
-      <td><a href="{{ url_for('task.editmingtask',id = inter.id )}}"><input type="button" value="编辑" class="btn btn-primary"></a>
-<a  href="{{ url_for('task.deltettask',id=inter.id) }}"><input type="button" value="删除" class="btn btn-danger"></a>
-          <a  href="{{ url_for('task.testfortask',id=inter.id) }}"><input type="button" value="用例" class="btn btn-default"></a>
-      </td>
-    </tr>{% endfor %}
-  </tbody>
-</table>
-             <p class="pagination" style="margin-left: 24%;">
-  {{macros.pagination_widget(pagination,'.timingtask')}}
-</p>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                </div>
             </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color: red">{{ message }}</li></ul>
+                        {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div style="margin-top: 10px">
+                <a href="{{ url_for('task.addtimingtasks') }}"><input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success"> </a>
+            </div>
+            <table class="am-table am-table-hover table-main" style="width:100%">
+                <thead>
+                <tr>
+                    <th>任务名称</th>
+                    <th>任务执行时间</th>
+                    <th>任务的项目</th>
+                    {#         <th>收件人邮箱</th>#}
+                    {#         <th>抄送人邮箱</th>#}
+                    <th>维护人邮箱</th>
+                    <th>任务运行状态</th>
+                    <th>创建时间</th>
+                    <th>创建者</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for inter in inte %}
+                    <tr>
+                        <td>{{ inter.taskname }}</td>
+                        <td>{{ inter.taskstart }}</td>
+                        <td>{{ inter.projects }}</td>
+                        <td style="width: 5px">{{ inter.task_make_email }}</td>
+                        {% if inter.yunxing_status=='创建'or inter.yunxing_status=='关闭' %}
+                            <td><a href="{{ url_for('task.starttask',id=inter.id) }}"><input type="button" class="btn btn-default" value="启动"></a></td>
+                        {% elif inter.yunxing_status=='启动' %}
+                            <td><a href="{{ url_for('task.zantingtask',id=inter.id) }}"><input type="button" class="btn btn-success" value="暂停"></a>
+                                <a href="{{ url_for('task.yichutask',id=inter.id) }}"><input type="button" class="btn btn-danger" value="移除"></a></td>
+                        {% elif inter.yunxing_status=='暂停' %}
+                            <td><a href="{{ url_for('task.huifutask',id=inter.id) }}"><input type="button" class="btn btn-success" value="恢复">
+                            </a><a href="{{ url_for('task.yichutask',id=inter.id) }}"><input type="button" class="btn btn-danger" value="移除"></a></td>
+                        {% endif %}
+                        <td>{{ inter.taskmakedate }}</td>
+                        <td>{{ inter.users }}</td>
+                        <td><a href="{{ url_for('task.editmingtask',id = inter.id )}}"><input type="button" value="编辑" class="btn btn-primary"></a>
+                            <a  href="{{ url_for('task.deltettask',id=inter.id) }}"><input type="button" value="删除" class="btn btn-danger"></a>
+                            <a  href="{{ url_for('task.testfortask',id=inter.id) }}"><input type="button" value="用例" class="btn btn-default"></a>
+                        </td>
+                    </tr>{% endfor %}
+                </tbody>
+            </table>
+            <p class="pagination" style="margin-left: 24%;">
+                {{macros.pagination_widget(pagination,'.timingtask')}}
+            </p>
+        </div>
     </div>
-            {% endblock %}
+{% endblock %}

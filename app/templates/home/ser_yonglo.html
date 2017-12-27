@@ -41,8 +41,10 @@
            <a href="{{url_for('addtestcase')}}"><input type="button" name="" class="btn btn-default" value="添加"></a>
             <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="btn btn-default" value="导入"></a>
         <button class="btn btn-default">批量执行</button>
-        <label><input name="checkbox" type="checkbox" > </label>
-<strong>发送邮件报告</strong></div>
+        <label><input name="dingding" type="radio" value="email"> </label>
+<strong>发送邮件报告</strong>
+          <label>  <input name="dingding" type="radio" value="dingding"> </label>
+<strong>发送钉钉报告</strong>
    <table class="table table-bordered" style="width:70%">
   <caption><strong>用例</strong></caption>
   <thead>

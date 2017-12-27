@@ -1,68 +1,68 @@
 {% extends "back.html" %}
 {% block hello %}
-   <div class="tpl-content-wrapper">
-            <div class="tpl-content-page-title">
+    <div class="tpl-content-wrapper">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 用户查询结果
+                </div>
             </div>
-            <div class="tpl-portlet-components">
-                <div class="portlet-title">
-                    <div class="caption font-green bold">
-                        <span class="am-icon-code"></span> 用户查询结果
-                    </div>
-   </div>
-    {% with messages = get_flashed_messages() %}
-{% if messages %}
- <ul class='flashes'>
-{% for message in messages %}
-<li >{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-    <form method="POST">
-     <strong  style="margin-right: 10px;margin-left: 10px">用户名</strong><input type="text" name="user" placeholder="请输入要查询的用户名">
-    <span></span>
-    <input type="submit" value="查询" class="btn btn-default">
-    </form>
-        <div style="margin-top: 10px">
-        <a href="{{url_for('user.add_user')}}">
-          <input type="button" name="" class="btn btn-default" value="添加">
-        </a>
-  </div>
-   <table class="am-table am-table-striped am-table-hover table-main" style="width:80%">
-  <caption><strong>用户</strong></caption>
-  <thead>
-    <tr>
-      <th>用户id</th>
-      <th>用户名</th>
-      <th>用户邮箱</th>
-         <th>用户状态</th>
-         <th>管理</th>
-        <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-  {%for user in users%}
-   <tr>
-      <td>{{user.id}}</td>
-      <td><label class="label label-default">{{user.username}}</label></td>
-      <td><label class="label label-primary">{{user.user_email}}</label></td>
-      <td><label class="label label-info">{{user.works}}</label></td>
-{% if user.status !=1%}
-         <td><a href="{{url_for('user.fre_ad',id=user.id)}}"><input type="button" value="冻结" class="btn btn-success"></a></td>
-         {%else%}
-         <td><a href="{{url_for('user.fre_re',id=user.id)}}"><input type="button" value="解冻" class="btn btn-danger"></a></td>
-      {%endif%}
-      {% if user.role_id!=2%}
-      <td><a href="{{url_for('user.set_ad',id=user.id)}}"><input type="button" value="设置管理" class="btn btn-danger"></a></td>
-       {%else%}
-        <td><a href="{{url_for('user.del_ad',id=user.id)}}"><input type="button" value="取消管理" class="btn btn-success"></a></td>
-        {%endif%}
-      <td>
-          <span><a href="{{url_for('user.red_pass',id=user.id)}}"><input type="button" value="重置密码" class="btn btn-warning"></a></span>
-      </td>
-    </tr>
-{%endfor%}
-  </tbody>
-</table></div>
- </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li >{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form method="POST">
+                <strong  style="margin-right: 10px;margin-left: 10px">用户名</strong><input type="text" name="user" placeholder="请输入要查询的用户名">
+                <span></span>
+                <input type="submit" value="查询" class="btn btn-default">
+            </form>
+            <div style="margin-top: 10px">
+                <a href="{{url_for('user.add_user')}}">
+                    <input type="button" name="" class="btn btn-default" value="添加">
+                </a>
+            </div>
+            <table class="am-table am-table-striped am-table-hover table-main" style="width:80%">
+                <caption><strong>用户</strong></caption>
+                <thead>
+                <tr>
+                    <th>用户id</th>
+                    <th>用户名</th>
+                    <th>用户邮箱</th>
+                    <th>用户状态</th>
+                    <th>管理</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for user in users%}
+                    <tr>
+                        <td>{{user.id}}</td>
+                        <td><label class="label label-default">{{user.username}}</label></td>
+                        <td><label class="label label-primary">{{user.user_email}}</label></td>
+                        <td><label class="label label-info">{{user.works}}</label></td>
+                        {% if user.status !=1%}
+                            <td><a href="{{url_for('user.fre_ad',id=user.id)}}"><input type="button" value="冻结" class="btn btn-success"></a></td>
+                        {%else%}
+                            <td><a href="{{url_for('user.fre_re',id=user.id)}}"><input type="button" value="解冻" class="btn btn-danger"></a></td>
+                        {%endif%}
+                        {% if user.role_id!=2%}
+                            <td><a href="{{url_for('user.set_ad',id=user.id)}}"><input type="button" value="设置管理" class="btn btn-danger"></a></td>
+                        {%else%}
+                            <td><a href="{{url_for('user.del_ad',id=user.id)}}"><input type="button" value="取消管理" class="btn btn-success"></a></td>
+                        {%endif%}
+                        <td>
+                            <span><a href="{{url_for('user.red_pass',id=user.id)}}"><input type="button" value="重置密码" class="btn btn-warning"></a></span>
+                        </td>
+                    </tr>
+                {%endfor%}
+                </tbody>
+            </table></div>
+    </div>
 {% endblock %}
