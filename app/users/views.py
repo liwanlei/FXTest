@@ -61,30 +61,32 @@ class SetadView(View):#设置管理员
     @admin_required
     @login_required
     def dispatch_request(self,id):
+        next = request.headers.get('Referer')
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id!=2:
             flash(u'您不是管理员，无法设置！')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         new_ad=User.query.filter_by(id=id).first()
         if new_ad.role_id==2:
             flash(u'已经是管理员，无需设置')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         new_ad.role_id=2
         db.session.commit()
         flash(u'已经是管理员')
-        return redirect(url_for('home.adminuser'))
+        return redirect(next or url_for('home.adminuser'))
 class DeladView(View):#取消管理员
     methods=['GET','POST']
     @admin_required
     def dispatch_request(self,id):
+        next = request.headers.get('Referer')
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id!=2:
             flash(u'您不是管理员，无法取消管理！')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         new_ad=User.query.filter_by(id=id).first()
         if new_ad==user:
             flash(u'自己不能取消自己的管理员')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         new_ad.role_id=1
         db.session.commit()
         flash(u'已经取消管理员权限')
@@ -93,62 +95,65 @@ class FreadView(View):#冻结
     methods=['GET','POST']
     @admin_required
     def dispatch_request(self,id):
+        next = request.headers.get('Referer')
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id!=2:
             flash(u'您不是管理员，无法冻结！')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         new_ad=User.query.filter_by(id=id).first()
         if new_ad.status==1:
             flash(u'已经冻结')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         if new_ad==user:
             flash(u'自己不能冻结自己')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         new_ad.status=1
         db.session.commit()
         flash(u'已经冻结')
-        return redirect(url_for('home.adminuser'))
+        return redirect(next or url_for('home.adminuser'))
 class FrereView(View):#解冻
-    methods=['GET','POST']
+    methods=['GET']
     @login_required
     @admin_required
     def dispatch_request(self,id):
+        next = request.headers.get('Referer')
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id!=2:
             flash(u'您不是管理员，无法解冻！')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         new_ad=User.query.filter_by(id=id).first()
         if new_ad.status==0:
             flash(u'已经解冻')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         if new_ad==user:
             flash(u'自己不能解冻自己')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         new_ad.status=0
         db.session.commit()
         flash(u'已经解冻')
-        return redirect(url_for('home.adminuser'))
+        return redirect(next or url_for('home.adminuser'))
 class RedpassView(View):#重置密码
-    methods=['GET','POST']
+    methods=['GET']
     @admin_required
+    @login_required
     def dispatch_request(self,id):
-        if not session.get('username'):
-            return redirect(url_for('home.login'))
+        next = request.headers.get('Referer')
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id!=2:
             flash(u'您不是管理员，重置密码！')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         new_ad=User.query.filter_by(id=id).first()
         if new_ad==user:
             flash(u'自己不能重置自己的密码')
-            return redirect(url_for('home.adminuser'))
+            return redirect(next or url_for('home.adminuser'))
         new_ad.set_password=111111
         db.session.commit()
         flash(u'已经重置！密码：111111')
-        return redirect(url_for('home.adminuser'))
+        return redirect(next or url_for('home.adminuser'))
 class SeruserView(View):#查询用户
     methods=['GET','POST']
     @admin_required
+    @login_required
     def dispatch_request(self):
         if request.method=='POST':
             user=request.form.get('user')

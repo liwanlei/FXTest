@@ -101,6 +101,7 @@ class DeleinterView(MethodView):
     @login_required
     def get(self,id):
         interface=Interface.query.filter_by(id=id).first()
+
         user=User.query.filter_by(username=session.get('username')).first()
         if user.id==interface.Interface_user_id or user.role_id==2:
             interface.status=True
@@ -145,21 +146,20 @@ class Deletecase(View):
     def dispatch_request(self,id):
         if not session.get('username'):
             return redirect(url_for('home.login'))
+        next=request.headers.get('Referer')
         testcase=InterfaceTest.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
         if testcase.Interface_user_id==user.id or user.role_id==2:
             testcase.status=True
             db.session.commit()
             flash(u'删除成功')
-            return redirect(url_for('home.yongli'))
+            return redirect(next or url_for('home.yongli'))
         flash(u'您没有权限去删除这条用例')
-        return redirect(url_for('home.yongli'))
+        return redirect(next or url_for('home.yongli'))
 class EditcaseView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
-        if not session.get('username'):
-            return redirect(url_for('home.login'))
         project, models = get_pro_mo()
         edit_case=InterfaceTest.query.filter_by(id=id).first()
         if request.method=='POST':
@@ -183,9 +183,14 @@ class EditcaseView(View):
             edit_case.Interface_pase=parme
             edit_case.Interface_assert=reque
             edit_case.Interface_user_id=User.query.filter_by(username=session.get('username')).first().id
-            db.session.commit()
-            flash(u'编辑成功')
-            return redirect(url_for('home.yongli'))
+            try:
+                db.session.commit()
+                flash(u'编辑成功')
+                return redirect( url_for('home.yongli'))
+            except:
+                db.session.rollback()
+                flash(u'编辑失败，请重新编辑！')
+                return render_template('edit/edit_case.html', edit=edit_case, projects=project, models=models)
         return render_template('edit/edit_case.html', edit=edit_case, projects=project, models=models)
 @app.route('/down_jiekou',methods=['GET'])
 def down_jiekou():
@@ -307,6 +312,7 @@ class MakeonecaseView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
+        next=request.headers.get('Referer')
         case=InterfaceTest.query.filter_by(id=id).first()
         me=Api(url=case.Interface_url,fangshi=case.Interface_meth,params=case.Interface_pase,headers=case.Interface_headers)
         result=me.testapi()
@@ -314,16 +320,33 @@ class MakeonecaseView(View):
         try:
             if retur_re=='pass':
                 flash(u'用例测试通过')
-                return redirect(url_for('home.yongli'))
-            flash(u'用例测试失败')
-            return redirect(url_for('home.yongli'))
+                case.Interface_is_tiaoshi=True
+                case.Interface_tiaoshi_shifou=False
+                db.session.commit()
+                return redirect(next or url_for('home.yongli'))
+            elif retur_re=='fail':
+                case.Interface_is_tiaoshi = True
+                case.Interface_tiaoshi_shifou = True
+                db.session.commit()
+                flash(u'用例测试失败')
+                return redirect(next or url_for('home.yongli'))
+            else:
+                case.Interface_is_tiaoshi = True
+                case.Interface_tiaoshi_shifou = True
+                db.session.commit()
+                flash(u'测试用例测试过程中出现异常！%s'%retur_re)
+                return redirect(next or url_for('home.yongli'))
         except:
-            flash(u'用例测试失败,请检查您的用例')
-            return redirect(url_for('home.yongli'))
+            case.Interface_is_tiaoshi = True
+            case.Interface_tiaoshi_shifou = True
+            db.session.commit()
+            flash(u'用例测试失败,失败原因：{},请检查测试用例'.format(retur_re))
+            return redirect(next or url_for('home.yongli'))
 class DuoyongliView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
+        next=request.headers.get('Referer')
         starttime=datetime.datetime.now()
         star=time.time()
         day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
@@ -340,7 +363,7 @@ class DuoyongliView(View):
             me=request.form.getlist('yongli')
             if len(me)<=1:
                 flash(u'请选择一个以上的用例来执行')
-                return redirect(url_for('yongli'))
+                return redirect(next or url_for('yongli'))
             projecct_list=[]
             model_list=[]
             Interface_name_list=[]
@@ -363,7 +386,7 @@ class DuoyongliView(View):
                 Interface_headers_list.append(case_one.Interface_headers)
             if (len(set(projecct_list)))>1:
                 flash('目前单次只能执行一个项目')
-                return redirect(url_for('duoyongli'))
+                return redirect(next or url_for('duoyongli'))
             try:
                 apitest = ApiTestCase(Interface_url_list, Interface_meth_list, Interface_pase_list,
                                       Interface_assert_list, file, Interface_headers_list)
@@ -401,20 +424,17 @@ class DuoyongliView(View):
                         flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
                         return redirect(url_for('home.yongli'))
                     flash(u'测试报告发送钉钉讨论群失败！请检查相关配置！')
-                    return redirect(url_for('home.yongli'))
+                    return redirect(next or url_for('home.yongli'))
                 flash(u'测试已经完成，测试报告已经生成')
                 return redirect(url_for('home.test_rep'))
-            except Exception as e:
-                print(e)
+            except:
                 flash(u'测试失败，请检查您的测试用例单个执行是否出错')
-                return redirect(url_for('home.yongli'))
+                return redirect(next or url_for('home.yongli'))
         return redirect(url_for('home.yongli'))
 class AddmodelView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
-        if not  session.get('username'):
-            return  redirect(url_for('home.login'))
         if request.method=="POST":
             model=request.form.get('project')
             if model=='':
@@ -427,9 +447,14 @@ class AddmodelView(View):
                 return render_template('add/add_moel.html')
             new_moel=Model(model_name=model,model_user_id=user_id)
             db.session.add(new_moel)
-            db.session.commit()
-            flash(u'添加成功!')
-            return  redirect(url_for('home.model'))
+            try:
+                db.session.commit()
+                flash(u'%s模块 添加成功!'%model)
+                return  redirect( url_for('home.model'))
+            except:
+                db.session.rollback()
+                flash(u'%s模块 添加失败！！'%model)
+                return redirect(url_for('home.model'))
         return  render_template('add/add_moel.html')
 class AddproView(View):
     methods=['GET','POST']
@@ -445,13 +470,13 @@ class AddproView(View):
             user_id=User.query.filter_by(username=session.get('username')).first().id
             projec=Project.query.filter_by(project_name=model).first()
             if projec:
-                flash(u'项目不能重复')
+                flash(u'%s项目  不能重复'%model)
                 return render_template('add/add_pro.html')
             new_moel=Project(project_name=model,project_user_id=user_id)
             db.session.add(new_moel)
             try:
                 db.session.commit()
-                flash(u'添加成功!')
+                flash(u'%s项目   添加成功!'%model)
                 return  redirect(url_for('home.project'))
             except:
                 db.session.rollback()
@@ -463,29 +488,31 @@ class DelemodelView(View):
     @admin_required
     @login_required
     def dispatch_request(self,id):
+        next = request.headers.get('Referer')
         model=Model.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id==2:
             model.status=True
             db.session.commit()
             flash(u'删除成功')
-            return redirect(url_for('home.model'))
+            return redirect(next or url_for('home.model'))
         flash(u'您没有权限删除这个模块')
-        return redirect(url_for('home.model'))
+        return redirect(next or url_for('home.model'))
 class DeleproView(View):
     methods=['GET','POST']
     @admin_required
     @login_required
     def dispatch_request(self,id):
+        next = request.headers.get('Referer')
         proje=Project.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id==2:
             proje.status=True
             db.session.commit()
             flash(u'删除成功')
-            return redirect(url_for('home.project'))
+            return redirect(next or url_for('home.project'))
         flash(u'您没有权限删除这个项目')
-        return redirect(url_for('home.project'))
+        return redirect(next or url_for('home.project'))
 class EditmoelView(View):
     methods=['GET','POST']
     @login_required
@@ -539,15 +566,16 @@ class DeleteResultView(View):
     @admin_required
     @login_required
     def dispatch_request(self,id):
+        next = request.headers.get('Referer')
         delTest=TestResult.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id==2:
             delTest.status=True
             db.session.commit()
             flash(u'删除成功')
-            return redirect(url_for('home.test_rep'))
+            return redirect(next or url_for('home.test_rep'))
         flash(u'您没有权限去删除测试报告')
-        return redirect(url_for('home.test_rep'))
+        return redirect(next or url_for('home.test_rep'))
 class ADDTesteventView(MethodView):#添加测试环境
     @login_required
     def get(self):
@@ -581,23 +609,25 @@ class ADDTesteventView(MethodView):#添加测试环境
                 return redirect(url_for('home.yongli'))
             except:
                 db.session.rollback()
-            return redirect(url_for('home.yongli'))
+                return redirect(url_for('home.yongli'))
         return render_template('add/add_even.html', form=forms, projects=peoject)
 class DeleteEventViews(MethodView):#删除测试环境
     @login_required
     def get(self,id):
+        next = request.headers.get('Referer')
         event=Interfacehuan.query.filter_by(id=id).first()
         user_id = current_user.id
         if event.make_user==user_id or current_user.role_id==2:
             event.status=True
             db.session.commit()
             flash(u'删除成功')
-            return  redirect(url_for('home.ceshihuanjing'))
+            return  redirect(next or url_for('home.ceshihuanjing'))
         flash(u'权利不足以删除！')
-        return  redirect(url_for('home.ceshihuanjing'))
+        return  redirect(next or url_for('home.ceshihuanjing'))
 class EditEventViews(MethodView):#编辑测试环境
     @login_required
     def get(self,id):
+        next=request.headers.get('Referer')
         project,models=get_pro_mo()
         event=Interfacehuan.query.filter_by(id=id).first()
         return  render_template('edit/edit_events.html', enents=event, projects=project)
@@ -619,7 +649,6 @@ class EditEventViews(MethodView):#编辑测试环境
             db.session.rollback()
             flash(u'编辑出现问题，重新编辑')
             return render_template('edit/edit_events.html', enents=event, projects=project)
-        return render_template('edit/edit_events.html', enents=event, projects=project)
 @app.route('/gettest',methods=['POST'])
 @login_required
 def gettest():#ajax获取项目的测试用例

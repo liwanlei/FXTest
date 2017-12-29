@@ -95,23 +95,24 @@ class AddmockViews(MethodView):#添加mock服务
         db.session.add(new_mock)
         try:
             db.session.commit()
+            flash(u'添加成功!!!')
             return  redirect(url_for('home.mockserver'))
         except:
             db.session.rollback()
             flash(u'添加出现错了，请从新添加')
             return  redirect(url_for('mock.addmock'))
-        return render_template('add/addmockserver.html')
 class DeletemockViews(MethodView):#删除mock
     @login_required
     def get(self,id):
+        next = request.headers.get('Referer')
         ded=Mockserver.query.filter_by(id=id).first()
         if ded:
             ded.delete=True
             db.session.commit()
             flash(u'删除成功！')
-            return  redirect(url_for('home.mockserver'))
+            return  redirect(next or url_for('home.mockserver'))
         flash(u'删除异常！！')
-        return redirect(url_for('home.mockserver'))
+        return redirect(next or url_for('home.mockserver'))
 class EditmockserView(MethodView):#编辑mack服务
     @login_required
     def get(self,id):
@@ -167,7 +168,6 @@ class EditmockserView(MethodView):#编辑mack服务
             db.session.rollback()
             flash(u'编辑出现状况，请你看看')
             return render_template('edit/editmock.html', mock=mock)
-        return render_template('edit/editmock.html', mock=mock)
 class MakemockserverView(MethodView):#做一个mock服务
     def get(self,path):#get请求方法
         huoqupath=Mockserver.query.filter_by(path=path,status=True).first()
@@ -460,33 +460,35 @@ class MakemockserverView(MethodView):#做一个mock服务
 class StartmockView(MethodView):#开启mock服务
     @login_required
     def get(self,id):
+        next = request.headers.get('Referer')
         start=Mockserver.query.filter_by(id=id).first()
         if start:
             start.status=True
             try:
                 db.session.commit()
                 flash(u'mock开启成功，可以正常使用')
-                return  redirect(url_for('home.mockserver'))
+                return  redirect(next or url_for('home.mockserver'))
             except:
                 flash(u'mock开启失败，疑似库存遭到打击！！')
-                return redirect(url_for('home.mockserver'))
+                return redirect(next or url_for('home.mockserver'))
         flash(u'mock的服务开启失败，因为不存在')
-        return redirect(url_for('mockserver'))
+        return redirect(next or url_for('mockserver'))
 class ClosemockView(MethodView):#关闭mock服务
     @login_required
     def get(self,id):
+        next = request.headers.get('Referer')
         start=Mockserver.query.filter_by(id=id).first()
         if start:
             start.status=False
             try:
                 db.session.commit()
                 flash(u'mock关闭成功，可以正常使用')
-                return  redirect(url_for('home.mockserver'))
+                return  redirect(next or url_for('home.mockserver'))
             except:
                 flash(u'mock关闭失败，疑似库存遭到打击！！')
-                return redirect(url_for('home.mockserver'))
+                return redirect(next or url_for('home.mockserver'))
         flash(u'mock的服务关闭失败，因为不存在')
-        return redirect(url_for('mockserver'))
+        return redirect(next or url_for('mockserver'))
 class SermockView(View):#搜索mock接口
     methods=['GET','POST']
     @login_required

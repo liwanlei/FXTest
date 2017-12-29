@@ -77,10 +77,12 @@ def get_pro_mo():
     return  projects,model
 task = Blueprint('task', __name__)
 class TestforTaskView(MethodView):#为测试任务添加测试用例
+    @login_required
     def get(self,id):
         procjet = Project.query.all()
         task_one=Task.query.filter_by(id=id).first()
         return  render_template('add/addtestyongfortask.html', task_one=task_one, procjets=procjet)
+    @login_required
     def post(self,id):
         procjet = Project.query.all()
         task_one = Task.query.filter_by(id=id).first()
@@ -105,68 +107,71 @@ class TestforTaskView(MethodView):#为测试任务添加测试用例
         except:
             flash(u'任务更新用例失败')
             return redirect(url_for('home.timingtask'))
-        return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=procjet)
 class StartTaskView(MethodView):#开始定时任务
     @login_required
     def get(self,id):
         task=Task.query.filter_by(id=id).first()
+        next = request.headers.get('Referer')
         if len(task.interface.all())<=1:
             flash(u'定时任务执行过程的测试用例为多用例，请你谅解')
-            return  redirect(url_for('home.timingtask'))
+            return  redirect(next or url_for('home.timingtask'))
         try:
             scheduler.add_job(func=addtask, id=str(id), args=str(id),trigger=eval(task.taskstart),replace_existing=True)
             task.yunxing_status=u'启动'
             db.session.commit()
             flash(u'定时任务启动成功！')
-            return  redirect(url_for('home.timingtask'))
+            return  redirect(next or url_for('home.timingtask'))
         except Exception as e:
             flash(u'定时任务启动失败！请检查任务的各项内容各项内容是否正常')
-            return redirect(url_for('home.timingtask'))
+            return redirect(next or url_for('home.timingtask'))
 class ZantingtaskView(MethodView):#暂停定时任务
     @login_required
     def get(self,id):
+        next = request.headers.get('Referer')
         task = Task.query.filter_by(id=id).first()
         try:
             scheduler.pause_job(str(id))
             task.yunxing_status = u'暂停'
             db.session.commit()
             flash(u'定时任务暂停成功！')
-            return redirect(url_for('home.timingtask'))
+            return redirect(next or url_for('home.timingtask'))
         except:
             task.yunxing_status = u'创建'
             db.session.commit()
             flash(u'定时任务暂停失败！已经为您初始化')
-            return redirect(url_for('home.timingtask'))
+            return redirect(next or url_for('home.timingtask'))
 class HuifutaskView(MethodView):#回复定时任务
     @login_required
     def get(self,id):
         task = Task.query.filter_by(id=id).first()
+        next = request.headers.get('Referer')
         try:
             scheduler.resume_job(str(id))
             task.yunxing_status=u'启动'
             db.session.commit()
             flash(u'定时任务恢复成功！')
-            return redirect(url_for('home.timingtask'))
+            return redirect(next or url_for('home.timingtask'))
         except:
             task.yunxing_status = u'创建'
             db.session.commit()
             flash(u'定时任务恢复失败！已经为您初始化')
-            return redirect(url_for('home.timingtask'))
+            return redirect(next or url_for('home.timingtask'))
 class YichuTaskView(MethodView):#移除定时任务
     @login_required
     def get(self,id):
+        next = request.headers.get('Referer')
         task = Task.query.filter_by(id=id).first()
         try:
             scheduler.delete_job(str(id))
             task.yunxing_status=u'关闭'
             db.session.commit()
             flash(u'定时任务移除成功！')
-            return redirect(url_for('home.timingtask'))
+            return redirect(next or url_for('home.timingtask'))
         except:
             task.yunxing_status = u'创建'
             db.session.commit()
             flash(u'定时任务移除失败！已经为您初始化')
-            return redirect(url_for('home.timingtask'))
+            return redirect(next or url_for('home.timingtask'))
 class AddtimingtaskView(MethodView):
     @login_required
     def get(self):
@@ -205,7 +210,6 @@ class AddtimingtaskView(MethodView):
             db.session.rollback()
             flash(u'添加过程貌似异常艰难！')
             return redirect(url_for('home.addtimingtasks'))
-        return render_template('add/addtimingtasks.html')
 class Editmingtaskview(MethodView):
     @login_required
     def get(self,id):
@@ -248,22 +252,22 @@ class Editmingtaskview(MethodView):
             db.session.rollback()
             flash(u'编辑出现问题！')
             return redirect(url_for('home.timingtask'))
-        return render_template('edit/Edittimingtasks.html', task_one=task_one, porjects=procjet)
 class DeteleTaskViee(MethodView):
     def get(self,id):
+        next = request.headers.get('Referer')
         task_one = Task.query.filter_by(id=id).first()
         if not task_one:
-            flash(u'你编辑的不存在')
-            return redirect(url_for('home.timingtask'))
+            flash(u'你删除的不存在')
+            return redirect(next or url_for('home.timingtask'))
         if task_one.status==True:
             flash(u'已经删除')
-            return redirect(url_for('home.timingtask'))
+            return redirect(next or url_for('home.timingtask'))
         task_one.status=True
         try:
             db.session.commit()
             flash(u'删除任务成功')
-            return redirect(url_for('home.timingtask'))
+            return redirect(next or url_for('home.timingtask'))
         except:
             db.session.rollback()
             flash(u'删除任务休息了')
-            return redirect(url_for('home.timingtask'))
+            return redirect(next or url_for('home.timingtask'))

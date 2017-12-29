@@ -23,7 +23,7 @@
             </ul>
         {% endif %}
     {% endwith %}
-    <form method="POST" action="{{ url_for('testfortask',id=task_one.id) }}">
+    <form method="POST" action="{{ url_for('task.testfortask',id=task_one.id) }}">
         <div style="margin-top: 20px">
             <strong>已经有的用例：</strong>
             <p>

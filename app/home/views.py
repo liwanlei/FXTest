@@ -37,26 +37,27 @@ class LoginView(MethodView):#登录
         return render_template('home/login.html', form=form)
     def post(self):
         form=LoginFrom()
-        if request.method=='POST' and form.validate_on_submit():
-            username=request.form.get('username')
-            password=request.form.get('password')
-            user=User.query.filter_by(username=username).first()
-            if user:
-                if user.status==False:
-                    if user.check_password(password=password)==True:
-                        if user.status==0:
-                            login_user(user)
-                            session['username']=username
-                            next =request.args.get('next')
-                            return  redirect(next or url_for('home.index'))
-                        flash(u'用户冻结，请联系管理员')
-                        return render_template('home/login.html', form=form)
-                    flash(u'用户名密码错误')
-                    return render_template('home/login.html', form=form)
-                flash(u'用户已经冻结，请联系管理员！')
+        username=request.form.get('username')
+        password=request.form.get('password')
+        if username =='':
+            flash(u'用户名不能为空')
+            return render_template('home/login.html', form=form)
+        if password =='':
+            flash(u'密码不能时空！')
+            return render_template('home/login.html', form=form)
+        user=User.query.filter_by(username=username).first()
+        if user:
+            if user.check_password(password=password) is True:
+                if user.status==0:
+                    login_user(user)
+                    session['username']=username
+                    next =request.args.get('next')
+                    return  redirect(next or url_for('home.index'))
+                flash(u'用户冻结，请联系管理员')
                 return render_template('home/login.html', form=form)
-            flash(u'用户名不存在')
-            return  render_template('home/login.html', form=form)
+            flash(u'用户名密码错误')
+            return render_template('home/login.html', form=form)
+        flash(u'用户名不存在')
         return  render_template('home/login.html', form=form)
 class LogtView(MethodView):#退出
     def get(self):
