@@ -18,12 +18,13 @@
                 {% endif %}
             {% endwith %}
             <form method="POST" action="{{url_for('ser_yongli')}}">
-                <strong >项目:</strong><select name='project'>
-                <option value ="" >请选择</option>
-                {%for project in projects%}
-                    <option value ="{{project.id}}" >{{project.project_name}}</option>
-                {%endfor%}
-            </select>
+                <strong >项目:</strong>
+                <select name='project'>
+                    <option value ="" >请选择</option>
+                    {%for project in projects%}
+                        <option value ="{{project.id}}" >{{project.project_name}}</option>
+                    {%endfor%}
+                </select>
                 <strong >模块:</strong><select name='model'>
                 <option value ="" >请选择</option>{%for model in models%}
                 <option value ="{{model.id}}" >{{model.model_name}}</option>
@@ -73,17 +74,21 @@
                                         <a href="{{url_for('edit_case',id=yongli.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
                                         <a href="{{url_for('delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-danger"></a>
                                         {% if yongli.Interface_is_tiaoshi ==0 %}
-                                            <a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="调试"class="btn btn-default"></a>
+                                            <a href="{{ url_for('make_one_case',id=yongli.id)}}">
+                                            <input type="button" value="调试" class="btn btn-default" id="{{ yongli.id }}" ></a>
                                         {% else %}
                                             {% if yongli.Interface_tiaoshi_shifou==0 and yongli.Interface_is_tiaoshi ==1 %}
-                                                <a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="调试"class="btn btn-success"></a>
+                                                 <a href="{{ url_for('make_one_case',id=yongli.id)}}">
+                                                     <input type="button" value="调试" class="btn btn-success"  id="{{ yongli.id }}" ></a>
                                             {% elif  yongli.Interface_tiaoshi_shifou==1 and yongli.Interface_is_tiaoshi ==1 %}
-                                                <a href="{{ url_for('make_one_case',id=yongli.id)}}"><input type="button" value="调试"class="btn btn-danger"></a>
+                                                 <a href="{{ url_for('make_one_case',id=yongli.id)}}">
+                                                     <input type="button" value="调试" class="btn btn-danger"  id="{{ yongli.id }}" ></a>
                                             {% endif %}
                                         {% endif %}
                                     </div></div>
                             </td>
                         </tr>
+
                     {%endfor%}
                     </tbody>
                 </table>
@@ -91,4 +96,59 @@
             <p class="pagination" style="margin-left: 24%;">
                 {{macros.pagination_widget(pagination,'.yonglipage')}}
             </p></div></div>
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="ceshiyongli">
+    <div style="height: 5px;">请选择测试用例执行的测试环境</div>
+    <div style="background-color: whitesmoke;margin-top: 24px" >
+        <span style="text-align: center">
+            项目：<strong id="ceshiyongprco"></strong>
+        </span>
+        <span>所属测试环境：</span>
+        <select id="xuanzehuanjing">
+        </select>
+    </div>
+    <div style="margin-top: 50%;margin-bottom: auto">
+        <input value="执行" type="button" class="btn-default" id="zhixingceshiyongli" onclick="ceshiyongli()" >
+        <input value="取消" type="button" class=" btn-default"  onclick="guanbi()" >
+    </div>
+{% endblock %}
+{% block js %}
+    <script language="JavaScript">
+        function testcase(id){
+            var  divshow=document.getElementById('ceshiyongli');
+            var  divcase=document.getElementById('zhixingceshiyongli');
+            divcase.name=id;
+            divshow.style.display='block';
+            $.ajax({
+                url:'{{ url_for('getprojects') }}',
+                type:'POST',
+                data:id,
+                contentType: 'application/json; charset=UTF-8',
+                processData:false,
+                success:function(testyong){
+                    var pro=document.getElementById('ceshiyongprco');
+                    pro.innerText=testyong['data'];
+                    xuanze=testyong['huanjing']
+                    var xuanz=$('#xuanzehuanjing');
+                    xuanz.empty();
+                    for (var i=0;i<xuanze.length;i++){
+                        var url=xuanze[i];
+                        xuanz.append("<option id='ceshiurls'>  " + url+"</option>");
+                    }
+                },error:function (res) {
+                    console.log(res);
+                }
+            });
+
+        }
+        function guanbi() {
+            var  divshow=document.getElementById('ceshiyongli');
+            divshow.style.display='none';
+        }
+        function ceshiyongli() {
+            var me=document.getElementById("xuanzehuanjing");
+            var index=document.getElementById("xuanzehuanjing").selectedIndex;
+            var url=me.options[index].text;
+            var case_id=document.getElementById('zhixingceshiyongli');
+        }
+    </script>
 {% endblock %}

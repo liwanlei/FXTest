@@ -606,10 +606,10 @@ class ADDTesteventView(MethodView):#添加测试环境
             db.session.add(end)
             try:
                 db.session.commit()
-                return redirect(url_for('home.yongli'))
+                return redirect(url_for('home.ceshihuanjing'))
             except:
                 db.session.rollback()
-                return redirect(url_for('home.yongli'))
+                return redirect(url_for('home.ceshihuanjing'))
         return render_template('add/add_even.html', form=forms, projects=peoject)
 class DeleteEventViews(MethodView):#删除测试环境
     @login_required
@@ -663,3 +663,19 @@ def gettest():#ajax获取项目的测试用例
     for i in testyong:
         testyong_list.append({'name':i.Interface_name,'id':i.id})
     return   jsonify({'data':testyong_list})
+@app.route('/getprojects',methods=['GET','POST'])
+@login_required
+def getprojects():
+    id = (request.get_data('id'))
+    if not id:
+        return jsonify({'data':'没有发送数据'})
+    peoject=InterfaceTest.query.filter_by(id=int(id)).first()
+    result=peoject.projects
+    testhuanjing=Interfacehuan.query.filter_by(project=result.project_name).all()
+    url_list=[]
+    for huanjing in testhuanjing:
+        url_list.append(huanjing.url)
+    if not  peoject:
+        return jsonify({'data': '没有找到数据'})
+    return  jsonify({'data':str(result),'huanjing':url_list})
+

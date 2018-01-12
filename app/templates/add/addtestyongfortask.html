@@ -41,7 +41,7 @@
         <p ><p id="ceshiyongli"></p></p>
         </p>
         <input type="submit" value="提交" class="btn btn-default">
-    </form>{%endblock%}
+    </form></div></div>{%endblock%}
 {% block js %}
     <script>
         $('select#project').change(function ajaxtestyongli() {
@@ -66,8 +66,8 @@
                 },
                 error:function (res) {
                     console.log(res);
-                    console.log(1);
                 }
             })
         });
-    </script>{%endblock %}
+    </script>
+{% endblock %}

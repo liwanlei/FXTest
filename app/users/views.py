@@ -294,7 +294,10 @@ class QuzhiMoView(View):#取消默认
         del_em=EmailReport.query.filter_by(id=id).first()
         if del_em:
             if int(current_user.id)==del_em.email_re_user_id:
-                del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True).all()
+                del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True,status=True).all()
+                if len(del_e)<=1:
+                    flash(u'取消默认失败，用户必须有一个默认的邮箱！！')
+                    return redirect(url_for('user.setting'))
                 del_em.default_set=False
                 db.session.commit()
                 flash(u'取消默认成功')
@@ -310,7 +313,7 @@ class ShezhiMoView(View):#设置默认
         shezi_em=EmailReport.query.filter_by(id=id).first()
         if shezi_em:
             if int(current_user.id)==shezi_em.email_re_user_id:
-                del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True).all()
+                del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True,status=False).all()
                 if len(del_e)>0:
                     flash(u'一个账户只能有一个默认设置')
                     return redirect(url_for('user.setting'))

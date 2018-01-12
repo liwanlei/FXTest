@@ -65,9 +65,10 @@ def addtask(id):#定时任务执行的时候所用的函数
     user_id = User.query.filter_by(role_id=2).first().id
     new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass, fail_num=result_fail,
                            test_time=starttime, hour_time=hour, test_rep=(day + '.html'), test_log=(day + '.log'))
-    send_ding(content="%s定时任务执行完毕，测试时间：%s，\\n 通过用例：%s，失败用例：%s，\\n,详情见测试平台测试报告！"%(task.taskname,starttime,result_pass,result_fail))
     db.session.add(new_reust)
     db.session.commit()
+    send_ding(content="%s定时任务执行完毕，测试时间：%s，\\n 通过用例：%s，失败用例：%s，\\n,详情见测试平台测试报告！" % (
+        task.taskname, starttime, result_pass, result_fail))
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

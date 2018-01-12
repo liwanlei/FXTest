@@ -7,7 +7,7 @@
 import  requests,json
 from  config import Dingtalk_access_token
 def send_ding(content):
-    url = 'https://oapi.dingtalk.com/robot/send?access_token=301a646888fb8e3f169461049851b36b89be1d16cf25a7c77593156c67f5e5db'
+    url = Dingtalk_access_token
     pagrem = {
 		"msgtype": "text",
 		"text": {
