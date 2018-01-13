@@ -74,21 +74,27 @@
                                         <a href="{{url_for('edit_case',id=yongli.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
                                         <a href="{{url_for('delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-danger"></a>
                                         {% if yongli.Interface_is_tiaoshi ==0 %}
-                                            <a href="{{ url_for('make_one_case',id=yongli.id)}}">
-                                            <input type="button" value="调试" class="btn btn-default" id="{{ yongli.id }}" ></a>
+                                            {#如果没有测试环境的区别，请还原下面两行的注释，并且加下面的第三行的代码注释掉#}
+                                            {#                                            <a href="{{ url_for('make_one_case',id=yongli.id)}}">#}
+                                            {#                                                <input type="button" value="调试" class="btn btn-default" id="{{ yongli.id }}" ></a>#}
+                                            <input type="button" value="调试" class="btn btn-default" id="{{ yongli.id }}" onclick="testcase(this.id)">
                                         {% else %}
                                             {% if yongli.Interface_tiaoshi_shifou==0 and yongli.Interface_is_tiaoshi ==1 %}
-                                                 <a href="{{ url_for('make_one_case',id=yongli.id)}}">
-                                                     <input type="button" value="调试" class="btn btn-success"  id="{{ yongli.id }}" ></a>
+                                                {#如果没有测试环境的区别，请还原下面两行的注释，并且加下面的第三行的代码注释掉#}
+                                                {#                                                <a href="{{ url_for('make_one_case',id=yongli.id)}}">#}
+                                                {#                                                    <input type="button" value="调试" class="btn btn-success"  id="{{ yongli.id }}" ></a>#}
+                                                <input type="button" value="调试" class="btn btn-success"  id="{{ yongli.id }}" onclick="testcase(this.id)">
                                             {% elif  yongli.Interface_tiaoshi_shifou==1 and yongli.Interface_is_tiaoshi ==1 %}
-                                                 <a href="{{ url_for('make_one_case',id=yongli.id)}}">
-                                                     <input type="button" value="调试" class="btn btn-danger"  id="{{ yongli.id }}" ></a>
+                                                {#如果没有测试环境的区别，请还原下面两行的注释，并且加下面的第三行的代码注释掉#}
+                                                {#                                                <a href="{{ url_for('make_one_case',id=yongli.id)}}">#}
+                                                {#                                                    <input type="button" value="调试" class="btn btn-danger"  id="{{ yongli.id }}" ></a>#}
+                                                <input type="button" value="调试" class="btn btn-danger"  id="{{ yongli.id }}" onclick="testcase(this.id)" >
                                             {% endif %}
                                         {% endif %}
-                                    </div></div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
-
                     {%endfor%}
                     </tbody>
                 </table>
@@ -96,6 +102,7 @@
             <p class="pagination" style="margin-left: 24%;">
                 {{macros.pagination_widget(pagination,'.yonglipage')}}
             </p></div></div>
+    {#如果没有测试环境区别的需求，下面的代码包括js都可以注释#}
     <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="ceshiyongli">
     <div style="height: 5px;">请选择测试用例执行的测试环境</div>
     <div style="background-color: whitesmoke;margin-top: 24px" >
@@ -125,17 +132,27 @@
                 contentType: 'application/json; charset=UTF-8',
                 processData:false,
                 success:function(testyong){
-                    var pro=document.getElementById('ceshiyongprco');
-                    pro.innerText=testyong['data'];
-                    xuanze=testyong['huanjing']
-                    var xuanz=$('#xuanzehuanjing');
-                    xuanz.empty();
-                    for (var i=0;i<xuanze.length;i++){
-                        var url=xuanze[i];
-                        xuanz.append("<option id='ceshiurls'>  " + url+"</option>");
+                    if(testyong['code']==200){
+                        var pro=document.getElementById('ceshiyongprco');
+                        pro.innerText=testyong['data'];
+                        xuanze=testyong['huanjing']
+                        var xuanz=$('#xuanzehuanjing');
+                        xuanz.empty();
+                        for (var i=0;i<xuanze.length;i++){
+                            var url=xuanze[i];
+                            xuanz.append("<option id='ceshiurls'>  " + url+"</option>");
+                        }
+                    }
+                    else {
+                        var pro=document.getElementById('ceshiyongprco');
+                        pro.innerText=testyong['data'];
+                        xuanze=testyong['huanjing']
+                        var xuanz=$('#xuanzehuanjing');
+                        xuanz.empty();
+                        alert(testyong['msg'])
                     }
                 },error:function (res) {
-                    console.log(res);
+                    alert('异步请求失败，请联系管理员！！！')
                 }
             });
 
@@ -147,8 +164,34 @@
         function ceshiyongli() {
             var me=document.getElementById("xuanzehuanjing");
             var index=document.getElementById("xuanzehuanjing").selectedIndex;
-            var url=me.options[index].text;
+            var url=me.options[index];
             var case_id=document.getElementById('zhixingceshiyongli');
+            var data={};
+            if (url== undefined){
+                url='';
+            }
+            else {
+                url=url.text;
+            }
+            data['caseid']=case_id.name;
+            data['url']=url;
+            $.ajax({
+                url: '{{ url_for('makeonlyonecase') }}',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=UTF-8',
+                processData: false,
+                success:function(result){
+                    if (result['code']==200){
+                        window.location.reload();
+                        alert('测试用例在环境'+url+'中测试通过！！！');
+                    }
+                    else {
+                        window.location.reload();
+                        alert(result['msg'])
+                    }
+                }
+            })
         }
     </script>
-{% endblock %}
+i{% endblock %}

@@ -1,4 +1,3 @@
-# encoding: utf-8
 """
 @author: lileilei
 @file: views.py
@@ -665,17 +664,65 @@ def gettest():#ajax获取项目的测试用例
     return   jsonify({'data':testyong_list})
 @app.route('/getprojects',methods=['GET','POST'])
 @login_required
-def getprojects():
+def getprojects():#ajax获取测试环境等信息，如果没有测试环境的区别这里的代码可以注释掉
     id = (request.get_data('id'))
     if not id:
-        return jsonify({'data':'没有发送数据'})
+        return jsonify({'msg':'没有发送数据','code':108})
     peoject=InterfaceTest.query.filter_by(id=int(id)).first()
     result=peoject.projects
     testhuanjing=Interfacehuan.query.filter_by(project=result.project_name).all()
+    if len(testhuanjing)<=0:
+        return jsonify({'msg': '没有找到测试环境','code':107,'data':str(result)})
     url_list=[]
     for huanjing in testhuanjing:
         url_list.append(huanjing.url)
     if not  peoject:
-        return jsonify({'data': '没有找到数据'})
-    return  jsonify({'data':str(result),'huanjing':url_list})
-
+        return jsonify({'data':'数据库找不到项目','code':109})
+    return  jsonify({'data':str(result),'huanjing':url_list,'code':200})
+class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测试需要区分测试环境，没有测试环境的区别这里的代码可以注释掉
+    methods = ['GET', 'POST']
+    @login_required
+    def dispatch_request(self):
+        projec = (request.get_json())
+        try:
+            case_id=projec['caseid']
+            url=projec['url']
+            case=InterfaceTest.query.filter_by(id=int(case_id)).first()
+            new_headers=case.Interface_headers
+            if  new_headers =='None':
+                ne={'host':url}
+            elif new_headers is None:
+                ne = {'host': url}
+            else:
+                try:
+                    ne=eval(new_headers)
+                    ne['host']=url
+                except:
+                    return jsonify({'code': 110, 'msg': '测试的请求头应该是字典格式的！'})
+            me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=case.Interface_pase,
+                     headers=ne)
+            result = me.testapi()
+            retur_re = assert_in(case.Interface_assert, result)
+            try:
+                if retur_re == 'pass':
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = False
+                    db.session.commit()
+                    return jsonify({'code':200,'msg':'测试用例调试通过！'})
+                elif retur_re == 'fail':
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 101, 'msg': '测试用例测试失败,原因：%s，请检查用例！'%retur_re})
+                else:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 102, 'msg': '测试返回异常，原因：%s,请检查用例！'%retur_re})
+            except:
+                case.Interface_is_tiaoshi = True
+                case.Interface_tiaoshi_shifou = True
+                db.session.commit()
+                return jsonify({'code': 103, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(retur_re)})
+        except:
+            return  jsonify({'code':100,'msg':'获取不到用例和测试环境的信息'})
