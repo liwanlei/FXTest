@@ -7,24 +7,28 @@
 from  app import  db
 import datetime
 from werkzeug.security import check_password_hash,generate_password_hash
-class Permisson:#这里的权限我是复制flask开发博客里面的，可以根据需求去修改
-    FOLLOW = 0x01             
-    COMMENT = 0x02           
-    WRITE_ARTICLES = 0x04     
-    MODERATE_COMMENTS = 0x08  
-    ADMINISTRATOR = 0xff
+registrations=db.Table('registrations',db.Column('task_id',db.Integer(),db.ForeignKey('tasks.id')),
+                       db.Column('interfacetests_id',db.Integer(),db.ForeignKey('interfacetests.id')))
+class Permisson:
+    ADD = 0x01
+    EDIT = 0x02
+    DELETE = 0x04
+    ONEADMIN = 0x08
+    ADMIN = 0xff
 class Role(db.Model):
     __tablename__='roles'
     id=db.Column(db.Integer(),primary_key=True)
     name = db.Column(db.String(), nullable=True, unique=True)
     default = db.Column(db.Boolean(), default=False)     
     permissions = db.Column(db.Integer())                
-    users = db.relationship('User', backref='itsrole')                                        
+    users = db.relationship('User', backref='roles')
     @staticmethod
     def insert_roles():
         roles = {
-            'User':(Permisson.FOLLOW|Permisson.COMMENT|
-                    Permisson.WRITE_ARTICLES, True),
+            'User':(Permisson.ADD|Permisson.EDIT|
+                    Permisson.DELETE, True),
+            'Oneadmin': (Permisson.ADD | Permisson.EDIT |
+                         Permisson.DELETE | Permisson.ONEADMIN, False),
             'Administrator':(0xff, False)}
         for r in roles:
             role = Role.query.filter_by(name=r).first()
@@ -36,7 +40,7 @@ class Role(db.Model):
         db.session.commit()
 class Work(db.Model):
     __tablename__='works'
-    id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
+    id=db.Column(db.Integer(),primary_key=True)
     name=db.Column(db.String(),unique=True)
     user= db.relationship('User', backref='works', lazy='dynamic')
     def __repr__(self):
@@ -57,13 +61,14 @@ class User(db.Model):
     huanjing = db.relationship('Interfacehuan', backref='users', lazy='dynamic')
     mock = db.relationship('Mockserver', backref='users', lazy='dynamic')
     task = db.relationship('Task', backref='users', lazy='dynamic')
+    quanxian=db.relationship('Qunxian',backref='users',lazy='dynamic')
     def __repr__(self):
         return  self.username
     def can(self, permissions):         
         return self.itsrole is not None and \
                (self.itsrole.permissions & permissions) == permissions
     def is_administrator(self):     
-        return self.can(Permisson.ADMINISTRATOR)
+        return self.can(Permisson.ADMIN)
     def set_password(self,password):
         self.password=generate_password_hash(password)
     def check_password(self,password):
@@ -126,10 +131,9 @@ class TestResult(db.Model):
         return  self.test_log
 class Project(db.Model):#项目
     __tablename__='projects'
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    id=db.Column(db.Integer(), primary_key=True, autoincrement=True)
     project_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
-    project_name=db.Column(db.String(252))#项目名称
-    status=db.Column(db.Integer(),default=0)#状态
+    project_name=db.Column(db.String(252))
     TestResult = db.relationship('TestResult', backref='projects', lazy='dynamic')
     Interfacetest = db.relationship('InterfaceTest', backref='projects', lazy='dynamic')
     Interface = db.relationship('Interface', backref='projects', lazy='dynamic')
@@ -143,7 +147,6 @@ class Model(db.Model):#模块，有的接口是根据模块来划分的
     id=db.Column(db.Integer,primary_key=True,autoincrement=True)
     model_name = db.Column(db.String(256))
     model_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
-    status = db.Column(db.Integer(),default=0)
     Interfacetest = db.relationship('InterfaceTest', backref='models', lazy='dynamic')
     Interface = db.relationship('Interface', backref='models', lazy='dynamic')
     status = db.Column(db.Boolean(), default=False)
@@ -192,8 +195,6 @@ class Mockserver(db.Model):#mocksever
     is_headers=db.Column(db.Boolean(),default=False)#是否对headers进行校验
     def __repr__(self):
         return self.name
-registrations=db.Table('registrations',db.Column('task_id',db.Integer(),db.ForeignKey('tasks.id')),
-                       db.Column('interfacetests_id',db.Integer(),db.ForeignKey('interfacetests.id')))#此表多对多，对应的是测试用例和任务
 class Task(db.Model):#定时任务的
     __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)

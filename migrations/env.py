@@ -3,7 +3,7 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
 import logging
-
+import os
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -57,7 +57,7 @@ def run_migrations_online():
 
     # this callback is used to prevent an auto-migration from being generated
     # when there are no changes to the schema
-    # reference: http://alembic.zzzcomputing.com/en/latest/cookbook.html
+    # reference: http://alembic.readthedocs.org/en/latest/cookbook.html
     def process_revision_directives(context, revision, directives):
         if getattr(config.cmd_opts, 'autogenerate', False):
             script = directives[0]
@@ -65,6 +65,8 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "data.sqlite")
     engine = engine_from_config(config.get_section(config.config_ini_section),
                                 prefix='sqlalchemy.',
                                 poolclass=pool.NullPool)
@@ -73,7 +75,8 @@ def run_migrations_online():
     context.configure(connection=connection,
                       target_metadata=target_metadata,
                       process_revision_directives=process_revision_directives,
-                      **current_app.extensions['migrate'].configure_args)
+                      render_as_batch=config.get_main_option('sqlalchemy.url').startswith(SQLALCHEMY_DATABASE_URI)
+                      )
 
     try:
         with context.begin_transaction():
