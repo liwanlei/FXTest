@@ -9,6 +9,8 @@ import datetime
 from werkzeug.security import check_password_hash,generate_password_hash
 registrations=db.Table('registrations',db.Column('task_id',db.Integer(),db.ForeignKey('tasks.id')),
                        db.Column('interfacetests_id',db.Integer(),db.ForeignKey('interfacetests.id')))
+quanxianuser=db.Table('quanxianusers',db.Column('user_id',db.Integer(),db.ForeignKey('users.id')),
+                      db.Column('quanxians_id',db.Integer(),db.ForeignKey('quanxians.id')))
 class Permisson:
     ADD = 0x01
     EDIT = 0x02
@@ -20,8 +22,8 @@ class Role(db.Model):
     id=db.Column(db.Integer(),primary_key=True)
     name = db.Column(db.String(), nullable=True, unique=True)
     default = db.Column(db.Boolean(), default=False)     
-    permissions = db.Column(db.Integer())                
-    users = db.relationship('User', backref='roles')
+    permissions = db.Column(db.Integer())
+    quanxian = db.relationship('Quanxian', backref='roles')
     @staticmethod
     def insert_roles():
         roles = {
@@ -51,9 +53,9 @@ class User(db.Model):
     username=db.Column(db.String(63),unique=True)
     password=db.Column(db.String(252))
     user_email=db.Column(db.String(64),unique=True)
-    status=db.Column(db.Integer(),default=0)
+    status=db.Column(db.Integer(),default=False)
+    is_sper=db.Column(db.Integer(),default=False)
     work_id=db.Column(db.Integer(),db.ForeignKey('works.id'))
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id'))
     phone = db.relationship('TestResult', backref='users', lazy='dynamic')
     project=db.relationship('Project',backref='users', lazy='dynamic')
     model = db.relationship('Model', backref='users', lazy='dynamic')
@@ -61,10 +63,9 @@ class User(db.Model):
     huanjing = db.relationship('Interfacehuan', backref='users', lazy='dynamic')
     mock = db.relationship('Mockserver', backref='users', lazy='dynamic')
     task = db.relationship('Task', backref='users', lazy='dynamic')
-    quanxian=db.relationship('Qunxian',backref='users',lazy='dynamic')
     def __repr__(self):
         return  self.username
-    def can(self, permissions):         
+    def can(self, permissions):
         return self.itsrole is not None and \
                (self.itsrole.permissions & permissions) == permissions
     def is_administrator(self):     
@@ -139,6 +140,7 @@ class Project(db.Model):#项目
     Interface = db.relationship('Interface', backref='projects', lazy='dynamic')
     Interfacehuan = db.relationship('Interfacehuan', backref='projects', lazy='dynamic')
     task = db.relationship('Task', backref='projects', lazy='dynamic')
+    quanxian = db.relationship('Quanxian', backref='projects', lazy='dynamic')
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.project_name
@@ -211,3 +213,11 @@ class Task(db.Model):#定时任务的
     interface=db.relationship('InterfaceTest',secondary=registrations,backref=db.backref('tasks'), lazy='dynamic')#多对多到测试用例
     def __repr__(self):
         return  self.taskname
+class Quanxian(db.Model):
+    __tablename__='quanxians'
+    id = db.Column(db.Integer, primary_key=True)
+    rose=db.Column(db.Integer(),db.ForeignKey('roles.id'))
+    project=db.Column(db.Integer(),db.ForeignKey('projects.id'))
+    user=db.relationship('User',secondary=quanxianuser,backref=db.backref('quanxians'),lazy='dynamic')
+    def __repr__(self):
+        return  str(self.id)

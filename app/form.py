@@ -5,7 +5,7 @@
 @time: 2017/7/13 16:42
 """
 from flask_wtf import  Form
-from wtforms import  StringField,SubmitField,DateTimeField,validators,IntegerField,FileField,PasswordField,SelectField
+from wtforms import  StringField,validators,PasswordField,SelectField
 from wtforms.validators import Email
 from app.models import Work
 choice_list=[]

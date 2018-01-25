@@ -18,7 +18,7 @@
                 {% if messages%}
                     <ul class='flashes'>
                         {% for message in messages %}
-                            <li >{{ message }}</li>
+                            <li style="color: red" >{{ message }}</li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -41,12 +41,23 @@
                         <strong>输入邮箱:</strong>
                         <input type="text" name="email" placeholder="请输入邮箱"></div>
                     <span>&nbsp;</span>
-                    <strong >选择职业：</strong><select name='work'>{%for work in wroks%}
-                    <option value ="{{work.id}}" >{{work.name}}</option>
-                {%endfor%}
-                </select>
+                    <strong >选择职业：</strong>
+                    <select name='work'>{%for work in wroks%}
+                        <option value ="{{work.id}}" >{{work.name}}</option>
+                    {%endfor%}
+                    </select>
                     <span>&nbsp;</span>
+                    <p>
+                        <strong >选择用户所属的项目：</strong>
+                        <select id="usertype" name="usertype" class="selectpicker show-tick" multiple data-live-search="false">
+                            {%for project in projects%}
+                                <option value="{{ project.id }}">{{ project.project_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
                     <button type="submit" class="am-btn am-btn-primary" style="margin-left: 26%;">添加</button>
-                </div></form>
-        </div></div>
+                </div>
+            </form>
+        </div>
+    </div>
 {%endblock%}

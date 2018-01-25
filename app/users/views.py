@@ -4,61 +4,66 @@
 # @Time    : 2017/12/7 12:25
 from flask import  Blueprint
 user = Blueprint('user', __name__)
-from app import  app,db
-from  flask import  make_response,redirect,request,render_template,session,url_for,flash,send_file,abort,make_response,send_from_directory,jsonify,Response
-from werkzeug import secure_filename
+from  flask import  redirect,request,render_template,session,url_for,flash
 from  app.models import *
 from app.form import  *
-import os,time,datetime,json
 from flask.views import MethodView,View
-from flask_login import current_user,login_required,login_user,logout_user
-from app.common.decorators import admin_required,permission_required
-from app import loginManager
+from flask_login import current_user,login_required
 def get_pro_mo():
     projects=Project.query.all()
     model=Model.query.all()
     return  projects,model
 class AdduserView(View):#添加用户
     methods=['GET','POST']
-    @admin_required
+    @login_required
     def dispatch_request(self):
         wrok=Work.query.all()
+        projects=Project.query.all()
         if request.method =='POST':
             user=request.form.get('user')
             password=request.form.get('password')
             password1=request.form.get('password1')
             email=request.form.get('email')
             work=request.form.get('work')
-            if email =='' or user =='':
+            usertype=request.form.getlist('usertype')
+            if email =='' or user =='' :
                 flash(u'请准确填写用户信息')
-                return render_template('add/add_user.html', wroks=wrok)
+                return render_template('add/add_user.html', wroks=wrok,projects=projects)
+            if len(usertype)<=0 :
+                flash(u'添加用户的时候必须选择项目，项目可以是多个')
+                return render_template('add/add_user.html', wroks=wrok, projects=projects)
             if password!= password1:
                 flash(u'请确定两次密码是否一致')
-                return render_template('add/add_user.html', wroks=wrok)
+                return render_template('add/add_user.html', wroks=wrok,projects=projects)
             use=User.query.filter_by(username=user).first()
             if use:
                 flash(u'用户已经存在')
-                return render_template('add/add_user.html', wroks=wrok)
+                return render_template('add/add_user.html', wroks=wrok,projects=projects)
             emai=User.query.filter_by(user_email=email).first()
             if emai:
                 flash(u'邮箱已经存在')
-                return render_template('add/add_user.html', wroks=wrok)
+                return render_template('add/add_user.html', wroks=wrok,projects=projects)
             new_user=User(username=user,user_email=email)
             new_user.set_password(password)
             new_user.work_id=work
             db.session.add(new_user)
             try:
                 db.session.commit()
+                user_id=User.query.filter_by(username=user).first()
+                for proj in usertype:
+                    quanxian=Quanxian(project=proj,rose=1)
+                    quanxian.user.append(user_id)
+                    db.session.add(quanxian)
+                db.session.commit()
                 flash(u'添加成功')
                 return redirect(url_for('home.adminuser'))
-            except:
+            except Exception as e:
                 db.session.rollback()
                 flash(u'添加过程那么不是快速')
                 return redirect(url_for('home.adminuser'))
-        return render_template('add/add_user.html', wroks=wrok)
+        return render_template('add/add_user.html', wroks=wrok,projects=projects)
 class SetadView(View):#设置管理员
     methods=['GET','POST']
-    @admin_required
     @login_required
     def dispatch_request(self,id):
         next = request.headers.get('Referer')
@@ -76,7 +81,7 @@ class SetadView(View):#设置管理员
         return redirect(next or url_for('home.adminuser'))
 class DeladView(View):#取消管理员
     methods=['GET','POST']
-    @admin_required
+    @login_required
     def dispatch_request(self,id):
         next = request.headers.get('Referer')
         user=User.query.filter_by(username=session.get('username')).first()
@@ -93,7 +98,7 @@ class DeladView(View):#取消管理员
         return redirect(url_for('home.adminuser'))
 class FreadView(View):#冻结
     methods=['GET','POST']
-    @admin_required
+    @login_required
     def dispatch_request(self,id):
         next = request.headers.get('Referer')
         user=User.query.filter_by(username=session.get('username')).first()
@@ -114,7 +119,6 @@ class FreadView(View):#冻结
 class FrereView(View):#解冻
     methods=['GET']
     @login_required
-    @admin_required
     def dispatch_request(self,id):
         next = request.headers.get('Referer')
         user=User.query.filter_by(username=session.get('username')).first()
@@ -134,7 +138,6 @@ class FrereView(View):#解冻
         return redirect(next or url_for('home.adminuser'))
 class RedpassView(View):#重置密码
     methods=['GET']
-    @admin_required
     @login_required
     def dispatch_request(self,id):
         next = request.headers.get('Referer')
@@ -152,7 +155,6 @@ class RedpassView(View):#重置密码
         return redirect(next or url_for('home.adminuser'))
 class SeruserView(View):#查询用户
     methods=['GET','POST']
-    @admin_required
     @login_required
     def dispatch_request(self):
         if request.method=='POST':
@@ -253,7 +255,6 @@ class EditemailView(MethodView):#编辑邮件
             return render_template('edit/edit_emali.html', emai=emai)
         user_id=current_user.id
         if shi_f =='on':
-            shi_f=True
             user_is=EmailReport.query.filter_by(email_re_user_id=user_id,default_set=True).first()
             if user_is:
                 flash(u'只能有一个为默认设置')

@@ -5,15 +5,11 @@
 from flask import  Blueprint
 from  flask import  redirect,request,render_template,url_for,flash,session
 home = Blueprint('home', __name__)
-from app import  db
 from app.models import *
 from app.form import  *
 from flask.views import MethodView,View
-from flask_login import current_user,login_required,login_user,logout_user
-from app.common.decorators import admin_required,permission_required
+from flask_login import login_required,login_user,logout_user,current_user
 from app import loginManager
-from app.common.dict_com import comp_dict,dict_par
-import  json
 from config import PageShow
 @loginManager.user_loader
 def load_user(user_id):
@@ -66,27 +62,28 @@ class LogtView(MethodView):#退出
         return redirect(url_for('home.login'))
 class InterfaceView(MethodView):#接口
     @login_required
-    def get(self,page=1):
-        pagination=Interface.query.filter_by(status=False).order_by('-id').paginate(page, per_page=int(PageShow),error_out=False)
-        inter=pagination.items
-        return  render_template('home/interface.html', inte=inter, pagination=pagination)
+    def get(self):
+        if current_user.is_sper==True:
+            resylt=Interface.query.filter_by(status=False).order_by('-id').all()
+        else:
+            resylt=[]
+            for pros in current_user.quanxians:
+                pagination=Interface.query.filter_by(projects_id=pros.projects.id).all()
+                resylt.append(pagination)
+        return  render_template('home/interface.html', inte=resylt)
 class YongliView(MethodView):#用例
     @login_required
     def get(self,page=1):
         project=Project.query.all()
         models=Model.query.all()
-        if not session.get('username'):
-            return redirect(url_for('home.login'))
         pagination=InterfaceTest.query.filter_by(status=False).order_by('-id').paginate(page, per_page=int(PageShow),error_out=False)
         yongli=pagination.items
         return  render_template('home/interface_yongli.html', yonglis=yongli, pagination=pagination, projects=project, models=models)
 class AdminuserView(MethodView):
-    @admin_required
     @login_required
     def get(self,page=1):
         if not session.get('username'):
             return redirect(url_for('login'))
-        user=User.query.filter_by(username=session.get('username')).first()
         pagination=User.query.filter_by(status=False).paginate(page, per_page=int(PageShow),error_out=False)
         users=pagination.items
         return render_template('home/useradmin.html', users=users, pagination=pagination)
@@ -94,8 +91,6 @@ class TestrepView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,page=1):
-        if not session.get('username'):
-            return redirect(url_for('home.login'))
         pagination=TestResult.query.order_by('-id').paginate(page, per_page=int(PageShow),error_out=False)
         inter=pagination.items
         return render_template('home/test_result.html', inte=inter, pagination=pagination)
@@ -103,8 +98,6 @@ class ProjectView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
-        if not  session.get('username'):
-            return  redirect(url_for('home.login'))
         projects=Project.query.filter_by(status=False).order_by('-id').all()
         return  render_template('home/project.html', projects=projects)
 class ModelView(View):

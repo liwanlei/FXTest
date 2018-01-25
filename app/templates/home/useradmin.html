@@ -36,6 +36,7 @@
                     <th>用户名</th>
                     <th>用户邮箱</th>
                     <th>用户职位</th>
+                    <th>用户所在项目</th>
                     <th>用户状态</th>
                     <th>管理</th>
                     <th>操作</th>
@@ -48,6 +49,11 @@
                         <td><label class="label label-default">{{user.username}}</label></td>
                         <td><label class="label label-primary">{{user.user_email}}</label></td>
                         <td><label class="label label-info">{{user.works}}</label></td>
+                        <td>
+                            {% for i in user.quanxians %}
+                                <label class="label label-default ">
+                                    {{ i.projects.project_name }}</label>{% endfor %}
+                        </td>
                         {% if user.status !=1%}
                             <td><a href="{{url_for('user.fre_ad',id=user.id)}}"><input type="button" value="冻结" class="btn btn-success"></a></td>
                         {%else%}

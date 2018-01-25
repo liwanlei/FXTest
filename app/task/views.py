@@ -3,18 +3,12 @@
 # @File    : views.py
 # @Time    : 2017/12/7 12:19
 from flask import  Blueprint
-from  flask import  redirect,request,render_template,url_for,flash,session,abort,jsonify,make_response
-from flask.views import MethodView
-from app import  db
+from  flask import  redirect,request,render_template,url_for,flash
 from app.models import *
-from app.form import  *
-from flask.views import MethodView,View
-from flask_login import current_user,login_required,login_user,logout_user
-from app.common.decorators import admin_required,permission_required
+from flask.views import MethodView
+from flask_login import current_user,login_required
 from app import loginManager
-from app.common.dict_com import comp_dict,dict_par
-import  json,time,os
-from app.common.send_email import send_emails
+import  time,os
 from app.common.py_Html import createHtml
 from app.test_case.Test_case import ApiTestCase
 from app import  scheduler
