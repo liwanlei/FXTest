@@ -53,16 +53,11 @@
                         <td>{{yong.users}}</td>
                         <td><a href="{{url_for('load',filename= yong.test_rep)}}">报告下载</a></td>
                         <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
-                        {%if current_user.role_id !=1 and
-          current_user.role_id !=None  %}
-                            <th><a href="{{url_for('deletre',id=yong.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></th>{%endif%}
+                            <th><a href="{{url_for('deletre',id=yong.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></th>
                     </tr>
                 {%endfor%}
                 </tbody>
             </table>
-            <p class="pagination" style="margin-left: 24%;">
-                {{macros.pagination_widget(pagination,'.test_repppage')}}</p>
-
         </div></div>
     <script type="text/javascript">
         var dom = document.getElementById("main");

@@ -2,7 +2,6 @@
 <head>
     <meta charset="UTF-8">
     <title>API自动化平台</title>
-
     <link href="{{url_for('static',filename='css/amazeui.min.css')}}"  rel="stylesheet">
     <link href="{{url_for('static',filename='css/admin.css')}}"  rel="stylesheet">
     <link href="{{url_for('static',filename='css/app.css')}}"  rel="stylesheet">
@@ -93,15 +92,12 @@
                         <span>测试报告</span>
                     </a>
                 </li>
-                {%if current_user.role_id !=1 and
-          current_user.role_id !=None  %}
                     <li class="tpl-left-nav-item">
                         <a href="{{url_for('home.adminuser')}}" class="nav-link tpl-left-nav-link-list">
                             <span class=" am-icon-user"></span>
                             <span>用户管理</span>
                         </a>
                     </li>
-                {%endif%}
             </ul>
         </div>
     </div>
