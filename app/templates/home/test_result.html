@@ -42,7 +42,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                {%for yong in inte%}
+                {%  for yp in inte %}
+                {%for yong in yp%}
                     <tr>
                         <td id='test_num' class='test_num' >{{yong.test_num}}</td>
                         <td id='pass_num' class='pass_num'><label class="label label-success">{{yong.pass_num}}</label></td>
@@ -55,7 +56,7 @@
                         <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
                             <th><a href="{{url_for('deletre',id=yong.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></th>
                     </tr>
-                {%endfor%}
+                {%endfor%}{% endfor %}
                 </tbody>
             </table>
         </div></div>

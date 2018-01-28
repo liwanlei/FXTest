@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-07-20 13:07:22
-# @Author  : lileilei 
-import requests,json
+# @Author  : lileilei
 from app.common.test_feng import reques
 requ=reques()
 response=[]

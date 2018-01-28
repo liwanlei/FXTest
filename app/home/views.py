@@ -64,45 +64,50 @@ class InterfaceView(MethodView):#接口
     @login_required
     def get(self):
         if current_user.is_sper==True:
-            resylt=Interface.query.filter_by(status=False).order_by('-id').all()
+            resylt=[]
+            resylt.append(Interface.query.filter_by(status=False).order_by('-id').all())
         else:
             resylt=[]
             for pros in current_user.quanxians:
-                pagination=Interface.query.filter_by(projects_id=pros.projects.id,status=False).all()
+                pagination=Interface.query.filter(Interface.projects_id==pros.projects.id,Interface.status==False).all()
                 resylt.append(pagination)
         return  render_template('home/interface.html', inte=resylt)
-class YongliView(MethodView):#用例
+class YongliView(MethodView):
     @login_required
     def get(self):
         project = Project.query.all()
         models = Model.query.all()
         if current_user.is_sper==True:
-            resylt=InterfaceTest.query.filter_by(status=False).order_by('-id').all()
+            resylt=[]
+            resylt.append(InterfaceTest.query.filter_by(status=False).order_by('-id').all())
         else:
             resylt = []
             for projec in current_user.quanxians:
-                resylt.append(InterfaceTest.query.filter_by(projects_id=projec.projects.id,status=False).all())
+                resylt.append(InterfaceTest.query.filter(InterfaceTest.projects_id==projec.projects.id,InterfaceTest.status==False).all())
         return  render_template('home/interface_yongli.html', yonglis=resylt, projects=project, models=models)
 class AdminuserView(MethodView):
     @login_required
     def get(self):
         if current_user.is_sper == True:
-            pagination=User.query.filter_by(status=False).order_by('-id').all()
+            pagination=[]
+            pagination.append(User.query.filter_by(status=False).order_by('-id').all())
         else:
             pagination=[]
             for projec in current_user.quanxians:
-                pagination.append(User.query.filter_by(projects_id=projec.projects.id, status=False).all())
+                pagination.append(projec.user.all())
         return render_template('home/useradmin.html', users=pagination)
 class TestrepView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
         if current_user.is_sper == True:
-            pagination = TestResult.query.filter_by(status=False).all()
+            pagination=[]
+            pagination.append(TestResult.query.filter_by(status=False).all())
         else:
             pagination=[]
             for projec in current_user.quanxians:
                 pagination.append(TestResult.query.filter_by(projects_id=projec.projects.id, status=False).all())
+            pagination=pagination
         return render_template('home/test_result.html', inte=pagination)
 class ProjectView(View):
     methods=['GET','POST']
@@ -111,28 +116,26 @@ class ProjectView(View):
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
         else:
-            projects=current_user.quanxians
+            projects=[]
+            for i in current_user.quanxians:
+                projects.append(i.projects)
         return  render_template('home/project.html', projects=projects)
 class ModelView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
-        if current_user.is_sper==True:
-            models=Model.query.filter_by(status=False).order_by('-id').all()
-        else:
-            models=[]
-            for project in current_user.quanxians:
-                models.append(Model.query.filter_by(projects_id=project.projects.id,status=False).all())
+        models=Model.query.filter_by(status=False).order_by('-id').all()
         return  render_template('home/model.html', projects=models)
 class TesteventVies(MethodView):#测试环境首页
     @login_required
     def get(self):
         if current_user.is_sper==True:
-            events = Interfacehuan.query.filter_by(status=False).order_by('-id').all()
+            events=[]
+            events.append(Interfacehuan.query.filter_by(status=False).order_by('-id').all())
         else:
             events=[]
             for project in current_user.quanxians:
-                events.append(Interfacehuan.query.filter_by(projects_id=project.projects.id,status=False).order_by('-id').all())
+                events.append(Interfacehuan.query.filter_by(project=project.projects.id,status=False).order_by('-id').all())
         return render_template('home/events.html', events=events)
 class MockViews(MethodView):#mock服务首页
     @login_required
@@ -144,9 +147,10 @@ class TimingtasksView(MethodView):#定时任务
     @login_required
     def get(self):
         if current_user.is_sper==True:
-            task = Task.query.filter_by(status=False).order_by('-id').all()
+            task=[]
+            task.append(Task.query.filter_by(status=False).order_by('-id').all())
         else:
             task=[]
             for project in current_user.quanxians:
-                task.append(Task.query.filter_by(projects_id=project.projects.id,status=False).all())
+                task.append(Task.query.filter_by(prject=project.projects.id,status=False).all())
         return render_template('home/timingtask.html', inte=task)

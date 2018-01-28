@@ -58,7 +58,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {%for yongli in yonglis%}
+                    {% for yonglist in yonglis %}
+                    {%for yongli in yonglist%}
                         <tr >
                             <td><input type="checkbox"  name="yongli" value="{{yongli.id}}"></td>
                             <td>{{yongli.projects}}</td>
@@ -95,7 +96,7 @@
                                 </div>
                             </td>
                         </tr>
-                    {%endfor%}
+                    {%endfor%} {%endfor%}
                     </tbody>
                 </table>
             </form>

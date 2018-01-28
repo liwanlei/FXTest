@@ -2,7 +2,6 @@
 # @Author  : lileilei
 # @File    : urls.py
 # @Time    : 2017/12/7 12:11
-from app.mock import  mock
 from app.mock.views import *
 mock.add_url_rule('/addmock',view_func=AddmockViews.as_view('addmock'))
 mock.add_url_rule('/deletemock/<int:id>',view_func=DeletemockViews.as_view('deletemock'))

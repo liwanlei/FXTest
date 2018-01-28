@@ -41,7 +41,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {%for ebent in events%}
+                    {% for enve in events %}
+                    {%for ebent in enve%}
                         <tr>
                             <td><label class="" style="background-color: white"><strong>{{ebent.project}}</strong></label></td>
                             <td><label class="label-primary" style="background: white">{{ ebent.url }}</label></td>
@@ -53,7 +54,7 @@
                                     <span><a href="{{ url_for ('delete',id=ebent.id)  }}"><input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
                             </td>
                         </tr>
-                    {%endfor%}
+                    {%endfor%}{% endfor %}
                     </tbody>
                 </table>
             </div>

@@ -30,9 +30,7 @@
                 <a href="{{url_for('interface_add')}}"><input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success"> </a>
                 <a href="{{url_for('daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn am-btn-default am-btn-success"></a>
             </div>
-
             <table class="am-table am-table-hover table-main" style="width:100%">
-  
                 <thead>
                 <tr>
                     <th>接口id</th>
@@ -48,7 +46,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                {%for inter in inte%}
+                {%  for inters in inte %}
+                {%for inter in inters%}
                     <tr>
                         <td>{{inter.id}}</td>
                         <td><label class="label-important">{{inter.projects}}</label></td>
@@ -63,7 +62,7 @@
                             <a href="{{url_for('dele_inter',id=inter.id)}}"><input type="button" value="删除" class="btn btn-danger"></a>
                         </td>
                     </tr>
-                {%endfor%}
+                {%endfor%} {%endfor%}
                 </tbody>
             </table>
            </div></div>

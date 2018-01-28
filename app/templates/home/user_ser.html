@@ -1,52 +1,67 @@
 {% extends "back.html" %}
 {% block hello %}
+    {% import "fenye.html" as macros %}
+
     <div class="tpl-content-wrapper">
-        <div class="tpl-content-page-title">
-        </div>
+        <div class="tpl-content-page-title"></div>
         <div class="tpl-portlet-components">
             <div class="portlet-title">
                 <div class="caption font-green bold">
-                    <span class="am-icon-code"></span> 用户查询结果
-                </div>
-            </div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class='flashes'>
-                        {% for message in messages %}
-                            <li >{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <form method="POST">
-                <strong  style="margin-right: 10px;margin-left: 10px">用户名</strong><input type="text" name="user" placeholder="请输入要查询的用户名">
+                    <span class="am-icon-code"></span> 管理用户查询结果
+                </div></div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class='flashes'>
+                {% for message in messages %}
+                    <li style="color:red" >{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+            <form method="POST" action="{{url_for('user.ser_user')}}">
+                <strong  style="">用户名</strong>
+                <input type="text" name="user"placeholder="查询的用户" class="">
                 <span></span>
                 <input type="submit" value="查询" class="btn btn-default">
             </form>
             <div style="margin-top: 10px">
                 <a href="{{url_for('user.add_user')}}">
-                    <input type="button" name="" class="btn btn-default" value="添加">
+                    <input type="button" name="" class="am-btn am-btn-default am-btn-success" value="添加">
                 </a>
             </div>
             <table class="am-table am-table-striped am-table-hover table-main" style="width:80%">
-                <caption><strong>用户</strong></caption>
+                <caption><strong>用户列表</strong></caption>
                 <thead>
                 <tr>
                     <th>用户id</th>
                     <th>用户名</th>
                     <th>用户邮箱</th>
+                    <th>用户职位</th>
+                    <th>用户所在项目</th>
                     <th>用户状态</th>
                     <th>管理</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                {%for user in users%}
+                {%for userlist in users%}
+                {%for user in userlist%}
                     <tr>
                         <td>{{user.id}}</td>
                         <td><label class="label label-default">{{user.username}}</label></td>
                         <td><label class="label label-primary">{{user.user_email}}</label></td>
                         <td><label class="label label-info">{{user.works}}</label></td>
+                        <td>
+                            {% for i in user.quanxians %}
+                                {%  if i.rose==1 %}
+                                <label class="label label-default ">
+                                    {{ i.projects.project_name }}</label>
+                            {%  elif i.rose==2 %}
+                                <label class="label label-danger ">
+                                    {{ i.projects.project_name }}</label>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
                         {% if user.status !=1%}
                             <td><a href="{{url_for('user.fre_ad',id=user.id)}}"><input type="button" value="冻结" class="btn btn-success"></a></td>
                         {%else%}
@@ -61,8 +76,10 @@
                             <span><a href="{{url_for('user.red_pass',id=user.id)}}"><input type="button" value="重置密码" class="btn btn-warning"></a></span>
                         </td>
                     </tr>
-                {%endfor%}
+                {%endfor%}{%endfor%}
                 </tbody>
-            </table></div>
+            </table>
+        </div>
+    </div>
     </div>
 {% endblock %}

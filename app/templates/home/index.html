@@ -1,14 +1,14 @@
 {% extends "back.html" %}
 {% block hello %}
-           {% with messages = get_flashed_messages() %}
-                                  {% if messages %}
-                                    <ul class=flashes>
-                                        {% for message in messages %}
-                                            <li style="color:red">{{ message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                  {% endif %}
-           {% endwith %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li style="color:red">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     <div class="tpl-content-wrapper">
         <div class="row">
             <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">

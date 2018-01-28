@@ -39,7 +39,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for inter in inte %}
+                {% for inters in inte %}
+                {% for inter in inters %}
                     <tr>
                         <td>{{ inter.taskname }}</td>
                         <td>{{ inter.taskstart }}</td>
@@ -60,7 +61,7 @@
                             <a  href="{{ url_for('task.deltettask',id=inter.id) }}"><input type="button" value="删除" class="btn btn-danger"></a>
                             <a  href="{{ url_for('task.testfortask',id=inter.id) }}"><input type="button" value="用例" class="btn btn-default"></a>
                         </td>
-                    </tr>{% endfor %}
+                    </tr>{% endfor %}{% endfor %}
                 </tbody>
             </table>
         </div>

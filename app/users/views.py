@@ -4,10 +4,11 @@
 # @Time    : 2017/12/7 12:25
 from flask import  Blueprint
 user = Blueprint('user', __name__)
-from  flask import  redirect,request,render_template,session,url_for,flash
+from  flask import  redirect,request,render_template,session,url_for,flash,jsonify
 from  app.models import *
 from app.form import  *
 from flask.views import MethodView,View
+from  app.common.decorators import chckuserpermisson
 from flask_login import current_user,login_required
 def get_pro_mo():
     projects=Project.query.all()
@@ -17,8 +18,14 @@ class AdduserView(View):#添加用户
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
+        if chckuserpermisson() == False:
+            flash('权限不足，不能为项目添加用户')
+            return  redirect(request.headers.get('Referer'))
         wrok=Work.query.all()
-        projects=Project.query.all()
+        projects=[]
+        for pri in current_user.quanxians:
+            if pri.rose==2 or pri.rose==3 or current_user.is_sper ==1:
+                projects.append(pri.projects)
         if request.method =='POST':
             user=request.form.get('user')
             password=request.form.get('password')
@@ -65,46 +72,58 @@ class AdduserView(View):#添加用户
 class SetadView(View):#设置管理员
     methods=['GET','POST']
     @login_required
-    def dispatch_request(self,id):
-        next = request.headers.get('Referer')
-        user=User.query.filter_by(username=session.get('username')).first()
-        if user.role_id!=2:
-            flash(u'您不是管理员，无法设置！')
-            return redirect(next or url_for('home.adminuser'))
-        new_ad=User.query.filter_by(id=id).first()
-        if new_ad.role_id==2:
-            flash(u'已经是管理员，无需设置')
-            return redirect(next or url_for('home.adminuser'))
-        new_ad.role_id=2
-        db.session.commit()
-        flash(u'已经是管理员')
-        return redirect(next or url_for('home.adminuser'))
+    def dispatch_request(self):
+        if chckuserpermisson() == False:
+            flash('权限不足，不能设置管理员')
+            return  redirect(request.headers.get('Referer'))
+        projec = request.get_json()
+        try:
+            username=projec['username']
+            por=projec['url']
+            pan_user=User.query.filter_by(username=username).first()
+            if not pan_user:
+                return  jsonify({'code':202,'data':None,'msg':'设置的用户不存在'})
+            pand_por=Project.query.filter_by(project_name=por).first()
+            if not  pand_por:
+                return jsonify({'code': 203, 'data': None, 'msg': '设置的项目不存在'})
+            pro_per=Quanxian.query.filter_by(project=pand_por.id).all()
+            oneadmin=[]
+            for i in pro_per:
+                if i.rose==2:
+                    oneadmin.append(i.user.all())
+            print(oneadmin)
+            print(username in oneadmin)
+            return  jsonify({'code':200,'data':None,'msg':'获取不到请求参数'})
+        except:
+            return  jsonify({'code':207,'data':None,'msg':'获取不到请求参数'})
 class DeladView(View):#取消管理员
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
-        next = request.headers.get('Referer')
+        if chckuserpermisson() == False:
+            flash('权限不足，不能取消管理员')
+            return  redirect(request.headers.get('Referer'))
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.role_id!=2:
+        if user.is_sper!=1:
             flash(u'您不是管理员，无法取消管理！')
-            return redirect(next or url_for('home.adminuser'))
+            return redirect(url_for('home.adminuser'))
         new_ad=User.query.filter_by(id=id).first()
         if new_ad==user:
             flash(u'自己不能取消自己的管理员')
-            return redirect(next or url_for('home.adminuser'))
-        new_ad.role_id=1
-        db.session.commit()
-        flash(u'已经取消管理员权限')
+            return redirect(url_for('home.adminuser'))
+
         return redirect(url_for('home.adminuser'))
 class FreadView(View):#冻结
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
-        next = request.headers.get('Referer')
+        if chckuserpermisson() == False:
+            flash('权限不足，不能冻结')
+            return  redirect(request.headers.get('Referer'))
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.role_id!=2:
-            flash(u'您不是管理员，无法冻结！')
-            return redirect(next or url_for('home.adminuser'))
+        if user.is_sper!=1:
+            flash('权限不足，不能冻结')
+            return redirect(request.headers.get('Referer'))
         new_ad=User.query.filter_by(id=id).first()
         if new_ad.status==1:
             flash(u'已经冻结')
@@ -120,16 +139,20 @@ class FrereView(View):#解冻
     methods=['GET']
     @login_required
     def dispatch_request(self,id):
-        next = request.headers.get('Referer')
+        if chckuserpermisson() == False:
+            flash('权限不足，不能解冻用户')
+            return  redirect(request.headers.get('Referer'))
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.role_id!=2:
-            flash(u'您不是管理员，无法解冻！')
-            return redirect(next or url_for('home.adminuser'))
         new_ad=User.query.filter_by(id=id).first()
         if new_ad.status==0:
             flash(u'已经解冻')
             return redirect(next or url_for('home.adminuser'))
         if new_ad==user:
+            if new_ad.is_sper==1:
+                new_ad.status = 0
+                db.session.commit()
+                flash(u'已经解冻')
+                return redirect(next or url_for('home.adminuser'))
             flash(u'自己不能解冻自己')
             return redirect(next or url_for('home.adminuser'))
         new_ad.status=0
@@ -140,19 +163,23 @@ class RedpassView(View):#重置密码
     methods=['GET']
     @login_required
     def dispatch_request(self,id):
-        next = request.headers.get('Referer')
+        if chckuserpermisson() == False:
+            flash('权限不足，不能重置密码')
+            return  redirect(request.headers.get('Referer'))
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.role_id!=2:
-            flash(u'您不是管理员，重置密码！')
-            return redirect(next or url_for('home.adminuser'))
         new_ad=User.query.filter_by(id=id).first()
         if new_ad==user:
+            if new_ad.is_sper==1:
+                new_ad.set_password = 111111
+                db.session.commit()
+                flash(u'已经重置！密码：111111')
+                return redirect(url_for('home.adminuser'))
             flash(u'自己不能重置自己的密码')
-            return redirect(next or url_for('home.adminuser'))
+            return redirect(url_for('home.adminuser'))
         new_ad.set_password=111111
         db.session.commit()
         flash(u'已经重置！密码：111111')
-        return redirect(next or url_for('home.adminuser'))
+        return redirect(url_for('home.adminuser'))
 class SeruserView(View):#查询用户
     methods=['GET','POST']
     @login_required
@@ -228,7 +255,7 @@ class DeleteView(View):#删除邮件
     def dispatch_request(self,id):
         email_re=EmailReport.query.filter_by(id=id).first()
         user_id=current_user.id
-        if email_re.email_re_user_id==int(user_id) or current_user.role_id==2:
+        if email_re.email_re_user_id==int(user_id):
             email_re.status=True
             db.session.commit()
             flash(u'删除成功')

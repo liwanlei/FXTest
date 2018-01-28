@@ -65,9 +65,6 @@ class User(db.Model):
     task = db.relationship('Task', backref='users', lazy='dynamic')
     def __repr__(self):
         return  self.username
-    def can(self, permissions):
-        return self.itsrole is not None and \
-               (self.itsrole.permissions & permissions) == permissions
     def is_administrator(self):     
         return self.can(Permisson.ADMIN)
     def set_password(self,password):

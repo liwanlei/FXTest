@@ -3,7 +3,7 @@
 @file: views.py
 @time: 2017/7/13 16:42
 """
-from app import  app,db
+from app import  app
 from  flask import  redirect,request,render_template,session,url_for,flash,make_response,send_from_directory,jsonify
 from  app.models import *
 from app.form import  *
@@ -15,10 +15,9 @@ from app.common.panduan import assert_in
 from app.test_case.Test_case import ApiTestCase
 from app.common.send_email import send_emails
 from flask.views import MethodView,View
-from flask_login import current_user,login_required,login_user,logout_user
-from app.common.decorators import admin_required,permission_required
-from app import loginManager
+from flask_login import current_user,login_required
 from app.common.Dingtalk import send_ding
+from app.common.decorators import chckuserpermisson
 def get_pro_mo():
     projects=Project.query.all()
     model=Model.query.all()
@@ -57,7 +56,7 @@ class InterfaceaddView(MethodView):
             except:
                 db.session.rollback()
                 flash(u'添加失败')
-                return render_template('add/add_interface.html', form=form, projects=project, models=models)
+                return redirect(url_for('home.interface'))
         return render_template('add/add_interface.html', form=form, projects=project, models=models)
 class EditInterfaceView(MethodView):
     @login_required
@@ -92,16 +91,21 @@ class EditInterfaceView(MethodView):
             interface.Interface_par=reques
             interface.Interface_back=back
             interface.Interface_user_id=User.query.filter_by(username=session.get('username')).first().id
-            db.session.commit()
-            return redirect(url_for('home.interface'))
+            try:
+                flash('编辑成功')
+                db.session.commit()
+                return redirect(url_for('home.interface'))
+            except:
+                db.session.rollback()
+                flash(u'编辑失败')
+                return redirect(url_for('home.interface'))
         return render_template('edit/edit_inter.html', interface=interface, projects=project, models=models)
 class DeleinterView(MethodView):
     @login_required
     def get(self,id):
         interface=Interface.query.filter_by(id=id).first()
-
         user=User.query.filter_by(username=session.get('username')).first()
-        if user.id==interface.Interface_user_id or user.role_id==2:
+        if user.id==interface.Interface_user_id or user.is_sper==True:
             interface.status=True
             db.session.commit()
             flash(u'删除成功')
@@ -147,7 +151,7 @@ class Deletecase(View):
         next=request.headers.get('Referer')
         testcase=InterfaceTest.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
-        if testcase.Interface_user_id==user.id or user.role_id==2:
+        if testcase.Interface_user_id==user.id or user.is_sper==True:
             testcase.status=True
             db.session.commit()
             flash(u'删除成功')
@@ -458,8 +462,9 @@ class AddproView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self):
-        if not  session.get('username'):
-            return  redirect(url_for('home.login'))
+        if chckuserpermisson() is False:
+            flash('权限不足，不能添加项目')
+            return  redirect(request.headers.get('Referer'))
         if request.method=="POST":
             model=request.form.get('project')
             if model=='':
@@ -483,48 +488,42 @@ class AddproView(View):
         return  render_template('add/add_pro.html')
 class DelemodelView(View):
     methods=['GET','POST']
-    @admin_required
     @login_required
     def dispatch_request(self,id):
         next = request.headers.get('Referer')
         model=Model.query.filter_by(id=id).first()
-        user=User.query.filter_by(username=session.get('username')).first()
-        if user.role_id==2:
-            model.status=True
-            db.session.commit()
-            flash(u'删除成功')
-            return redirect(next or url_for('home.model'))
-        flash(u'您没有权限删除这个模块')
+        model.status=True
+        db.session.commit()
+        flash(u'删除成功')
         return redirect(next or url_for('home.model'))
 class DeleproView(View):
     methods=['GET','POST']
-    @admin_required
     @login_required
     def dispatch_request(self,id):
-        next = request.headers.get('Referer')
+        if chckuserpermisson() is False:
+            flash('权限不足，不能删除项目')
+            return redirect(request.headers.get('Referer'))
         proje=Project.query.filter_by(id=id).first()
         user=User.query.filter_by(username=session.get('username')).first()
         if user.role_id==2:
             proje.status=True
             db.session.commit()
             flash(u'删除成功')
-            return redirect(next or url_for('home.project'))
+            return redirect( url_for('home.project'))
         flash(u'您没有权限删除这个项目')
-        return redirect(next or url_for('home.project'))
+        return redirect( url_for('home.project'))
 class EditmoelView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
         if not session.get('username'):
             return  redirect(url_for('home.login'))
-        user = User.query.filter_by(username=session.get('username')).first()
         model=Model.query.filter_by(id=id).first()
         if request.method=="POST":
             ed_mode=request.form.get('model')
             if ed_mode=='':
                 flash(u'请添加模块名')
                 return render_template('edit/edit_model.html', mode=model)
-            models = Model.query.filter_by(model_name=ed_mode).first()
             model.model_name=ed_mode
             try:
                 db.session.commit()
@@ -539,16 +538,15 @@ class EditproView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
-        if not session.get('username'):
-            return  redirect(url_for('home.login'))
-        user = User.query.filter_by(username=session.get('username')).first()
+        if chckuserpermisson() is False:
+            flash('权限不足，编辑项目')
+            return redirect(request.headers.get('Referer'))
         project=Project.query.filter_by(id=id).first()
         if request.method=="POST":
             ed_mode=request.form.get('project')
             if ed_mode=='':
                 flash(u'请添加项目')
                 return render_template('edit/edit_pro.html', project=project)
-            models = Project.query.filter_by(project_name=ed_mode).first()
             project.project_name=ed_mode
             try:
                 db.session.commit()
@@ -561,28 +559,32 @@ class EditproView(View):
         return  render_template('edit/edit_pro.html', project=project)
 class DeleteResultView(View):
     methods=['GET','POST']
-    @admin_required
     @login_required
     def dispatch_request(self,id):
-        next = request.headers.get('Referer')
+        if chckuserpermisson() == False:
+            flash('权限不足，不能删除测试报告')
+            return  redirect(request.headers.get('Referer'))
         delTest=TestResult.query.filter_by(id=id).first()
-        user=User.query.filter_by(username=session.get('username')).first()
-        if user.role_id==2:
-            delTest.status=True
-            db.session.commit()
-            flash(u'删除成功')
-            return redirect(next or url_for('home.test_rep'))
-        flash(u'您没有权限去删除测试报告')
+        delTest.status=True
+        db.session.commit()
+        flash(u'删除成功')
         return redirect(next or url_for('home.test_rep'))
 class ADDTesteventView(MethodView):#添加测试环境
     @login_required
     def get(self):
-        peoject,modesl=get_pro_mo()
+        peojects, modesl = get_pro_mo()
+        peoject1 = []
+        for pri in current_user.quanxians:
+            peoject1.append(pri.projects)
         forms=Interface_Env()
-        return render_template('add/add_even.html', form=forms, projects=peoject)
+        return render_template('add/add_even.html', form=forms, projects=peoject1)
     @login_required
     def post(self):
-        peoject, modesl = get_pro_mo()
+        peojects, modesl = get_pro_mo()
+        peoject1 = []
+        for pri in current_user.quanxians:
+            if pri.rose == 2 or pri.rose == 3 or current_user.is_sper == 1:
+                peoject1.append(pri.projects)
         forms = Interface_Env()
         if forms.validate_on_submit:
             peoject=request.form['project']
@@ -604,33 +606,35 @@ class ADDTesteventView(MethodView):#添加测试环境
             db.session.add(end)
             try:
                 db.session.commit()
+                flash('添加测试用例成功！')
                 return redirect(url_for('home.ceshihuanjing'))
             except:
                 db.session.rollback()
                 return redirect(url_for('home.ceshihuanjing'))
-        return render_template('add/add_even.html', form=forms, projects=peoject)
+        return render_template('add/add_even.html', form=forms, projects=peoject1)
 class DeleteEventViews(MethodView):#删除测试环境
     @login_required
     def get(self,id):
         next = request.headers.get('Referer')
         event=Interfacehuan.query.filter_by(id=id).first()
-        user_id = current_user.id
-        if event.make_user==user_id or current_user.role_id==2:
-            event.status=True
-            db.session.commit()
-            flash(u'删除成功')
-            return  redirect(next or url_for('home.ceshihuanjing'))
-        flash(u'权利不足以删除！')
+        event.status=True
+        db.session.commit()
+        flash(u'删除成功')
         return  redirect(next or url_for('home.ceshihuanjing'))
 class EditEventViews(MethodView):#编辑测试环境
     @login_required
     def get(self,id):
-        next=request.headers.get('Referer')
-        project,models=get_pro_mo()
+        peojects, modesl = get_pro_mo()
+        peoject1 = []
+        for pri in current_user.quanxians:
+            peoject1.append(pri.projects)
         event=Interfacehuan.query.filter_by(id=id).first()
         return  render_template('edit/edit_events.html', enents=event, projects=project)
     def post(self,id):
-        project, models = get_pro_mo()
+        peojects, modesl = get_pro_mo()
+        peoject1 = []
+        for pri in current_user.quanxians:
+            peoject1.append(pri.projects)
         event = Interfacehuan.query.filter_by(id=id).first()
         projectd=request.form['project']
         url=request.form['url']
