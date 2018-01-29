@@ -46,8 +46,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {%  for inters in inte %}
-                {%for inter in inters%}
+                {%  for inter in inte %}
                     <tr>
                         <td>{{inter.id}}</td>
                         <td><label class="label-important">{{inter.projects}}</label></td>
@@ -62,8 +61,12 @@
                             <a href="{{url_for('dele_inter',id=inter.id)}}"><input type="button" value="删除" class="btn btn-danger"></a>
                         </td>
                     </tr>
-                {%endfor%} {%endfor%}
+                {%endfor%}
                 </tbody>
-            </table>
+            </table><nav aria-label="Page navigation" class="pull-right">
+                <ul class="pagination">
+                    {{ html|safe }}
+                </ul>
+            </nav>
            </div></div>
 {% endblock %}

@@ -58,8 +58,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for yonglist in yonglis %}
-                    {%for yongli in yonglist%}
+{#                    {% for yonglist in index_list %}#}
+                    {%for yongli in index_list%}
                         <tr >
                             <td><input type="checkbox"  name="yongli" value="{{yongli.id}}"></td>
                             <td>{{yongli.projects}}</td>
@@ -96,9 +96,14 @@
                                 </div>
                             </td>
                         </tr>
-                    {%endfor%} {%endfor%}
+                    {%endfor%} 
                     </tbody>
                 </table>
+             <nav aria-label="Page navigation" class="pull-right">
+                <ul class="pagination">
+                    {{ html|safe }}
+                </ul>
+            </nav>
             </form>
             </div></div>
     {#如果没有测试环境区别的需求，下面的代码包括js都可以注释#}

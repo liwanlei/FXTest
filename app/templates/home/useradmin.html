@@ -34,17 +34,16 @@
                 <tr>
                     <th>用户id</th>
                     <th>用户名</th>
-                    <th>用户邮箱</th>
-                    <th>用户职位</th>
-                    <th>用户所在项目</th>
-                    <th>用户状态</th>
+                    <th>邮箱</th>
+                    <th>职位</th>
+                    <th>所属项目</th>
+                    <th>状态</th>
                     <th>管理</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                {%for userlist in users%}
-                    {%for user in userlist%}
+                {%for user in users%}
                         <tr>
                             <td>{{user.id}}</td>
                             <td><label class="label label-default">{{user.username}}</label></td>
@@ -61,21 +60,25 @@
                                     {% endif %}
                                 {% endfor %}
                             </td>
-                            {% if user.status !=1%}
+                            {% if user.status==0%}
                                 <td><a href="{{url_for('user.fre_ad',id=user.id)}}"><input type="button" value="冻结" class="btn btn-success"></a></td>
-                            {%else%}
+                            {%elif user.status==1%}
                                 <td><a href="{{url_for('user.fre_re',id=user.id)}}"><input type="button" value="解冻" class="btn btn-danger"></a></td>
                             {%endif%}
                             <td>
                                 <a ><input type="button" value="设置" class="btn btn-default" onclick="shezhiguanliyuan(id=this.id)" id="{{ user.username }}"></a>
-                                <a ><input type="button" value="取消" class="btn btn-danger" onclick="" id="{{ user.username }}"></a></td>
                             <td>
                                 <span><a href="{{url_for('user.red_pass',id=user.id)}}"><input type="button" value="重置密码" class="btn btn-warning"></a></span>
                             </td>
                         </tr>
-                    {%endfor%}{%endfor%}
+                    {%endfor%}
                 </tbody>
             </table>
+        <nav aria-label="Page navigation" class="pull-right">
+                <ul class="pagination">
+                    {{ html|safe }}
+                </ul>
+            </nav>
         </div>
     </div>
     </div>
@@ -109,15 +112,15 @@
                 for (var i=0;i<divproject.length;i++){
                     var url=divproject[i];
                     xuanz.append("<option >" + url.innerText+"</option>");
-                };
-            };
-        };
+                }
+            }
+        }
         function shezhi(id) {
             var me=document.getElementById("xuanzehuanjing");
             var index=document.getElementById("xuanzehuanjing").selectedIndex;
             var ur=me.options[index];
             var data={};
-            if (ur== undefined){
+            if (ur == undefined){
                 ursl='';
             }
             else {
@@ -134,7 +137,7 @@
                 success:function(result){
                     if (result['code']==200){
                         window.location.reload();
-                        s
+                        alert(result['msg'])
                     }
                     else {
                         window.location.reload();

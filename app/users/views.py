@@ -10,6 +10,7 @@ from app.form import  *
 from flask.views import MethodView,View
 from  app.common.decorators import chckuserpermisson
 from flask_login import current_user,login_required
+from config import OneAdminCount
 def get_pro_mo():
     projects=Project.query.all()
     model=Model.query.all()
@@ -74,28 +75,41 @@ class SetadView(View):#设置管理员
     @login_required
     def dispatch_request(self):
         if chckuserpermisson() == False:
-            flash('权限不足，不能设置管理员')
-            return  redirect(request.headers.get('Referer'))
+            return jsonify({'code': 219, 'msg': '权限不足，不能设置管理员'})
         projec = request.get_json()
         try:
             username=projec['username']
             por=projec['url']
+            if por=='':
+                return jsonify({'code': 209,'msg': '请选择项目'})
             pan_user=User.query.filter_by(username=username).first()
             if not pan_user:
-                return  jsonify({'code':202,'data':None,'msg':'设置的用户不存在'})
+                return  jsonify({'code':202,'msg':'设置的用户不存在'})
+            if pan_user.is_sper is True:
+                return jsonify({'code': 2010,'msg': '超级管理员不用设置项目'})
             pand_por=Project.query.filter_by(project_name=por).first()
             if not  pand_por:
-                return jsonify({'code': 203, 'data': None, 'msg': '设置的项目不存在'})
+                return jsonify({'code': 203, 'msg': '设置的项目不存在'})
             pro_per=Quanxian.query.filter_by(project=pand_por.id).all()
             oneadmin=[]
             for i in pro_per:
                 if i.rose==2:
                     oneadmin.append(i.user.all())
-            print(oneadmin)
-            print(username in oneadmin)
-            return  jsonify({'code':200,'data':None,'msg':'获取不到请求参数'})
-        except:
-            return  jsonify({'code':207,'data':None,'msg':'获取不到请求参数'})
+            if  [pan_user] in oneadmin:
+                return jsonify({'code': 211,'msg': '你已经是项目管理员了，不需要再次设置'})
+            if (len(oneadmin))>OneAdminCount:
+                return jsonify({'code': 210, 'msg': '单个项目的管理员已经达到后台设置的个数限制'})
+            for roses in pan_user.quanxians:
+                if roses.project==pand_por.id:
+                    roses.rose=2
+            try:
+                db.session.commit()
+                return jsonify({'code': 200,'msg': '设置管理成功'})
+            except:
+                db.session.rollback()
+                return jsonify({'code': 222,'msg': '设置管理失败'})
+        except Exception as e:
+            return  jsonify({'code':207,'msg':'设置过程目前存在异常'})
 class DeladView(View):#取消管理员
     methods=['GET','POST']
     @login_required
@@ -103,15 +117,10 @@ class DeladView(View):#取消管理员
         if chckuserpermisson() == False:
             flash('权限不足，不能取消管理员')
             return  redirect(request.headers.get('Referer'))
-        user=User.query.filter_by(username=session.get('username')).first()
-        if user.is_sper!=1:
-            flash(u'您不是管理员，无法取消管理！')
-            return redirect(url_for('home.adminuser'))
         new_ad=User.query.filter_by(id=id).first()
         if new_ad==user:
             flash(u'自己不能取消自己的管理员')
             return redirect(url_for('home.adminuser'))
-
         return redirect(url_for('home.adminuser'))
 class FreadView(View):#冻结
     methods=['GET','POST']
@@ -127,14 +136,14 @@ class FreadView(View):#冻结
         new_ad=User.query.filter_by(id=id).first()
         if new_ad.status==1:
             flash(u'已经冻结')
-            return redirect(next or url_for('home.adminuser'))
+            return redirect( url_for('home.adminuser'))
         if new_ad==user:
             flash(u'自己不能冻结自己')
-            return redirect(next or url_for('home.adminuser'))
+            return redirect( url_for('home.adminuser'))
         new_ad.status=1
         db.session.commit()
         flash(u'已经冻结')
-        return redirect(next or url_for('home.adminuser'))
+        return redirect( url_for('home.adminuser'))
 class FrereView(View):#解冻
     methods=['GET']
     @login_required
@@ -146,19 +155,19 @@ class FrereView(View):#解冻
         new_ad=User.query.filter_by(id=id).first()
         if new_ad.status==0:
             flash(u'已经解冻')
-            return redirect(next or url_for('home.adminuser'))
+            return redirect(url_for('home.adminuser'))
         if new_ad==user:
             if new_ad.is_sper==1:
                 new_ad.status = 0
                 db.session.commit()
                 flash(u'已经解冻')
-                return redirect(next or url_for('home.adminuser'))
+                return redirect(url_for('home.adminuser'))
             flash(u'自己不能解冻自己')
-            return redirect(next or url_for('home.adminuser'))
+            return redirect(url_for('home.adminuser'))
         new_ad.status=0
         db.session.commit()
         flash(u'已经解冻')
-        return redirect(next or url_for('home.adminuser'))
+        return redirect(url_for('home.adminuser'))
 class RedpassView(View):#重置密码
     methods=['GET']
     @login_required

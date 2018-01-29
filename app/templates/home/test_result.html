@@ -3,7 +3,6 @@
     {% import "fenye.html" as macros %}
     <div class="tpl-content-wrapper">
         <div class="tpl-content-page-title">
-               
         </div>
         <div class="tpl-portlet-components">
             <div class="portlet-title">
@@ -42,9 +41,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                {%  for yp in inte %}
-                {%for yong in yp%}
-                    <tr>
+                {%  for yong in inte %}
+                    <tr class="">
                         <td id='test_num' class='test_num' >{{yong.test_num}}</td>
                         <td id='pass_num' class='pass_num'><label class="label label-success">{{yong.pass_num}}</label></td>
                         <td id='fail_num' class='fail_num'>{{yong.fail_num}}</td>
@@ -56,9 +54,13 @@
                         <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
                             <th><a href="{{url_for('deletre',id=yong.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></th>
                     </tr>
-                {%endfor%}{% endfor %}
+                {%endfor%}
                 </tbody>
-            </table>
+            </table><nav aria-label="Page navigation" class="pull-right">
+                <ul class="pagination">
+                    {{ html|safe }}
+                </ul>
+            </nav>
         </div></div>
     <script type="text/javascript">
         var dom = document.getElementById("main");
