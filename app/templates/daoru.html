@@ -23,7 +23,7 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <form method="POST" action="{{url_for('daoru_inter')}}"  enctype=multipart/form-data>
+            <form method="POST" action="{{url_for('interface.daoru_inter')}}"  enctype=multipart/form-data>
                 <input type="file" name="myfile">
                 <button type='submit' class="am-btn am-btn-primary">导入</button>
             </form>

@@ -14,7 +14,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -24,7 +23,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form method="POST" action="{{url_for('ser_inter')}}">
+            <form method="POST" action="{{url_for('interfac.ser_inter')}}">
                 <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project" placeholder="请输入查询的项目">
                 <span></span>
                 <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model" placeholder="查询的模块">
@@ -32,8 +31,8 @@
                 <input type="submit" value="查询" class="am-btn-success">
             </form>
             <div style="margin-top: 10px">
-                <a href="{{url_for('interface_add')}}"><input type="button" name="" value="添加" class="am-btn-success"> </a>
-                <a href="{{url_for('daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn-success"></a>
+                <a href="{{url_for('interfac.interface_add')}}"><input type="button" name="" value="添加" class="am-btn-success"> </a>
+                <a href="{{url_for('interfac.daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn-success"></a>
             </div>
             <table class="m-table am-table-striped am-table-hover table-main" >
                 <caption><strong></strong></caption>
@@ -62,8 +61,8 @@
                         <td>{{inter.Interface_par}}</td>
                         <td>{{inter.Interface_back}}</td>
                         <td>
-                            <a href="{{url_for('interfac_edit',id=inter.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
-                            <a href="{{url_for('dele_inter',id=inter.id)}}"><input type="button" value="删除"class="btn btn-danger"></a>
+                            <a href="{{url_for('interfac.interfac_edit',id=inter.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
+                            <a href="{{url_for('interfac.dele_inter',id=inter.id)}}"><input type="button" value="删除"class="btn btn-danger"></a>
                         </td>
                     </tr>
                 {%endfor%}

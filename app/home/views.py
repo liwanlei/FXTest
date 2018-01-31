@@ -12,14 +12,14 @@ from flask.views import MethodView,View
 from flask_login import login_required,login_user,logout_user,current_user
 from app import loginManager
 from config import PageShow
-from app.common.padkdk import Pagination
-@loginManager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+from app.common.fenye import Pagination
 def get_pro_mo():
     projects=Project.query.all()
     model=Model.query.all()
     return  projects,model
+@loginManager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 class Indexview(MethodView):#首页
     @login_required
     def get(self):
@@ -46,7 +46,7 @@ class LoginView(MethodView):#登录
         user=User.query.filter_by(username=username).first()
         if user:
             if user.check_password(password=password) is True:
-                if user.status==0:
+                if user.status ==0:
                     login_user(user)
                     session['username']=username
                     next =request.args.get('next')
@@ -84,6 +84,16 @@ class InterfaceView(MethodView):#接口
 class YongliView(MethodView):
     @login_required
     def get(self,page=1):
+        projecs,models=get_pro_mo()
+        if current_user.is_sper == True:
+            projects=Project.query.filter_by(status=False).order_by('-id').all()
+        else:
+            projects=[]
+            id=[]
+            for i in current_user.quanxians:
+                if  (i.projects in id)==False:
+                    projects.append(i.projects)
+                    id.append(i.projects)
         if current_user.is_sper==True:
             resylt=InterfaceTest.query.filter_by(status=False).order_by('-id').all()
         else:
@@ -97,7 +107,7 @@ class YongliView(MethodView):
         pager_obj = Pagination(request.args.get("page", 1), len(resylt), request.path, request.args, per_page_count=PageShow)
         index_list = resylt[pager_obj.start:pager_obj.end]
         html = pager_obj.page_html()
-        return  render_template('home/interface_yongli.html',index_list=index_list, html = html)
+        return  render_template('home/interface_yongli.html',index_list=index_list, html = html,models=models,projects=projects)
 class AdminuserView(MethodView):
     @login_required
     def get(self):
@@ -145,12 +155,13 @@ class ProjectView(View):
             projects=[]
             id=[]
             for i in current_user.quanxians:
-                if  (i.projects in id)==False:
-                    projects.append(i.projects)
-                    id.append(i.projects)
+                if  i.projects in id==False:
+                    if i.projects.status ==False:
+                        projects.append(i.projects)
+                        id.append(i.projects)
         return  render_template('home/project.html', projects=projects)
 class ModelView(View):
-    methods=['GET','POST']
+    methods=['GET']
     @login_required
     def dispatch_request(self):
         models=Model.query.filter_by(status=False).order_by('-id').all()

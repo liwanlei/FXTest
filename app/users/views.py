@@ -11,10 +11,6 @@ from flask.views import MethodView,View
 from  app.common.decorators import chckuserpermisson
 from flask_login import current_user,login_required
 from config import OneAdminCount
-def get_pro_mo():
-    projects=Project.query.all()
-    model=Model.query.all()
-    return  projects,model
 class AdduserView(View):#添加用户
     methods=['GET','POST']
     @login_required
@@ -177,7 +173,7 @@ class RedpassView(View):#重置密码
             return  redirect(request.headers.get('Referer'))
         user=User.query.filter_by(username=session.get('username')).first()
         new_ad=User.query.filter_by(id=id).first()
-        if new_ad==user:
+        if new_ad!=user:
             if new_ad.is_sper==1:
                 new_ad.set_password = 111111
                 db.session.commit()
@@ -205,7 +201,7 @@ class SeruserView(View):#查询用户
                     return redirect(url_for('home.adminuser'))
                 return render_template('home/user_ser.html', users=use)
             except:
-                flash(u'没有找到您输入的用户')
+                flash(u'查找用户出现异常！请重新查找')
                 return redirect(url_for('home.adminuser'))
         return redirect(url_for('home.adminuser'))
 class Set_emaiView(MethodView):#设置发送测试报告的邮件的
@@ -290,32 +286,21 @@ class EditemailView(MethodView):#编辑邮件
             flash(u'请准确填写信息')
             return render_template('edit/edit_emali.html', emai=emai)
         user_id=current_user.id
+        user_is = EmailReport.query.filter_by(email_re_user_id=user_id, default_set=True).first()
+        if user_is:
+            flash(u'只能有一个为默认设置')
+            return render_template('edit/edit_emali.html', emai=emai)
         if shi_f =='on':
-            user_is=EmailReport.query.filter_by(email_re_user_id=user_id,default_set=True).first()
-            if user_is:
-                flash(u'只能有一个为默认设置')
-                return render_template('edit/edit_emali.html', emai=emai)
-            emai.email_re_user_id=int(user_id)
-            emai.send_email=str(email)
-            emai.send_email_password=str(password)
-            emai.to_email=str(resv_email)
-            emai.stmp_email=str(stmp_em)
-            emai.port=int(port)
-            emai.default_set=True
-            try:
-                db.session.commit()
-                flash(u'编辑成功')
-                return redirect(url_for('user.setting'))
-            except:
-                db.session.rollback()
-                flash(u'编辑过程中出现了小抑菌')
-                return redirect(url_for('user.setting'))
+            default_set = True
+        else:
+            default_set=False
         emai.email_re_user_id=int(user_id)
         emai.send_email=str(email)
         emai.send_email_password=str(password)
         emai.to_email=str(resv_email)
         emai.stmp_email=str(stmp_em)
         emai.port=int(port)
+        emai.default_set=default_set
         try:
             db.session.commit()
             flash(u'编辑成功')
@@ -332,10 +317,7 @@ class QuzhiMoView(View):#取消默认
         if del_em:
             if int(current_user.id)==del_em.email_re_user_id:
                 del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True,status=True).all()
-                if len(del_e)<=1:
-                    flash(u'取消默认失败，用户必须有一个默认的邮箱！！')
-                    return redirect(url_for('user.setting'))
-                del_em.default_set=False
+                del_e.default_set=False
                 db.session.commit()
                 flash(u'取消默认成功')
                 return redirect(url_for('user.setting'))
@@ -344,7 +326,7 @@ class QuzhiMoView(View):#取消默认
         flash(u'你要取消的默认不存在')
         return redirect(url_for('user.setting'))
 class ShezhiMoView(View):#设置默认
-    methods=['GET','POST']
+    methods=['GET']
     @login_required
     def dispatch_request(self,id):
         shezi_em=EmailReport.query.filter_by(id=id).first()

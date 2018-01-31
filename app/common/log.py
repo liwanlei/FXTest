@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-07-20 12:51:06
 # @Author  : lileilei 
-import logging,time,os
+import logging
 class log_t():
 	def __init__(self,title,filename):
 		self.logger = logging.Logger(title)

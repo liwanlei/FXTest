@@ -2,7 +2,6 @@
 {%block hello%}
     <div class="tpl-content-wrapper">
         <div class="tpl-content-page-title">
-           
         </div>
         <div class="tpl-portlet-components">
             <div class="portlet-title">
@@ -10,8 +9,6 @@
                     <span class="am-icon-code"></span> 添加接口
                 </div>
             </div>
-
-
 {% with messages = get_flashed_messages() %}
     {% if messages %}
         <ul class='flashes'>
@@ -21,7 +18,7 @@
         </ul>
     {% endif %}
 {% endwith %}
-            <form  action="{{ url_for('interface_add') }}" method="POST" >
+            <form  action="{{ url_for('interface.interface_add') }}" method="POST" >
                 {{form.hidden_tag()}}
                 {{form.csrf_token}}
                 <div class="form-group">
@@ -63,7 +60,6 @@
                 <div class="form-group">
                     <strong>返回示例:</strong>
                     {{ form.interface_bas }}</div>
-
                 <button type="submit" class="am-btn am-btn-primary ">添加</button>
             </form></div>
     </div></div>

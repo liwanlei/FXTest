@@ -14,14 +14,14 @@ class reques():
     def post(self, url, params,headers):#post消息
         data = json.dumps(params)
         try:
-            r =requests.post(url,params=params,headers=headers)
+            r =requests.post(url,params=data,headers=headers)
             json_response = json.loads(r.text)
             return json_response
         except Exception as e:
             return {'post请求出错': "错误原因:%s" % e}
     def delfile(self,url,params,headers):#删除的请求
         try:
-            del_word=requests.delete(url,params,headers=headers)
+            del_word=requests.delete(url,data=params,headers=headers)
             json_response=json.loads(del_word.text)
             return json_response
         except Exception as e:

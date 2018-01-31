@@ -13,6 +13,7 @@ from app.common.py_Html import createHtml
 from app.test_case.Test_case import ApiTestCase
 from app import  scheduler
 from app.common.Dingtalk import send_ding
+task = Blueprint('task', __name__)
 def addtask(id):#定时任务执行的时候所用的函数
     in_id=int(id)
     task=Task.query.filter_by(id=in_id).first()
@@ -66,29 +67,42 @@ def addtask(id):#定时任务执行的时候所用的函数
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-def get_pro_mo():
-    projects=Project.query.all()
-    model=Model.query.all()
-    return  projects,model
-task = Blueprint('task', __name__)
 class TestforTaskView(MethodView):#为测试任务添加测试用例
     @login_required
     def get(self,id):
-        procjet = Project.query.all()
+        if current_user.is_sper == True:
+            projects=Project.query.filter_by(status=False).order_by('-id').all()
+        else:
+            projects=[]
+            id=[]
+            for i in current_user.quanxians:
+                if  (i.projects in id)==False:
+                    if i.projects.status == False:
+                        projects.append(i.projects)
+                        id.append(i.projects)
         task_one=Task.query.filter_by(id=id).first()
-        return  render_template('add/addtestyongfortask.html', task_one=task_one, procjets=procjet)
+        return  render_template('add/addtestyongfortask.html', task_one=task_one, procjets=projects)
     @login_required
     def post(self,id):
-        procjet = Project.query.all()
+        if current_user.is_sper == True:
+            projects=Project.query.filter_by(status=False).order_by('-id').all()
+        else:
+            projects=[]
+            id=[]
+            for i in current_user.quanxians:
+                if  (i.projects in id)==False:
+                    if i.projects.status == False:
+                        projects.append(i.projects)
+                        id.append(i.projects)
         task_one = Task.query.filter_by(id=id).first()
         proc_test=request.form.get('project')
         if proc_test =='':
             flash(u'不能不添加测试项目！')
-            return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=procjet)
+            return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=projects)
         test_yongli=request.form.getlist('testyongli')
         if test_yongli=='':
             flash(u'亲你见过只有测试项目没有测试用例的测试任务吗！')
-            return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=procjet)
+            return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=projects)
         for oldtask in task_one.interface.all():
             task_one.interface.remove(oldtask)
         task_one.prject=Project.query.filter_by(project_name=proc_test).first().id
@@ -208,15 +222,23 @@ class AddtimingtaskView(MethodView):
 class Editmingtaskview(MethodView):
     @login_required
     def get(self,id):
+        if current_user.is_sper == True:
+            projects = Project.query.filter_by(status=False).order_by('-id').all()
+        else:
+            projects = []
+            id = []
+            for i in current_user.quanxians:
+                if (i.projects in id) == False:
+                    if i.projects.status == False:
+                        projects.append(i.projects)
+                        id.append(i.projects)
         task_one=Task.query.filter_by(id=id).first()
-        procjet=Project.query.all()
         if not task_one:
             flash(u'你编辑的不存在')
             return  redirect(url_for('home.timingtask'))
-        return  render_template('edit/Edittimingtasks.html', task_one=task_one, porjects=procjet)
+        return  render_template('edit/Edittimingtasks.html', task_one=task_one, porjects=projects)
     def post(self,id):
         task_one = Task.query.filter_by(id=id).first()
-        procjet = Project.query.all()
         taskname = request.form['taskname']
         tinmingtime = request.form['time']
         to_email_data = request.form['to_email']
@@ -254,7 +276,7 @@ class DeteleTaskViee(MethodView):
         if not task_one:
             flash(u'你删除的不存在')
             return redirect(next or url_for('home.timingtask'))
-        if task_one.status==True:
+        if task_one.status is True:
             flash(u'已经删除')
             return redirect(next or url_for('home.timingtask'))
         task_one.status=True

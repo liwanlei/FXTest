@@ -23,7 +23,7 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <form method="POST" action="{{url_for('addtestcase')}}">
+            <form method="POST" action="{{url_for('case.addtestcase')}}">
                 {{form.hidden_tag()}}
                 {{form.csrf_token}}
                 <div>

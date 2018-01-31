@@ -17,7 +17,7 @@
                 {% endfor %}
         {% endif %}
     {% endwith %}
-    <form method="POST" action="{{url_for('ser_yongli')}}">
+    <form method="POST" action="{{url_for('case.ser_yongli')}}">
         <strong >项目:</strong>
         <select name='project'>
             <option value ="" >请选择</option>
@@ -32,10 +32,10 @@
     </select>
         <input type="submit" value="查询" class="btn btn-default">
     </form>
-    <form method="POST" action="{{url_for('duoyongli')}}">
+    <form method="POST" action="{{url_for('case.duoyongli')}}">
         <div style="margin-top: 10px">
-            <a href="{{url_for('addtestcase')}}"><input type="button" name="" class="am-btn am-btn-default am-btn-success" value="添加"></a>
-            <a href="{{url_for('daoru_case')}}"><input type="button" name="" class="am-btn am-btn-default am-btn-success" value="导入"></a>
+            <a href="{{url_for('case.addtestcase')}}"><input type="button" name="" class="am-btn am-btn-default am-btn-success" value="添加"></a>
+            <a href="{{url_for('case.daoru_case')}}"><input type="button" name="" class="am-btn am-btn-default am-btn-success" value="导入"></a>
             <button class="am-btn am-btn-default am-btn-success">批量执行</button>
             <label><input name="dingding" type="radio" value="email"> </label>
             <strong>发送邮件报告</strong>
@@ -75,18 +75,18 @@
                                 <a href="{{url_for('delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-danger"></a>
                                 {% if yongli.Interface_is_tiaoshi ==0 %}
                                     {#如果没有测试环境的区别，请还原下面两行的注释，并且加下面的第三行的代码注释掉#}
-                                    {#                                            <a href="{{ url_for('make_one_case',id=yongli.id)}}">#}
+                                    {#                                            <a href="{{ url_for('case.make_one_case',id=yongli.id)}}">#}
                                     {#                                                <input type="button" value="调试" class="btn btn-default" id="{{ yongli.id }}" ></a>#}
                                     <input type="button" value="调试" class="btn btn-default" id="{{ yongli.id }}" onclick="testcase(this.id)">
                                 {% else %}
                                     {% if yongli.Interface_tiaoshi_shifou==0 and yongli.Interface_is_tiaoshi ==1 %}
                                         {#如果没有测试环境的区别，请还原下面两行的注释，并且加下面的第三行的代码注释掉#}
-                                        {#                                                <a href="{{ url_for('make_one_case',id=yongli.id)}}">#}
+                                        {#                                                <a href="{{ url_for('case.make_one_case',id=yongli.id)}}">#}
                                         {#                                                    <input type="button" value="调试" class="btn btn-success"  id="{{ yongli.id }}" ></a>#}
                                         <input type="button" value="调试" class="btn btn-success"  id="{{ yongli.id }}" onclick="testcase(this.id)">
                                     {% elif  yongli.Interface_tiaoshi_shifou==1 and yongli.Interface_is_tiaoshi ==1 %}
                                         {#如果没有测试环境的区别，请还原下面两行的注释，并且加下面的第三行的代码注释掉#}
-                                        {#                                                <a href="{{ url_for('make_one_case',id=yongli.id)}}">#}
+                                        {#                                                <a href="{{ url_for('case.make_one_case',id=yongli.id)}}">#}
                                         {#                                                    <input type="button" value="调试" class="btn btn-danger"  id="{{ yongli.id }}" ></a>#}
                                         <input type="button" value="调试" class="btn btn-danger"  id="{{ yongli.id }}" onclick="testcase(this.id)" >
                                     {% endif %}
@@ -173,7 +173,7 @@
             data['caseid']=case_id.name;
             data['url']=url;
             $.ajax({
-                url: '{{ url_for('makeonlyonecase') }}',
+                url: '{{ url_for('case.makeonlyonecase') }}',
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json; charset=UTF-8',

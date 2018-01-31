@@ -23,7 +23,7 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <form  action="" method="POST" style="width: 40%;
+            <form  action="{{ url_for('case.edit_case',id=edit.id) }}" method="POST" style="width: 40%;
     margin-left: 30%;">
                 <div class="form-group">
                     <strong>项目:</strong>

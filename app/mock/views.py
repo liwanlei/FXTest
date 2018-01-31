@@ -13,10 +13,6 @@ import  json
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-def get_pro_mo():
-    projects=Project.query.all()
-    model=Model.query.all()
-    return  projects,model
 mock = Blueprint('mock', __name__)
 class AddmockViews(MethodView):#添加mock服务
     @login_required
