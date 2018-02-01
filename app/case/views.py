@@ -213,8 +213,8 @@ class DuoyongliView(View):
         starttime=datetime.datetime.now()
         star=time.time()
         day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
-        basedir = os.path.abspath(os.path.dirname(__file__))
-        file_dir = os.path.join(basedir, 'upload')
+        pad=os.getcwd()
+        file_dir = pad+'\\app\\upload'
         file = os.path.join(file_dir, (day + '.log'))
         if os.path.exists(file) is False:
             os.system('touch %s' % file)
@@ -290,7 +290,8 @@ class DuoyongliView(View):
                     return redirect(next or url_for('home.yongli'))
                 flash(u'测试已经完成，测试报告已经生成')
                 return redirect(url_for('home.test_rep'))
-            except:
+            except Exception as e:
+                print(e)
                 flash(u'测试失败，请检查您的测试用例单个执行是否出错')
                 return redirect(next or url_for('home.yongli'))
         return redirect(url_for('home.yongli'))

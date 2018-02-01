@@ -165,7 +165,7 @@ class DeleteResultView(View):
         delTest.status=True
         db.session.commit()
         flash(u'删除成功')
-        return redirect(next or url_for('home.test_rep'))
+        return redirect( url_for('home.test_rep'))
 class ADDTesteventView(MethodView):#添加测试环境
     @login_required
     def get(self):
