@@ -47,20 +47,22 @@
             <thead>
             <tr>
                 <th></th>
-                <th>项目名称</th>
-                <th>模块名称</th>
-                <th>接口地址</th>
+                 <th>id</th>
+                <th>项目</th>
+                <th>模块</th>
+                <th>接口</th>
                 <th>请求头</th>
                 <th>请求方式</th>
                 <th>参数</th>
                 <th>预期</th>
-                <th >操作</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
             {%for yongli in yonglis%}
                 <tr >
                     <td><input type="checkbox"  name="yongli" value="{{yongli.id}}"></td>
+                <td>{{yongli.id}}</td>
                     <td>{{yongli.projects}}</td>
                     <td>{{yongli.models}}</td>
                     <td>{{yongli.Interface_url}}</td>

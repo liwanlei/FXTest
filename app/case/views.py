@@ -38,6 +38,7 @@ class AddtestcaseView(View):
                         projects.append(i.projects)
                         id.append(i.projects)
         if request.method=='POST' and form.validate_on_submit :
+            save=request.form.get('save')
             yongli_nam=request.form.get('project')
             mode=request.form.get('model')
             interface_name=request.form.get('interface_name')
@@ -46,18 +47,39 @@ class AddtestcaseView(View):
             interface_meth=request.form.get('interface_meth')
             interface_can=request.form.get('interface_can')
             interface_re=request.form.get('interface_rest')
+            yilai_data=request.values.get("yilaicanshu")
+            yilai_test= request.values.get("jiekou")
+            if yilai_test is None or yilai_test == '请选择依赖接口':
+                yilai_dat=None
+                yilai_tes=None
+            else:
+                yilai_tes=yilai_test
+                if yilai_data is None or yilai_data=='':
+                    flash(u'选择依赖后必须填写获取依赖的接口的字段')
+                    return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+                yilai_dat=yilai_data
             if yongli_nam is None or mode is None or interface_name=='' or interface_header==''or interface_url=='' or interface_meth=='' or interface_re=='':
                 flash(u'请准确填写用例')
                 return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
             project_id = Project.query.filter_by(project_name=yongli_nam).first().id
             models_id = Model.query.filter_by(model_name=mode).first().id
+            if save==1 or save=='1':
+                saves=False
+            elif save==2 or save=='2':
+                saves=True
+            else:
+                flash(u'选择保存测试结果出现异常')
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
             try:
-                newcase=InterfaceTest(projects_id=project_id,model_id=models_id,Interface_name=interface_name,Interface_headers=interface_header,Interface_url=interface_url,Interface_meth=interface_meth,Interface_pase=interface_can,Interface_assert=interface_re,Interface_user_id=current_user.id)
+                newcase=InterfaceTest(projects_id=project_id,model_id=models_id,Interface_name=interface_name,
+                                      Interface_headers=interface_header,Interface_url=interface_url,Interface_meth=interface_meth,
+                                      Interface_pase=interface_can,Interface_assert=interface_re,
+                                      Interface_user_id=current_user.id,saveresult=saves,pid=(yilai_tes),getattr_p=yilai_dat)
                 db.session.add(newcase)
                 db.session.commit()
                 flash(u'添加用例成功')
                 return redirect(url_for('home.yongli'))
-            except:
+            except Exception as e:
                 db.session.rollback()
                 flash(u'添加用例失败')
                 return redirect(url_for('home.yongli'))
@@ -89,6 +111,7 @@ class EditcaseView(View):
                         id.append(i.projects)
         edit_case=InterfaceTest.query.filter_by(id=id).first()
         if request.method=='POST':
+            save = request.form.get('save')
             yongli_nam = request.form.get('project')
             mode = request.form.get('model')
             url=request.form.get('url')
@@ -96,11 +119,29 @@ class EditcaseView(View):
             headers=request.form.get('headers')
             parme=request.form.get('parme')
             reque=request.form.get('reque')
+            yilai_data = request.values.get("yilaicanshu")
+            yilai_test = request.values.get("jiekou")
+            if yilai_test is None or yilai_test == '请选择依赖接口':
+                yilai_dat = None
+                yilai_tes = None
+            else:
+                yilai_tes = yilai_test
+                if yilai_data is None or yilai_data == '':
+                    flash(u'选择依赖后必须填写获取依赖的接口的字段')
+                    return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+                yilai_dat = yilai_data
             if yongli_nam ==None  or mode== None or url==''or headers=='' or meth==''  or reque=='':
                 flash(u'请确定各项参数都正常填写')
                 return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
             projects_id = Project.query.filter_by(project_name=yongli_nam).first().id
             model_id = Model.query.filter_by(model_name=mode).first().id
+            if  save is None:
+                saves = False
+            elif  save =='是':
+                saves = True
+            else:
+                flash(u'选择保存测试结果出现异常')
+                return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
             edit_case.projects_id=projects_id
             edit_case.model_id=model_id
             edit_case.Interface_url=url
@@ -109,6 +150,9 @@ class EditcaseView(View):
             edit_case.Interface_pase=parme
             edit_case.Interface_assert=reque
             edit_case.Interface_user_id=current_user.id
+            edit_case.saveresult=saves
+            edit_case.pid=yilai_tes
+            edit_case.getattr_p=yilai_dat
             try:
                 db.session.commit()
                 flash(u'编辑成功')
@@ -182,14 +226,22 @@ class MakeonecaseView(View):
         retur_re=assert_in(case.Interface_assert,result)
         try:
             if retur_re=='pass':
-                flash(u'用例测试通过')
-                case.Interface_is_tiaoshi=True
-                case.Interface_tiaoshi_shifou=False
+                case.Interface_is_tiaoshi = True
+                case.Interface_tiaoshi_shifou = False
+                if case.saveresult is True:
+                    new_testre=TestcaseResult(case_id=case.id)
+                    new_testre.result=str(result)
+                    db.session.add(new_testre)
                 db.session.commit()
+                flash(u'用例测试通过')
                 return redirect(next or url_for('home.yongli'))
             elif retur_re=='fail':
                 case.Interface_is_tiaoshi = True
                 case.Interface_tiaoshi_shifou = True
+                if case.saveresult is True:
+                    new_testre=TestcaseResult(case_id=case.id)
+                    new_testre.result=str(result)
+                    db.session.add(new_testre)
                 db.session.commit()
                 flash(u'用例测试失败')
                 return redirect(next or url_for('home.yongli'))
@@ -200,9 +252,7 @@ class MakeonecaseView(View):
                 flash(u'测试用例测试过程中出现异常！%s'%retur_re)
                 return redirect(next or url_for('home.yongli'))
         except:
-            case.Interface_is_tiaoshi = True
-            case.Interface_tiaoshi_shifou = True
-            db.session.commit()
+            db.session.rollback()
             flash(u'用例测试失败,失败原因：{},请检查测试用例'.format(retur_re))
             return redirect(next or url_for('home.yongli'))
 class DuoyongliView(View):
@@ -323,22 +373,35 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                 if retur_re == 'pass':
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = False
+                    if case.saveresult is True:
+                        new_testre = TestcaseResult(case_id=case.id)
+                        new_testre.result = str(result)
+                        new_testre.testevir=(url)
+                        db.session.add(new_testre)
                     db.session.commit()
                     return jsonify({'code':200,'msg':'测试用例调试通过！'})
                 elif retur_re == 'fail':
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
+                    if case.saveresult is True:
+                        new_testre = TestcaseResult(case_id=case.id)
+                        new_testre.result = str(result)
+                        new_testre.testevir = (url)
+                        db.session.add(new_testre)
                     db.session.commit()
                     return jsonify({'code': 101, 'msg': '测试用例测试失败,原因：%s，请检查用例！'%retur_re})
                 else:
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
+                    if case.saveresult is True:
+                        new_testre = TestcaseResult(case_id=case)
+                        new_testre.result =str(result)
+                        new_testre.testevir = url
+                        db.session.add(new_testre)
+                        db.session.commit()
                     return jsonify({'code': 102, 'msg': '测试返回异常，原因：%s,请检查用例！'%retur_re})
-            except:
-                case.Interface_is_tiaoshi = True
-                case.Interface_tiaoshi_shifou = True
-                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
                 return jsonify({'code': 103, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(retur_re)})
         except:
             return  jsonify({'code':100,'msg':'获取不到用例和测试环境的信息'})

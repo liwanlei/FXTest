@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <strong>项目名字:</strong>
                         {% for project in  projects %}
-                            <input type='radio' value="{{  project.project_name }}" name="project">{{ project.project_name }}
+                            <input type='radio' value="{{  project.project_name }}" name="project" class="projects" onclick="yilai()">{{ project.project_name }}
                         {% endfor %}</div><span>&nbsp;</span>
                     <div class="form-group">
                         <strong>模块名字:</strong>
@@ -63,7 +63,52 @@
                         <strong>请求预期:</strong>
                         {{ form.interface_rest }}</div>
                     <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>是否保存测试结果:</strong>
+                        {{ form.save }}
+                    </div>
+                    <div class="form-group">
+                        <strong>请选择依赖接口:</strong>
+                        <select id="jiekou" name="jiekou">
+                        </select>
+                        <strong>从依赖接口中获取参数：</strong>
+                        <input type="text" name="yilaicanshu" placeholder="请输入要依赖接口测试结果中的数据">
+                        <span style="color: rebeccapurple"> *这里的接口如果没有依赖请不要选择添加</span>
+                    </div>
                     <button type="submit" class="am-btn am-btn-primary" >添加</button>
-                </div></form>
+                </div>
+            </form>
         </div></div>
 {%endblock%}
+{% block js %}
+    <script language="JavaScript">
+
+        function yilai() {
+            var pddd=$("input[name='project']:checked").val();
+            if (pddd==undefined){
+                return;
+            };
+            $.ajax({
+                url:'{{ url_for('getyongli') }}',
+                type:'POST',
+                data:pddd,
+                contentType: 'application/json; charset=UTF-8',
+                processData:false,
+                success:function(testyong){
+                    if(testyong['code']==200){
+                        xuanze=testyong['data']
+                        var xuanz=$('#jiekou');
+                        xuanz.empty();
+                        xuanz.append("<option id='ceshiurls' > 请选择依赖接口</option>")
+                        for (var i=0;i<xuanze.length;i++){
+                            var url=xuanze[i];
+                            xuanz.append("<option id='ceshiurls'>  " + url+"</option>");
+                        };
+                    }else {
+                        alert(testyong['msg'])
+                    }
+                }
+            })
+        };
+    </script>
+{% endblock %}

@@ -105,9 +105,13 @@ class InterfaceTest(db.Model):
     Interface_pase = db.Column(db.String(252))
     Interface_assert=db.Column(db.String(252))
     Interface_headers = db.Column(db.String(252))
+    pid = db.Column(db.Integer(), db.ForeignKey('interfacetests.id'),nullable=True)
+    getattr_p=db.Column(db.String(252),nullable=True)
     Interface_is_tiaoshi=db.Column(db.Boolean(),default=False)
     Interface_tiaoshi_shifou=db.Column(db.Boolean(),default=True,nullable=True)
     Interface_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    saveresult=db.Column(db.Boolean,default=False)
+    testcaseresult = db.relationship('TestcaseResult', backref='interfacetests', lazy='dynamic')
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.Interface_name
@@ -172,6 +176,7 @@ class Interfacehuan(db.Model):#测试环境
     desc=db.Column(db.String(255))#描述
     project=db.Column(db.Integer(),db.ForeignKey('projects.id'))#环境对应的项目
     status = db.Column(db.Boolean(), default=False)#状态
+    testcaseresult = db.relationship('TestcaseResult', backref='ceshihuanjing', lazy='dynamic')
     def __repr__(self):
         return self.url
 class Mockserver(db.Model):#mocksever
@@ -218,3 +223,12 @@ class Quanxian(db.Model):
     user=db.relationship('User',secondary=quanxianuser,backref=db.backref('quanxians'),lazy='dynamic')
     def __repr__(self):
         return  str(self.id)
+class TestcaseResult(db.Model):
+    __tablename__='testcaseresults'
+    id=db.Column(db.Integer,primary_key=True)
+    case_id=db.Column(db.Integer,db.ForeignKey('interfacetests.id'),nullable=True)
+    result=db.Column(db.String(252))
+    date=db.Column(db.DateTime(),default=datetime.datetime.now())
+    testevir=db.Column(db.Integer,db.ForeignKey('ceshihuanjing.id'),nullable=True)
+    def __repr__(self):
+        return  self.id

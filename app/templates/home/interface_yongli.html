@@ -1,7 +1,7 @@
 {% extends "back.html" %}
 {% block hello %}
     {% import "fenye.html" as macros %}
-    <div class="tpl-content-wrapper ">
+    <div class="tpl-content-wrapper " >
         <div class="tpl-content-page-title">  </div>
         <div class="tpl-portlet-components">
             <div class="portlet-title">
@@ -42,19 +42,20 @@
                     <label>  <input name="dingding" type="radio" value="dingding" > </label>
                     <strong>发送钉钉报告</strong>
                 </div>
-                <table class="am-table am-table-striped am-table-hover table-main" style="width: 95%;margin-left: 1px">
+                <table class="am-table am-table-striped am-table-hover table-main" style="width: 90%">
                     <caption><strong>用例</strong></caption>
                     <thead>
                     <tr>
                         <th></th>
-                        <th>项目名称</th>
-                        <th>模块名称</th>
-                        <th>接口地址</th>
+                        <th>id</th>
+                        <th>项目</th>
+                        <th>模块</th>
+                        <th>接口</th>
                         <th>请求头</th>
                         <th>请求方式</th>
                         <th>参数</th>
                         <th>预期</th>
-                        <th >操作</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -62,13 +63,14 @@
                     {%for yongli in index_list%}
                         <tr >
                             <td><input type="checkbox"  name="yongli" value="{{yongli.id}}"></td>
+                            <td>{{yongli.id}}</td>
                             <td>{{yongli.projects}}</td>
                             <td>{{yongli.models}}</td>
                             <td>{{yongli.Interface_url}}</td>
-                            <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ yongli.Interface_headers }}</td>
+                            <td >{{ yongli.Interface_headers }}</td>
                             <td>{{yongli.Interface_meth}}</td>
-                            <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{yongli.Interface_pase}}</td>
-                            <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"> {{yongli.Interface_assert}}</td>
+                            <td>{{yongli.Interface_pase}}</td>
+                            <td> {{yongli.Interface_assert}}</td>
                             <td>
                                 <div class="am-btn-toolbar">
                                     <div class="am-btn-group am-btn-group-xs">
@@ -148,15 +150,12 @@
                         }
                     }
                     else {
-                        var pro=document.getElementById('ceshiyongprco');
-                        pro.innerText=testyong['data'];
-                        xuanze=testyong['huanjing']
-                        var xuanz=$('#xuanzehuanjing');
-                        xuanz.empty();
+                        window.location.reload();
                         alert(testyong['msg'])
                     }
                 },error:function (res) {
                     alert('异步请求失败，请联系管理员！！！')
+                    window.location.reload();
                 }
             });
 
@@ -191,8 +190,8 @@
                         alert('测试用例在环境'+url+'中测试通过！！！');
                     }
                     else {
-                        window.location.reload();
                         alert(result['msg'])
+                        window.location.reload();
                     }
                 }
             })

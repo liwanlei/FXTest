@@ -10,6 +10,7 @@ from wtforms.validators import Email
 from app.models import Work
 choice_list=[]
 work_list=Work.query.all()
+choice_l=[(1,'否'),(2,'是')]
 for i in range(len(work_list)):
     choice_list.append((work_list[i].id,work_list[i].name))
 class LoginFrom(Form):
@@ -50,6 +51,7 @@ class Interface_yong_Form(Form):#测试用例的表单
     interface_meth = StringField(u'请求方式', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口请求方式'})
     interface_can=StringField(u'请求参数', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口请求参数'})
     interface_rest = StringField(u'请求预期', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口预期'})
+    save = SelectField(u'选择职位', choices=choice_l, coerce=int)
 class Set_email_Form(Form):#设置发送邮箱的
     send_email=StringField(u'请输入邮箱', [ validators.DataRequired(message=u'请输入邮箱'),Email(message=u'邮箱格式不对')],
                            render_kw={'placeholder': u'请输入邮箱'})
