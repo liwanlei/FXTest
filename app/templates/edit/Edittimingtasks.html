@@ -25,7 +25,8 @@
             <form  action="{{ url_for('task.editmingtask',id=task_one.id) }}" method="POST" style="width: 40%;
     margin-left: 30%;">
                 <div class="form-group">
-                    <p style="margin-top: 20px"><strong >任务名称:</strong>
+                    <p style="margin-top: 20px">
+                        <strong >任务名称:</strong>
                         <input type="text" name="taskname"  placeholder="请输入任务名！" value="{{ task_one.taskname }}"></p>
                     <p style="margin-top: 20px"><strong>测试时间:</strong>
                         <input type="text" name="time"  placeholder="请输入con表达式！" value="{{ task_one.taskstart }}"></p>
@@ -37,11 +38,12 @@
                         <textarea type="text" name="cao_email"  placeholder="测试报告抄送的人，用逗号分隔！" style="width: 200px;height: 100px;">
                             {{ task_one.taskrepor_cao }}
                         </textarea></p>
-                    <p style="margin-top: 20px"> <strong>支持人邮件:</strong>
+                    <p style="margin-top: 20px">
+                        <strong>支持人邮件:</strong>
                         <input type="text" name="weihu"  placeholder="维护改测试计划的人！" value="{{ task_one.task_make_email }}"></p>
                 </div>
                 <button type="submit" class="am-btn am-btn-primary ">添加</button>
             </form> </div></div>
-    </form></div>{%endblock%}
+{%endblock%}
 
 

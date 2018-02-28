@@ -98,6 +98,7 @@ class EditcaseView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
+        next = request.headers.get('Referer')
         project, models = get_pro_mo()
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
@@ -156,7 +157,7 @@ class EditcaseView(View):
             try:
                 db.session.commit()
                 flash(u'编辑成功')
-                return redirect( url_for('home.yongli'))
+                return redirect(next or  url_for('home.yongli'))
             except:
                 db.session.rollback()
                 flash(u'编辑失败，请重新编辑！')
@@ -215,13 +216,37 @@ class DaorucaseView(View):
             flash(u'导入失败')
             return render_template('daoru_case.html')
         return  render_template('daoru_case.html')
-class MakeonecaseView(View):
+class MakeonecaseView(View):#这里为不需要测试环境区分的，
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
         next=request.headers.get('Referer')
         case=InterfaceTest.query.filter_by(id=id).first()
-        me=Api(url=case.Interface_url,fangshi=case.Interface_meth,params=case.Interface_pase,headers=case.Interface_headers)
+        if case.pid != None:
+            tesyi = InterfaceTest.query.filter_by(id=int(case.pid)).first()
+            testres = TestcaseResult.query.filter_by(case_id=tesyi.id).first()
+            if testres is None:
+                case.Interface_is_tiaoshi = True
+                case.Interface_tiaoshi_shifou = True
+                db.session.commit()
+                flash(u'失败，请查看依赖用例是否测试')
+                return redirect(next or url_for('home.yongli'))
+            huoquyilai = testres.result
+            canshu = case.getattr_p
+            try:
+                yilaidata = eval(huoquyilai)[canshu]
+            except Exception as e:
+                case.Interface_is_tiaoshi = True
+                case.Interface_tiaoshi_shifou = True
+                db.session.commit()
+                flash(u'测试用例获取依赖数据失败')
+                return redirect(next or url_for('home.yongli'))
+        try:
+            pasrms = eval(case.Interface_pase)
+            pasrms.update({canshu: yilaidata})
+        except:
+            return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
+        me=Api(url=case.Interface_url,fangshi=case.Interface_meth,params=pasrms,headers=case.Interface_headers)
         result=me.testapi()
         retur_re=assert_in(case.Interface_assert,result)
         try:
@@ -354,6 +379,23 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
             case_id=projec['caseid']
             url=projec['url']
             case=InterfaceTest.query.filter_by(id=int(case_id)).first()
+            if case.pid != None:
+                tesyi=InterfaceTest.query.filter_by(id=int(case.pid)).first()
+                testres=TestcaseResult.query.filter_by(case_id=tesyi.id).first()
+                if testres is None:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 131, 'msg': '找不到依赖的接口的测试结果！请查找依赖接口是否进行测试,获取测试是否通过,接口id是：%s'%(case.pid)})
+                huoquyilai=testres.result
+                canshu=case.getattr_p
+                try:
+                    yilaidata=eval(huoquyilai)[canshu]
+                except Exception as e:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 151, 'msg': '获取依赖数据失败，原因：%s' %e})
             new_headers=case.Interface_headers
             if  new_headers =='None':
                 ne={'host':url}
@@ -365,8 +407,12 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                     ne['host']=url
                 except:
                     return jsonify({'code': 110, 'msg': '测试的请求头应该是字典格式的！'})
-            me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=case.Interface_pase,
-                     headers=ne)
+            try:
+                pasrms=eval(case.Interface_pase)
+                pasrms.update({canshu:yilaidata})
+            except:
+                return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
+            me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=pasrms,headers=ne)
             result = me.testapi()
             retur_re = assert_in(case.Interface_assert, result)
             try:
@@ -380,7 +426,7 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                         db.session.add(new_testre)
                     db.session.commit()
                     return jsonify({'code':200,'msg':'测试用例调试通过！'})
-                elif retur_re == 'fail':
+                elif retur_re =='fail':
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
                     if case.saveresult is True:
@@ -403,5 +449,5 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
             except Exception as e:
                 db.session.rollback()
                 return jsonify({'code': 103, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(retur_re)})
-        except:
+        except Exception as e:
             return  jsonify({'code':100,'msg':'获取不到用例和测试环境的信息'})

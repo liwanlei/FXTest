@@ -28,12 +28,20 @@
                 <div class="form-group">
                     <strong>项目名字:</strong>
                     {% for project in  projects %}
-                        <input type='radio' value="{{  project.project_name }}" name="project">{{ project.project_name }}
+                        {% if project.project_name==interfac.projects.project_name %}
+                            <input type='radio' checked='checked' value="{{  project.project_name }}" name="project">{{ project.project_name }}
+                        {% else %}
+                            <input type='radio' value="{{  project.project_name }}" name="project">{{ project.project_name }}
+                        {% endif %}
                     {% endfor %}
                     <div class="form-group">
                         <strong>模块名字:</strong>
                         {% for model in  models %}
-                            <input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
+                            {% if model.model_name==interfac.models.model_name %}
+                                <input type='radio' value="{{  model.model_name }}" checked="checked" name="model">{{ model.model_name }}
+                            {% else %}
+                                <input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
+                            {% endif %}
                         {% endfor %}
                     </div>
                     <span>&nbsp;</span>

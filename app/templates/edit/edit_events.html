@@ -18,7 +18,14 @@
             <form  action="{{ url_for('editevents',id=enents.id) }}" method="POST" >
                 <div class="form-group">
                     <strong>项目名字:</strong>
-                    <select name="project"> {% for project in  projects %}<option>{{  project.project_name }}</option>{% endfor %}</select>
+                    <select name="project">
+                        {% for project in  projects %}
+                            {% if project.project_name==enents.projects.project_name %}
+                            <option selected>{{  project.project_name }}</option>
+                            {% else %}
+                                <option>{{  project.project_name }}</option>
+                            {% endif %}
+                        {% endfor %}</select>
                 </div><span>&nbsp;</span>
                 <span>&nbsp;</span>
                 <div class="form-group">
