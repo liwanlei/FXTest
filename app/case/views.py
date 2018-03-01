@@ -157,7 +157,7 @@ class EditcaseView(View):
             try:
                 db.session.commit()
                 flash(u'编辑成功')
-                return redirect(next or  url_for('home.yongli'))
+                return redirect( url_for('home.yongli'))
             except:
                 db.session.rollback()
                 flash(u'编辑失败，请重新编辑！')
@@ -310,6 +310,9 @@ class DuoyongliView(View):
             Interface_pase_list=[]
             Interface_assert_list=[]
             Interface_headers_list=[]
+            Interface_pid_list=[]
+            Interface_yilai_list=[]
+            Interface_save_list=[]
             id_list=[]
             for case in me:
                 case_one=InterfaceTest.query.filter_by(id=case).first()
@@ -322,28 +325,35 @@ class DuoyongliView(View):
                 Interface_pase_list.append(case_one.Interface_pase)
                 Interface_assert_list.append(case_one.Interface_assert)
                 Interface_headers_list.append(case_one.Interface_headers)
+                Interface_pid_list.append(case_one.pid)
+                Interface_yilai_list.append(case_one.getattr_p)
+                Interface_save_list.append(case_one.saveresult)
             if (len(set(projecct_list)))>1:
                 flash('目前单次只能执行一个项目')
                 return redirect(next or url_for('duoyongli'))
             try:
-                apitest = ApiTestCase(Interface_url_list, Interface_meth_list, Interface_pase_list,
-                                      Interface_assert_list, file, Interface_headers_list)
-                result_toal, result_pass, result_fail, relusts, bask_list = apitest.testapi()
+                apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list, inteface_parm=Interface_pase_list,
+                                      inteface_assert=Interface_assert_list, file=file, headers=Interface_headers_list,pid=Interface_pid_list,
+                                      yilaidata=Interface_yilai_list,saveresult=Interface_save_list,id_list=id_list)
+                result_toal, result_pass, result_fail, relusts, bask_list,result_cashu,result_wei,result_except= apitest.testapi()
                 endtime = datetime.datetime.now()
                 end = time.time()
                 createHtml(titles=u'接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
                            passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
                            headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
-                           meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts)
+                           meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
+                           excepts=result_except, yuqis=result_cashu, weizhi=result_wei)
                 hour = end - star
                 user_id = User.query.filter_by(username=session.get('username')).first().id
                 new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
                                        fail_num=result_fail, test_time=starttime, hour_time=hour,
-                                       test_rep=(day + '.html'), test_log=(day + '.log'))
+                                       test_rep=(day + '.html'), test_log=(day + '.log'),Exception_num=result_except,can_num=result_cashu,
+                                       wei_num=result_wei)
                 db.session.add(new_reust)
                 db.session.commit()
                 if f_dingding == 'email':
-                    email = EmailReport.query.filter_by(email_re_user_id=int(current_user.id), default_set=True).first()
+                    email = EmailReport.query.filter_by(email_re_user_id=int(current_user.id),
+                                                        default_set=True).first()
                     if email:
                         m = send_emails(sender=email.send_email, receivers=email.to_email,
                                         password=email.send_email_password,
@@ -379,23 +389,33 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
             case_id=projec['caseid']
             url=projec['url']
             case=InterfaceTest.query.filter_by(id=int(case_id)).first()
-            if case.pid != None:
+            if case.pid != 'None':
                 tesyi=InterfaceTest.query.filter_by(id=int(case.pid)).first()
-                testres=TestcaseResult.query.filter_by(case_id=tesyi.id).first()
-                if testres is None:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 131, 'msg': '找不到依赖的接口的测试结果！请查找依赖接口是否进行测试,获取测试是否通过,接口id是：%s'%(case.pid)})
-                huoquyilai=testres.result
-                canshu=case.getattr_p
-                try:
-                    yilaidata=eval(huoquyilai)[canshu]
-                except Exception as e:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 151, 'msg': '获取依赖数据失败，原因：%s' %e})
+                if tesyi:
+                    testres=TestcaseResult.query.filter_by(case_id=tesyi.id).first()
+                    if testres is None:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 131, 'msg': '找不到依赖的接口的测试结果！请查找依赖接口是否进行测试,获取测试是否通过,接口id是：%s'%(case.pid)})
+                    huoquyilai=testres.result
+                    canshu=case.getattr_p
+                    try:
+                        yilaidata=eval(huoquyilai)[canshu]
+                    except Exception as e:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 151, 'msg': '获取依赖数据失败，原因：%s' %e})
+                    try:
+                        pasrms = eval(case.Interface_pase)
+                        pasrms.update({canshu: yilaidata})
+                    except:
+                        return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
+                else:
+                    pasrms=case.Interface_pase
+            else:
+                pasrms = case.Interface_pase
             new_headers=case.Interface_headers
             if  new_headers =='None':
                 ne={'host':url}
@@ -407,11 +427,6 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                     ne['host']=url
                 except:
                     return jsonify({'code': 110, 'msg': '测试的请求头应该是字典格式的！'})
-            try:
-                pasrms=eval(case.Interface_pase)
-                pasrms.update({canshu:yilaidata})
-            except:
-                return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
             me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=pasrms,headers=ne)
             result = me.testapi()
             retur_re = assert_in(case.Interface_assert, result)
@@ -450,4 +465,5 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                 db.session.rollback()
                 return jsonify({'code': 103, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(retur_re)})
         except Exception as e:
+            print(e)
             return  jsonify({'code':100,'msg':'获取不到用例和测试环境的信息'})

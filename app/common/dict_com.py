@@ -13,16 +13,19 @@ def comp_dict(dict1,dict2):
         return False
 def assert_in(asserqiwang,fanhuijson):
     if len(asserqiwang.split('=')) > 1:
-        data = asserqiwang.split('&')
-        result = dict([(item.split('=')) for item in data])
-        value1=([(str(fanhuijson[key])) for key in result.keys()])
-        value2=([(str(value)) for value in result.values()])
-        if value1==value2:
-            return  'pass'
-        else:
-            return 'fail'
+        try:
+            data = asserqiwang.split('&')
+            result = dict([(item.split('=')) for item in data])
+            value1=([(str(fanhuijson[key])) for key in result.keys()])
+            value2=([(str(value)) for value in result.values()])
+            if value1==value2:
+                return  'pass'
+            else:
+                return 'fail'
+        except Exception as e:
+            return '异常！原因：%s'%e
     else:
-        raise (u'请填写期望值')
+        return '预期不存在'
 def dict_par(doct1,dict2):
     h=[]
     l=[]

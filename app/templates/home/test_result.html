@@ -10,7 +10,6 @@
                     <span class="am-icon-code"></span> 测试报告
                 </div>
                 <div class="tpl-portlet-input tpl-fz-ml">
-                           
                 </div>
             </div>
             {% with messages = get_flashed_messages() %}
@@ -29,6 +28,9 @@
                     <th>测试数量</th>
                     <th>通过</th>
                     <th>失败</th>
+                    <th>异常</th>
+                    <th>参数错误</th>
+                    <th>未知错误</th>
                     <th>测试时间</th>
                     <th>测试耗时</th>
                     <th>评分</th>
@@ -46,21 +48,24 @@
                         <td id='test_num' class='test_num' >{{yong.test_num}}</td>
                         <td id='pass_num' class='pass_num'><label class="label label-success">{{yong.pass_num}}</label></td>
                         <td id='fail_num' class='fail_num'>{{yong.fail_num}}</td>
+                        <td  class=''>{{yong.Exception_num}}</td>
+                        <td  class=''>{{yong.can_num}}</td>
+                        <td  class=''>{{yong.wei_num}}</td>
                         <td class='test_date'>{{yong.test_time}}</td>
                         <td>{{yong.hour_time}}</td>
                         <td class='proce'>{{(yong.pass_num)/(yong.test_num)}}</td>
                         <td>{{yong.users}}</td>
                         <td><a href="{{url_for('load',filename= yong.test_rep)}}">报告下载</a></td>
                         <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
-                            <th><a href="{{url_for('deletre',id=yong.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></th>
+                        <th><a href="{{url_for('deletre',id=yong.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></th>
                     </tr>
                 {%endfor%}
                 </tbody>
             </table><nav aria-label="Page navigation" class="pull-right">
-                <ul class="pagination">
-                    {{ html|safe }}
-                </ul>
-            </nav>
+            <ul class="pagination">
+                {{ html|safe }}
+            </ul>
+        </nav>
         </div></div>
     <script type="text/javascript">
         var dom = document.getElementById("main");
@@ -157,7 +162,6 @@
                     data:(function (){
                         var res = [];
                         var data = document.getElementsByClassName('proce');
-			
                         for (var i=0;i<data.length;i++)  {
                             res.push((data[i].innerHTML)*100);
                         }
@@ -169,10 +173,10 @@
                     type:'line',
                     data:(function (){
                         var res = [];
-                        var data = document.getElementsByClassName('fail_num');
+                        var data = document.getElementsByClassName('label-success');
                         var test_num=document.getElementsByClassName('test_num');
                         for (var i=0;i<data.length;i++)  {
-                            res.push(parseFloat((data[i].innerHTML)/(test_num[i].innerHTML))*100);
+                            res.push(parseFloat((test_num[i].innerHTML-data[i].innerHTML)/(test_num[i].innerHTML))*100);
                         }
                         return res;
                     })()
@@ -185,4 +189,4 @@
             myChart.setOption(option, true);
         }
     </script>
-{% endblock %} 
+{% endblock %}
