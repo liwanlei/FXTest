@@ -209,9 +209,9 @@ class DaorucaseView(View):
                     db.session.commit()
                     flash(u'导入成功')
                     return redirect(url_for('home.yongli'))
-                except:
+                except Exception as e:
                     db.session.rollback()
-                    flash(u'导入失败，请检查格式是否正确')
+                    flash(u'导入失败，原因：%s'%e)
                     return render_template('daoru_case.html')
             flash(u'导入失败')
             return render_template('daoru_case.html')
@@ -276,9 +276,9 @@ class MakeonecaseView(View):#这里为不需要测试环境区分的，
                 db.session.commit()
                 flash(u'测试用例测试过程中出现异常！%s'%retur_re)
                 return redirect(next or url_for('home.yongli'))
-        except:
+        except Exception as e:
             db.session.rollback()
-            flash(u'用例测试失败,失败原因：{},请检查测试用例'.format(retur_re))
+            flash(u'用例测试失败,失败原因：{},请检查测试用例'.format(e))
             return redirect(next or url_for('home.yongli'))
 class DuoyongliView(View):
     methods=['GET','POST']
@@ -376,7 +376,6 @@ class DuoyongliView(View):
                 flash(u'测试已经完成，测试报告已经生成')
                 return redirect(url_for('home.test_rep'))
             except Exception as e:
-                print(e)
                 flash(u'测试失败，请检查您的测试用例单个执行是否出错')
                 return redirect(next or url_for('home.yongli'))
         return redirect(url_for('home.yongli'))
@@ -463,7 +462,6 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                     return jsonify({'code': 102, 'msg': '测试返回异常，原因：%s,请检查用例！'%retur_re})
             except Exception as e:
                 db.session.rollback()
-                return jsonify({'code': 103, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(retur_re)})
+                return jsonify({'code': 103, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(e)})
         except Exception as e:
-            print(e)
-            return  jsonify({'code':100,'msg':'获取不到用例和测试环境的信息'})
+            return  jsonify({'code':100,'msg':'接口测试出错了！原因:%s'%e})

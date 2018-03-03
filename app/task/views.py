@@ -36,6 +36,9 @@ def addtask(id):#定时任务执行的时候所用的函数
     Interface_pase_list = []
     Interface_assert_list = []
     Interface_headers_list = []
+    Interface_pid_list = []
+    Interface_yilai_list = []
+    Interface_save_list = []
     id_list = []
     for task_yongli in task.interface.all():
         id_list.append(task_yongli.id)
@@ -47,23 +50,36 @@ def addtask(id):#定时任务执行的时候所用的函数
         Interface_pase_list.append(task_yongli.Interface_pase)
         Interface_assert_list.append(task_yongli.Interface_assert)
         Interface_headers_list.append(task_yongli.Interface_headers)
-    apitest = ApiTestCase(Interface_url_list, Interface_meth_list, Interface_pase_list, Interface_assert_list, file,
-                          Interface_headers_list)
-    result_toal, result_pass, result_fail, relusts, bask_list = apitest.testapi()
+        Interface_pid_list.append(task_yongli.pid)
+        Interface_yilai_list.append(task_yongli.getattr_p)
+        Interface_save_list.append(task_yongli.saveresult)
+    apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list,
+                          inteface_parm=Interface_pase_list,
+                          inteface_assert=Interface_assert_list, file=file, headers=Interface_headers_list,
+                          pid=Interface_pid_list,
+                          yilaidata=Interface_yilai_list, saveresult=Interface_save_list, id_list=id_list)
+    result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, result_wei, result_except = apitest.testapi()
     endtime = datetime.datetime.now()
     end = time.time()
-    createHtml(titles=u'接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime, passge=result_pass,
-               fail=result_fail, id=id_list, name=projecct_list, headers=Interface_headers_list,
-               coneent=Interface_url_list, url=Interface_meth_list, meth=Interface_pase_list,
-               yuqi=Interface_assert_list, json=bask_list, relusts=relusts)
+    createHtml(titles=u'定时任务接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
+               passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
+               headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
+               meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
+               excepts=result_except, yuqis=result_cashu, weizhi=result_wei)
     hour = end - star
     user_id = User.query.filter_by(role_id=2).first().id
-    new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass, fail_num=result_fail,
-                           test_time=starttime, hour_time=hour, test_rep=(day + '.html'), test_log=(day + '.log'))
+    new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
+                           fail_num=result_fail, test_time=starttime, hour_time=hour,
+                           test_rep=(day + '.html'), test_log=(day + '.log'), Exception_num=result_except,
+                           can_num=result_cashu,
+                           wei_num=result_wei)
     db.session.add(new_reust)
     db.session.commit()
-    send_ding(content="%s定时任务执行完毕，测试时间：%s，\\n 通过用例：%s，失败用例：%s，\\n,详情见测试平台测试报告！" % (
+    try:
+        send_ding(content="%s定时任务执行完毕，测试时间：%s，\\n 通过用例：%s，失败用例：%s，\\n,详情见测试平台测试报告！" % (
         task.taskname, starttime, result_pass, result_fail))
+    except Exception as e:
+        flash('定时任务的钉钉消息发送失败！原因:%s'%e)
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -131,7 +147,7 @@ class StartTaskView(MethodView):#开始定时任务
             flash(u'定时任务启动成功！')
             return  redirect(next or url_for('home.timingtask'))
         except Exception as e:
-            flash(u'定时任务启动失败！请检查任务的各项内容各项内容是否正常')
+            flash(u'定时任务启动失败！原因：%e'%e)
             return redirect(next or url_for('home.timingtask'))
 class ZantingtaskView(MethodView):#暂停定时任务
     @login_required
@@ -144,10 +160,10 @@ class ZantingtaskView(MethodView):#暂停定时任务
             db.session.commit()
             flash(u'定时任务暂停成功！')
             return redirect(next or url_for('home.timingtask'))
-        except:
+        except Exception as e:
             task.yunxing_status = u'创建'
             db.session.commit()
-            flash(u'定时任务暂停失败！已经为您初始化')
+            flash(u'定时任务暂停失败！已经为您初始化，原因：%s'%e)
             return redirect(next or url_for('home.timingtask'))
 class HuifutaskView(MethodView):#回复定时任务
     @login_required
@@ -217,7 +233,7 @@ class AddtimingtaskView(MethodView):
             return  redirect(url_for('home.timingtask'))
         except Exception as e:
             db.session.rollback()
-            flash(u'添加过程貌似异常艰难！')
+            flash(u'添加过程貌似异常艰难！失败原因：%s'%e)
             return redirect(url_for('home.addtimingtasks'))
 class Editmingtaskview(MethodView):
     @login_required
@@ -286,5 +302,5 @@ class DeteleTaskViee(MethodView):
             return redirect(next or url_for('home.timingtask'))
         except:
             db.session.rollback()
-            flash(u'删除任务休息了')
+            flash(u'删除任务出现异常，系统已经为你还原')
             return redirect(next or url_for('home.timingtask'))
