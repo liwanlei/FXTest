@@ -20,3 +20,4 @@ home.add_url_rule('/test_rep/<int:page>',view_func=TestrepView.as_view('test_rep
 home.add_url_rule('/ceshihuanjing',view_func=TesteventVies.as_view('ceshihuanjing'))
 home.add_url_rule('/mock',view_func=MockViews.as_view('mockserver'))
 home.add_url_rule('/timingtask',view_func=TimingtasksView.as_view('timingtask'))
+home.add_url_rule('/get_pro_test_report',view_func=GettProtestreport.as_view('get_pro_test_report'))

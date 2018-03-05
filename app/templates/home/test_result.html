@@ -1,7 +1,7 @@
 {% extends "back.html" %}
 {% block hello %}
     {% import "fenye.html" as macros %}
-    <div class="tpl-content-wrapper">
+    <div class="tpl-content-wrapper" >
         <div class="tpl-content-page-title">
         </div>
         <div class="tpl-portlet-components">
@@ -20,7 +20,16 @@
                         {% endfor %}
                 {% endif %}
             {% endwith %}
-            <div id="main" style="width: 800px;height:400px;margin-left: 12%"></div>
+            <div  >
+                <strong>选择项目:</strong>
+                <select id="project" onclick="project()">
+                    {% for project in projects %}
+                        <option class="glyphicon-option-vertical">{{ project.project_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div id="main" style="width: 800px;height:400px;margin-left: 12%;margin-top: 10px">
+            </div>
             <table class="am-table am-table-striped am-table-hover table-main" >
                 <caption><strong></strong></caption>
                 <thead>
@@ -42,151 +51,160 @@
                         <th>操作</th>{%endif%}
                 </tr>
                 </thead>
-                <tbody>
-                {%  for yong in inte %}
-                    <tr class="">
-                        <td id='test_num' class='test_num' >{{yong.test_num}}</td>
-                        <td id='pass_num' class='pass_num'><label class="label label-success">{{yong.pass_num}}</label></td>
-                        <td id='fail_num' class='fail_num'>{{yong.fail_num}}</td>
-                        <td  class=''>{{yong.Exception_num}}</td>
-                        <td  class=''>{{yong.can_num}}</td>
-                        <td  class=''>{{yong.wei_num}}</td>
-                        <td class='test_date'>{{yong.test_time}}</td>
-                        <td>{{yong.hour_time}}</td>
-                        <td class='proce'>{{(yong.pass_num)/(yong.test_num)}}</td>
-                        <td>{{yong.users}}</td>
-                        <td><a href="{{url_for('load',filename= yong.test_rep)}}">报告下载</a></td>
-                        <td><a href="{{url_for('load',filename= yong.test_log)}}">日志下载</a></td>
-                        <th><a href="{{url_for('deletre',id=yong.id)}}"><input type="button" value="删除" class="btn btn-danger"></a></th>
-                    </tr>
-                {%endfor%}
+                <tbody id="testyonglis" >
                 </tbody>
             </table><nav aria-label="Page navigation" class="pull-right">
             <ul class="pagination">
                 {{ html|safe }}
             </ul>
         </nav>
-        </div></div>
+        </div>
+    </div>
     <script type="text/javascript">
-        var dom = document.getElementById("main");
-        var myChart = echarts.init(dom);
-        var app = {};
-        option = null;
-        option = {
-            title: {
-                text: '测试数据',
-                subtext: '为单次测试所占的百分比，数据来源于之前测试数据'
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    label: {
-                        backgroundColor: '#283b56'
+        window.onload=project();
+        window.onload=baidu();
+        function project() {
+            var obj = document.getElementById('project');
+            var index=obj.selectedIndex;
+            var value = obj.options[index].value;
+            $.ajax({
+                url:'{{ url_for('home.get_pro_test_report') }}',
+                type:'POST',
+                data:value,
+                contentType: 'application/json; charset=UTF-8',
+                processData:false,
+                success:function(data){
+                    if (data['code']==200 ){
+                        var mdata =data['data'];
+                        console.log(mdata);
+                        var insertss=$('#testyonglis');
+                        insertss.empty();
+                        for(var i=1;i<mdata.length;i++){
+                            insertss.append("<tr><td id='test_num' class='test_num' >"+ mdata[i]['test_num'] +"</td><td id='pass_num' class='pass_num'><label class='label-success'>"+ mdata[i]['pass_num']+"</label></td><td id='fail_num' class='fail_num'>"+ mdata[i]['fail_num']+"</td><td >"+  mdata[i]['Exception_num']+"</td><td>"+ mdata[i]['can_num']+"</td><td>" + mdata[i]['wei_num']+"</td><td class='test_date'>"+ mdata[i]['test_time']+"</td><td>"+ mdata[i]['hour_time']+"</td><td class='proce'>"+ (mdata[i]['fenshu']+"</td><td>"+ mdata[i]['Test_user_id']+"</td><td><a href='/load/"+mdata[i]["test_rep"]+"'>报告下载</a></td><td><a href='/load/"+ mdata[i]['test_log']+"'>日志下载</a></td><th><a href='deletre/"+( mdata[i]["id"])+"'><input type='button' value='删除' class='btn btn-danger'></a></th></tr>"));
+                        };
                     }
+                },error:function (res) {
+                    alert('异步请求失败，请联系管理员！！！')
+                    window.location.reload();
                 }
-            },
-            legend: {
-                data:['通过率', '失败率']
-            },
-            color:['green', 'red'],
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    dataView: {readOnly: false},
-                    restore: {},
-                    saveAsImage: {}
-                }
-            },
-            dataZoom: {
-                show: false,
-                start: 0,
-                end: 100
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    boundaryGap: true,
-                    data: (function (){
-                        var now = document.getElementsByClassName('test_date');
-                        var res = [];
-                        for (var i=0;i<now.length;i++)  {
-                            res.push((now[i].innerHTML).substring(0,18) );
-                        }
-                        return res;
-                    })()
+            });
+            var dom = document.getElementById("main");
+            var myChart = echarts.init(dom);
+            option = null;
+            option = {
+                title: {
+                    text: '测试数据',
+                    subtext: '为单次测试所占的百分比，数据来源于之前测试数据'
                 },
-                {
-                    type: 'category',
-                    boundaryGap: true,
-                    data: (function (){
-                        var now = document.getElementsByClassName('test_date');
-                        var res = [];
-                        for (var i=0;i<now.length;i++)  {
-                            res.push((now[i].innerHTML).substring(0,18) );
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#283b56'
                         }
-                        return res;
-                    })()
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    scale: true,
-                    name: '',
-                    max: 100,
-                    min: 0,
-                    boundaryGap: [0.5, 0.2]
+                    }
                 },
-                {
-                    type: 'value',
-                    scale: true,
-                    name: '',
-                    max: 100,
-                    min: 0,
-                    boundaryGap: [0.5, 0.2]
-                }
-            ],
-            series: [
-                {
-                    name:'通过率',
-                    type:'bar',
-                    xAxisIndex: 1,
-                    yAxisIndex: 1,
-                    data:(function (){
-                        var res = [];
-                        var data = document.getElementsByClassName('proce');
-                        for (var i=0;i<data.length;i++)  {
-                            res.push((data[i].innerHTML)*100);
-                        }
-                        return res;
-                    })()
+                legend: {
+                    data:['通过率', '失败率']
                 },
-                {
-                    name:'失败率',
-                    type:'line',
-                    data:(function (){
-                        var res = [];
-                        var data = document.getElementsByClassName('label-success');
-                        var test_num=document.getElementsByClassName('test_num');
-                        for (var i=0;i<data.length;i++)  {
-                            res.push(parseFloat((test_num[i].innerHTML-data[i].innerHTML)/(test_num[i].innerHTML))*100);
-                        }
-                        return res;
-                    })()
-                }
-            ]
-        };
-
-        ;
-        if (option && typeof option === "object") {
-            myChart.setOption(option, true);
+                color:['green', 'red'],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataView: {readOnly: false},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                dataZoom: {
+                    show: false,
+                    start: 0,
+                    end: 100
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: true,
+                        data: (function (){
+                            var now = document.getElementsByClassName('test_date');
+                            var res = [];
+                            for (var i=0;i<now.length;i++)  {
+                                res.push((now[i].innerHTML).substring(0,18) );
+                            }
+                            return res;
+                        })()
+                    },
+                    {
+                        type: 'category',
+                        boundaryGap: true,
+                        data: (function (){
+                            var now = document.getElementsByClassName('test_date');
+                            var res = [];
+                            for (var i=0;i<now.length;i++)  {
+                                res.push((now[i].innerHTML).substring(0,18) );
+                            }
+                            return res;
+                        })()
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        scale: true,
+                        name: '',
+                        max: 100,
+                        min: 0,
+                        boundaryGap: [0.5, 0.2]
+                    },
+                    {
+                        type: 'value',
+                        scale: true,
+                        name: '',
+                        max: 100,
+                        min: 0,
+                        boundaryGap: [0.5, 0.2]
+                    }
+                ],
+                series: [
+                    {
+                        name:'通过率',
+                        type:'bar',
+                        xAxisIndex: 1,
+                        yAxisIndex: 1,
+                        data:(function (){
+                            var res = [];
+                            var data = document.getElementsByClassName('proce');
+                            for (var i=0;i<data.length;i++)  {
+                                res.push((data[i].innerHTML)*100);
+                            }
+                            return res;
+                        })()
+                    },
+                    {
+                        name:'失败率',
+                        type:'line',
+                        data:(function (){
+                            var res = [];
+                            var data = document.getElementsByClassName('label-success');
+                            var test_num=document.getElementsByClassName('test_num');
+                            for (var i=0;i<data.length;i++)  {
+                                res.push(parseFloat((test_num[i].innerHTML-data[i].innerHTML)/(test_num[i].innerHTML))*100);
+                            }
+                            return res;
+                        })()
+                    }
+                ]
+            };
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
         }
     </script>
 {% endblock %}

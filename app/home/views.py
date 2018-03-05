@@ -2,10 +2,11 @@
 # @Author  : lileilei
 # @File    : views.py
 # @Time    : 2017/12/7 9:23
-from flask import  Blueprint
+from flask import  Blueprint,jsonify
 from app.common.hebinglist import hebinglist
 from  flask import  redirect,request,render_template,url_for,flash,session
 home = Blueprint('home', __name__)
+import json
 from app.models import *
 from app.form import  *
 from flask.views import MethodView,View
@@ -131,20 +132,12 @@ class TestrepView(View):
     @login_required
     def dispatch_request(self):
         if current_user.is_sper == True:
-            pagination=(TestResult.query.filter_by(status=False).all())
+            project=Project.query.filter_by(status=False).all()
         else:
-            pagination=[]
-            id=[]
+            project=[]
             for projec in current_user.quanxians:
-                if not(projec.projects.id in id):
-                    pagination.append(TestResult.query.filter_by(projects_id=projec.projects.id, status=False).all())
-                    id.append(projec.projects.id)
-            pagination=hebinglist(pagination)
-        pager_obj = Pagination(request.args.get("page", 1), len(pagination), request.path, request.args,
-                               per_page_count=PageShow)
-        index_list = pagination[pager_obj.start:pager_obj.end]
-        html = pager_obj.page_html()
-        return render_template('home/test_result.html', inte=index_list,html=html)
+                project.append(projec.projects)
+        return render_template('home/test_result.html', projects=(project))
 class ProjectView(View):
     methods=['GET','POST']
     @login_required
@@ -200,3 +193,18 @@ class TimingtasksView(MethodView):#定时任务
                     task.append(Task.query.filter_by(prject=project.projects.id,status=False).all())
                     id.append(project.projects.id)
         return render_template('home/timingtask.html', inte=task)
+class GettProtestreport(MethodView):
+    def get(self):
+        pass
+    def post(self):
+        id = request.get_data('id')
+        project = id.decode('utf-8')
+        if not  project:
+            return jsonify({'msg': '没有发送数据', 'code': 108})
+        project_is=Project.query.filter_by(project_name=project).first()
+        testreport=TestResult.query.filter_by(projects_id=project_is.id, status=False).all()
+        testreportlist=[]
+        for test in testreport:
+            testreportlist.append({'test_num':test.test_num,'pass_num':test.pass_num,'fail_num':test.fail_num,'hour_time':str(test.hour_time),'test_rep':test.test_rep,'test_log':test.test_log,
+                                   'Exception_num':test.Exception_num,'can_num':test.can_num,'wei_num':test.wei_num,'test_time':str(test.test_time),'Test_user_id':test.users.username,'id':test.id,'fenshu':test.pass_num/test.test_num})
+        return jsonify(({'msg': '成功', 'code': 200,'data':(testreportlist)}))

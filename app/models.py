@@ -133,7 +133,7 @@ class TestResult(db.Model):
     test_log=db.Column(db.String(252))
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
-        return  self.test_log
+        return  str(self.id)
 class Project(db.Model):#项目
     __tablename__='projects'
     id=db.Column(db.Integer(), primary_key=True, autoincrement=True)
