@@ -295,7 +295,7 @@ def gettest():#ajax获取项目的测试用例
     return   jsonify({'data':testyong_list})
 @app.route('/getprojects',methods=['GET','POST'])
 @login_required
-def getprojects():#ajax获取测试环境等信息，如果没有测试环境的区别这里的代码可以注释掉
+def getprojects():
     id = request.get_data('id')
     if not id:
         return jsonify({'msg':'没有发送数据','code':108})

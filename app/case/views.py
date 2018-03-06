@@ -13,7 +13,7 @@ from app.common.requ_case import Api
 from app.common.panduan import assert_in
 from app.test_case.Test_case import ApiTestCase
 from app.common.send_email import send_emails
-from flask.views import View
+from flask.views import View,MethodView
 from flask_login import current_user,login_required
 from app.common.Dingtalk import send_ding
 case = Blueprint('case', __name__)
@@ -163,33 +163,24 @@ class EditcaseView(View):
                 flash(u'编辑失败，请重新编辑！')
                 return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
         return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
-class SeryongliView(View):
-    methods=['GET','POST']
+class SeryongliView(MethodView):
     @login_required
-    def dispatch_request(self):
-        models=Model.query.all()
-        if current_user.is_sper == True:
-            projects=Project.query.filter_by(status=False).order_by('-id').all()
-        else:
-            projects=[]
-            id=[]
-            for i in current_user.quanxians:
-                if  (i.projects in id)==False:
-                    if i.projects.status == False:
-                        projects.append(i.projects)
-                        id.append(i.projects)
-        if request.method=='POST':
-            projecct=request.form.get('project')
-            model=request.form.get('model')
-            if projecct =='':
-                interd=InterfaceTest.query.filter(InterfaceTest.model_id==int(model)).all()
-                return render_template('home/ser_yonglo.html', yonglis=interd, projects=projects, models=models)
-            if model =='':
-                interd=InterfaceTest.query.filter(InterfaceTest.projects_id==int(projecct)).all()
-                return render_template('home/ser_yonglo.html', yonglis=interd, projects=projects, models=models)
-            interd=InterfaceTest.query.filter(InterfaceTest.projects_id==int(projecct),InterfaceTest.model_id==int(model)).order_by('-id').all()
-            return render_template('home/ser_yonglo.html', yonglis=interd, projects=projects, models=models)
-        return redirect(url_for('home.yongli'))
+    def post(self):
+        id = request.get_data('id')
+        project = id.decode('utf-8')
+        if not project:
+            return jsonify({'msg': '没有发送数据', 'code': 108})
+        project_is = Project.query.filter_by(project_name=project).first()
+        if project_is.status is True:
+            return jsonify({'msg': '项目已经删除', 'code': 220})
+        intertestcases = InterfaceTest.query.filter_by(projects_id=project_is.id, status=False).all()
+        interfacelist = []
+        for interface in intertestcases:
+            interfacelist.append({'id':interface.id,'model':interface.models.model_name,"project":interface.projects.project_name,
+                                  'Interface_name':interface.Interface_name,'Interface_headers':interface.Interface_headers,'Interface_url':interface.Interface_url,
+                                  'Interface_meth':interface.Interface_meth,'Interface_pase':interface.Interface_pase,'Interface_assert':interface.Interface_assert,
+                                  'Interface_is_tiaoshi':interface.Interface_is_tiaoshi,'Interface_tiaoshi_shifou':interface.Interface_tiaoshi_shifou})
+        return jsonify(({'msg': '成功', 'code':200,'data':interfacelist}))
 class DaorucaseView(View):
     methods=['GET','POST']
     @login_required
@@ -348,7 +339,7 @@ class DuoyongliView(View):
                 new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
                                        fail_num=result_fail, test_time=starttime, hour_time=hour,
                                        test_rep=(day + '.html'), test_log=(day + '.log'),Exception_num=result_except,can_num=result_cashu,
-                                       wei_num=result_wei)
+                                       wei_num=result_wei,projects_id=projecct_list[0].id)
                 db.session.add(new_reust)
                 db.session.commit()
                 if f_dingding == 'email':
@@ -410,6 +401,9 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                         pasrms = eval(case.Interface_pase)
                         pasrms.update({canshu: yilaidata})
                     except:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
                         return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
                 else:
                     pasrms=case.Interface_pase
@@ -425,6 +419,9 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                     ne=eval(new_headers)
                     ne['host']=url
                 except:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
                     return jsonify({'code': 110, 'msg': '测试的请求头应该是字典格式的！'})
             me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=pasrms,headers=ne)
             result = me.testapi()
@@ -461,7 +458,9 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                         db.session.commit()
                     return jsonify({'code': 102, 'msg': '测试返回异常，原因：%s,请检查用例！'%retur_re})
             except Exception as e:
-                db.session.rollback()
+                case.Interface_is_tiaoshi = True
+                case.Interface_tiaoshi_shifou = True
+                db.session.commit()
                 return jsonify({'code': 103, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(e)})
         except Exception as e:
             return  jsonify({'code':100,'msg':'接口测试出错了！原因:%s'%e})

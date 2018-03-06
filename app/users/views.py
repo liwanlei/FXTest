@@ -174,16 +174,13 @@ class RedpassView(View):#重置密码
         user=User.query.filter_by(username=session.get('username')).first()
         new_ad=User.query.filter_by(id=id).first()
         if new_ad!=user:
-            if new_ad.is_sper==1:
-                new_ad.set_password = 111111
+            if user.is_sper ==1:
+                new_ad.set_password('111111')
                 db.session.commit()
                 flash(u'已经重置！密码：111111')
                 return redirect(url_for('home.adminuser'))
-            flash(u'自己不能重置自己的密码')
+            flash(u'不是管理员不能重置')
             return redirect(url_for('home.adminuser'))
-        new_ad.set_password=111111
-        db.session.commit()
-        flash(u'已经重置！密码：111111')
         return redirect(url_for('home.adminuser'))
 class SeruserView(View):#查询用户
     methods=['GET','POST']

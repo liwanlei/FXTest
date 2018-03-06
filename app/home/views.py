@@ -6,7 +6,6 @@ from flask import  Blueprint,jsonify
 from app.common.hebinglist import hebinglist
 from  flask import  redirect,request,render_template,url_for,flash,session
 home = Blueprint('home', __name__)
-import json
 from app.models import *
 from app.form import  *
 from flask.views import MethodView,View
@@ -65,50 +64,24 @@ class LogtView(MethodView):#退出
         return redirect(url_for('home.login'))
 class InterfaceView(MethodView):#接口
     @login_required
-    def get(self,page=1):
+    def get(self):
         if current_user.is_sper==True:
-            resylt=(Interface.query.filter_by(status=False).order_by('-id').all())
+            projects = Project.query.filter_by(status=False).all()
         else:
-            resylt=[]
-            id =[]
+            projects = []
             for pros in current_user.quanxians:
-                if not (pros.projects.id in id):
-                    pagination=Interface.query.filter(Interface.projects_id==pros.projects.id,Interface.status==False).all()
-                    id.append(pros.projects.id)
-                    resylt.append(pagination)
-            resylt = hebinglist(resylt)
-        pager_obj = Pagination(request.args.get("page", 1), len(resylt), request.path, request.args,
-                               per_page_count=PageShow)
-        index_list = resylt[pager_obj.start:pager_obj.end]
-        html = pager_obj.page_html()
-        return  render_template('home/interface.html', inte=index_list,html = html)
+                projects.append(pros.projects)
+        return  render_template('home/interface.html', projects=projects)
 class YongliView(MethodView):
     @login_required
-    def get(self,page=1):
-        projecs,models=get_pro_mo()
+    def get(self):
         if current_user.is_sper == True:
-            projects=Project.query.filter_by(status=False).order_by('-id').all()
+            projects=Project.query.filter_by(status=False).all()
         else:
             projects=[]
-            id=[]
             for i in current_user.quanxians:
-                if  (i.projects in id)==False:
-                    projects.append(i.projects)
-                    id.append(i.projects)
-        if current_user.is_sper==True:
-            resylt=InterfaceTest.query.filter_by(status=False).order_by('-id').all()
-        else:
-            resylt =[]
-            id=[]
-            for projec in current_user.quanxians:
-                if not (projec.projects.id in id):
-                    resylt.append(InterfaceTest.query.filter(InterfaceTest.projects_id==projec.projects.id,InterfaceTest.status==0).all())
-                    id.append(projec.projects.id)
-            resylt=hebinglist(resylt)
-        pager_obj = Pagination(request.args.get("page", 1), len(resylt), request.path, request.args, per_page_count=PageShow)
-        index_list = resylt[pager_obj.start:pager_obj.end]
-        html = pager_obj.page_html()
-        return  render_template('home/interface_yongli.html',index_list=index_list, html = html,models=models,projects=projects)
+                projects.append(i.projects)
+        return  render_template('home/interface_yongli.html',projects=projects)
 class AdminuserView(MethodView):
     @login_required
     def get(self):
@@ -196,13 +169,14 @@ class TimingtasksView(MethodView):#定时任务
 class GettProtestreport(MethodView):
     def get(self):
         pass
+    @login_required
     def post(self):
         id = request.get_data('id')
         project = id.decode('utf-8')
         if not  project:
             return jsonify({'msg': '没有发送数据', 'code': 108})
         project_is=Project.query.filter_by(project_name=project).first()
-        testreport=TestResult.query.filter_by(projects_id=project_is.id, status=False).all()
+        testreport=TestResult.query.filter_by(projects_id=project_is.id, status=False).order_by('-id').all()
         testreportlist=[]
         for test in testreport:
             testreportlist.append({'test_num':test.test_num,'pass_num':test.pass_num,'fail_num':test.fail_num,'hour_time':str(test.hour_time),'test_rep':test.test_rep,'test_log':test.test_log,

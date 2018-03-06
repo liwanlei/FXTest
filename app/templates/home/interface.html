@@ -19,13 +19,12 @@
                 {% endif %}
             </ul>
             {% endwith %}
-            <form method="POST" action="{{url_for('interface.ser_inter')}}">
-                <strong  style="margin-right: 10px;margin-left: 10px">项目</strong><input type="text" name="project"  placeholder="请输入查询的项目">
-                <span></span>
-                <strong style="margin-right: 10px;margin-left: 10px">模块</strong> <input type="text" name="model"  placeholder="查询的模块">
-                <span></span>
-                <input type="submit" value="查询" class="am-btn-success">
-            </form>
+            <strong>选择项目：</strong>
+            <select id="projectinter" onclick="getprointer()">
+                {% for project in projects %}
+                    <option>{{ project.project_name }}</option>
+                {% endfor %}
+            </select>
             <div style="margin-top: 10px">
                 <a href="{{url_for('interface.interface_add')}}"><input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success"> </a>
                 <a href="{{url_for('interface.daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn am-btn-default am-btn-success"></a>
@@ -45,28 +44,43 @@
                     <th>操作</th>
                 </tr>
                 </thead>
-                <tbody>
-                {%  for inter in inte %}
-                    <tr>
-                        <td>{{inter.id}}</td>
-                        <td><label class="label-important">{{inter.projects}}</label></td>
-                        <td>{{inter.models}}</td>
-                        <td>{{inter.Interface_name}}</td>
-                        <td>{{inter.Interface_url}}</td>
-                        <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ inter.Interface_headers }}</td>
-                        <td>{{inter.Interface_meth}}</td>
-                        <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{inter.Interface_par}}</td>
-                        <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{inter.Interface_back}}</td>
-                        <td><a href="{{url_for('interface.interfac_edit',id=inter.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
-                            <a href="{{url_for('interface.dele_inter',id=inter.id)}}"><input type="button" value="删除" class="btn btn-danger"></a>
-                        </td>
-                    </tr>
-                {%endfor%}
+                <tbody id="testyonglis" >
                 </tbody>
             </table><nav aria-label="Page navigation" class="pull-right">
-                <ul class="pagination">
-                    {{ html|safe }}
-                </ul>
-            </nav>
-           </div></div>
+            <ul class="pagination">
+                {{ html|safe }}
+            </ul>
+        </nav>
+        </div>
+    </div>
+    <script type="text/javascript">
+        window.onload=getprointer();
+        function getprointer() {
+            var obj = document.getElementById('projectinter');
+            var index=obj.selectedIndex;
+            var value = obj.options[index].value;
+            $.ajax({
+                url:'{{ url_for('interface.ser_inter') }}',
+                type:'POST',
+                data:value,
+                contentType: 'application/json; charset=UTF-8',
+                processData:false,
+                success:function(data){
+                    if (data['code']==200 ){
+                        var mdata =data['data'];
+                        var insertss=$('#testyonglis');
+                        insertss.empty();
+                        if (mdata.length<1){
+                            insertss.append("<tr><td><h5><strong style='color:red'>没有找到接口</strong></h5><td></tr>")
+                        }
+                        else for(var i=0;i<mdata.length;i++){
+                            insertss.append("<tr><td>"+mdata[i].id+"</td><td><label class='label-important'>"+mdata[i].projects_id+"</label></td><td>"+mdata[i].model_id+"</td><td>"+mdata[i].Interface_name+"</td><td>"+mdata[i].Interface_url+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+mdata[i].Interface_par+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"+mdata[i].Interface_back+"</td><td><a href='/interfac_edit/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a><a href='/dele_inter/"+mdata[i].id+"'><input type='button' value='删除' class='btn btn-danger'></a></td></tr>")};
+                   }
+                    },error:function (res) {
+                    alert('异步请求失败，请联系管理员！！！');
+                    window.location.reload();
+                }
+            })
+    };
+    </script>
 {% endblock %}

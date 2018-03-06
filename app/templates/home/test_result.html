@@ -22,7 +22,7 @@
             {% endwith %}
             <div  >
                 <strong>选择项目:</strong>
-                <select id="project" onclick="project()">
+                <select id="project" onclick="jiazai()">
                     {% for project in projects %}
                         <option class="glyphicon-option-vertical">{{ project.project_name }}</option>
                     {% endfor %}
@@ -53,16 +53,15 @@
                 </thead>
                 <tbody id="testyonglis" >
                 </tbody>
-            </table><nav aria-label="Page navigation" class="pull-right">
-            <ul class="pagination">
-                {{ html|safe }}
-            </ul>
-        </nav>
+            </table>
         </div>
     </div>
     <script type="text/javascript">
-        window.onload=project();
-        window.onload=baidu();
+        window.onload=jiazai();
+        function jiazai() {
+            project();
+            baidu();
+        }
         function project() {
             var obj = document.getElementById('project');
             var index=obj.selectedIndex;
@@ -76,11 +75,10 @@
                 success:function(data){
                     if (data['code']==200 ){
                         var mdata =data['data'];
-                        console.log(mdata);
                         var insertss=$('#testyonglis');
                         insertss.empty();
-                        for(var i=1;i<mdata.length;i++){
-                            insertss.append("<tr><td id='test_num' class='test_num' >"+ mdata[i]['test_num'] +"</td><td id='pass_num' class='pass_num'><label class='label-success'>"+ mdata[i]['pass_num']+"</label></td><td id='fail_num' class='fail_num'>"+ mdata[i]['fail_num']+"</td><td >"+  mdata[i]['Exception_num']+"</td><td>"+ mdata[i]['can_num']+"</td><td>" + mdata[i]['wei_num']+"</td><td class='test_date'>"+ mdata[i]['test_time']+"</td><td>"+ mdata[i]['hour_time']+"</td><td class='proce'>"+ (mdata[i]['fenshu']+"</td><td>"+ mdata[i]['Test_user_id']+"</td><td><a href='/load/"+mdata[i]["test_rep"]+"'>报告下载</a></td><td><a href='/load/"+ mdata[i]['test_log']+"'>日志下载</a></td><th><a href='deletre/"+( mdata[i]["id"])+"'><input type='button' value='删除' class='btn btn-danger'></a></th></tr>"));
+                        for(var i=0;i<mdata.length;i++){
+                            insertss.append("<tr ><td id='test_num' class='test_num' >"+ mdata[i]['test_num'] +"</td><td id='pass_num' class='pass_num'><label class='label-success'>"+ mdata[i]['pass_num']+"</label></td><td id='fail_num' class='fail_num'>"+ mdata[i]['fail_num']+"</td><td >"+  mdata[i]['Exception_num']+"</td><td>"+ mdata[i]['can_num']+"</td><td>" + mdata[i]['wei_num']+"</td><td class='test_date'>"+ mdata[i]['test_time']+"</td><td>"+ mdata[i]['hour_time']+"</td><td class='proce'>"+ (mdata[i]['fenshu']+"</td><td>"+ mdata[i]['Test_user_id']+"</td><td><a href='/load/"+mdata[i]["test_rep"]+"'>报告下载</a></td><td><a href='/load/"+ mdata[i]['test_log']+"'>日志下载</a></td><th><a href='deletre/"+( mdata[i]["id"])+"'><input type='button' value='删除' class='btn btn-danger'></a></th></tr>"));
                         };
                     }
                 },error:function (res) {
@@ -88,6 +86,8 @@
                     window.location.reload();
                 }
             });
+        }
+        function baidu() {
             var dom = document.getElementById("main");
             var myChart = echarts.init(dom);
             option = null;
@@ -205,6 +205,7 @@
             if (option && typeof option === "object") {
                 myChart.setOption(option, true);
             }
+
         }
     </script>
 {% endblock %}

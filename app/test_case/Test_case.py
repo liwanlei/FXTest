@@ -30,7 +30,7 @@ class ApiTestCase():
     def testapi(self):
         for case in range(len(self.url)):
             testcase=InterfaceTest.query.filter_by(id=self.id[case]).first()
-            if self.pid[case]:
+            if testcase.pid !="None":
                 testret=TestcaseResult.query.filter_by(case_id=int(testcase.pid)).first()
                 if testret:
                     data=testret.result
@@ -100,4 +100,5 @@ class ApiTestCase():
                     self.result_wei += 1
                     self.bask_list.append('参数必须是json格式')
                     self.result_pf.append(u'Exception')
+            print(self.result_toal ,self.result_pass,self.result_fail,self.result_pf,self.bask_list,self.result_cashu,self.result_wei,self.result_except)
         return self.result_toal ,self.result_pass,self.result_fail,self.result_pf,self.bask_list,self.result_cashu,self.result_wei,self.result_except

@@ -3,7 +3,7 @@
 @file: views.py 
 @time: 2018/1/31 13:31 
 """
-from  flask import  redirect,request,render_template,session,url_for,flash,Blueprint
+from  flask import  redirect,request,render_template,session,url_for,flash,Blueprint,jsonify
 from  app.models import *
 from app.form import  *
 from app.common.pares_excel_inter import pasre_inter
@@ -165,25 +165,21 @@ class DaoruinterView(View):
             flash(u'导入失败')
             return render_template('daoru.html')
         return render_template('daoru.html')
-class SerinterView(View):
-    methods=['GET','POST']
+class SerinterView(MethodView):
     @login_required
-    def dispatch_request(self):
-        if request.method=='POST':
-            projecct=request.form.get('project')
-            model=request.form.get('model')
-            if projecct =='' and model  =='':
-                flash(u'请输入搜索的内容')
-                return redirect(url_for('interface'))
-            try:
-                projects_id = Project.query.filter_by(project_name=projecct).first().id
-                model_id = Model.query.filter_by(model_name=model).first().id
-                interd=Interface.query.filter(Interface.model_id.like('%'+str(model_id)+'%'),Interface.projects_id.like('%'+str(projects_id)+'%')).all()
-                if len(interd)<=0:
-                    flash(u'搜索的内容不存在')
-                    return redirect(url_for('home.interface'))
-                return render_template('home/ser_inter.html', inte=interd)
-            except:
-                flash(u'搜索的内容不存在')
-                return redirect(url_for('home.interface'))
-        return redirect(url_for('home.interface'))
+    def post(self):
+        id = request.get_data('id')
+        project = id.decode('utf-8')
+        if not project:
+            return jsonify({'msg': '没有发送数据', 'code': 108})
+        project_is = Project.query.filter_by(project_name=project).first()
+        if project_is.status is True:
+            return jsonify({'msg': '项目已经删除', 'code': 220})
+        interfaclist = Interface.query.filter_by(projects_id=project_is.id, status=False).all()
+        interfaclists=[]
+        for interface in interfaclist:
+            interfaclists.append({'model_id':interface.models.model_name,'projects_id':interface.projects.project_name,
+                                  'id':interface.id,'Interface_url':interface.Interface_url,'Interface_meth':interface.Interface_meth,
+                                  'Interface_headers':interface.Interface_headers,'Interface_par':interface.Interface_par,'Interface_back':interface.Interface_back,
+                                  'Interface_name':interface.Interface_name})
+        return  jsonify(({'msg': '成功', 'code':200,'data':interfaclists}))

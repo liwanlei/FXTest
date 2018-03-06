@@ -17,21 +17,12 @@
                         {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form method="POST" action="{{url_for('case.ser_yongli')}}">
-                <strong >项目:</strong>
-                <select name='project'>
-                    <option value ="" >请选择</option>
-                    {%for project in projects%}
-                        <option value ="{{project.id}}" >{{project.project_name}}</option>
-                    {%endfor%}
-                </select>
-                <strong >模块:</strong><select name='model'>
-                <option value ="" >请选择</option>{%for model in models%}
-                <option value ="{{model.id}}" >{{model.model_name}}</option>
-            {%endfor%}
+            <strong >项目:</strong>
+            <select name='project' id="projecttestcase" onclick="getprotest()">
+                {%for project in projects%}
+                    <option  >{{project.project_name}}</option>
+                {%endfor%}
             </select>
-                <input type="submit" value="查询" class="btn btn-default">
-            </form>
             <form method="POST" action="{{url_for('case.duoyongli')}}">
                 <div style="margin-top: 10px">
                     <a href="{{url_for('case.addtestcase')}}"><input type="button" name="" class="am-btn am-btn-default am-btn-success" value="添加"></a>
@@ -58,57 +49,12 @@
                         <th>操作</th>
                     </tr>
                     </thead>
-                    <tbody>
-{#                    {% for yonglist in index_list %}#}
-                    {%for yongli in index_list%}
-                        <tr >
-                            <td><input type="checkbox"  name="yongli" value="{{yongli.id}}"></td>
-                            <td>{{yongli.id}}</td>
-                            <td>{{yongli.projects}}</td>
-                            <td>{{yongli.models}}</td>
-                            <td>{{yongli.Interface_url}}</td>
-                            <td >{{ yongli.Interface_headers }}</td>
-                            <td>{{yongli.Interface_meth}}</td>
-                            <td>{{yongli.Interface_pase}}</td>
-                            <td> {{yongli.Interface_assert}}</td>
-                            <td>
-                                <div class="am-btn-toolbar">
-                                    <div class="am-btn-group am-btn-group-xs">
-                                        <a href="{{url_for('case.edit_case',id=yongli.id)}}"><input type="button" value="编辑" class="btn btn-primary"></a>
-                                        <a href="{{url_for('case.delete_case',id=yongli.id)}}"><input type="button" value="删除"class="btn btn-danger"></a>
-                                        {% if yongli.Interface_is_tiaoshi ==0 %}
-                                            {#如果没有测试环境的区别，请还原下面两行的注释，并且加下面的第三行的代码注释掉#}
-                                            {#                                            <a href="{{ url_for('case.make_one_case',id=yongli.id)}}">#}
-                                            {#                                                <input type="button" value="调试" class="btn btn-default" id="{{ yongli.id }}" ></a>#}
-                                            <input type="button" value="调试" class="btn btn-default" id="{{ yongli.id }}" onclick="testcase(this.id)">
-                                        {% else %}
-                                            {% if yongli.Interface_tiaoshi_shifou==0 and yongli.Interface_is_tiaoshi ==1 %}
-                                                {#如果没有测试环境的区别，请还原下面两行的注释，并且加下面的第三行的代码注释掉#}
-                                                {#                                                <a href="{{ url_for('case.make_one_case',id=yongli.id)}}">#}
-                                                {#                                                    <input type="button" value="调试" class="btn btn-success"  id="{{ yongli.id }}" ></a>#}
-                                                <input type="button" value="调试" class="btn btn-success"  id="{{ yongli.id }}" onclick="testcase(this.id)">
-                                            {% elif  yongli.Interface_tiaoshi_shifou==1 and yongli.Interface_is_tiaoshi ==1 %}
-                                                {#如果没有测试环境的区别，请还原下面两行的注释，并且加下面的第三行的代码注释掉#}
-                                                {#                                                <a href="{{ url_for('case.make_one_case',id=yongli.id)}}">#}
-                                                {#                                                    <input type="button" value="调试" class="btn btn-danger"  id="{{ yongli.id }}" ></a>#}
-                                                <input type="button" value="调试" class="btn btn-danger"  id="{{ yongli.id }}" onclick="testcase(this.id)" >
-                                            {% endif %}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    {%endfor%} 
+                    <tbody id="testyonglis">
                     </tbody>
                 </table>
-             <nav aria-label="Page navigation" class="pull-right">
-                <ul class="pagination">
-                    {{ html|safe }}
-                </ul>
-            </nav>
             </form>
-            </div></div>
-    {#如果没有测试环境区别的需求，下面的代码包括js都可以注释#}
+        </div>
+    </div>
     <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="ceshiyongli">
     <div style="height: 5px;">请选择测试用例执行的测试环境</div>
     <div style="background-color: whitesmoke;margin-top: 24px" >
@@ -126,6 +72,7 @@
 {% endblock %}
 {% block js %}
     <script language="JavaScript">
+        window.onload=getprotest();
         function testcase(id){
             var  divshow=document.getElementById('ceshiyongli');
             var  divcase=document.getElementById('zhixingceshiyongli');
@@ -195,6 +142,42 @@
                     }
                 }
             })
-        }
+        };
+        function getprotest() {
+            var obj = document.getElementById('projecttestcase');
+            var index=obj.selectedIndex;
+            var value = obj.options[index].value;
+            $.ajax({
+                url:'{{ url_for('case.ser_yongli') }}',
+                type:'POST',
+                data:value,
+                contentType: 'application/json; charset=UTF-8',
+                processData:false,
+                success:function(data){
+                    if (data['code']==200 ){
+                        var mdata =data['data'];
+                        var insertss=$('#testyonglis');
+                        insertss.empty();
+                        if (mdata.length<1){
+                            insertss.append("<tr><td><h5><strong style='color:red'>没有找到接口用例</strong></h5><td></tr>")
+                        }
+                        else for(var i=0;i<mdata.length;i++){
+                            if(mdata[i].Interface_is_tiaoshi==0 ){
+                                insertss.append("<tr><td><input type='checkbox' name='yongli' value='"+mdata[i].id+"'></td><td>"+mdata[i].id+"</td><td>"+mdata[i].project+"</td><td>"+mdata[i].model+"</td><td>"+mdata[i].Interface_url+"</td><td >"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td>"+mdata[i].Interface_pase+"</td><td>"+mdata[i].Interface_assert+"</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a> <a href='/delete_case/"+mdata[i].id+"'><input type='button' value='删除'class='btn btn-danger'></a>&nbsp;&nbsp;<input type='button' value='调试' class='btn btn-default' id='"+mdata[i].id+"' onclick='testcase(this.id)'></div></div></td></tr>")
+                            }
+                            else if(mdata[i].Interface_is_tiaoshi==1 &&mdata[i].Interface_tiaoshi_shifou==1){
+                                insertss.append("<tr><td><input type='checkbox' name='yongli' value='"+mdata[i].id+"'></td><td>"+mdata[i].id+"</td><td>"+mdata[i].project+"</td><td>"+mdata[i].model+"</td><td>"+mdata[i].Interface_url+"</td><td >"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td>"+mdata[i].Interface_pase+"</td><td>"+mdata[i].Interface_assert+"</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a> <a href='/delete_case/"+mdata[i].id+"'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-danger' id='"+mdata[i].id+"' onclick='testcase(this.id)'></div></div></td></tr>")
+                            }else if(mdata[i].Interface_is_tiaoshi==1 &&mdata[i].Interface_tiaoshi_shifou==0) {
+                                insertss.append("<tr><td><input type='checkbox' name='yongli' value='"+mdata[i].id+"'></td><td>"+mdata[i].id+"</td><td>"+mdata[i].project+"</td><td>"+mdata[i].model+"</td><td>"+mdata[i].Interface_url+"</td><td >"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td>"+mdata[i].Interface_pase+"</td><td>"+mdata[i].Interface_assert+"</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a> <a href='/delete_case/"+mdata[i].id+"'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-success' id='"+mdata[i].id+"' onclick='testcase(this.id)'></div></div></td></tr>")
+                            }
+                        };
+                    }
+                    }
+                    ,error:function (res) {
+                    alert('异步请求失败，请联系管理员！！！');
+                    window.location.reload();
+                }
+            })
+    }
     </script>
-i{% endblock %}
+{% endblock %}
