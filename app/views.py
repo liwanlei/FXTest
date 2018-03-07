@@ -36,59 +36,44 @@ class LoadView(View):
         file_dir=os.path.join(basedir,'upload')
         response=make_response(send_from_directory(file_dir,filename,as_attachment=True))
         return response
-class AddmodelView(View):
-    methods=['GET','POST']
-    @login_required
-    def dispatch_request(self):
-        if request.method=="POST":
-            model=request.form.get('project')
-            if model=='':
-                flash(u'请添加您的模块名')
-                return render_template('add/add_moel.html')
-            user_id=User.query.filter_by(username=session.get('username')).first().id
-            models=Model.query.filter_by(model_name=model).first()
-            if models:
-                flash(u'模块不能重复')
-                return render_template('add/add_moel.html')
-            new_moel=Model(model_name=model,model_user_id=user_id)
-            db.session.add(new_moel)
-            try:
-                db.session.commit()
-                flash(u'%s模块 添加成功!'%model)
-                return  redirect( url_for('home.model'))
-            except:
-                db.session.rollback()
-                flash(u'%s模块 添加失败！！'%model)
-                return redirect(url_for('home.model'))
-        return  render_template('add/add_moel.html')
-class AddproView(View):
-    methods=['GET','POST']
-    @login_required
-    def dispatch_request(self):
-        if current_user.is_sper == False:
-            flash('权限不足，不能添加项目')
-            return  redirect(request.headers.get('Referer'))
-        if request.method=="POST":
-            model=request.form.get('project')
-            if model=='':
-                flash(u'请添加您的项目名')
-                return render_template('add/add_pro.html')
-            user_id=User.query.filter_by(username=session.get('username')).first().id
-            projec=Project.query.filter_by(project_name=model).first()
-            if projec:
-                flash(u'%s项目  不能重复'%model)
-                return render_template('add/add_pro.html')
-            new_moel=Project(project_name=model,project_user_id=user_id)
-            db.session.add(new_moel)
-            try:
-                db.session.commit()
-                flash(u'%s项目   添加成功!'%model)
-                return  redirect(url_for('home.project'))
-            except:
-                db.session.rollback()
-                flash(u'添加guo程总是不理想!')
-                return redirect(url_for('home.project'))
+class AddmodelView(MethodView):
+    def get(self):
+        return render_template('add/add_moel.html')
+    def post(self):
+        model=request.get_data('projectname')
+        modelnew=model.decode('utf-8')
+        models = Model.query.filter_by(model_name=modelnew).first()
+        if models:
+            return jsonify({'code': 315,'msg':'模块不能重复存在','data':''})
+        new_moel = Model(model_name=modelnew, model_user_id=current_user.id)
+        db.session.add(new_moel)
+        try:
+            db.session.commit()
+            return  jsonify({'code':200,'msg':'添加成功','data':''})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'code': 316,'msg':'添加失败，原因：%s'%e,'data':''})
+class AddproView(MethodView):
+    def  get(self):
         return  render_template('add/add_pro.html')
+    def post(self):
+        if current_user.is_sper is False:
+            return jsonify({'code': 317, 'msg': '权限不足！' , 'data': ''})
+        model = request.get_data('projectname')
+        modelnew = model.decode('utf-8')
+        if modelnew =='':
+            return jsonify({'code': 329, 'msg': '不能为空！', 'data': ''})
+        projec=Project.query.filter_by(project_name=modelnew).first()
+        if projec:
+            return jsonify({'code': 319, 'msg': '项目不能重复！', 'data': ''})
+        new_moel=Project(project_name=modelnew,project_user_id=current_user.id)
+        db.session.add(new_moel)
+        try:
+            db.session.commit()
+            return jsonify({'code': 200, 'msg': '添加成功！', 'data': ''})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'code': 219, 'msg': '添加失败，原因:%s！'%e, 'data': ''})
 class DelemodelView(View):
     methods=['GET','POST']
     @login_required
@@ -173,11 +158,9 @@ class ADDTesteventView(MethodView):#添加测试环境
             projects=Project.query.filter_by(status=False).order_by('-id').all()
         else:
             projects=[]
-            id=[]
             for i in current_user.quanxians:
                 if  (i.projects in id)==False:
                     projects.append(i.projects)
-                    id.append(i.projects)
         if len(projects)<=0:
             flash(u'你没有所属的项目，请在后台添加')
             return redirect(url_for('home.ceshihuanjing'))
@@ -185,45 +168,23 @@ class ADDTesteventView(MethodView):#添加测试环境
         return render_template('add/add_even.html', form=forms, projects=projects)
     @login_required
     def post(self):
-        if current_user.is_sper == True:
-            projects=Project.query.filter_by(status=False).order_by('-id').all()
-        else:
-            projects=[]
-            id=[]
-            for i in current_user.quanxians:
-                if  (i.projects in id)==False:
-                    projects.append(i.projects)
-                    id.append(i.projects)
-        if len(projects)<=0:
-            flash(u'你没有所属的项目，请在后台添加')
-            return redirect(url_for('home.ceshihuanjing'))
-        forms = Interface_Env()
-        if forms.validate_on_submit:
-            peoject=request.form['project']
-            url=request.form['envtion']
-            desc=request.form['desc']
-            user_id = current_user.id
-            if peoject =='' or url=='' or desc =='':
-                flash(u'请准确填写测试环境的信息')
-                return redirect(url_for('addevent'))
-            url_old=Interfacehuan.query.filter_by(url=url).first()
-            if url_old:
-                flash(u'测试环境必须是相互独立的')
-                return redirect(url_for('addevent'))
-            end=Interfacehuan()
-            end.url=url
-            end.desc=desc
-            end.project=peoject
-            end.make_user=user_id
-            db.session.add(end)
-            try:
-                db.session.commit()
-                flash('添加测试用例成功！')
-                return redirect(url_for('home.ceshihuanjing'))
-            except:
-                db.session.rollback()
-                return redirect(url_for('home.ceshihuanjing'))
-        return render_template('add/add_even.html', form=forms, projects=projects)
+        data=request.get_json()
+        url_old=Interfacehuan.query.filter_by(url=str(data['url'])).first()
+        if url_old:
+            return  jsonify({"msg":u'测试环境必须是相互独立的',"code":209,'data':''})
+        prkcyt=Project.query.filter_by(project_name=data['work']).first()
+        end=Interfacehuan()
+        end.url=data['url']
+        end.desc=data['desc']
+        end.project=prkcyt.id
+        end.make_user=current_user.id
+        db.session.add(end)
+        try:
+            db.session.commit()
+            return jsonify({"msg": u'添加测试用例成功!', "code": 200, 'data': ''})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"msg": u'添加测试用例失败！原因：%s'%e, "code": 211, 'data': ''})
 class DeleteEventViews(MethodView):#删除测试环境
     @login_required
     def get(self,id):
@@ -257,7 +218,7 @@ class EditEventViews(MethodView):#编辑测试环境
             projects=[]
             id=[]
             for i in current_user.quanxians:
-                if  (i.projects in id)==False:
+                if  (i.projects in id) is False:
                     projects.append(i.projects)
                     id.append(i.projects)
         if len(projects)<=0:

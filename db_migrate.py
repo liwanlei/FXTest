@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2017/7/13 20:54
-# @Author  : lileilei
+# @Author  :  lileilei
 # @File    : db_migrate.py
 from flask_migrate import Migrate,MigrateCommand
 from flask_script import  Manager

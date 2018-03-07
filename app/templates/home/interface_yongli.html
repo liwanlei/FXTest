@@ -101,7 +101,7 @@
                         alert(testyong['msg'])
                     }
                 },error:function (res) {
-                    alert('异步请求失败，请联系管理员！！！')
+                    alert('异步请求失败，请联系管理员！！！');
                     window.location.reload();
                 }
             });
@@ -172,12 +172,12 @@
                             }
                         };
                     }
-                    }
-                    ,error:function (res) {
+                }
+                ,error:function (res) {
                     alert('异步请求失败，请联系管理员！！！');
                     window.location.reload();
                 }
             })
-    }
+        }
     </script>
 {% endblock %}

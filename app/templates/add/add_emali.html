@@ -31,7 +31,6 @@
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>邮箱安全:</strong>
-
                     {{ form.password }}</div>{% if form.password.errors %}
                 {% for e in form.password.errors %}
                     <span class="help-block" style='color:red'>{{ e }}</span>
@@ -44,9 +43,11 @@
                     <span>&nbsp;</span></div>
                 <div class="form-group">
                     <strong>接受邮箱:</strong>
-                    <input type="text" name="email" placeholder="请输入接受邮箱"> <text style="color: lightsteelblue;">多个邮箱请用逗号隔开</text>
+                    <input type="text" name="email" placeholder="请输入接受邮箱">
+                    <text style="color: lightsteelblue;">多个邮箱请用逗号隔开</text>
                 </div>
                 <button type="submit" class="am-btn am-btn-primary ">添加</button>
-            </form></div></div>
+            </form>
+        </div>
     </div>
 {%endblock%}

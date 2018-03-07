@@ -9,15 +9,15 @@
                     <span class="am-icon-code"></span> 添加接口
                 </div>
             </div>
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul class='flashes'>
-            {% for message in messages %}
-                <li style="color:red">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endwith %}
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
             <form  action="{{ url_for('interface.interface_add') }}" method="POST" >
                 {{form.hidden_tag()}}
                 {{form.csrf_token}}
@@ -61,6 +61,7 @@
                     <strong>返回示例:</strong>
                     {{ form.interface_bas }}</div>
                 <button type="submit" class="am-btn am-btn-primary ">添加</button>
-            </form></div>
-    </div></div>
+            </form>
+        </div>
+    </div>
 {%endblock%}

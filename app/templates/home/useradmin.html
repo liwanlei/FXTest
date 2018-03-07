@@ -44,37 +44,43 @@
                 </thead>
                 <tbody>
                 {%for user in users%}
-                        <tr>
-                            <td>{{user.id}}</td>
-                            <td><label class="label label-default">{{user.username}}</label></td>
-                            <td><label class="label label-primary">{{user.user_email}}</label></td>
-                            <td><label class="label label-info">{{user.works}}</label></td>
-                            <td >
-                                {% for i in user.quanxians %}
-                                    {%  if i.rose==1 %}
-                                        <label class="label label-default {{ user.username }}" id="{{ i.projects.id }}">
-                                            {{ i.projects.project_name }}</label>
-                                    {%  elif i.rose==2 %}
-                                        <label class="label label-danger  {{ user.username }}" id="{{ i.projects.id }}">
-                                            {{ i.projects.project_name }}</label>
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                            {% if user.status==0%}
-                                <td><a href="{{url_for('user.fre_ad',id=user.id)}}"><input type="button" value="冻结" class="btn btn-success"></a></td>
-                            {%elif user.status==1%}
-                                <td><a href="{{url_for('user.fre_re',id=user.id)}}"><input type="button" value="解冻" class="btn btn-danger"></a></td>
-                            {%endif%}
-                            <td>
-                                <a ><input type="button" value="设置" class="btn btn-default" onclick="shezhiguanliyuan(id=this.id)" id="{{ user.username }}"></a>
-                            <td>
-                                <span><a href="{{url_for('user.red_pass',id=user.id)}}"><input type="button" value="重置密码" class="btn btn-warning"></a></span>
-                            </td>
-                        </tr>
-                    {%endfor%}
+                    <tr>
+                        <td>{{user.id}}</td>
+                        <td><label class="label label-default">{{user.username}}</label></td>
+                        <td><label class="label label-primary">{{user.user_email}}</label></td>
+                        <td><label class="label label-info">{{user.works}}</label></td>
+                        <td >
+                            {% for i in user.quanxians %}
+                                {%  if i.rose==1 %}
+                                    <label class="label label-default {{ user.username }}" id="{{ i.projects.id }}">
+                                        {{ i.projects.project_name }}</label>
+                                {%  elif i.rose==2 %}
+                                    <label class="label label-danger  {{ user.username }}" id="{{ i.projects.id }}">
+                                        {{ i.projects.project_name }}</label>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        {% if user.status==0%}
+                            <td><a href="{{url_for('user.fre_ad',id=user.id)}}">
+                                <input type="button" value="冻结" class="btn btn-success">
+                            </a></td>
+                        {%elif user.status==1%}
+                            <td><a href="{{url_for('user.fre_re',id=user.id)}}">
+                                <input type="button" value="解冻" class="btn btn-danger">
+                            </a></td>
+                        {%endif%}
+                        <td>
+                            <a ><input type="button" value="设置" class="btn btn-default" onclick="shezhiguanliyuan(id=this.id)" id="{{ user.username }}"></a>
+                        <td>
+                        <span><a href="{{url_for('user.red_pass',id=user.id)}}">
+                            <input type="button" value="重置密码" class="btn btn-warning">
+                        </a></span>
+                    </td>
+                    </tr>
+                {%endfor%}
                 </tbody>
             </table>
-        <nav aria-label="Page navigation" class="pull-right">
+            <nav aria-label="Page navigation" class="pull-right">
                 <ul class="pagination">
                     {{ html|safe }}
                 </ul>

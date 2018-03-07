@@ -75,12 +75,12 @@
                         }
                         else for(var i=0;i<mdata.length;i++){
                             insertss.append("<tr><td>"+mdata[i].id+"</td><td><label class='label-important'>"+mdata[i].projects_id+"</label></td><td>"+mdata[i].model_id+"</td><td>"+mdata[i].Interface_name+"</td><td>"+mdata[i].Interface_url+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+mdata[i].Interface_par+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"+mdata[i].Interface_back+"</td><td><a href='/interfac_edit/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a><a href='/dele_inter/"+mdata[i].id+"'><input type='button' value='删除' class='btn btn-danger'></a></td></tr>")};
-                   }
-                    },error:function (res) {
+                    }
+                },error:function (res) {
                     alert('异步请求失败，请联系管理员！！！');
                     window.location.reload();
                 }
             })
-    };
+        };
     </script>
 {% endblock %}

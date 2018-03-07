@@ -7,6 +7,7 @@
     <link href="{{url_for('static',filename='css/demo.css')}}"  rel="stylesheet">
     <link href="{{url_for('static',filename='css/main.css')}}"  rel="stylesheet">
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.min.js')}}"></script>
 </head>
 <body style="    background-color: beige;">
 <div id="wrapper">
@@ -15,18 +16,18 @@
             <div class="header " style="">
                 <h1 style="text-align: center;">登录</h1>
             </div>
+            <div style="text-align: center;color: red" id="duanyan"></div>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
-                    <p class='flashes' style='text-align:center;color:red;'>
+                    <ul class=flashes>
                         {% for message in messages %}
-                            <li style="text-align:center;color:red">{{ message }}</li>
+                            <li >{{ message }}</li>
                         {% endfor %}
-                    </p>
+                    </ul>
                 {% endif %}
             {% endwith %}
             {% block body %}{% endblock %}
-            <form class="form-auth-small" action="{{ url_for('home.login') }}" method="POST" style="width: 40%;
-    margin-left: 30%;">
+            <form class="form-auth-small"  method="POST" style="width: 40%;margin-left: 30%;">
                 {{form.hidden_tag()}}
                 <div class="form-group">
                     {% if form.username.errors %}
@@ -34,14 +35,12 @@
                             <p class="flashes">{{ e }}</p>
                         {% endfor %}
                     {% endif %}
-                    {{ form.username(class='form-control') }}
+                    {{ form.username(class='form-control',id='username') }}
                     <div class="form-group">
-                        {{ form.password(class='form-control') }}
+                        {{ form.password(class='form-control',id='password') }}
                     </div>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">登录</button>
-
+                    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="login()">登录</button>
                 </div>
-
             </form>
             <h3 style="text-align: center">管理员：liwanlei  密码:liwanlei </h3>
             <h4 style="text-align: center " >
@@ -49,5 +48,38 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" >
+    function login() {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        var message = document.getElementById('duanyan');
+        if (username.length <1) {
+            message.innerHTML="用户名不能为空！";
+        }else {
+            if (password.length < 1) {
+                message.innerHTML="密码不能为空！";
+            }else {
+                var data = {};
+                data['username'] = username;
+                data['password'] = password;
+                $.ajax({
+                    url: '{{ url_for('home.login') }}',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json; charset=UTF-8',
+                    processData: false,
+                    success: function (result) {
+                        if (result['code'] == 200) {
+                            location.href='{{ url_for('home.index') }}';
+                        }
+                        else {
+                            message.innerHTML=(result['msg']);
+                        }
+                    }
+                });
+            }
+        }
+    }
+</script>
 </body>
 </html>

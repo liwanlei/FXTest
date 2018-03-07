@@ -11,61 +11,45 @@ from flask.views import MethodView,View
 from  app.common.decorators import chckuserpermisson
 from flask_login import current_user,login_required
 from config import OneAdminCount
-class AdduserView(View):#添加用户
-    methods=['GET','POST']
+class AdduserView(MethodView):#添加用户
     @login_required
-    def dispatch_request(self):
-        if chckuserpermisson() == False:
+    def get(self):
+        if chckuserpermisson() is False:
             flash('权限不足，不能为项目添加用户')
             return  redirect(request.headers.get('Referer'))
         wrok=Work.query.all()
-        projects=[]
-        for pri in current_user.quanxians:
-            if pri.rose==2 or pri.rose==3 or current_user.is_sper ==1:
-                projects.append(pri.projects)
-        if request.method =='POST':
-            user=request.form.get('user')
-            password=request.form.get('password')
-            password1=request.form.get('password1')
-            email=request.form.get('email')
-            work=request.form.get('work')
-            usertype=request.form.getlist('usertype')
-            if email =='' or user =='' :
-                flash(u'请准确填写用户信息')
-                return render_template('add/add_user.html', wroks=wrok,projects=projects)
-            if len(usertype)<=0 :
-                flash(u'添加用户的时候必须选择项目，项目可以是多个')
-                return render_template('add/add_user.html', wroks=wrok, projects=projects)
-            if password!= password1:
-                flash(u'请确定两次密码是否一致')
-                return render_template('add/add_user.html', wroks=wrok,projects=projects)
-            use=User.query.filter_by(username=user).first()
-            if use:
-                flash(u'用户已经存在')
-                return render_template('add/add_user.html', wroks=wrok,projects=projects)
-            emai=User.query.filter_by(user_email=email).first()
-            if emai:
-                flash(u'邮箱已经存在')
-                return render_template('add/add_user.html', wroks=wrok,projects=projects)
-            new_user=User(username=user,user_email=email)
-            new_user.set_password(password)
-            new_user.work_id=work
-            db.session.add(new_user)
-            try:
-                db.session.commit()
-                user_id=User.query.filter_by(username=user).first()
-                for proj in usertype:
-                    quanxian=Quanxian(project=proj,rose=1)
-                    quanxian.user.append(user_id)
-                    db.session.add(quanxian)
-                db.session.commit()
-                flash(u'添加成功')
-                return redirect(url_for('home.adminuser'))
-            except Exception as e:
-                db.session.rollback()
-                flash(u'添加过程那么不是快速')
-                return redirect(url_for('home.adminuser'))
-        return render_template('add/add_user.html', wroks=wrok,projects=projects)
+        projects=Project.query.all()
+        return render_template('add/add_user.html', wroks=wrok, projects=projects)
+    @login_required
+    def post(self):
+        data=request.get_json()
+        use=User.query.filter_by(username=data['username']).first()
+        if use:
+            return  jsonify({'msg':'用户已经存在！不能重复!','code':321,'data':''})
+        emai=User.query.filter_by(user_email=data['eamil']).first()
+        if emai:
+            return jsonify({'msg': '邮箱已经存在！请选个邮箱!', 'code': 322, 'data': ''})
+        wrok=Work.query.filter_by(id=data['work']).first()
+        new_user=User(username=data['username'],user_email=data['eamil'])
+        new_user.set_password(data['password'])
+        new_user.work_id=wrok.id
+        db.session.add(new_user)
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'msg': '添加失败，原因：%s'%e, 'code': 326, 'data': ''})
+        try:
+            user_id = User.query.filter_by(username=data['username']).first()
+            for proj in data['xiangmu']:
+                quanxian = Quanxian(project=proj, rose=1)
+                quanxian.user.append(user_id)
+            db.session.add(quanxian)
+            db.session.commit()
+            return jsonify({'msg': '成功', 'code': 200, 'data': ''})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'msg': '添加失败，原因：%s'%e, 'code': 326, 'data': ''})
 class SetadView(View):#设置管理员
     methods=['GET','POST']
     @login_required
@@ -110,7 +94,7 @@ class DeladView(View):#取消管理员
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
-        if chckuserpermisson() == False:
+        if chckuserpermisson() is False:
             flash('权限不足，不能取消管理员')
             return  redirect(request.headers.get('Referer'))
         new_ad=User.query.filter_by(id=id).first()

@@ -15,21 +15,37 @@
                     </div>
                 </div>
             </div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class='flashes'>
-                        {% for message in messages %}
-                            <li style="color:red">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <form  action="{{ url_for('add_pro') }}" method="POST" style="width: 40%;
-    margin-left: 30%;">
+            <div style="text-align: center ;color: red" id="messgae"></div>
+            <form    style="width: 40%; margin-left: 30%;">
                 <div class="form-group">
                     <strong>项目名字:</strong>
-                    <input type="text" name="project"  placeholder="填写项目名">
+                    <input type="text" name="project" id="project" placeholder="填写项目名">
                 </div>
-                <button type="submit" class="am-btn am-btn-primary ">添加</button>
-            </form></div>
+                <button type="button" class="am-btn am-btn-primary " onclick="addmodel();">添加</button>
+            </form>
+        </div></div>
+    <script type="text/javascript" >
+        function addmodel() {
+            var projectname=document.getElementById('project');
+            var message=document.getElementById('messgae');
+            if (projectname.value.length<1){
+                message.innerHTML='项目名字不能为空!!'
+            }else {
+                $.ajax({
+                    url: '{{ url_for('add_pro') }}',
+                    type: 'POST',
+                    data: projectname.value,
+                    contentType: 'application/json; charset=UTF-8',
+                    processData: false,
+                    success: function (result) {
+                        if (result['code'] == 200) {
+                            location.href='{{ url_for('home.project') }}';
+                        }
+                        else {
+                            message.innerHTML=(result['msg']);
+                        }
+                    }
+                });
+            }}
+    </script>
 {%endblock%}

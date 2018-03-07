@@ -10,6 +10,7 @@
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
     <script src="{{url_for('static',filename='js/echarts.common.min.js')}}"></script>
     <script src="{{url_for('static',filename='js/app.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.min.js')}}"></script>
     <script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body style="background-color: #f5f5f5" >
@@ -25,10 +26,12 @@
             <li class="am-hide-sm-only"></li>
             <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                 <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('user.setting')}}">
-                    <span class="tpl-header-list-user-nick" >{{session.username}}</span><span class="tpl-header-list-user-ico"></span>
+                    <span class="tpl-header-list-user-nick" >{{session.username}}</span>
+                    <span class="tpl-header-list-user-ico"></span>
                 </a>
             </li>
-            <li><a href="{{url_for('home.logt')}}" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+            <li><a href="{{url_for('home.logt')}}" class="tpl-header-list-link">
+                <span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
         </ul>
     </div>
 </header>

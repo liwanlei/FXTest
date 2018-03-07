@@ -115,8 +115,8 @@
                         {% endif %}
                         <td><label class="label-primary" style="background: white">{{ int.users }}</label></td>
                         <td>
-                            <span><a href="{{ url_for('mock.editmockserver',id=int.id) }}"><i class="am-icon-edit"></i></a></span>  {%if current_user.role_id !=1 and
-          current_user.role_id !=None  %}
+                            <span><a href="{{ url_for('mock.editmockserver',id=int.id) }}"><i class="am-icon-edit"></i></a></span>
+                            {%if current_user.role_id !=1 and current_user.role_id !=None  %}
                             <span><a href="{{ url_for('mock.deletemock',id=int.id) }}"><i class="am-icon-remove"></i></a></span>{%endif%}
                         </td>
                     </tr>

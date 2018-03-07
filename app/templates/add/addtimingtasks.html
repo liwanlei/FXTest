@@ -1,7 +1,8 @@
 {%extends 'back.html' %}
 {%block hello%}
     <div class="tpl-content-wrapper">
-        <div class="tpl-content-page-title"></div>
+        <div class="tpl-content-page-title">
+        </div>
         <div class="tpl-portlet-components">
             <div class="portlet-title">
                 <div class="caption font-green bold">
@@ -12,30 +13,85 @@
                         <div class="input-icon right">
                         </div>
                     </div>
-                </div></div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class='flashes'>
-                        {% for message in messages %}
-                            <li style="color:red" >{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <form  action="{{ url_for('task.addtimingtasks') }}" method="POST" style="width: 40%;
-    margin-left: 30%;">
+                </div>
+            </div>
+            <div style="text-align: center ;color: red" id="messgae"></div>
+            <form   style="width: 40%;margin-left: 30%;">
                 <div class="form-group">
                     <p style="margin-top: 20px"><strong >任务名称:</strong>
-                        <input type="text" name="taskname"  placeholder="请输入任务名！"></p>
+                        <input type="text" id="taskname"  placeholder="请输入任务名！"></p>
+                    <p style="margin-top: 20px"><strong >所属项目:</strong>
+                        <select id="project">
+                            {% for pro in projects %}
+                                <option>
+                                    {{ pro.project_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </p>
                     <p style="margin-top: 20px"><strong>测试时间:</strong>
-                        <input type="text" name="time"  placeholder="请输入con表达式！格式如： {'type': 'cron',  'day_of_week':‘mon-fri’, 'hour':'13',  'minute':'14'}"></p>
+                        <input type="text" id="time"  placeholder="请输入con表达式！格式如： {'type': 'cron',  'day_of_week':‘mon-fri’, 'hour':'13',  'minute':'14'}"></p>
                     <p style="margin-top: 20px"><strong>邮件主送:</strong>
-                        <textarea type="text" name="to_email"  placeholder="测试报告发送谁给，逗号分隔多个！" style="width: 200px;height: 100px;"></textarea></p>
+                        <textarea type="text" id="to_email"  placeholder="测试报告发送谁给，逗号分隔多个！" style="width: 200px;height: 100px;"></textarea></p>
                     <p style="margin-top: 20px"> <strong>邮件抄送:</strong>
-                        <textarea type="text" name="cao_email"  placeholder="测试报告抄送的人，用逗号分隔！" style="width: 200px;height: 100px;"></textarea></p>
+                        <textarea type="text" id="cao_email"  placeholder="测试报告抄送的人，用逗号分隔！" style="width: 200px;height: 100px;"></textarea></p>
                     <p style="margin-top: 20px"> <strong>支持人邮件:</strong>
-                        <input type="text" name="weihu"  placeholder="维护改测试计划的人！"></p>
+                        <input type="text" id="weihu"  placeholder="维护改测试计划的人！"></p>
                 </div>
-                <button type="submit" class="am-btn am-btn-primary ">添加</button>
-            </form> </div></div>
+                <button type="button" class="am-btn am-btn-primary " onclick="addtimingtasks()">添加</button>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function addtimingtasks() {
+            var message=document.getElementById('messgae');
+            var taskname=document.getElementById('taskname');
+            var time=document.getElementById('time');
+            var to_email=document.getElementById('to_email');
+            var cao_email=document.getElementById('cao_email');
+            var weihu=document.getElementById('weihu');
+            var me=document.getElementById("project");
+            var project=document.getElementById("project").selectedIndex;
+            var projects=me.options[project];
+            if (taskname.value.length<1){
+                message.innerHTML='任务名称不能为空';
+            }else {
+                if (weihu.value.length<1){
+                    message.innerHTML='任务的维护人不能为空';
+                }
+                else {
+                    if (time.value.length<1){
+                        message.innerHTML='con表达式不能为空';
+                    }else {
+                        if (projects.text.length<1){
+                            message.innerHTML='项目为必须选择';
+                        }else {
+                            var data={};
+                            data['taskname']=taskname.value;
+                            data['time']=time.value;
+                            data['to_email']=to_email.value;
+                            data['cao_email']=cao_email.value;
+                            data['weihu']=weihu.value;
+                            data['projects']=projects.value;
+                            $.ajax({
+                                url: '{{ url_for('task.addtimingtasks') }}',
+                                type: 'POST',
+                                data: JSON.stringify(data),
+                                contentType: 'application/json; charset=UTF-8',
+                                processData: false,
+                                success: function (result) {
+                                    if (result['code'] == 200) {
+                                        location.href='{{ url_for('home.timingtask') }}';
+                                    }
+                                    else {
+                                        message.innerHTML=(result['msg']);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 {%endblock%}

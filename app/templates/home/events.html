@@ -42,19 +42,19 @@
                     </thead>
                     <tbody>
                     {% for enve in events %}
-                    {%for ebent in enve%}
-                        <tr>
-                            <td><label class="" style="background-color: white"><strong>{{ebent.project}}</strong></label></td>
-                            <td><label class="label-primary" style="background: white">{{ ebent.url }}</label></td>
-                            <td> <label class="label-primary" style="background: white">{{ ebent.desc }}</label></td>
-                            <td>   <label class="label-primary" style="background: white">{{ ebent.users }}</label></td>
-                            <td>
-                                <span><a href="{{ url_for('editevents',id=ebent.id) }}"><input type="button" value="编辑" class="btn btn-primary"></a></span>
-                                {%if current_user.role_id !=1 and current_user.role_id !=None  %}
-                                    <span><a href="{{ url_for ('delete',id=ebent.id)  }}"><input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
-                            </td>
-                        </tr>
-                    {%endfor%}{% endfor %}
+                        {%for ebent in enve%}
+                            <tr>
+                                <td><label class="" style="background-color: white"><strong>{{ebent.project}}</strong></label></td>
+                                <td><label class="label-primary" style="background: white">{{ ebent.url }}</label></td>
+                                <td> <label class="label-primary" style="background: white">{{ ebent.desc }}</label></td>
+                                <td>   <label class="label-primary" style="background: white">{{ ebent.users }}</label></td>
+                                <td>
+                                    <span><a href="{{ url_for('editevents',id=ebent.id) }}"><input type="button" value="编辑" class="btn btn-primary"></a></span>
+                                    {%if current_user.role_id !=1 and current_user.role_id !=None  %}
+                                        <span><a href="{{ url_for ('delete',id=ebent.id)  }}"><input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
+                                </td>
+                            </tr>
+                        {%endfor%}{% endfor %}
                     </tbody>
                 </table>
             </div>

@@ -2,7 +2,7 @@
 # @Author  : lileilei
 # @File    : views.py
 # @Time    : 2017/12/7 12:19
-from flask import  Blueprint
+from flask import  Blueprint,jsonify
 from  flask import  redirect,request,render_template,url_for,flash
 from app.models import *
 from flask.views import MethodView
@@ -200,41 +200,23 @@ class YichuTaskView(MethodView):#移除定时任务
 class AddtimingtaskView(MethodView):
     @login_required
     def get(self):
-        return  render_template('add/addtimingtasks.html')
+        project=Project.query.filter_by(status=False).all()
+        return  render_template('add/addtimingtasks.html',projects=project)
     @login_required
     def post(self):
-        taskname=request.form['taskname']
-        tinmingtime=request.form['time']
-        to_email_data=request.form['to_email']
-        cao_email=request.form['cao_email']
-        weihu=request.form['weihu']
-        if taskname =='':
-            flash(u'任务名不能为空！')
-            return render_template('add/addtimingtasks.html')
-        if tinmingtime =='':
-            flash(u'任务执行时间不能为空！')
-            return render_template('add/addtimingtasks.html')
-        if to_email_data=='':
-            flash(u'发送给谁邮件不能为空！')
-            return render_template('add/addtimingtasks.html')
-        if weihu=='':
-            flash(u'维护人邮件不能为空！')
-            return render_template('add/addtimingtasks.html')
-        taskname_is = Task.query.filter_by(taskname=taskname).first()
+        data=request.get_json()
+        taskname_is = Task.query.filter_by(taskname=data['taskname']).first()
         if taskname_is:
-            flash(u'任务已经存在请重新填写！')
-            return render_template('add/addtimingtasks.html')
-        new_task=Task(taskname=taskname,taskstart=tinmingtime,taskrepor_to=to_email_data,taskrepor_cao=cao_email,task_make_email=weihu,
-                      makeuser=current_user.id)
+            return jsonify({'code':330,'msg':'任务名不能重复','data':''})
+        procjt=Project.query.filter_by(project_name=data['projects']).first()
+        new_task=Task(taskname=data['taskname'],taskstart=data['time'],taskrepor_to=data['to_email'],taskrepor_cao=data['cao_email'],task_make_email=data['weihu'],
+                      makeuser=current_user.id,prject=procjt.id)
         db.session.add(new_task)
         try:
-            db.session.commit()
-            flash(u'添加定时任务成功')
-            return  redirect(url_for('home.timingtask'))
+            return jsonify({'code': 200, 'msg': '成功', 'data': ''})
         except Exception as e:
             db.session.rollback()
-            flash(u'添加过程貌似异常艰难！失败原因：%s'%e)
-            return redirect(url_for('home.addtimingtasks'))
+            return jsonify({'code': 331, 'msg': '任务添加失败，原因：%s'%e, 'data': ''})
 class Editmingtaskview(MethodView):
     @login_required
     def get(self,id):
