@@ -23,10 +23,10 @@ def load_user(user_id):
 class Indexview(MethodView):#首页
     @login_required
     def get(self):
-        interface_cont=Interface.query.count()
-        interfaceTest_cunt=InterfaceTest.query.count()
-        resu_cout=TestResult.query.count()
-        project_cout=Project.query.count()
+        interface_cont=Interface.query.filter_by(status=False).count()
+        interfaceTest_cunt=InterfaceTest.query.filter_by(status=False).count()
+        resu_cout=TestResult.query.filter_by(status=False).count()
+        project_cout=Project.query.filter_by(status=False).count()
         model_cout=Model.query.count()
         return  render_template('home/index.html', yongli=interfaceTest_cunt, jiekou=interface_cont, report=resu_cout, project_cout=project_cout, model_cout=model_cout)
 class LoginView(MethodView):#登录
@@ -43,6 +43,8 @@ class LoginView(MethodView):#登录
             return jsonify({'msg':'密码没有输入','code':312,'data':''})
         user=User.query.filter_by(username=username).first()
         if user:
+            if user.status is False:
+                return jsonify({'msg': '用户冻结！', 'code': 316, 'data': ''})
             if user.check_password(password):
                 login_user(user)
                 session['username'] = username
@@ -78,7 +80,7 @@ class AdminuserView(MethodView):
     @login_required
     def get(self):
         if current_user.is_sper == True:
-            pagination=(User.query.order_by('-id').all())
+            pagination=(User.query.filter_by(status=False).order_by('-id').all())
         else:
             pagination=[]
             id=[]

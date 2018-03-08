@@ -23,10 +23,16 @@
             <li class="am-hide-sm-only"></li>
             <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                 <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('user.setting')}}">
-                    <span class="tpl-header-list-user-nick" >{{session.username}}</span><span class="tpl-header-list-user-ico"></span>
+                    <span class="tpl-header-list-user-nick" >
+                        {{session.username}}
+                    </span>
+                    <span class="tpl-header-list-user-ico">
+                    </span>
                 </a>
             </li>
-            <li><a href="{{url_for('home.logt')}}" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+            <li><a href="{{url_for('home.logt')}}" class="tpl-header-list-link">
+                <span class="am-icon-sign-out tpl-header-list-ico-out-size"></span>
+            </a></li>
         </ul>
     </div>
 </header>
@@ -55,12 +61,24 @@
                     <option>put</option><option>push</option></select></p>
                 <p>类型参数：<select name="type"><option>json</option>
                     <option>xml</option></select></p>
-                <p>请求头：<textarea name="headers" style="width: 200px;height: 100px;">{{ mock.headers }}</textarea></p>
-                <p>请求参数：<textarea name="parm"  style="width: 200px;height: 100px;"> {{ mock.params}}</textarea></p>
-                <p>返回参数：<textarea name="back" style="width: 200px;height: 100px;">{{ mock.fanhui }}</textarea></p>
-                <p>是否校验：<select name="checkout"><option>是</option><option>否</option></select></p>
-                <p>是否校验请求头：<select name="checkouheaders"><option>是</option><option>否</option></select></p>
-                <p>是否开启：<select name="kaiqi"><option>是</option><option>否</option></select></p>
+                <p>请求头：<textarea name="headers" style="width: 200px;height: 100px;">
+                    {{ mock.headers }}</textarea></p>
+                <p>请求参数：<textarea name="parm"  style="width: 200px;height: 100px;">
+                    {{ mock.params}}</textarea></p>
+                <p>返回参数：<textarea name="back" style="width: 200px;height: 100px;">
+                    {{ mock.fanhui }}</textarea></p>
+                <p>是否校验：<select name="checkout">
+                    <option>是</option>
+                    <option>否</option>
+                </select></p>
+                <p>是否校验请求头：
+                    <select name="checkouheaders">
+                        <option>是</option>
+                        <option>否</option></select></p>
+                <p>是否开启：<select name="kaiqi">
+                    <option>是</option>
+                    <option>否</option>
+                </select></p>
                 <p><input type="submit" value="编辑" class="btn-success"></p>
             </form>
         </div>

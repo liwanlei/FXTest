@@ -3,7 +3,7 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
 import logging
-import os
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -30,12 +30,15 @@ target_metadata = current_app.extensions['migrate'].db.metadata
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
+
     This configures the context with just a URL
     and not an Engine, though an Engine is acceptable
     here as well.  By skipping the Engine creation
     we don't even need a DBAPI to be available.
+
     Calls to context.execute() here emit the given string to the
     script output.
+
     """
     url = config.get_main_option("sqlalchemy.url")
     context.configure(url=url)
@@ -46,8 +49,10 @@ def run_migrations_offline():
 
 def run_migrations_online():
     """Run migrations in 'online' mode.
+
     In this scenario we need to create an Engine
     and associate a connection with the context.
+
     """
 
     # this callback is used to prevent an auto-migration from being generated
@@ -60,8 +65,6 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "data.sqlite")
     engine = engine_from_config(config.get_section(config.config_ini_section),
                                 prefix='sqlalchemy.',
                                 poolclass=pool.NullPool)
@@ -70,14 +73,14 @@ def run_migrations_online():
     context.configure(connection=connection,
                       target_metadata=target_metadata,
                       process_revision_directives=process_revision_directives,
-                      render_as_batch=config.get_main_option('sqlalchemy.url').startswith(SQLALCHEMY_DATABASE_URI)
-                      )
+                      **current_app.extensions['migrate'].configure_args)
 
     try:
         with context.begin_transaction():
             context.run_migrations()
     finally:
         connection.close()
+
 if context.is_offline_mode():
     run_migrations_offline()
 else:

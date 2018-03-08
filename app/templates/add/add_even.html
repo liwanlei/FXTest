@@ -7,14 +7,15 @@
                 <div class="caption font-green bold">
                     <span class="am-icon-code"></span> 添加测试环境</div></div>
             <div style="text-align: center ;color: red" id="messgae"></div>
-            <form  action="{{ url_for('addevent') }}" method="POST" >
+            <form   >
                 {{form.hidden_tag()}}
                 {{form.csrf_token}}
                 <div class="form-group">
                     <strong>项目名字:</strong>
-                    <select id="project"> {% for project in  projects %}
-                        <option>{{  project.project_name }}</option>
-                    {% endfor %}
+                    <select id="project">
+                        {% for project in  projects %}
+                            <option>{{  project.project_name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <span>&nbsp;</span>
@@ -27,6 +28,18 @@
                     <strong>测试环境描述:</strong>
                     {{ form.desc(id='desc') }}</div>
                 <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>测试环境数据库:</strong>
+                    <input type="text" id="database" placeholder="请输入数据库地址">
+                </div>
+                <div class="form-group">
+                    <strong>数据库登录用户:</strong>
+                    <input type="text" id="user" placeholder="请输入登录数据库的名字">
+                </div>
+                <div class="form-group">
+                    <strong>数据库登录密码:</strong>
+                    <input type="text" id="databsepassword" placeholder="请输入登录数据库的密码">
+                </div>
                 <button type="button" class="am-btn am-btn-primary " onclick="add()">添加</button>
             </form>
         </div>
@@ -39,35 +52,53 @@
             var index=obj.selectedIndex;
             var work = obj.options[index].value;
             var message=document.getElementById('messgae');
+            var database=document.getElementById('database');
+            var databaseuser=document.getElementById('user');
+            var databasepassword=document.getElementById('databsepassword');
             if (url.value.length<1){
                 message.innerHTML='测试环境不能为空'
             }else
             {
                 if(work.length<1) {
-                    message.innerHTML='测试环境所属项目不能为空，必须选择'
+                    message.innerHTML='测试环境所属项目不能为空，必须选择';
                 } else {
                     if(desc.value.length<1){
-                        message.innerHTML='测试环境描述不能为空'
+                        message.innerHTML='测试环境描述不能为空';
                     }else {
-                        var data = {};
-                        data['url'] = url.value;
-                        data['desc'] = desc.value;
-                        data['work'] = work;
-                        $.ajax({
-                            url: '{{ url_for('addevent') }}',
-                            type: 'POST',
-                            data: JSON.stringify(data),
-                            contentType: 'application/json; charset=UTF-8',
-                            processData: false,
-                            success: function (result) {
-                                if (result['code'] == 200) {
-                                    location.href='{{ url_for('home.ceshihuanjing') }}';
-                                }
-                                else {
-                                    message.innerHTML=(result['msg']);
+                        if(database.value.length<1){
+                            message.innerHTML='测试环境的数据库不能为空';
+                        }else {
+                            if(databaseuser.value.length<1){
+                                message.innerHTML='亲数据库的登录是需要用户名的';
+                            }else {
+                                if (databasepassword.value.length<1){
+                                    message.innerHTML='登录数据库需要密码登录';
+                                }else {
+                                    var data = {};
+                                    data['url'] = url.value;
+                                    data['desc'] = desc.value;
+                                    data['work'] = work;
+                                    data['database']=database.value;
+                                    data['databaseuser']=databaseuser.value;
+                                    data['databasepassword']=databasepassword.value;
+                                    $.ajax({
+                                        url: '{{ url_for('addevent') }}',
+                                        type: 'POST',
+                                        data: JSON.stringify(data),
+                                        contentType: 'application/json; charset=UTF-8',
+                                        processData: false,
+                                        success: function (result) {
+                                            if (result['code'] == 200) {
+                                                location.href='{{ url_for('home.ceshihuanjing') }}';
+                                            }
+                                            else {
+                                                message.innerHTML=(result['msg']);
+                                            }
+                                        }
+                                    });
                                 }
                             }
-                        });
+                        }
                     }
                 }
             }

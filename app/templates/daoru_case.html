@@ -19,7 +19,9 @@
                 {% if messages %}
                     <ul class=flashes>
                         {% for message in messages %}
-                            <li style="color:red">{{ message }}</li>
+                            <li style="color:red">
+                                {{ message }}
+                            </li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -27,7 +29,8 @@
             <form method="POST" action="{{url_for('case.daoru_case')}}"  enctype=multipart/form-data>
                 <span>&nbsp;</span>
                 <input type="file" name="myfile">
-                <button type='submit'class="am-btn am-btn-primary">导入</button>
+                <button type='submit' class="am-btn am-btn-primary">
+                    导入</button>
             </form>
         </div>
     </div>

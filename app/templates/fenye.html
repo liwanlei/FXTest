@@ -18,7 +18,9 @@ page = pagination.page - 1, **kwargs) }}{% else %}#{% endif %}">
                     </li>
                 {% endif %}
             {% else %}
-                <li class="disabled"><a href="#">…</a></li>
+                <li class="disabled">
+                    <a href="#">…</a>
+                </li>
             {% endif %}
         {% endfor %}
         <li{% if not pagination.has_next %} class="disabled"{% endif %}>

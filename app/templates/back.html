@@ -20,24 +20,29 @@
             <img src="{{url_for('static',filename='img/logo.png')}}" alt="" >
         </a>
     </div>
-    </div>
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
         <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
-            <li class="am-hide-sm-only"></li>
+            <li class="am-hide-sm-only">
+            </li>
             <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                 <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('user.setting')}}">
-                    <span class="tpl-header-list-user-nick" >{{session.username}}</span>
-                    <span class="tpl-header-list-user-ico"></span>
+                    <span class="tpl-header-list-user-nick" >
+                        {{session.username}}
+                    </span>
+                    <span class="tpl-header-list-user-ico">
+
+                    </span>
                 </a>
             </li>
             <li><a href="{{url_for('home.logt')}}" class="tpl-header-list-link">
-                <span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+                <span class="am-icon-sign-out tpl-header-list-ico-out-size">
+                </span>
+            </a></li>
         </ul>
     </div>
 </header>
 <div class="tpl-page-container tpl-page-header-fixed" >
     <div class="tpl-left-nav tpl-left-nav-hover" >
-
         <div class="tpl-left-nav-list">
             <ul class="tpl-left-nav-menu">
                 <li class="tpl-left-nav-item">
@@ -109,7 +114,9 @@
 {%block fen%}
 {%endblock%}
 <div style='text-align: center;margin-bottom: auto'>
-    <h3>版权雷子所有，联系qq：952943386 qq交流群：194704520</h3></div>
-{% block js %}  {%endblock%}
+    <h3>版权雷子所有，联系qq：952943386 qq交流群：194704520</h3>
+</div>
+{% block js %}
+{%endblock%}
 </body>
 </html>

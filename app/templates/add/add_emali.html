@@ -23,11 +23,12 @@
                 {{form.csrf_token}}
                 <div class="form-group">
                     <strong>邮箱名字:</strong>
-                    {{ form.send_email }}</div>{% if form.send_email.errors %}
-                {% for e in form.send_email.errors %}
-                    <p class="help-block " style='color:red'>{{ e }}</p>
-                {% endfor %}
-            {% endif %}
+                    {{ form.send_email }}</div>
+                {% if form.send_email.errors %}
+                    {% for e in form.send_email.errors %}
+                        <p class="help-block " style='color:red'>{{ e }}</p>
+                    {% endfor %}
+                {% endif %}
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>邮箱安全:</strong>
@@ -35,11 +36,14 @@
                 {% for e in form.password.errors %}
                     <span class="help-block" style='color:red'>{{ e }}</span>
                 {% endfor %}
-            {% endif %}
+                {% endif %}
                 <div class="form-group">
-                    <strong><span>&nbsp;</span>
+                    <strong>
+                        <span>&nbsp;</span>
                         是否设置默认</strong>
-                    <label><input name="checkbox" type="checkbox" > </label>
+                    <label>
+                        <input name="checkbox" type="checkbox" >
+                    </label>
                     <span>&nbsp;</span></div>
                 <div class="form-group">
                     <strong>接受邮箱:</strong>

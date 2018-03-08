@@ -177,11 +177,14 @@ class ADDTesteventView(MethodView):#添加测试环境
         end.url=data['url']
         end.desc=data['desc']
         end.project=prkcyt.id
+        end.database=data['database']
+        end.databaseuser=data['databaseuser']
+        end.databasepassword=data['databasepassword']
         end.make_user=current_user.id
         db.session.add(end)
         try:
             db.session.commit()
-            return jsonify({"msg": u'添加测试用例成功!', "code": 200, 'data': ''})
+            return jsonify({"msg": u'添加测试环境成功!', "code": 200, 'data': ''})
         except Exception as e:
             db.session.rollback()
             return jsonify({"msg": u'添加测试用例失败！原因：%s'%e, "code": 211, 'data': ''})
@@ -211,35 +214,24 @@ class EditEventViews(MethodView):#编辑测试环境
             return redirect(url_for('home.ceshihuanjing'))
         event=Interfacehuan.query.filter_by(id=id).first()
         return  render_template('edit/edit_events.html', enents=event, projects=projects)
+    @login_required
     def post(self,id):
-        if current_user.is_sper == True:
-            projects=Project.query.filter_by(status=False).order_by('-id').all()
-        else:
-            projects=[]
-            id=[]
-            for i in current_user.quanxians:
-                if  (i.projects in id) is False:
-                    projects.append(i.projects)
-                    id.append(i.projects)
-        if len(projects)<=0:
-            flash(u'你没有所属的项目，请在后台添加')
-            return redirect(url_for('home.ceshihuanjing'))
+        data=request.get_json()
+        project=Project.query.filter_by(project_name=data['work']).first()
         event = Interfacehuan.query.filter_by(id=id).first()
-        projectd=request.form['project']
-        url=request.form['url']
-        desc=request.form['desc']
-        ueris=current_user.id
-        event.url=url
-        event.desc=desc
-        event.project=projectd
-        event.make_user=ueris
+        event.url=data['url']
+        event.desc=data['desc']
+        event.database=data['datebase']
+        event.databaseuser=data['datebaseuser']
+        event.datebasepassword  =data['datebasepassword']
+        event.project=project.id
+        event.make_user=current_user.id
         try:
             db.session.commit()
-            return  redirect(url_for('home.ceshihuanjing'))
-        except:
+            return  jsonify({'msg':'编辑成功','code':200})
+        except Exception as e :
             db.session.rollback()
-            flash(u'编辑出现问题，重新编辑')
-            return render_template('edit/edit_events.html', enents=event, projects=projects)
+            return  jsonify({'msg':'编辑失败！原因是:%s'%e,'code':321,'data':''})
 @app.route('/gettest',methods=['POST'])
 @login_required
 def gettest():#ajax获取项目的测试用例

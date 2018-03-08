@@ -110,7 +110,10 @@ class InterfaceTest(db.Model):
     Interface_is_tiaoshi=db.Column(db.Boolean(),default=False)
     Interface_tiaoshi_shifou=db.Column(db.Boolean(),default=True,nullable=True)
     Interface_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
-    saveresult=db.Column(db.Boolean,default=False)
+    saveresult=db.Column(db.Boolean(),default=False)
+    is_database=db.Column(db.Boolean(),default=False)
+    chaxunshujuku=db.Column(db.String(252),nullable=True)
+    databaseziduan=db.Column(db.String(252),nullable=True)
     testcaseresult = db.relationship('TestcaseResult', backref='interfacetests', lazy='dynamic')
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
@@ -177,6 +180,9 @@ class Interfacehuan(db.Model):#测试环境
     make_user=db.Column(db.Integer(),db.ForeignKey('users.id'))
     url=db.Column(db.String(255))#地址
     desc=db.Column(db.String(255))#描述
+    database=db.Column(db.String(255))
+    databaseuser=db.Column(db.String(32))
+    databasepassword=db.Column(db.String(32))
     project=db.Column(db.Integer(),db.ForeignKey('projects.id'))#环境对应的项目
     status = db.Column(db.Boolean(), default=False)#状态
     testcaseresult = db.relationship('TestcaseResult', backref='ceshihuanjing', lazy='dynamic')

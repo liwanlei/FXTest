@@ -5,23 +5,17 @@
         <div class="tpl-portlet-components">
             <div class="portlet-title">
                 <div class="caption font-green bold">
-                    <span class="am-icon-code"></span> 编辑测试环境</div></div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class='flashes'>
-                        {% for message in messages %}
-                            <li style="color:red">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <form  action="{{ url_for('editevents',id=enents.id) }}" method="POST" >
+                    <span class="am-icon-code"></span> 编辑测试环境
+                </div>
+            </div>
+            <div style="text-align: center ;color: red" id="messgae"></div>
+            <form  >
                 <div class="form-group">
                     <strong>项目名字:</strong>
-                    <select name="project">
+                    <select id="project">
                         {% for project in  projects %}
                             {% if project.project_name==enents.projects.project_name %}
-                            <option selected>{{  project.project_name }}</option>
+                                <option selected>{{  project.project_name }}</option>
                             {% else %}
                                 <option>{{  project.project_name }}</option>
                             {% endif %}
@@ -30,13 +24,83 @@
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>测试环境url:</strong>
-                    <input type="text" value="{{ enents.url }} " name="url"></div>
+                    <input type="text" value="{{ enents.url }} " id="url">
+                </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>测试环境描述:</strong>
-                    <input type="text" value="{{ enents.desc }}" name="desc"></div>
+                    <input type="text" value="{{ enents.desc }}" id="desc">
+                </div>
+                <div class="form-group">
+                    <strong>测试环境数据库:</strong>
+                    <input type="text" value="{{ enents.database }}" id="datebase">
+                </div>
+                <div class="form-group">
+                    <strong>测试环境数据库登录用户:</strong>
+                    <input type="text" value="{{ enents.databaseuser }}" id="datebaseuser">
+                </div>
+                <div class="form-group">
+                    <strong>测试环境数据库登录密码:</strong>
+                    <input type="text" value="{{ enents.databasepassword }}" id="datebasepassword">
+                </div>
                 <span>&nbsp;</span>
-                <button type="submit" class="am-btn am-btn-primary ">添加</button>
-            </form></div>
-    </div></div>
+                <button type="button" class="am-btn am-btn-primary " onclick="edit()">添加</button>
+            </form>
+        </div>
+    </div>
+    <script type="application/javascript">
+        function edit() {
+            var obj = document.getElementById('project');
+            var index=obj.selectedIndex;
+            var work = obj.options[index].value;
+            var message=document.getElementById('messgae');
+            var url=document.getElementById('url');
+            var desc=document.getElementById('desc');
+            var datebase=document.getElementById('datebase');
+            var datebaseuser=document.getElementById('datebaseuser');
+            var datebasepassword=document.getElementById('datebasepassword');
+            if(url.value.length<1){
+                message.innerHTML='测试环境地址不能为空！';
+            }else {
+                if(desc.value.length<1){
+                    message.innerHTML='测试环境描述不能为空！';
+                }else {
+                    if(datebase.value.length<1){
+                        message.innerHTML='测试环境数据库不能为空！';
+                    }else {
+                        if(datebaseuser.value.length<1){
+                            message.innerHTML='测试环境数据库登录用户名不能为空！';
+                        }else {
+                            if(datebasepassword.value.length<1){
+                                message.innerHTML='测试环境数据库登录密码不能为空！';
+                            }else {
+                                var data = {};
+                                    data['url'] = url.value;
+                                    data['desc'] = desc.value;
+                                    data['work'] = work;
+                                    data['datebase']=datebase.value;
+                                    data['datebaseuser']=datebaseuser.value;
+                                    data['datebasepassword']=datebasepassword.value;
+                                    $.ajax({
+                                        url: '{{ url_for('editevents',id=enents.id) }}',
+                                        type: 'POST',
+                                        data: JSON.stringify(data),
+                                        contentType: 'application/json; charset=UTF-8',
+                                        processData: false,
+                                        success: function (result) {
+                                            if (result['code'] == 200) {
+                                                location.href='{{ url_for('home.ceshihuanjing') }}';
+                                            }
+                                            else {
+                                                message.innerHTML=(result['msg']);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+    </script>
 {%endblock%}

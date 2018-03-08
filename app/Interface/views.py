@@ -32,44 +32,20 @@ class InterfaceaddView(MethodView):
         return render_template('add/add_interface.html', form=form, projects=projects, models=models)
     @login_required
     def post(self):
-        form=InterForm()
-        project,models=get_pro_mo()
-        if current_user.is_sper == True:
-            projects=Project.query.filter_by(status=False).order_by('-id').all()
-        else:
-            projects=[]
-            id=[]
-            for i in current_user.quanxians:
-                if  (i.projects in id)==False:
-                    if i.projects.status == False:
-                        projects.append(i.projects)
-                        id.append(i.projects)
-        if form.validate_on_submit and request.method =="POST":
-            project_name=request.form.get('project')
-            model_name=request.form.get('model')
-            interface_name=request.form.get('interface_name')
-            interface_url=request.form.get('interface_url')
-            interface_header=request.form.get('interface_headers')
-            interface_meth=request.form.get('interface_meth')
-            interface_par=request.form.get('interface_par')
-            interface_bas=request.form.get('interface_bas')
-            if project_name == None or model_name ==None or interface_header=='' or interface_name=='' or interface_url =='' or interface_meth=='':
-                flash(u'请完整填写接口的各项信息')
-                return render_template('add/add_interface.html', form=form, projects=projects, models=models)
-            user_id=User.query.filter_by(username=session.get('username')).first().id
-            project_id=Project.query.filter_by(project_name=project_name).first().id
-            models_id=Model.query.filter_by(model_name=model_name).first().id
-            try:
-                new_interface=Interface(model_id=models_id,projects_id=project_id,Interface_name=interface_name,Interface_url=interface_url,Interface_meth=interface_meth,Interface_par=interface_par,Interface_back=interface_bas,Interface_user_id=user_id,Interface_headers=interface_header)
-                db.session.add(new_interface)
-                db.session.commit()
-                flash(u'添加成功')
-                return redirect(url_for('home.interface'))
-            except:
-                db.session.rollback()
-                flash(u'添加失败')
-                return redirect(url_for('home.interface'))
-        return render_template('add/add_interface.html', form=form, projects=projects, models=models)
+        data=request.get_json()
+        print(data)
+        project_id=Project.query.filter_by(project_name=data['project']).first().id
+        models_id=Model.query.filter_by(model_name=data['model']).first().id
+        try:
+            new_interface=Interface(model_id=models_id,projects_id=project_id,Interface_name=data['interfacename'],Interface_url=data['interface_url'],
+                                    Interface_meth=data['interface_meth'],Interface_par=data['interface_par'],Interface_back=data['interface_bas'],
+                                    Interface_user_id=current_user.id,Interface_headers=data['interface_headers'])
+            db.session.add(new_interface)
+            db.session.commit()
+            return jsonify({'msg': '成功', 'code': 200})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'msg': '添加接口失败，原因:%s'%e, 'code': 236})
 class EditInterfaceView(MethodView):
     @login_required
     def get(self,id):

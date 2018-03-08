@@ -9,19 +9,11 @@
                     <span class="am-icon-code"></span> 添加接口
                 </div>
             </div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class='flashes'>
-                        {% for message in messages %}
-                            <li style="color:red">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <form  action="{{ url_for('interface.interface_add') }}" method="POST" >
+            <div style="text-align: center ;color: red" id="messgae"></div>
+            <form >
                 {{form.hidden_tag()}}
                 {{form.csrf_token}}
-                <div class="form-group">
+                <div class="form-group" id="projectss">
                     <strong>项目名字:</strong>
                     {% for project in  projects %}
                         <input type='radio' value="{{  project.project_name }}" name="project"
@@ -32,36 +24,112 @@
                     <strong>模块名字:</strong>
                     <span>
                         {% for model in  models %}
-                            <input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
+                            <input type='radio' value="{{  model.model_name }}" name="modelssss">{{ model.model_name }}
                         {% endfor %}
                     </span></div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口名字:</strong>
-                    {{ form.interface_name }}</div>
+                    {{ form.interface_name(id='interfacename') }}</div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口地址:</strong>
-                    {{ form.interface_url }}</div>
+                    {{ form.interface_url (id='interface_url')}}</div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口headers:</strong>
-                    {{ form.interface_headers }}</div>
+                    {{ form.interface_headers(id='interface_headers') }}</div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>请求方式:</strong>
-                    {{ form.interface_meth }}</div>
+                    {{ form.interface_meth(id='interface_meth') }}</div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>请求示例:</strong>
-                    {{ form.interface_par}}</div>
+                    {{ form.interface_par(id='interface_par')}}</div>
                 <span>&nbsp;</span>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>返回示例:</strong>
-                    {{ form.interface_bas }}</div>
-                <button type="submit" class="am-btn am-btn-primary ">添加</button>
+                    {{ form.interface_bas(id='interface_bas') }}</div>
+                <button type="button" class="am-btn am-btn-primary " onclick="addinterface()">添加</button>
             </form>
         </div>
     </div>
+    <script type="text/javascript">
+        function  addinterface() {
+            var ob=document.getElementsByName("project");
+            var prokect=null;
+            for (var j=0;j<ob.length;j++){  //遍历Radio
+                if(ob[j].checked){
+                    prokect=ob[j].value;
+                }
+            }
+            var obj=document.getElementsByName("modelssss");
+            var model=null;
+            for (var i=0;i<obj.length;i++){  //遍历Radio
+                if(obj[i].checked){
+                    model=obj[i].value;
+                }
+            }
+            var interfacename=document.getElementById('interfacename');
+            var interface_url=document.getElementById('interface_url');
+            var interface_headers=document.getElementById('interface_headers');
+            var interface_meth=document.getElementById('interface_meth');
+            var interface_par=document.getElementById('interface_par');
+            var interface_bas=document.getElementById('interface_bas');
+            var message=document.getElementById('messgae');
+            var data={};
+            data['project']=prokect;
+            data['model']=model;
+            data['interfacename']=interfacename.value;
+            data['interface_url']=interface_url.value;
+            data['interface_headers']=interface_headers.value;
+            data['interface_meth']=interface_meth.value;
+            data['interface_par']=interface_par.value;
+            data['interface_bas']=interface_bas.value;
+            if (prokect.length<1){
+                message.innerHTML='必须选择项目';
+            }else {
+                if(interfacename.value.length<1){
+                    message.innerHTML='必须输入接口名字';
+                }else {
+                    if(interface_url.value.length<1){
+                        message.innerHTML='接口地址必须填写';
+                    }else {
+                        if(interface_meth.value.length<1){
+                            message.innerHTML='接口请求类型必须填写';
+                        }else {
+                            if(interface_par.value.length<1){
+                                message.innerHTML='接口请求示例必须填写！';
+                            }else {
+                                if(interface_bas.value.length<1){
+                                    message.innerHTML='接口返回示例必须填写！';
+                                }else {
+                                    if(model.length<1){
+                                        message.innerHTML='模块必须选择！';
+                                    }else{
+                                        $.ajax({
+                                            url: '{{ url_for('interface.interface_add') }}',
+                                            type: 'POST',
+                                            data: JSON.stringify(data),
+                                            contentType: 'application/json; charset=UTF-8',
+                                            processData: false,
+                                            success: function (result) {
+                                                if (result['code'] == 200) {
+                                                    location.href='{{ url_for('home.interface') }}';
+                                                }
+                                                else {
+                                                    message.innerHTML=(result['msg']);
+                                                }
+                                            }
+                                        }); }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 {%endblock%}

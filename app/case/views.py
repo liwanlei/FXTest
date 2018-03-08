@@ -49,6 +49,15 @@ class AddtestcaseView(View):
             interface_re=request.form.get('interface_rest')
             yilai_data=request.values.get("yilaicanshu")
             yilai_test= request.values.get("jiekou")
+            shifoujiaoyan = request.values.get("database")
+            if shifoujiaoyan == 'on':
+                databasesql=request.values.get('databasesql')
+                databijiao=request.values.get('databijiao')
+                is_database=True
+            else:
+                databasesql=None
+                databijiao=None
+                is_database=False
             if yilai_test is None or yilai_test == '请选择依赖接口':
                 yilai_dat=None
                 yilai_tes=None
@@ -72,9 +81,11 @@ class AddtestcaseView(View):
                 return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
             try:
                 newcase=InterfaceTest(projects_id=project_id,model_id=models_id,Interface_name=interface_name,
-                                      Interface_headers=interface_header,Interface_url=interface_url,Interface_meth=interface_meth,
-                                      Interface_pase=interface_can,Interface_assert=interface_re,
-                                      Interface_user_id=current_user.id,saveresult=saves,pid=(yilai_tes),getattr_p=yilai_dat)
+                                      Interface_headers=interface_header,Interface_url=interface_url,
+                                      Interface_meth=interface_meth,Interface_pase=interface_can,
+                                      Interface_assert=interface_re,Interface_user_id=current_user.id,
+                                      saveresult=saves,pid=(yilai_tes),getattr_p=yilai_dat,
+                                      is_database=is_database,chaxunshujuku=databasesql,databaseziduan=databijiao)
                 db.session.add(newcase)
                 db.session.commit()
                 flash(u'添加用例成功')
@@ -98,7 +109,6 @@ class EditcaseView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
-        next = request.headers.get('Referer')
         project, models = get_pro_mo()
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
@@ -122,6 +132,15 @@ class EditcaseView(View):
             reque=request.form.get('reque')
             yilai_data = request.values.get("yilaicanshu")
             yilai_test = request.values.get("jiekou")
+            shifoujiaoyan = request.values.get("database")
+            if shifoujiaoyan == 'on':
+                databasesql = request.values.get('databasesql')
+                databijiao = request.values.get('databijiao')
+                is_database = True
+            else:
+                databasesql = None
+                databijiao = None
+                is_database = False
             if yilai_test is None or yilai_test == '请选择依赖接口':
                 yilai_dat = None
                 yilai_tes = None
@@ -154,6 +173,9 @@ class EditcaseView(View):
             edit_case.saveresult=saves
             edit_case.pid=yilai_tes
             edit_case.getattr_p=yilai_dat
+            edit_case.is_database = is_database
+            edit_case.chaxunshujuku = databasesql
+            edit_case.databaseziduan = databijiao
             try:
                 db.session.commit()
                 flash(u'编辑成功')
