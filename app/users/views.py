@@ -152,7 +152,7 @@ class RedpassView(View):#重置密码
     methods=['GET']
     @login_required
     def dispatch_request(self,id):
-        if chckuserpermisson() == False:
+        if chckuserpermisson() is False:
             flash('权限不足，不能重置密码')
             return  redirect(request.headers.get('Referer'))
         user=User.query.filter_by(username=session.get('username')).first()

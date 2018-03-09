@@ -32,6 +32,14 @@
                     <input type="text" value="{{ enents.desc }}" id="desc">
                 </div>
                 <div class="form-group">
+                    <strong>测试环境数据库host:</strong>
+                    <input type="text" id="host" placeholder="测试环境数据库host">
+                </div>
+                <div class="form-group">
+                    <strong>测试环境数据库port:</strong>
+                    <input type="text" id="port" placeholder="测试环境数据库port">
+                </div>
+                <div class="form-group">
                     <strong>测试环境数据库:</strong>
                     <input type="text" value="{{ enents.database }}" id="datebase">
                 </div>
@@ -51,56 +59,68 @@
     <script type="application/javascript">
         function edit() {
             var obj = document.getElementById('project');
-            var index=obj.selectedIndex;
+            var index = obj.selectedIndex;
             var work = obj.options[index].value;
-            var message=document.getElementById('messgae');
-            var url=document.getElementById('url');
-            var desc=document.getElementById('desc');
-            var datebase=document.getElementById('datebase');
-            var datebaseuser=document.getElementById('datebaseuser');
-            var datebasepassword=document.getElementById('datebasepassword');
-            if(url.value.length<1){
-                message.innerHTML='测试环境地址不能为空！';
-            }else {
-                if(desc.value.length<1){
-                    message.innerHTML='测试环境描述不能为空！';
-                }else {
-                    if(datebase.value.length<1){
-                        message.innerHTML='测试环境数据库不能为空！';
-                    }else {
-                        if(datebaseuser.value.length<1){
-                            message.innerHTML='测试环境数据库登录用户名不能为空！';
-                        }else {
-                            if(datebasepassword.value.length<1){
-                                message.innerHTML='测试环境数据库登录密码不能为空！';
-                            }else {
-                                var data = {};
-                                    data['url'] = url.value;
-                                    data['desc'] = desc.value;
-                                    data['work'] = work;
-                                    data['datebase']=datebase.value;
-                                    data['datebaseuser']=datebaseuser.value;
-                                    data['datebasepassword']=datebasepassword.value;
-                                    $.ajax({
-                                        url: '{{ url_for('editevents',id=enents.id) }}',
-                                        type: 'POST',
-                                        data: JSON.stringify(data),
-                                        contentType: 'application/json; charset=UTF-8',
-                                        processData: false,
-                                        success: function (result) {
-                                            if (result['code'] == 200) {
-                                                location.href='{{ url_for('home.ceshihuanjing') }}';
+            var message = document.getElementById('messgae');
+            var url = document.getElementById('url');
+            var desc = document.getElementById('desc');
+            var datebase = document.getElementById('datebase');
+            var datebaseuser = document.getElementById('datebaseuser');
+            var datebasepassword = document.getElementById('datebasepassword');
+            var host = document.getElementById('host');
+            var port = document.getElementById('port');
+            if (url.value.length < 1) {
+                message.innerHTML = '测试环境地址不能为空！';
+            } else {
+                if (desc.value.length < 1) {
+                    message.innerHTML = '测试环境描述不能为空！';
+                } else {
+                    if (datebase.value.length < 1) {
+                        message.innerHTML = '测试环境数据库不能为空！';
+                    } else {
+                        if (datebaseuser.value.length < 1) {
+                            message.innerHTML = '测试环境数据库登录用户名不能为空！';
+                        } else {
+                            if (host.value.length < 1) {
+                                message.innerHTML = '数据库登录是需要host的';
+                            } else {
+                                if (port.value.length < 1) {
+                                    message.innerHTML = '数据库登录是需要port';
+                                } else {
+                                    if (datebasepassword.value.length < 1) {
+                                        message.innerHTML = '测试环境数据库登录密码不能为空！';
+                                    } else {
+                                        var data = {};
+                                        data['url'] = url.value;
+                                        data['desc'] = desc.value;
+                                        data['work'] = work;
+                                        data['datebase'] = datebase.value;
+                                        data['datebaseuser'] = datebaseuser.value;
+                                        data['datebasepassword'] = datebasepassword.value;
+                                        data['port']=port.value;
+                                        data['host']=host.value;
+                                        $.ajax({
+                                            url: '{{ url_for('editevents',id=enents.id) }}',
+                                            type: 'POST',
+                                            data: JSON.stringify(data),
+                                            contentType: 'application/json; charset=UTF-8',
+                                            processData: false,
+                                            success: function (result) {
+                                                if (result['code'] == 200) {
+                                                    location.href = '{{ url_for('home.ceshihuanjing') }}';
+                                                }
+                                                else {
+                                                    message.innerHTML = (result['msg']);
+                                                }
                                             }
-                                            else {
-                                                message.innerHTML=(result['msg']);
-                                            }
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
         }
     </script>
 {%endblock%}

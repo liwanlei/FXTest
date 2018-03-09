@@ -29,6 +29,7 @@ class ApiTestCase():
         self.log_can = log_t(self.title, filename=file)
     def testapi(self):
         for case in range(len(self.url)):
+            self.log_can.info_log('%s：测试用例开始执行'%self.id[case])
             testcase=InterfaceTest.query.filter_by(id=self.id[case]).first()
             if testcase.pid !="None":
                 testret=TestcaseResult.query.filter_by(case_id=int(testcase.pid)).first()
@@ -38,21 +39,23 @@ class ApiTestCase():
                         try:
                             huoqudata=eval(data)[testcase.getattr_p]
                         except Exception as e:
+                            self.log_can.error_log('用例：%s 提出依赖数据出错！原因：%s'%(self.id[case],e))
                             self.result_toal += 1
                             self.result_except += 1
                             self.bask_list.append('获取依赖的字段异常，%s'%e)
                             self.result_pf.append('Exception')
-
                     else:
+                        self.log_can.info_log('用例：%s接口依赖结果没有保存!'%self.id[case] )
                         self.result_toal += 1
                         self.result_wei += 1
                         self.bask_list.append('依赖的测试结果没有保存')
                         self.result_pf.append(u'Exception')
                 else:
+                    self.log_can.info_log('用例：%s 依赖接口找不到!' % self.id[case])
                     self.result_toal += 1
                     self.result_wei += 1
-                    self.bask_list.append('依赖的测试用例没有保存')
-                    self.result_pf.append(u'Exception')
+                    self.bask_list.append('依赖的测试用例找不到')
+                    self.result_pf.append(u'error')
             else:
                 try:
                     yuanlai=eval(self.parm[case])
@@ -66,6 +69,7 @@ class ApiTestCase():
                         try:
                             db.session.commit()
                         except Exception as e:
+                            self.log_can.info_log('用例：%s保存测试结果失败!原因：%s' % (self.id[case],e))
                             db.session.rollback()
                     self.log_can.info_log(u'测试的:接口地址：%s,请求头：%s,参数:%s,实际返回:%s,预期:%s' % (
                     self.url[case], self.headers[case], self.parm[case], apijson, self.assert_test[case]))
@@ -95,10 +99,10 @@ class ApiTestCase():
                         self.result_wei += 1
                         self.bask_list.append(apijson)
                         self.result_pf.append(u'未知错误')
-                except:
+                except Exception as e:
+                    self.log_can.info_log('用例：%s执行失败!原因：%s' % (self.id[case], e))
                     self.result_toal += 1
-                    self.result_wei += 1
-                    self.bask_list.append('参数必须是json格式')
-                    self.result_pf.append(u'Exception')
-            print(self.result_toal ,self.result_pass,self.result_fail,self.result_pf,self.bask_list,self.result_cashu,self.result_wei,self.result_except)
+                    self.result_except += 1
+                    self.bask_list.append(e)
+                    self.result_pf.append('Exception')
         return self.result_toal ,self.result_pass,self.result_fail,self.result_pf,self.bask_list,self.result_cashu,self.result_wei,self.result_except

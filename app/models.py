@@ -180,7 +180,9 @@ class Interfacehuan(db.Model):#测试环境
     make_user=db.Column(db.Integer(),db.ForeignKey('users.id'))
     url=db.Column(db.String(255))#地址
     desc=db.Column(db.String(255))#描述
-    database=db.Column(db.String(255))
+    database=db.Column(db.String(255))#数据库
+    dbport=db.Column(db.String(255))#数据库服务端口号
+    dbhost=db.Column(db.String(255))#数据库主机
     databaseuser=db.Column(db.String(32))
     databasepassword=db.Column(db.String(32))
     project=db.Column(db.Integer(),db.ForeignKey('projects.id'))#环境对应的项目

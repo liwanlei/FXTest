@@ -14,7 +14,7 @@ import  json
 def load_user(user_id):
     return User.query.get(int(user_id))
 mock = Blueprint('mock', __name__)
-class AddmockViews(MethodView):#添加mock服务
+class AddmockViews(MethodView):#添加mock服务的详细内容
     @login_required
     def get(self):
         return  render_template('add/addmockserver.html')

@@ -13,7 +13,8 @@
                         <div class="input-icon right">
                         </div>
                     </div>
-                </div></div>
+                </div>
+            </div>
             {% with messages = get_flashed_messages()%}
                 {% if messages%}
                     <ul class='flashes'>
@@ -34,14 +35,20 @@
                 <p style="margin-top: 20px">
                     <strong>选择任务要执行的测试项目:</strong>
                     <select id="project" name="project">
-                        <option>-----------------</option>{% for porject in procjets %}
-                        <option  >{{ porject.project_name }}</option>{% endfor %}</select>
+                        <option>-----------------</option>
+                        {% for porject in procjets %}
+                        <option  >{{ porject.project_name }}
+                        </option>{% endfor %}
+                    </select>
                 </p>
                 <p><strong>选择测试用例：</strong>
                 <p ><p id="ceshiyongli"></p></p>
                 </p>
                 <input type="submit" value="提交" class="btn btn-default">
-            </form></div></div>{%endblock%}
+            </form>
+        </div>
+    </div>
+{%endblock%}
 {% block js %}
     <script>
         $('select#project').change(function ajaxtestyongli() {

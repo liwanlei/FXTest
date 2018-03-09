@@ -16,6 +16,7 @@ from app.common.send_email import send_emails
 from flask.views import View,MethodView
 from flask_login import current_user,login_required
 from app.common.Dingtalk import send_ding
+from app.common.mysqldatabasecur import *
 case = Blueprint('case', __name__)
 def get_pro_mo():
     projects=Project.query.all()
@@ -366,7 +367,7 @@ class DuoyongliView(View):
                 db.session.commit()
                 if f_dingding == 'email':
                     email = EmailReport.query.filter_by(email_re_user_id=int(current_user.id),
-                                                        default_set=True).first()
+                                                       default_set=True).first()
                     if email:
                         m = send_emails(sender=email.send_email, receivers=email.to_email,
                                         password=email.send_email_password,
@@ -389,6 +390,7 @@ class DuoyongliView(View):
                 flash(u'测试已经完成，测试报告已经生成')
                 return redirect(url_for('home.test_rep'))
             except Exception as e:
+                print(e)
                 flash(u'测试失败，请检查您的测试用例单个执行是否出错')
                 return redirect(next or url_for('home.yongli'))
         return redirect(url_for('home.yongli'))

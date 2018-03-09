@@ -178,6 +178,8 @@ class ADDTesteventView(MethodView):#添加测试环境
         end.database=data['database']
         end.databaseuser=data['databaseuser']
         end.databasepassword=data['databasepassword']
+        end.dbhost=data['host']
+        end.dbport=data['port']
         end.make_user=current_user.id
         db.session.add(end)
         try:
@@ -222,6 +224,8 @@ class EditEventViews(MethodView):#编辑测试环境
         event.database=data['datebase']
         event.databaseuser=data['datebaseuser']
         event.datebasepassword  =data['datebasepassword']
+        event.dbhost = data['host']
+        event.dbport = data['port']
         event.project=project.id
         event.make_user=current_user.id
         try:
