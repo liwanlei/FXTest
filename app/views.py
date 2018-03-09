@@ -4,7 +4,7 @@
 @time: 2017/7/13 16:42
 """
 from app import  app
-from  flask import  redirect,request,render_template,session,url_for,flash,make_response,send_from_directory,jsonify
+from  flask import  redirect,request,render_template,url_for,flash,make_response,send_from_directory,jsonify
 from  app.models import *
 from app.form import  *
 import os
@@ -96,49 +96,47 @@ class DeleproView(View):
         db.session.commit()
         flash(u'删除成功')
         return redirect( url_for('home.project'))
-class EditmoelView(View):
-    methods=['GET','POST']
+class EditmoelView(MethodView):
     @login_required
-    def dispatch_request(self,id):
+    def get(self,id):
         model=Model.query.filter_by(id=id).first()
-        if request.method=="POST":
-            ed_mode=request.form.get('model')
-            if ed_mode=='':
-                flash(u'请添加模块名')
-                return render_template('edit/edit_model.html', mode=model)
-            model.model_name=ed_mode
-            try:
-                db.session.commit()
-                flash(u'编辑成功')
-                return  redirect(url_for('home.model'))
-            except:
-                db.session.rollback()
-                flash(u'编辑zhi路漫漫兮')
-                return redirect(url_for('home.model'))
-        return  render_template('edit/edit_model.html', mode=model)
-class EditproView(View):
-    methods=['GET','POST']
+        return render_template('edit/edit_model.html', mode=model)
     @login_required
-    def dispatch_request(self,id):
-        if current_user.is_sper==False:
+    def post(self,id):
+        ed_mode=request.get_data()
+        ed_mode_e=ed_mode.decode('utf-8')
+        edit_mode=Model.query.filter_by(id=id).first()
+        if not edit_mode:
+            return  jsonify({'msg':'编辑的模块不存在','code':307})
+        edit_mode.model_name=ed_mode_e
+        try:
+            db.session.commit()
+            return jsonify({'msg': '编辑模块成功', 'code': 200})
+        except Exception as e:
+                db.session.rollback()
+                return jsonify({'msg': '编辑模块出现问题！原因：%s'%e, 'code': 308})
+class EditproView(MethodView):
+    @login_required
+    def get(self,id):
+        if current_user.is_sper is False:
             flash('权限不足,')
             return  redirect(url_for('home.project'))
         project=Project.query.filter_by(id=id).first()
-        if request.method=="POST":
-            ed_mode=request.form.get('project')
-            if ed_mode=='':
-                flash(u'请添加项目')
-                return render_template('edit/edit_pro.html', project=project)
-            project.project_name=ed_mode
-            try:
-                db.session.commit()
-                flash(u'编辑成功')
-                return  redirect(url_for('home.project'))
-            except:
-                db.session.rollback()
-                flash(u'编辑出现小异常')
-                return redirect(url_for('home.project'))
         return  render_template('edit/edit_pro.html', project=project)
+    @login_required
+    def post(self,id):
+        project_edit=request.get_data()
+        project_edit=project_edit.decode('utf-8')
+        prohect=Project.query.filter_by(id=id).first()
+        if not prohect :
+            return jsonify({"msg":'编辑的项目不存在','code':303})
+        prohect.project_name=project_edit
+        try:
+            db.session.commit()
+            return  jsonify({'code':200,'msg':'成功！！'})
+        except Exception as e:
+            db.session.rollback()
+            return  jsonify({"code":302,'msg':'编辑出现问题！原因：%s'%e})
 class DeleteResultView(View):
     methods=['GET','POST']
     @login_required
@@ -188,7 +186,7 @@ class ADDTesteventView(MethodView):#添加测试环境
         except Exception as e:
             db.session.rollback()
             return jsonify({"msg": u'添加测试用例失败！原因：%s'%e, "code": 211, 'data': ''})
-class DeleteEventViews(MethodView):#删除测试环境
+class DeleteEventViews(MethodView):
     @login_required
     def get(self,id):
         next = request.headers.get('Referer')

@@ -15,23 +15,42 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class='flashes'>
-                        {% for message in messages %}
-                            <li style="color:red">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <form  action="" method="POST" style="width: 40%;
-    margin-left: 30%;">
-                <div class="form-group">
-                    <strong>项目名字:</strong>
-                    <input type="text" name="project" value="{{ project.project_name }}"></div>
-                <button type="submit" class="am-btn am-btn-primary ">编辑</button>
-            </form>
+                <div style="text-align: center;color: red" id="message"></div>
+                <form   style="width: 40%;margin-left: 30%;">
+                    <div class="form-group">
+                        <strong>项目名字:</strong>
+                        <input type="text" id="project" value="{{ project.project_name }}" placeholder="输入项目名字">
+                    </div>
+                    <button type="button" class="am-btn am-btn-primary " onclick="addproject();">
+                        编辑</button>
+                </form>
         </div>
     </div>
+    </div>
+    <script type="text/javascript">
+    function  addproject() {
+        var project=document.getElementById('project');
+        var message=document.getElementById('message');
+        if (project.value.length<1){
+            message.innerHTML='项目名字不能为空！';
+
+        }else {
+            $.ajax({
+                url: '{{ url_for('edit_pro',id=project.id) }}',
+                type: 'POST',
+                data: project.value,
+                contentType: 'application/json; charset=UTF-8',
+                processData: false,
+                success: function (result) {
+                    if (result['code'] == 200) {
+                        location.href='{{ url_for('home.project') }}';
+                    }
+                    else {
+                        message.innerHTML=(result['msg']);
+                    }
+                }
+            })
+        }
+    }
+    </script>
 {%endblock%}

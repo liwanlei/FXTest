@@ -9,21 +9,41 @@
                     <span class="am-icon-code"></span>编辑模块
                 </div>
             </div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class='flashes'>
-                        {% for message in messages %}
-                            <li style="color:red">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <form  action="" method="POST" style="width: 40%;margin-left: 30%;">
+             <div style="text-align: center;color: red" id="message"></div>
+            <form >
                 <div class="form-group">
                     <strong>模块名字:</strong>
-                    <input type="text" name="model" value="{{mode.model_name}}"></div>
-                <button type="submit" class="am-btn am-btn-primary  ">编辑</button>
+                    <input type="text" id="model" value="{{mode.model_name}}">
+                </div>
+                <button type="submit" class="am-btn am-btn-primary  " onclick="editmodel()">
+                    编辑</button>
             </form>
         </div>
     </div>
+    <script type="text/javascript">
+    function  editmodel() {
+        var project=document.getElementById('model');
+        var message=document.getElementById('message');
+        if (project.value.length<1){
+            message.innerHTML='模块名字不能为空！';
+
+        }else {
+            $.ajax({
+                url: '{{ url_for('edit_moel',id=mode.id) }}',
+                type: 'POST',
+                data: project.value,
+                contentType: 'application/json; charset=UTF-8',
+                processData: false,
+                success: function (result) {
+                    if (result['code'] == 200) {
+                        location.href='{{ url_for('home.model') }}';
+                    }
+                    else {
+                        message.innerHTML=(result['msg']);
+                    }
+                }
+            })
+        }
+    }
+    </script>
 {%endblock%}
