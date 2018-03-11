@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-07-20 12:51:06
-# @Author  : lileilei 
+# @Author  : lileilei
+"""日志模块，这里会记录测试的日志。"""
 import logging
 class log_t():
 	def __init__(self,title,filename):

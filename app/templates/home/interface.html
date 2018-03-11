@@ -29,14 +29,14 @@
                 <a href="{{url_for('interface.interface_add')}}"><input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success"> </a>
                 <a href="{{url_for('interface.daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn am-btn-default am-btn-success"></a>
             </div>
-            <table class="am-table am-table-hover table-main" style="width:100%">
+            <table class="am-table am-table-hover table-main" style="width:100%;table-layout:fixed;">
                 <thead>
                 <tr>
                     <th>接口id</th>
                     <th>项目名称</th>
                     <th>所属模块</th>
                     <th>接口名称</th>
-                    <th>接口地址</th>
+                    <th style="overflow:hidden;">接口地址</th>
                     <th>接口headers</th>
                     <th>接口请求方法</th>
                     <th>接口请求参数</th>
@@ -46,7 +46,8 @@
                 </thead>
                 <tbody id="testyonglis" >
                 </tbody>
-            </table><nav aria-label="Page navigation" class="pull-right">
+            </table>
+            <nav aria-label="Page navigation" class="pull-right">
             <ul class="pagination">
                 {{ html|safe }}
             </ul>

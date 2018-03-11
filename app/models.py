@@ -178,16 +178,17 @@ class Interfacehuan(db.Model):#测试环境
     __tablename__='ceshihuanjing'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     make_user=db.Column(db.Integer(),db.ForeignKey('users.id'))
-    url=db.Column(db.String(255))#地址
-    desc=db.Column(db.String(255))#描述
-    database=db.Column(db.String(255))#数据库
-    dbport=db.Column(db.String(255))#数据库服务端口号
-    dbhost=db.Column(db.String(255))#数据库主机
+    url=db.Column(db.String(252))#地址
+    desc=db.Column(db.String(252))#描述
+    database=db.Column(db.String(252))#数据库
+    dbport=db.Column(db.String(252))#数据库服务端口号
+    dbhost=db.Column(db.String(252))#数据库主机
     databaseuser=db.Column(db.String(32))
     databasepassword=db.Column(db.String(32))
     project=db.Column(db.Integer(),db.ForeignKey('projects.id'))#环境对应的项目
     status = db.Column(db.Boolean(), default=False)#状态
     testcaseresult = db.relationship('TestcaseResult', backref='ceshihuanjing', lazy='dynamic')
+    task = db.relationship('Task', backref='ceshihuanjing', lazy='dynamic')
     def __repr__(self):
         return self.url
 class Mockserver(db.Model):#mocksever
@@ -223,6 +224,7 @@ class Task(db.Model):#定时任务的
     status=db.Column(db.Boolean(),default=False)#任务状态，默认正常状态
     yunxing_status=db.Column(db.String(),default=u'创建')#任务的运行状态，默认是创建
     prject=db.Column(db.Integer(),db.ForeignKey('projects.id'))#任务所属的项目
+    testevent = db.Column(db.Integer(), db.ForeignKey('ceshihuanjing.id'))
     interface=db.relationship('InterfaceTest',secondary=registrations,backref=db.backref('tasks'), lazy='dynamic')#多对多到测试用例
     def __repr__(self):
         return  self.taskname

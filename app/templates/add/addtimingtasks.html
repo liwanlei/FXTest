@@ -15,18 +15,23 @@
                     </div>
                 </div>
             </div>
-            <div style="text-align: center ;color: red" id="messgae"></div>
+            <div style="text-align: center ;color: red" id="messgae">
+            </div>
             <form   style="width: 40%;margin-left: 30%;">
                 <div class="form-group">
                     <p style="margin-top: 20px"><strong >任务名称:</strong>
                         <input type="text" id="taskname"  placeholder="请输入任务名！"></p>
                     <p style="margin-top: 20px"><strong >所属项目:</strong>
-                        <select id="project">
+                        <select id="project" onclick="cheangeevnt()">
                             {% for pro in projects %}
                                 <option>
                                     {{ pro.project_name }}
                                 </option>
                             {% endfor %}
+                        </select>
+                    </p>
+                    <p style="margin-top: 20px"><strong >所属项目测试环境:</strong>
+                        <select id="urlproee" name="testevent">
                         </select>
                     </p>
                     <p style="margin-top: 20px"><strong>测试时间:</strong>
@@ -43,6 +48,32 @@
         </div>
     </div>
     <script type="text/javascript">
+        window.onload=cheangeevnt();
+        function cheangeevnt() {
+            var obj = document.getElementById('project');
+            var index=obj.selectedIndex;
+            var value = obj.options[index].value;
+            $.ajax({
+                url: '{{ url_for('task.getpro') }}',
+                type: 'POST',
+                data: value,
+                contentType: 'application/json; charset=UTF-8',
+                processData: false,
+                success: function (result) {
+                    if (result['code'] == 200) {
+                        var urlproject=$('#urlproee');
+                        urlproject.empty();
+                        var data_result=result['data'];
+                        for (var m=0;m<data_result.length;m++){
+                            urlproject.append("<option>"+data_result[m].url+"</option>")
+                        }
+                    }
+                    else {
+                        message.innerHTML=(result['msg']);
+                    }
+                }
+            })
+        }
         function addtimingtasks() {
             var message=document.getElementById('messgae');
             var taskname=document.getElementById('taskname');
@@ -53,6 +84,9 @@
             var me=document.getElementById("project");
             var project=document.getElementById("project").selectedIndex;
             var projects=me.options[project];
+            var test=document.getElementById("urlproee");
+            var index=document.getElementById("urlproee").selectedIndex;
+            var proj_test=test.options[index];
             if (taskname.value.length<1){
                 message.innerHTML='任务名称不能为空';
             }else {
@@ -65,29 +99,34 @@
                     }else {
                         if (projects.text.length<1){
                             message.innerHTML='项目为必须选择';
-                        }else {
-                            var data={};
-                            data['taskname']=taskname.value;
-                            data['time']=time.value;
-                            data['to_email']=to_email.value;
-                            data['cao_email']=cao_email.value;
-                            data['weihu']=weihu.value;
-                            data['projects']=projects.value;
-                            $.ajax({
-                                url: '{{ url_for('task.addtimingtasks') }}',
-                                type: 'POST',
-                                data: JSON.stringify(data),
-                                contentType: 'application/json; charset=UTF-8',
-                                processData: false,
-                                success: function (result) {
-                                    if (result['code'] == 200) {
-                                        location.href='{{ url_for('home.timingtask') }}';
+                        }else{
+                            if (proj_test.value.length<1){
+                                message.innerHTML='项目测试环境必须选择';
+                            }else {
+                                var data={};
+                                data['taskname']=taskname.value;
+                                data['time']=time.value;
+                                data['to_email']=to_email.value;
+                                data['cao_email']=cao_email.value;
+                                data['weihu']=weihu.value;
+                                data['projects']=projects.value;
+                                data['testevent']=proj_test.value;
+                                $.ajax({
+                                    url: '{{ url_for('task.addtimingtasks') }}',
+                                    type: 'POST',
+                                    data: JSON.stringify(data),
+                                    contentType: 'application/json; charset=UTF-8',
+                                    processData: false,
+                                    success: function (result) {
+                                        if (result['code'] == 200) {
+                                            location.href='{{ url_for('home.timingtask') }}';
+                                        }
+                                        else {
+                                            message.innerHTML=(result['msg']);
+                                        }
                                     }
-                                    else {
-                                        message.innerHTML=(result['msg']);
-                                    }
-                                }
-                            });
+                                });
+                            }
                         }
                     }
                 }

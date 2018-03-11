@@ -11,3 +11,4 @@ task.add_url_rule('/starttask/<int:id>',view_func=StartTaskView.as_view('startta
 task.add_url_rule('/zantingtask/<int:id>',view_func=ZantingtaskView.as_view('zantingtask'))
 task.add_url_rule('/huifutask/<int:id>',view_func=HuifutaskView.as_view('huifutask'))
 task.add_url_rule('/yichutask/<int:id>',view_func=YichuTaskView.as_view('yichutask'))
+task.add_url_rule('/getpro',view_func=GettesView.as_view('getpro'))

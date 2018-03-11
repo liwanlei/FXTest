@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-07-20 15:13:25
-# @Author  : lileilei 
+# @Author  : lileilei
+'''requets模块的简单的封装'''
 import requests,json
 class reques():
     def get(self, url,headers,parms):#get消息

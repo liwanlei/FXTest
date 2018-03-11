@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-07-18 13:26:17
-# @Author  : lileilei 
+# @Author  : lileilei
+'''这里为导入测试用例的地方'''
 import xlrd
 def pasre_inter(filename):
 	file=xlrd.open_workbook(filename)

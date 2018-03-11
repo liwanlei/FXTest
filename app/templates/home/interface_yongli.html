@@ -32,6 +32,9 @@
                     <strong>发送邮件报告</strong>
                     <label>  <input name="dingding" type="radio" value="dingding" > </label>
                     <strong>发送钉钉报告</strong>
+                   <strong>请选择测试环境：</strong>
+                    <select id="ceshice" name="urltest">
+                    </select>
                 </div>
                 <table class="am-table am-table-striped am-table-hover table-main" style="width: 90%">
                     <caption><strong>用例</strong></caption>
@@ -147,6 +150,7 @@
             var obj = document.getElementById('projecttestcase');
             var index=obj.selectedIndex;
             var value = obj.options[index].value;
+            var dddss=$('#ceshice');
             $.ajax({
                 url:'{{ url_for('case.ser_yongli') }}',
                 type:'POST',
@@ -158,9 +162,14 @@
                         var mdata =data['data'];
                         var insertss=$('#testyonglis');
                         insertss.empty();
+                        dddss.empty();
+                        for (var m=0;m<data['url'].length;m++){
+                            dddss.append('<option id='+data['url'][m].id+' >'+data['url'][m].url+'</option>')
+                        };
                         if (mdata.length<1){
                             insertss.append("<tr><td><h5><strong style='color:red'>没有找到接口用例</strong></h5><td></tr>")
                         }
+
                         else for(var i=0;i<mdata.length;i++){
                             if(mdata[i].Interface_is_tiaoshi==0 ){
                                 insertss.append("<tr><td><input type='checkbox' name='yongli' value='"+mdata[i].id+"'></td><td>"+mdata[i].id+"</td><td>"+mdata[i].project+"</td><td>"+mdata[i].model+"</td><td>"+mdata[i].Interface_url+"</td><td >"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td>"+mdata[i].Interface_pase+"</td><td>"+mdata[i].Interface_assert+"</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a> <a href='/delete_case/"+mdata[i].id+"'><input type='button' value='删除'class='btn btn-danger'></a>&nbsp;&nbsp;<input type='button' value='调试' class='btn btn-default' id='"+mdata[i].id+"' onclick='testcase(this.id)'></div></div></td></tr>")

@@ -70,8 +70,10 @@ def passfail(tend):
         htl = '<td bgcolor="#8b0000">预期不存在</td>'
     elif tend=='未知错误':
         htl = '<td bgcolor="#8b0000">未知错误</td>'
+    elif tend== '测试环境不存在':
+        htl = '<td bgcolor="#8b0000">测试环境不存在</td>'
     else:
-        htl = '<td bgcolor="#8b0000">请查看日志</td>'
+        htl = '<td bgcolor="#8b0000">查看日志</td>'
     return htl
 def ceshixiangqing(id,name,coneent,url,meth,yuqi,json,relust,headers):
     xiangqing='''

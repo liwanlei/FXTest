@@ -39,11 +39,17 @@ def addtask(id):#定时任务执行的时候所用的函数
     Interface_pid_list = []
     Interface_yilai_list = []
     Interface_save_list = []
+    Interface_is_data_list = []
+    Interface_mysql_list = []
+    Interface_msyql_ziduan_list = []
     id_list = []
     for task_yongli in task.interface.all():
         id_list.append(task_yongli.id)
         projecct_list.append(task_yongli.projects)
         model_list.append(task_yongli.models)
+        Interface_is_data_list.append(task_yongli.is_database)
+        Interface_mysql_list.append(task_yongli.chaxunshujuku)
+        Interface_msyql_ziduan_list.append(task_yongli.databaseziduan)
         Interface_url_list.append(task_yongli.Interface_url)
         Interface_name_list.append(task_yongli.Interface_name)
         Interface_meth_list.append(task_yongli.Interface_meth)
@@ -53,10 +59,11 @@ def addtask(id):#定时任务执行的时候所用的函数
         Interface_pid_list.append(task_yongli.pid)
         Interface_yilai_list.append(task_yongli.getattr_p)
         Interface_save_list.append(task_yongli.saveresult)
+    testevent=task.testevent
     apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list,
-                          inteface_parm=Interface_pase_list,
-                          inteface_assert=Interface_assert_list, file=file, headers=Interface_headers_list,
-                          pid=Interface_pid_list,
+                          inteface_parm=Interface_pase_list,inteface_assert=Interface_assert_list,
+                          file=file, headers=Interface_headers_list,pid=Interface_pid_list,is_database=Interface_is_data_list,
+                           data_mysql=Interface_mysql_list,data_ziduan=Interface_msyql_ziduan_list,urltest=testevent,
                           yilaidata=Interface_yilai_list, saveresult=Interface_save_list, id_list=id_list)
     result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, result_wei, result_except = apitest.testapi()
     endtime = datetime.datetime.now()
@@ -71,8 +78,7 @@ def addtask(id):#定时任务执行的时候所用的函数
     new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
                            fail_num=result_fail, test_time=starttime, hour_time=hour,
                            test_rep=(day + '.html'), test_log=(day + '.log'), Exception_num=result_except,
-                           can_num=result_cashu,
-                           wei_num=result_wei)
+                           can_num=result_cashu, wei_num=result_wei)
     db.session.add(new_reust)
     db.session.commit()
     try:
@@ -206,11 +212,16 @@ class AddtimingtaskView(MethodView):
     def post(self):
         data=request.get_json()
         taskname_is = Task.query.filter_by(taskname=data['taskname']).first()
+        testevent=Interfacehuan.query.filter_by(url=data['testevent']).first()
+        if not testevent:
+            return jsonify({'code': 337, 'msg': '任务的测试环境不存在', 'data': ''})
         if taskname_is:
             return jsonify({'code':330,'msg':'任务名不能重复','data':''})
-        procjt=Project.query.filter_by(project_name=data['projects']).first()
+        procjt=Project.query.filter_by(project_name=data['projects'],status=False).first()
+        if not  procjt:
+            return jsonify({'code': 338, 'msg': '任务的所属项目不存在', 'data': ''})
         new_task=Task(taskname=data['taskname'],taskstart=data['time'],taskrepor_to=data['to_email'],taskrepor_cao=data['cao_email'],task_make_email=data['weihu'],
-                      makeuser=current_user.id,prject=procjt.id)
+                      makeuser=current_user.id,prject=procjt.id,testevent=testevent.id)
         db.session.add(new_task)
         try:
             return jsonify({'code': 200, 'msg': '成功', 'data': ''})
@@ -286,3 +297,18 @@ class DeteleTaskViee(MethodView):
             db.session.rollback()
             flash(u'删除任务出现异常，系统已经为你还原')
             return redirect(next or url_for('home.timingtask'))
+class GettesView(MethodView):
+    @login_required
+    def post(self):
+        project=request.get_data('value')
+        project=project.decode('utf-8')
+        changpr=Project.query.filter_by(project_name=project).first()
+        if not changpr :
+            return  jsonify({"code":231,'msg':'项目查询不到'})
+        if changpr.status==True:
+            return  jsonify({"code":232,'msg':'项目已经删除或者冻结'})
+        testevent=Interfacehuan.query.filter_by(projects=changpr,status=False).all()
+        testeventlist=[]
+        for testeven in testevent:
+            testeventlist.append({"url":testeven.url})
+        return  jsonify({'code':200,'data':testeventlist,'msg':'请求成功'})

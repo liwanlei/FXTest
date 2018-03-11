@@ -60,7 +60,8 @@
                                         <span><a href="{{ url_for ('delete',id=ebent.id)  }}"><input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
                                 </td>
                             </tr>
-                        {%endfor%}{% endfor %}
+                        {%endfor%}
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>

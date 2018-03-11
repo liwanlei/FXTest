@@ -10,7 +10,7 @@ import os,time,datetime
 from app.common.pares_excel_inter import pasre_inter
 from app.common.py_Html import createHtml
 from app.common.requ_case import Api
-from app.common.panduan import assert_in
+from app.common.panduan import assert_in,pare_result_mysql
 from app.test_case.Test_case import ApiTestCase
 from app.common.send_email import send_emails
 from flask.views import View,MethodView
@@ -194,16 +194,20 @@ class SeryongliView(MethodView):
         if not project:
             return jsonify({'msg': '没有发送数据', 'code': 108})
         project_is = Project.query.filter_by(project_name=project).first()
+        testevent=Interfacehuan.query.filter_by(projects=project_is,status=False).all()
         if project_is.status is True:
             return jsonify({'msg': '项目已经删除', 'code': 220})
         intertestcases = InterfaceTest.query.filter_by(projects_id=project_is.id, status=False).all()
         interfacelist = []
+        testeventlist=[]
+        for testeven in testevent:
+            testeventlist.append({'url':testeven.url,'id':testeven.id})
         for interface in intertestcases:
             interfacelist.append({'id':interface.id,'model':interface.models.model_name,"project":interface.projects.project_name,
                                   'Interface_name':interface.Interface_name,'Interface_headers':interface.Interface_headers,'Interface_url':interface.Interface_url,
                                   'Interface_meth':interface.Interface_meth,'Interface_pase':interface.Interface_pase,'Interface_assert':interface.Interface_assert,
                                   'Interface_is_tiaoshi':interface.Interface_is_tiaoshi,'Interface_tiaoshi_shifou':interface.Interface_tiaoshi_shifou})
-        return jsonify(({'msg': '成功', 'code':200,'data':interfacelist}))
+        return jsonify(({'msg': '成功', 'code':200,'data':interfacelist,'url':testeventlist}))
 class DaorucaseView(View):
     methods=['GET','POST']
     @login_required
@@ -230,7 +234,7 @@ class DaorucaseView(View):
             flash(u'导入失败')
             return render_template('daoru_case.html')
         return  render_template('daoru_case.html')
-class MakeonecaseView(View):#这里为不需要测试环境区分的，
+class MakeonecaseView(View):#这里的为不需要测试环境的测试，目前版本暂时不需要！
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
@@ -313,8 +317,12 @@ class DuoyongliView(View):
         if request.method=='POST':
             f_dingding=request.form.get('dingding')
             me=request.form.getlist('yongli')
+            testurl=request.form.get('urltest')
             if len(me)<=1:
                 flash(u'请选择一个以上的用例来执行')
+                return redirect(next or url_for('yongli'))
+            if testurl is None:
+                flash(u'请选择测试环境')
                 return redirect(next or url_for('yongli'))
             projecct_list=[]
             model_list=[]
@@ -327,9 +335,15 @@ class DuoyongliView(View):
             Interface_pid_list=[]
             Interface_yilai_list=[]
             Interface_save_list=[]
+            Interface_is_data_list=[]
+            Interface_mysql_list=[]
+            Interface_msyql_ziduan_list=[]
             id_list=[]
             for case in me:
                 case_one=InterfaceTest.query.filter_by(id=case).first()
+                Interface_is_data_list.append(case_one.is_database)
+                Interface_mysql_list.append(case_one.chaxunshujuku)
+                Interface_msyql_ziduan_list.append(case_one.databaseziduan)
                 id_list.append(case_one.id)
                 projecct_list.append(case_one.projects)
                 model_list.append(case_one.models)
@@ -345,10 +359,12 @@ class DuoyongliView(View):
             if (len(set(projecct_list)))>1:
                 flash('目前单次只能执行一个项目')
                 return redirect(next or url_for('duoyongli'))
+            testevent = Interfacehuan.query.filter_by(url=testurl).first()
             try:
                 apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list, inteface_parm=Interface_pase_list,
                                       inteface_assert=Interface_assert_list, file=file, headers=Interface_headers_list,pid=Interface_pid_list,
-                                      yilaidata=Interface_yilai_list,saveresult=Interface_save_list,id_list=id_list)
+                                      yilaidata=Interface_yilai_list,saveresult=Interface_save_list,id_list=id_list,is_database=Interface_is_data_list,
+                                      data_mysql=Interface_mysql_list,data_ziduan=Interface_msyql_ziduan_list,urltest=testevent)
                 result_toal, result_pass, result_fail, relusts, bask_list,result_cashu,result_wei,result_except= apitest.testapi()
                 endtime = datetime.datetime.now()
                 end = time.time()
@@ -358,7 +374,7 @@ class DuoyongliView(View):
                            meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
                            excepts=result_except, yuqis=result_cashu, weizhi=result_wei)
                 hour = end - star
-                user_id = User.query.filter_by(username=session.get('username')).first().id
+                user_id = current_user.id
                 new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
                                        fail_num=result_fail, test_time=starttime, hour_time=hour,
                                        test_rep=(day + '.html'), test_log=(day + '.log'),Exception_num=result_except,can_num=result_cashu,
@@ -402,6 +418,9 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
         try:
             case_id=projec['caseid']
             url=projec['url']
+            testevent=Interfacehuan.query.filter_by(url=str(url)).first()
+            if not testevent:
+                return jsonify({'code': 153, 'msg': '请确定你所选择的测试环境是否真实存在！'})
             case=InterfaceTest.query.filter_by(id=int(case_id)).first()
             if case.pid != 'None':
                 tesyi=InterfaceTest.query.filter_by(id=int(case.pid)).first()
@@ -447,11 +466,63 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                     case.Interface_tiaoshi_shifou = True
                     db.session.commit()
                     return jsonify({'code': 110, 'msg': '测试的请求头应该是字典格式的！'})
-            me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=pasrms,headers=ne)
+            if case.is_database is True:
+                if case.chaxunshujuku is None or case.databaseziduan is None:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 111, 'msg': '要判断数据库但是没有找到数据库的语句或者断言的字段！'})
+                if testevent.database is None :
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 112, 'msg': '测试环境数据库url配置不存在'})
+                if testevent.dbport is None:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 113, 'msg': '测试环境数据库port配置不存在'})
+                if testevent.dbhost is None:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 114, 'msg': '测试环境数据库host配置不存在'})
+                if testevent.databaseuser is None:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 115, 'msg': '测试环境数据库登录user配置不存在'})
+                if testevent.databasepassword is None:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 116, 'msg': '测试环境数据库登录密码配置不存在'})
+                conncts=cursemsql(host=testevent.dbhost,port=testevent.dbport,user=testevent.databaseuser,password=testevent.databasepassword,database=testevent.database)
+                if conncts['code']==0:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 117, 'msg': '链接数据库出现问题，原因是：%s'%conncts['error']})
+                else:
+                    result_myql=excemysql(conne=conncts['conne'],Sqlmy=case.chaxunshujuku)
+                    if result_myql['code']==0:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 117, 'msg': '查询数据库出现问题，原因是：%s' % conncts['error']})
+                    mysql_result=result_myql['result']
+            else:
+                mysql_result=[]
+            try:
+                data=eval(pasrms)
+            except Exception as e:
+                return jsonify({'code': 159, 'msg': '转化请求参数失败，原因：%s' % e})
+            me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=data,headers=ne)
             result = me.testapi()
+            return_mysql=pare_result_mysql(mysqlresult=mysql_result,return_result=result,paseziduan=case.databaseziduan)
             retur_re = assert_in(case.Interface_assert, result)
             try:
-                if retur_re == 'pass':
+                if retur_re =='pass'  and return_mysql['result']=='pass':
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = False
                     if case.saveresult is True:
@@ -461,7 +532,7 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                         db.session.add(new_testre)
                     db.session.commit()
                     return jsonify({'code':200,'msg':'测试用例调试通过！'})
-                elif retur_re =='fail':
+                elif retur_re =='fail' or return_mysql['result']=='fail':
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
                     if case.saveresult is True:
@@ -470,8 +541,10 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                         new_testre.testevir = (url)
                         db.session.add(new_testre)
                     db.session.commit()
-                    return jsonify({'code': 101, 'msg': '测试用例测试失败,原因：%s，请检查用例！'%retur_re})
+                    return jsonify({'code': 101, 'msg': '测试用例测试失败,请检查用例！'})
                 else:
+                    print(retur_re)
+                    print(return_mysql['result'])
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
                     if case.saveresult is True:
@@ -480,7 +553,7 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                         new_testre.testevir = url
                         db.session.add(new_testre)
                         db.session.commit()
-                    return jsonify({'code': 102, 'msg': '测试返回异常，原因：%s,请检查用例！'%retur_re})
+                    return jsonify({'code': 102, 'msg': '测试返回异常，,请检查用例！'})
             except Exception as e:
                 case.Interface_is_tiaoshi = True
                 case.Interface_tiaoshi_shifou = True

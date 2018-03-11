@@ -168,6 +168,7 @@ class ADDTesteventView(MethodView):#添加测试环境
     def post(self):
         data=request.get_json()
         url_old=Interfacehuan.query.filter_by(url=str(data['url'])).first()
+
         if url_old:
             return  jsonify({"msg":u'测试环境必须是相互独立的',"code":209,'data':''})
         prkcyt=Project.query.filter_by(project_name=data['work']).first()
@@ -256,7 +257,8 @@ def getprojects():
         return jsonify({'msg':'没有发送数据','code':108})
     peoject=InterfaceTest.query.filter_by(id=int(id)).first()
     result=peoject.projects
-    testhuanjing=Interfacehuan.query.filter_by(project=result.project_name).all()
+    projetc=Project.query.filter_by(project_name=str(result.project_name)).first()
+    testhuanjing=Interfacehuan.query.filter_by(projects=projetc,status=False).all()
     if len(testhuanjing)<=0:
         return jsonify({'msg': '没有找到测试环境','code':107,'data':str(result)})
     url_list=[]

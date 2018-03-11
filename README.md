@@ -1,6 +1,7 @@
 # IAPTest测试平台
 ### flask + Python3  实现的的API自动化测试平台（http接口，json格式参数）
-### mocksever目前可以部分支持xml
+### mocksever目前可以部分支持xml，
+### 接口测试查询数据库，目前只支持mysql数据库查询。
 
 ----------------
 

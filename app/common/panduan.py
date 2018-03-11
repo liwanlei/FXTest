@@ -23,4 +23,26 @@ def assertre(asserqingwang):
         return result
     else:
         return u'请填写期望值'
+def pare_result_mysql(mysqlresult,paseziduan,return_result):
+    mysql_list=[]
+    for i in mysqlresult:
+        mysql_list.append(i)
+    test_result=[]
+    ziduanlist=[]
+    if paseziduan is None:
+        return ({'code':0,'result':'pass'})
+    try:
+        for ziduan in paseziduan:
+            ziduanlist.append(ziduan[0].split(','))
+    except Exception as e:
+        return ({'code':1,'result':e})
+    try:
+        for ziduan in ziduanlist:
+            test_result.append(return_result[ziduan])
+    except Exception as e:
+        return ({'code': 1, 'result': e})
+    if test_result==mysql_list:
+        return ({'code': 2, 'result': 'pass'})
+    else:
+        return ({'code': 3, 'result': 'fail'})
 

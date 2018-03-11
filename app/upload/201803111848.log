@@ -1,0 +1,6 @@
+2018-03-11 18:48:39,388 - 测试日志 - INFO - 20：测试用例开始执行
+2018-03-11 18:48:39,390 - 测试日志 - ERROR - 用例：20转化参数！原因：unexpected EOF while parsing (<string>, line 0)
+2018-03-11 18:48:39,390 - 测试日志 - INFO - 用例：20执行失败!原因：local variable 'yuanlai' referenced before assignment
+2018-03-11 18:48:39,391 - 测试日志 - INFO - 49：测试用例开始执行
+2018-03-11 18:48:39,394 - 测试日志 - ERROR - 用例：49转化参数！原因：unexpected EOF while parsing (<string>, line 0)
+2018-03-11 18:48:39,395 - 测试日志 - INFO - 用例：49执行失败!原因：local variable 'yuanlai' referenced before assignment

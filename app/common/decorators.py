@@ -8,4 +8,3 @@ def chckuserpermisson():
             return  True
         else:
             return  False
-
