@@ -19,8 +19,15 @@ app.register_blueprint(user)
 app.register_blueprint(case)
 app.register_blueprint(interfac)
 from config import Config
+import logging
 if __name__ == '__main__':
+    handler = logging.FileHandler('.\log\\flask.log', encoding='UTF-8')
+    handler.setLevel(logging.INFO)
+    logging_format = logging.Formatter(
+        '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
+    handler.setFormatter(logging_format)
     app.config.from_object('config')
     scheduler.init_app(app=app)
     scheduler.start()
-    app.run()
+    app.logger.addHandler(handler)
+    app.run(debug=False)

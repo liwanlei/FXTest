@@ -1,4 +1,0 @@
-2018-03-11 18:46:39,439 - 测试日志 - INFO - 20：测试用例开始执行
-2018-03-11 18:46:39,442 - 测试日志 - INFO - 用例：20执行失败!原因：eval() arg 1 must be a string, bytes or code object
-2018-03-11 18:46:39,443 - 测试日志 - INFO - 49：测试用例开始执行
-2018-03-11 18:46:39,445 - 测试日志 - INFO - 用例：49执行失败!原因：eval() arg 1 must be a string, bytes or code object

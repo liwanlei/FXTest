@@ -5,7 +5,7 @@ from app.common.requ_case import Api
 from app.common.dict_com import assert_in
 from app.common.panduan import pare_result_mysql
 from app.common.log import log_t
-from app.models import InterfaceTest,TestcaseResult,Interfacehuan
+from app.models import InterfaceTest,TestcaseResult
 from app.common.mysqldatabasecur import *
 from  app import db
 class ApiTestCase():

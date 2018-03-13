@@ -253,7 +253,7 @@ class MakeonecaseView(View):#这里的为不需要测试环境的测试，目前
             canshu = case.getattr_p
             try:
                 yilaidata = eval(huoquyilai)[canshu]
-            except Exception as e:
+            except :
                 case.Interface_is_tiaoshi = True
                 case.Interface_tiaoshi_shifou = True
                 db.session.commit()

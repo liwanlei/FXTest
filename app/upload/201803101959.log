@@ -1,9 +1,0 @@
-2018-03-10 19:59:32,972 - 测试日志 - INFO - 32：测试用例开始执行
-2018-03-10 19:59:33,021 - 测试日志 - INFO - 用例：32 依赖接口找不到!
-2018-03-10 19:59:33,160 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:32,实际返回:{'post请求出错': "错误原因:'str' object has no attribute 'items'"},预期:code=40007
-2018-03-10 19:59:33,160 - 测试日志 - INFO - 38：测试用例开始执行
-2018-03-10 19:59:33,164 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:38,实际返回:{'post请求出错': "错误原因:'str' object has no attribute 'items'"},预期:code=40007
-2018-03-10 19:59:33,164 - 测试日志 - INFO - 45：测试用例开始执行
-2018-03-10 19:59:33,166 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：None,参数:45,实际返回:{'post请求出错': "错误原因:'str' object has no attribute 'items'"},预期:code=40007
-2018-03-10 19:59:33,166 - 测试日志 - INFO - 56：测试用例开始执行
-2018-03-10 19:59:33,168 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：{'Accept-Encoding':'gzip, deflate, br'},参数:56,实际返回:{'post请求出错': "错误原因:'str' object has no attribute 'items'"},预期:code=40007

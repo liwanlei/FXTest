@@ -1,0 +1,62 @@
+2018-03-13 14:22:20,657 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/13 [GET]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
+    scheduler.add_job(func=addtask, id=str(id), args=str(id),trigger=eval(task.taskstart),replace_existing=True)
+  File "<string>", line 1, in <module>
+NameError: name 'dasd' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
+    flash(u'定时任务启动失败！原因：%e'%e)
+TypeError: must be real number, not NameError
+2018-03-13 14:22:24,262 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/13 [GET]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
+    scheduler.add_job(func=addtask, id=str(id), args=str(id),trigger=eval(task.taskstart),replace_existing=True)
+  File "<string>", line 1, in <module>
+NameError: name 'dasd' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
+    flash(u'定时任务启动失败！原因：%e'%e)
+TypeError: must be real number, not NameError

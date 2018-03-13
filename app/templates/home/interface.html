@@ -20,7 +20,7 @@
             </ul>
             {% endwith %}
             <strong>选择项目：</strong>
-            <select id="projectinter" onclick="getprointer()">
+            <select id="projectinter" onclick="getprointer()" >
                 {% for project in projects %}
                     <option>{{ project.project_name }}</option>
                 {% endfor %}

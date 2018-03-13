@@ -113,13 +113,13 @@ class EditmoelView(MethodView):
             db.session.commit()
             return jsonify({'msg': '编辑模块成功', 'code': 200})
         except Exception as e:
-                db.session.rollback()
-                return jsonify({'msg': '编辑模块出现问题！原因：%s'%e, 'code': 308})
+            db.session.rollback()
+            return jsonify({'msg': '编辑模块出现问题！原因：%s'%e, 'code': 308})
 class EditproView(MethodView):
     @login_required
     def get(self,id):
         if current_user.is_sper is False:
-            flash('权限不足,')
+            flash('权限不足')
             return  redirect(url_for('home.project'))
         project=Project.query.filter_by(id=id).first()
         return  render_template('edit/edit_pro.html', project=project)
@@ -168,7 +168,6 @@ class ADDTesteventView(MethodView):#添加测试环境
     def post(self):
         data=request.get_json()
         url_old=Interfacehuan.query.filter_by(url=str(data['url'])).first()
-
         if url_old:
             return  jsonify({"msg":u'测试环境必须是相互独立的',"code":209,'data':''})
         prkcyt=Project.query.filter_by(project_name=data['work']).first()

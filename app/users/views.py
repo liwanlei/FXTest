@@ -89,7 +89,7 @@ class SetadView(View):#设置管理员
                 db.session.rollback()
                 return jsonify({'code': 222,'msg': '设置管理失败'})
         except Exception as e:
-            return  jsonify({'code':207,'msg':'设置过程目前存在异常'})
+            return  jsonify({'code':207,'msg':'设置过程目前存在异常,原因是：%s'%e})
 class DeladView(View):#取消管理员
     methods=['GET','POST']
     @login_required
