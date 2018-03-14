@@ -140,7 +140,7 @@ class Project(db.Model):#项目
     __tablename__='projects'
     id=db.Column(db.Integer(), primary_key=True, autoincrement=True)
     project_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
-    project_name=db.Column(db.String(252))
+    project_name=db.Column(db.String(252),unique=True)
     TestResult = db.relationship('TestResult', backref='projects', lazy='dynamic')
     Interfacetest = db.relationship('InterfaceTest', backref='projects', lazy='dynamic')
     Interface = db.relationship('Interface', backref='projects', lazy='dynamic')
@@ -194,7 +194,6 @@ class Mockserver(db.Model):#mocksever
     __tablename__='mockserver'
     id = db.Column(db.Integer, primary_key=True)
     make_uers = db.Column(db.Integer(), db.ForeignKey('users.id'))#创建人
-    project=db.Column(db.String(255))#项目
     name=db.Column(db.String(55))#名字
     path=db.Column(db.String(252))#路径
     methods = db.Column(db.String(50))#方法

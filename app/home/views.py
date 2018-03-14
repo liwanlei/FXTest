@@ -4,7 +4,7 @@
 # @Time    : 2017/12/7 9:23
 from flask import  Blueprint,jsonify
 from app.common.hebinglist import hebinglist
-from  flask import  redirect,request,render_template,url_for,flash,session
+from  flask import  redirect,request,render_template,url_for,session
 home = Blueprint('home', __name__)
 from app.models import *
 from app.form import  *

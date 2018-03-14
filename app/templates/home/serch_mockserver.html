@@ -67,7 +67,6 @@
                 <caption><strong></strong></caption>
                 <thead>
                 <tr>
-                    <th>项目名</th>
                     <th>接口名</th>
                     <th>接口描述</th>
                     <th>接口路径</th>
@@ -83,7 +82,7 @@
                 </thead>
                 <tbody>{% for int in inte %}
                     <tr >
-                        <td  onclick="show({{ int.id }})"><label class="" style="background-color: white">{{ int.project }}</label></td>
+
                         {% if int.delete ==1 %}
                             <s><td>{{ int.name }}</td></s>
                             <s><td>{{ int.description }}</td></s>

@@ -69,7 +69,7 @@ class AddtestcaseView(View):
                     return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
                 yilai_dat=yilai_data
             if yongli_nam is None or mode is None or interface_name=='' or interface_header==''or interface_url=='' or interface_meth=='' or interface_re=='':
-                flash(u'请准确填写用例')
+                flash(u'请准确填写用例的各项信息')
                 return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
             project_id = Project.query.filter_by(project_name=yongli_nam).first().id
             models_id = Model.query.filter_by(model_name=mode).first().id
@@ -93,7 +93,7 @@ class AddtestcaseView(View):
                 return redirect(url_for('home.yongli'))
             except Exception as e:
                 db.session.rollback()
-                flash(u'添加用例失败')
+                flash(u'添加用例失败，原因是：%s'%e)
                 return redirect(url_for('home.yongli'))
         return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
 class Deletecase(View):

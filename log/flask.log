@@ -1,9 +1,9 @@
-2018-03-13 14:22:20,657 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/13 [GET]
+2018-03-14 13:44:14,705 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/12 [GET]
 Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
     scheduler.add_job(func=addtask, id=str(id), args=str(id),trigger=eval(task.taskstart),replace_existing=True)
   File "<string>", line 1, in <module>
-NameError: name 'dasd' is not defined
+NameError: name '试试' is not defined
 
 During handling of the above exception, another exception occurred:
 
@@ -29,12 +29,12 @@ Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
     flash(u'定时任务启动失败！原因：%e'%e)
 TypeError: must be real number, not NameError
-2018-03-13 14:22:24,262 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/13 [GET]
+2018-03-14 13:45:18,250 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/12 [GET]
 Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
-    scheduler.add_job(func=addtask, id=str(id), args=str(id),trigger=eval(task.taskstart),replace_existing=True)
+    task.yunxing_status=u'启动'
   File "<string>", line 1, in <module>
-NameError: name 'dasd' is not defined
+NameError: name '试试' is not defined
 
 During handling of the above exception, another exception occurred:
 
@@ -58,5 +58,327 @@ Traceback (most recent call last):
   File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
     return func(*args, **kwargs)
   File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
-    flash(u'定时任务启动失败！原因：%e'%e)
+    return redirect(url_for('home.timingtask'))
 TypeError: must be real number, not NameError
+2018-03-14 13:45:19,176 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/12 [GET]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
+    task.yunxing_status=u'启动'
+  File "<string>", line 1, in <module>
+NameError: name '试试' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
+    return redirect(url_for('home.timingtask'))
+TypeError: must be real number, not NameError
+2018-03-14 13:45:21,898 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/12 [GET]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
+    task.yunxing_status=u'启动'
+  File "<string>", line 1, in <module>
+NameError: name '试试' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
+    return redirect(url_for('home.timingtask'))
+TypeError: must be real number, not NameError
+2018-03-14 13:46:11,968 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/12 [GET]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
+    task.yunxing_status=u'启动'
+  File "<string>", line 1, in <module>
+NameError: name '试试' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
+    return redirect(url_for('home.timingtask'))
+TypeError: must be real number, not NameError
+2018-03-14 13:47:08,656 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/12 [GET]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
+    task.yunxing_status=u'启动'
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_apscheduler\scheduler.py", line 146, in add_job
+    return self._scheduler.add_job(**job_def)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\schedulers\base.py", line 425, in add_job
+    job = Job(self, **job_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\job.py", line 44, in __init__
+    self._modify(id=id or uuid4().hex, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\job.py", line 175, in _modify
+    check_callable_args(func, args, kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\util.py", line 379, in check_callable_args
+    '(allowed: %d, given in args: %d)' % (len(args) - len(unmatched_args), len(args)))
+ValueError: The list of positional arguments is longer than the target callable can handle (allowed: 1, given in args: 2)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
+    return redirect(url_for('home.timingtask'))
+TypeError: must be real number, not ValueError
+2018-03-14 13:47:35,111 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/12 [GET]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
+    task.yunxing_status='启动'
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_apscheduler\scheduler.py", line 146, in add_job
+    return self._scheduler.add_job(**job_def)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\schedulers\base.py", line 425, in add_job
+    job = Job(self, **job_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\job.py", line 44, in __init__
+    self._modify(id=id or uuid4().hex, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\job.py", line 175, in _modify
+    check_callable_args(func, args, kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\util.py", line 379, in check_callable_args
+    '(allowed: %d, given in args: %d)' % (len(args) - len(unmatched_args), len(args)))
+ValueError: The list of positional arguments is longer than the target callable can handle (allowed: 1, given in args: 2)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
+    return redirect(url_for('home.timingtask'))
+TypeError: must be real number, not ValueError
+2018-03-14 13:47:56,268 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/12 [GET]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
+    task.yunxing_status=str('启动')
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_apscheduler\scheduler.py", line 146, in add_job
+    return self._scheduler.add_job(**job_def)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\schedulers\base.py", line 425, in add_job
+    job = Job(self, **job_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\job.py", line 44, in __init__
+    self._modify(id=id or uuid4().hex, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\job.py", line 175, in _modify
+    check_callable_args(func, args, kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\util.py", line 379, in check_callable_args
+    '(allowed: %d, given in args: %d)' % (len(args) - len(unmatched_args), len(args)))
+ValueError: The list of positional arguments is longer than the target callable can handle (allowed: 1, given in args: 2)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
+    return redirect(url_for('home.timingtask'))
+TypeError: must be real number, not ValueError
+2018-03-14 13:48:40,556 - ERROR - app.py - log_exception - 1560 - Exception on /starttask/12 [GET]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 150, in get
+    task.yunxing_status=str('启动')
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_apscheduler\scheduler.py", line 146, in add_job
+    return self._scheduler.add_job(**job_def)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\schedulers\base.py", line 425, in add_job
+    job = Job(self, **job_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\job.py", line 44, in __init__
+    self._modify(id=id or uuid4().hex, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\job.py", line 175, in _modify
+    check_callable_args(func, args, kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\apscheduler\util.py", line 379, in check_callable_args
+    '(allowed: %d, given in args: %d)' % (len(args) - len(unmatched_args), len(args)))
+ValueError: The list of positional arguments is longer than the target callable can handle (allowed: 1, given in args: 2)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 156, in get
+    return redirect(url_for('imingtask'))
+TypeError: must be real number, not ValueError
+2018-03-14 13:49:38,729 - ERROR - app.py - log_exception - 1560 - Exception on /testfortask/1 [POST]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 130, in post
+    task_one.prject=Project.query.filter_by(project_name=proc_test).first().id
+AttributeError: 'NoneType' object has no attribute 'id'
+2018-03-14 13:50:04,541 - ERROR - app.py - log_exception - 1560 - Exception on /testfortask/1 [POST]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 130, in post
+    task_one.prject=Project.query.filter_by(project_name=proc_test).first()
+AttributeError: 'NoneType' object has no attribute 'id'
+2018-03-14 13:50:43,076 - ERROR - app.py - log_exception - 1560 - Exception on /testfortask/1 [POST]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask\views.py", line 149, in dispatch_request
+    return meth(*args, **kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\xuesheng\FXTest\app\task\views.py", line 130, in post
+    task_one.interface.remove(oldtask)
+AttributeError: 'NoneType' object has no attribute 'id'

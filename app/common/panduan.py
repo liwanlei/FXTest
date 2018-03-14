@@ -12,8 +12,8 @@ def assert_in(asserqiwang,fanhuijson):
                 return  'pass'
             else:
                 return 'fail'
-        except Exception as e:
-            return 'fail ',e
+        except :
+            return 'exception '
     else:
         return '请检查断言'
 def assertre(asserqingwang):

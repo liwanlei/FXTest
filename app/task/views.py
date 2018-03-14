@@ -127,10 +127,11 @@ class TestforTaskView(MethodView):#为测试任务添加测试用例
             return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=projects)
         for oldtask in task_one.interface.all():
             task_one.interface.remove(oldtask)
-        task_one.prject=Project.query.filter_by(project_name=proc_test).first().id
         for yongli in test_yongli:
-            task_one.interface.append(InterfaceTest.query.filter_by(id=yongli).first())
-            db.session.add(task_one)
+            task_yong=InterfaceTest.query.filter_by(id=(yongli)).first()
+            task_one.interface.append(task_yong)
+        task_one.prject = proc_test
+        db.session.add(task_one)
         try:
             db.session.commit()
             flash(u'任务更新用例成功')
@@ -142,19 +143,18 @@ class StartTaskView(MethodView):#开始定时任务
     @login_required
     def get(self,id):
         task=Task.query.filter_by(id=id).first()
-        next = request.headers.get('Referer')
         if len(task.interface.all())<=1:
             flash(u'定时任务执行过程的测试用例为多用例，请你谅解')
-            return  redirect(next or url_for('home.timingtask'))
+            return  redirect(url_for('home.timingtask'))
         try:
             scheduler.add_job(func=addtask, id=str(id), args=str(id),trigger=eval(task.taskstart),replace_existing=True)
-            task.yunxing_status=u'启动'
+            task.yunxing_status='启动'
             db.session.commit()
             flash(u'定时任务启动成功！')
-            return  redirect(next or url_for('home.timingtask'))
+            return  redirect(url_for('home.timingtask'))
         except Exception as e:
             flash(u'定时任务启动失败！原因：%e'%e)
-            return redirect(next or url_for('home.timingtask'))
+            return redirect(url_for('home.timingtask'))
 class ZantingtaskView(MethodView):#暂停定时任务
     @login_required
     def get(self,id):

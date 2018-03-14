@@ -30,4 +30,4 @@ if __name__ == '__main__':
     scheduler.init_app(app=app)
     scheduler.start()
     app.logger.addHandler(handler)
-    app.run(debug=False)
+    app.run()
