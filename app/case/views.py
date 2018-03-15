@@ -449,9 +449,21 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                         db.session.commit()
                         return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
                 else:
-                    pasrms=case.Interface_pase
+                    try:
+                        pasrms=eval(case.Interface_pase)
+                    except:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
             else:
-                pasrms = case.Interface_pase
+                try:
+                    pasrms = eval(case.Interface_pase)
+                except:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
             new_headers=case.Interface_headers
             if  new_headers =='None':
                 ne={'host':url}
@@ -516,6 +528,9 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
             try:
                 data=eval(pasrms)
             except Exception as e:
+                case.Interface_is_tiaoshi = True
+                case.Interface_tiaoshi_shifou = True
+                db.session.commit()
                 return jsonify({'code': 159, 'msg': '转化请求参数失败，原因：%s' % e})
             me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=data,headers=ne)
             result = me.testapi()
@@ -543,8 +558,6 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                     db.session.commit()
                     return jsonify({'code': 101, 'msg': '测试用例测试失败,请检查用例！'})
                 else:
-                    print(retur_re)
-                    print(return_mysql['result'])
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
                     if case.saveresult is True:
@@ -560,4 +573,7 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
                 db.session.commit()
                 return jsonify({'code': 103, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(e)})
         except Exception as e:
+            case.Interface_is_tiaoshi = True
+            case.Interface_tiaoshi_shifou = True
+            db.session.commit()
             return  jsonify({'code':100,'msg':'接口测试出错了！原因:%s'%e})

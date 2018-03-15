@@ -1,156 +1,124 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>API自动化平台-mockserver</title>
-    <link href="{{url_for('static',filename='css/amazeui.min.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/admin.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/app.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}"  rel="stylesheet">
-    <link rel="icon" href="{{url_for('static',filename='img/logo.png')}}" type="image/x-icon">
-    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
-    <script src="{{url_for('static',filename='js/echarts.common.min.js')}}"></script>
-    <script src="{{url_for('static',filename='js/app.js')}}"></script>
-</head>
-<body style="background-color: #f5f5f5" >
-<header class="am-topbar am-topbar-inverse admin-header">
-    <div class="am-topbar-brand">
-        <a href="{{ url_for('home.index') }}"class="tpl-logo">
-            <img src="{{url_for('static',filename='img/logo.png')}}" alt=""  >
-        </a>
-    </div>
-    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
-        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
-            <li class="am-hide-sm-only"></li>
-            <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
-                <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('user.setting')}}">
-                    <span class="tpl-header-list-user-nick" >{{session.username}}</span>
-                    <span class="tpl-header-list-user-ico"></span>
-                </a>
-            </li>
-            <li><a href="{{url_for('home.logt')}}" class="tpl-header-list-link">
-                <span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
-        </ul>
-    </div>
-</header>
-{% import "fenye.html" as macros %}
-<div class="tpl-portlet-components">
-    <div class="portlet-title">
-        <div class="caption font-green bold" style="margin-top: 5%">
-            <span class="am-icon-code"></span> mockserver
+{% extends 'mockserver.html' %}
+{% block bodys %}
+    {% import "fenye.html" as macros %}
+    <div class="tpl-portlet-components">
+        <div class="portlet-title">
+            <div class="caption font-green bold" style="margin-top: 5%">
+                <span class="am-icon-code"></span> mockserver
+            </div>
         </div>
-    </div>
-    <div class="mockser" style="margin-top: 5%" >
-        <div class="tpl-content-page-title">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class='flashes'>
-                        {% for message in messages %}
-                            <li style="color:red" >{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-        </div>
-        <div class="tpl-block">
-            <div class="am-g">
-                <div class="am-u-sm-12 am-u-md-6">
-                    <div class="am-btn-toolbar">
-                        <div class="am-btn-group am-btn-group-xs">
-                            <a href="{{ url_for('mock.addmock') }}"> <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
-                            <span style="float: right;margin-left: 20px;"> <form method="post" action="{{ url_for('mock.sermock') }}">
-                                <input placeholder="请输入要查询的mock接口" type="text" name="mock">
-                                <input type="submit" value="搜索" class="am-icon-search btn-success" >
-                            </form></span>
+        <div class="mockser" style="margin-top: 5%" >
+            <div class="tpl-content-page-title">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class='flashes'>
+                            {% for message in messages %}
+                                <li style="color:red" >{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="tpl-block">
+                <div class="am-g">
+                    <div class="am-u-sm-12 am-u-md-6">
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <a href="{{ url_for('mock.addmock') }}"> <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
+                                <span style="float: right;margin-left: 20px;">
+                                    <form method="post" action="{{ url_for('mock.sermock') }}">
+                                        <input placeholder="请输入要查询的mock接口" type="text" name="mock">
+                                        <input type="submit" value="搜索" class="am-icon-search btn-success" >
+                                    </form></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <table class="am-table am-table-striped am-table-hover table-main " style="">
-                <caption><strong></strong></caption>
-                <thead>
-                <tr>
-                    <th>接口名</th>
-                    <th>接口描述</th>
-                    <th>接口路径</th>
-                    <th>请求方式</th>
-                    <th>类型</th>
-                    <th>更新时间</th>
-                    <th>是否校验</th>
-                    <th>请求头校验</th>
-                    <th>状态</th>
-                    <th>创建人</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>{% for int in inte %}
-                    <tr >
-                        <td><label class="label-primary" style="background: white">{{ int.name }}</label></td>
-                        <td><label class="label-primary" style="background: white">{{ int.description }}</label></td>
-                        {% if int.status==1 %}
-                            <td><a href="{{ url_for('mock.mackserver',path=int.path) }}" target="_blank">{{ int.path }}</a></td>
-                        {% else %}
-                            <td>{{ int.path }}</td>
-                        {% endif %}
-                        <td><label class="label-primary" style="background: white">{{ int.methods }}</label></td>
-                        <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><label class="label-primary" style="background: white">{{ int.rebacktype }}</label></td>
-                        <td><label class="label-primary" style="background: white">{{(int.update_time)}}</label></td>
-                        {% if int.ischeck ==0  %}
-                            <td>否</td>
-                        {% elif int.ischeck==1 %}
-                            <td>是</td>
-                        {% endif %}
-                        {% if int.is_headers==0 %}
-                            <td><label class="label-primary" style="background: white"><i class="am-icon-check"></i></label></td>
-                        {% elif int.is_headers==1 %}
-                            <td><label class="label-primary" style="background: white"><i class="am-icon-close"></i></label></td>
-                        {% endif %}
-                        {% if int.status==0 %}
-                            <td><label class="label-primary" style="background: white">
-                                <a href="{{ url_for('mock.startmock',id=int.id) }}"><i class="am-icon-lock"></i></a></label></td>
-                        {% elif int.status==1 %}
-                            <td><label class="label-primary" style="background: white">
-                                <a href="{{ url_for('mock.closemock',id=int.id) }}"><i class="am-icon-unlock"></i></a></label></td>
-                        {% endif %}
-                        <td><label class="label-primary" style="background: white">{{ int.users }}</label></td>
-                        <td>
-                            <span><a href="{{ url_for('mock.editmockserver',id=int.id) }}"><i class="am-icon-edit"></i></a></span>  {%if current_user.role_id !=1 and
+                <table class="am-table am-table-striped am-table-hover table-main " style="">
+                    <caption><strong></strong></caption>
+                    <thead>
+                    <tr>
+                        <th>接口名</th>
+                        <th>接口描述</th>
+                        <th>接口路径</th>
+                        <th>请求方式</th>
+                        <th>类型</th>
+                        <th>更新时间</th>
+                        <th>是否校验</th>
+                        <th>请求头校验</th>
+                        <th>状态</th>
+                        <th>创建人</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>{% for int in inte %}
+                        <tr >
+                            <td onclick="show({{ int.id }})"><label class="label-primary" style="background: white">{{ int.name }}</label></td>
+                            <td><label class="label-primary" style="background: white">{{ int.description }}</label></td>
+                            {% if int.status==1 %}
+                                <td><a href="{{ url_for('mock.mackserver',path=int.path) }}" target="_blank">{{ int.path }}</a></td>
+                            {% else %}
+                                <td>{{ int.path }}</td>
+                            {% endif %}
+                            <td onclick="show({{ int.id }})"><label class="label-primary" style="background: white">{{ int.methods }}</label></td>
+                            <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                                <label class="label-primary" style="background: white">{{ int.rebacktype }}
+                                </label></td>
+                            <td><label class="label-primary" style="background: white">{{(int.update_time)}}</label></td>
+                            {% if int.ischeck ==0  %}
+                                <td>否</td>
+                            {% elif int.ischeck==1 %}
+                                <td>是</td>
+                            {% endif %}
+                            {% if int.is_headers==0 %}
+                                <td><label class="label-primary" style="background: white"><i class="am-icon-check"></i></label></td>
+                            {% elif int.is_headers==1 %}
+                                <td><label class="label-primary" style="background: white"><i class="am-icon-close"></i></label></td>
+                            {% endif %}
+                            {% if int.status==0 %}
+                                <td><label class="label-primary" style="background: white">
+                                    <a href="{{ url_for('mock.startmock',id=int.id) }}"><i class="am-icon-lock"></i></a></label></td>
+                            {% elif int.status==1 %}
+                                <td><label class="label-primary" style="background: white">
+                                    <a href="{{ url_for('mock.closemock',id=int.id) }}"><i class="am-icon-unlock"></i></a></label></td>
+                            {% endif %}
+                            <td><label class="label-primary" style="background: white">{{ int.users }}</label></td>
+                            <td>
+                                <span><a href="{{ url_for('mock.editmockserver',id=int.id) }}"><i class="am-icon-edit"></i></a></span>  {%if current_user.role_id !=1 and
           current_user.role_id !=None  %}
-                            <span><a href="{{ url_for('mock.deletemock',id=int.id) }}"><i class="am-icon-remove"></i></a></span>{%endif%}
-                        </td>
-                    </tr>
-                    <tr  style="width:10px;display: none"  id="{{ int.id }}">
-                        <td colspan="8">
-                            <div class="tr-detail">
-                                <div class="dt-cont">
-                                    <b>请求参数：</b><span class="dt-cont-s">{{ int.params|safe }}</span>
+                                <span><a href="{{ url_for('mock.deletemock',id=int.id) }}"><i class="am-icon-remove"></i></a></span>{%endif%}
+                            </td>
+                        </tr>
+                        <tr  style="width:10px;display: none"  id="{{ int.id }}">
+                            <td colspan="8">
+                                <div class="tr-detail">
+                                    <div class="dt-cont">
+                                        <b>请求参数：</b><span class="dt-cont-s">{{ int.params|safe }}</span>
+                                    </div>
+                                    <div class="dt-cont">
+                                        <b>预期返回：</b><span class="dt-cont-y">{{ int.fanhui|safe }}</span>
+                                    </div>
+                                    <div class="dt-cont">
+                                        <b>请求头：</b><span class="dt-cont-y">{{ int.headers|safe }}</span>
+                                    </div>
                                 </div>
-                                <div class="dt-cont">
-                                    <b>预期返回：</b><span class="dt-cont-y">{{ int.fanhui|safe }}</span>
-                                </div>
-                                <div class="dt-cont">
-                                    <b>请求头：</b><span class="dt-cont-y">{{ int.headers|safe }}</span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div>       <p class="pagination" style="margin-left: 24%;">
-            {{macros.pagination_widget(pagination,'.mockserver')}}
-        </p></div></div></div>
-<div style='text-align: center;margin-bottom: auto'>
-    <h3>版权雷子所有，联系qq：952943386 qq交流群：194704520</h3></div>
-<script>
-    function show(id) {
-        var obj=document.getElementById(id)
-        if (obj.style.display =='none'){
-            obj.style.display ='';
-        }else {
-            obj.style.display ='none';
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div>       <p class="pagination" style="margin-left: 24%;">
+                {{macros.pagination_widget(pagination,'.mockserver')}}
+            </p></div></div></div>
+    <script type="application/javascript">
+        function show(id) {
+            var obj=document.getElementById(id);
+            if (obj.style.display =='none'){
+                obj.style.display ='';
+            }else {
+                obj.style.display ='none';
+            }
         }
-    }
-</script>
-</body>
-</html>
+    </script>
+{% endblock %}

@@ -1,93 +1,52 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>API自动化平台-mockserver</title>
-    <link href="{{url_for('static',filename='css/amazeui.min.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/admin.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/app.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}"  rel="stylesheet">
-    <link rel="icon" href="{{url_for('static',filename='img/logo.png')}}" type="image/x-icon">
-    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
-    <script src="{{url_for('static',filename='js/echarts.common.min.js')}}"></script>
-    <script src="{{url_for('static',filename='js/app.js')}}"></script>
-</head>
-<body style="background-color: #f5f5f5" >
-<header class="am-topbar am-topbar-inverse admin-header">
-    <div class="am-topbar-brand">
-        <a href="{{ url_for('home.index') }}"class="tpl-logo">
-            <img src="{{url_for('static',filename='img/logo.png')}}" alt=""  >
-        </a>
-    </div>
-    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
-        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
-            <li class="am-hide-sm-only"></li>
-            <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
-                <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('user.setting')}}">
-                    <span class="tpl-header-list-user-nick" >
-                        {{session.username}}
-                    </span>
-                    <span class="tpl-header-list-user-ico">
-                    </span>
-                </a>
-            </li>
-            <li><a href="{{url_for('home.logt')}}" class="tpl-header-list-link">
-                <span class="am-icon-sign-out tpl-header-list-ico-out-size"></span>
-            </a></li>
-        </ul>
-    </div>
-</header>
-<div class="mockser"  style="margin-top:7%">
-    <div class="tpl-content-page-title">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul class='flashes'>
-                    {% for message in messages %}
-                        <li style="color:red" >{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-    </div>
-    <div class="tpl-portlet-components">
-        <div >
-            <h3 style="text-align: center" >编辑mockserver端口</h3>
-            <form method="POST" style="margin-left: 40%" action="{{ url_for('mock.editmockserver',id=mock.id) }}">
-                <p>接口名字：<input type="text" placeholder="请输入接口名字" name="name" value="{{ mock.name }}"></p>
-                <p> 接口描述：<input type="text" placeholder="请输入接口描述" name="desc" value="{{ mock.description }}"></p>
-                <p>  接口路径：<input type="text" placeholder="请输入接口路径" name="path" value="{{ mock.path }}"></p>
-                <p>  请求方式：<select name="meth" class="select2-results"><option>get</option>
-                    <option>post</option><option>delete</option>
-                    <option>put</option><option>push</option></select></p>
-                <p>类型参数：<select name="type"><option>json</option>
-                    <option>xml</option></select></p>
-                <p>请求头：<textarea name="headers" style="width: 200px;height: 100px;">
-                    {{ mock.headers }}</textarea></p>
-                <p>请求参数：<textarea name="parm"  style="width: 200px;height: 100px;">
-                    {{ mock.params}}</textarea></p>
-                <p>返回参数：<textarea name="back" style="width: 200px;height: 100px;">
-                    {{ mock.fanhui }}</textarea></p>
-                <p>是否校验：<select name="checkout">
-                    <option>是</option>
-                    <option>否</option>
-                </select></p>
-                <p>是否校验请求头：
-                    <select name="checkouheaders">
+{% extends 'mockserver.html' %}
+{% block bodys %}
+    <div class="mockser"  style="margin-top:7%">
+        <div class="tpl-content-page-title">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red" >{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="tpl-portlet-components">
+            <div >
+                <h3 style="text-align: center" >编辑mockserver端口</h3>
+                <form method="POST" style="margin-left: 40%" action="{{ url_for('mock.editmockserver',id=mock.id) }}">
+                    <p>接口名字：<input type="text" placeholder="请输入接口名字" name="name" value="{{ mock.name }}"></p>
+                    <p> 接口描述：<input type="text" placeholder="请输入接口描述" name="desc" value="{{ mock.description }}"></p>
+                    <p>  接口路径：<input type="text" placeholder="请输入接口路径" name="path" value="{{ mock.path }}"></p>
+                    <p>  请求方式：<select name="meth" class="select2-results"><option>get</option>
+                        <option>post</option><option>delete</option>
+                        <option>put</option><option>push</option></select></p>
+                    <p>类型参数：<select name="type"><option>json</option>
+                        <option>xml</option></select></p>
+                    <p>请求头：<textarea name="headers" style="width: 200px;height: 100px;">
+                        {{ mock.headers }}</textarea></p>
+                    <p>请求参数：<textarea name="parm"  style="width: 200px;height: 100px;">
+                        {{ mock.params}}</textarea></p>
+                    <p>返回参数：<textarea name="back" style="width: 200px;height: 100px;">
+                        {{ mock.fanhui }}</textarea></p>
+                    <p>是否校验：<select name="checkout">
                         <option>是</option>
-                        <option>否</option></select></p>
-                <p>是否开启：<select name="kaiqi">
-                    <option>是</option>
-                    <option>否</option></select>
-                </p>
-                <p>
-                    <input type="submit" value="编辑" class="btn-success">
-                </p>
-            </form>
+                        <option>否</option>
+                    </select></p>
+                    <p>是否校验请求头：
+                        <select name="checkouheaders">
+                            <option>是</option>
+                            <option>否</option></select></p>
+                    <p>是否开启：<select name="kaiqi">
+                        <option>是</option>
+                        <option>否</option></select>
+                    </p>
+                    <p>
+                        <input type="submit" value="编辑" class="btn-success">
+                    </p>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<div class="tpl-block">
-</div>
-<div style='text-align: center;margin-bottom: auto'>
-    <h3>版权雷子所有，联系qq：952943386 qq交流群：194704520</h3></div>
-</body>
-</html>
+{% endblock %}

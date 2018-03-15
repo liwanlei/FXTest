@@ -14,3 +14,4 @@ app.add_url_rule('/deletre/<int:id>',view_func=DeleteResultView.as_view('deletre
 app.add_url_rule('/addevent',view_func=ADDTesteventView.as_view('addevent'))
 app.add_url_rule('/deleteevent/<int:id>',view_func=DeleteEventViews.as_view('delete'))
 app.add_url_rule('/editevent/<int:id>',view_func=EditEventViews.as_view('editevents'))
+app.add_url_rule('/getyongli',view_func=Getyongli.as_view('getyongli'))

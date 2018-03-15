@@ -266,17 +266,18 @@ def getprojects():
     if not  peoject:
         return jsonify({'data':'数据库找不到项目','code':109})
     return  jsonify({'data':str(result),'huanjing':url_list,'code':200})
-@app.route('/getyongli',methods=['GET','POST'])
-def getyongli():
-    id = request.get_data('id')
-    project=id.decode('utf-8')
-    if not project:
-        return jsonify({'msg':'没有发送数据','code':108})
-    peoject = Project.query.filter_by(project_name=project).first()
-    if not  peoject:
-        return jsonify({'msg': '数据库找不到项目', 'code': 109})
-    tesatcaelist=InterfaceTest.query.filter_by(projects_id=peoject.id,status=False).all()
-    caselit=[]
-    for i in tesatcaelist:
-        caselit.append(i.id)
-    return  jsonify({'code':200,'msg':'成功','data':(caselit)})
+class Getyongli(MethodView):
+    @login_required
+    def post(self):
+        id = request.get_data('id')
+        project=id.decode('utf-8')
+        if not project:
+            return jsonify({'msg':'没有发送数据','code':108})
+        peoject = Project.query.filter_by(project_name=project).first()
+        if not  peoject:
+            return jsonify({'msg': '数据库找不到项目', 'code': 109})
+        tesatcaelist=InterfaceTest.query.filter_by(projects_id=peoject.id,status=False).all()
+        caselit=[]
+        for i in tesatcaelist:
+            caselit.append(i.id)
+        return  jsonify({'code':200,'msg':'成功','data':(caselit)})
