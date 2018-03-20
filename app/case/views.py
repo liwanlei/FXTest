@@ -102,10 +102,18 @@ class Deletecase(View):
     def dispatch_request(self,id):
         next=request.headers.get('Referer')
         testcase=InterfaceTest.query.filter_by(id=id).first()
-        testcase.status=True
-        db.session.commit()
-        flash(u'删除成功')
-        return redirect(next or url_for('home.yongli'))
+        if  not testcase:
+            flash(u'删除的测试用例:%s不存在'%id)
+            return redirect(next or url_for('home.yongli'))
+        try:
+            testcase.status=True
+            db.session.commit()
+            flash(u'用例：%s 删除成功'%id)
+            return redirect(next or url_for('home.yongli'))
+        except Exception as e:
+            db.session.rollback()
+            flash(u'用例：%s删除失败！原因：%s'%(id,e))
+            return redirect(next or url_for('home.yongli'))
 class EditcaseView(View):
     methods=['GET','POST']
     @login_required
@@ -121,7 +129,10 @@ class EditcaseView(View):
                     if i.projects.status == False:
                         projects.append(i.projects)
                         id.append(i.projects)
-        edit_case=InterfaceTest.query.filter_by(id=id).first()
+        edit_case=InterfaceTest.query.filter_by(id=id,status=False).first()
+        if not  edit_case:
+            flash(u'编辑用例不存在!或者已经删除')
+            return redirect(url_for('home.yongli'))
         if request.method=='POST':
             save = request.form.get('save')
             yongli_nam = request.form.get('project')
@@ -179,11 +190,11 @@ class EditcaseView(View):
             edit_case.databaseziduan = databijiao
             try:
                 db.session.commit()
-                flash(u'编辑成功')
+                flash(u'用例：%s编辑成功'%id)
                 return redirect( url_for('home.yongli'))
             except:
                 db.session.rollback()
-                flash(u'编辑失败，请重新编辑！')
+                flash(u'用例：%s 编辑失败，请重新编辑！'%id)
                 return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
         return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
 class SeryongliView(MethodView):

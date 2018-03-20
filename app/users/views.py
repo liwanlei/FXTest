@@ -97,7 +97,10 @@ class DeladView(View):#取消管理员
         if chckuserpermisson() is False:
             flash('权限不足，不能取消管理员')
             return  redirect(request.headers.get('Referer'))
-        new_ad=User.query.filter_by(id=id).first()
+        new_ad=User.query.filter_by(id=id,status=False).first()
+        if not new_ad:
+            flash(u'找不到你要设置的管理员的用户')
+            return redirect(url_for('home.adminuser'))
         if new_ad==user:
             flash(u'自己不能取消自己的管理员')
             return redirect(url_for('home.adminuser'))
@@ -121,9 +124,14 @@ class FreadView(View):#冻结
             flash(u'自己不能冻结自己')
             return redirect( url_for('home.adminuser'))
         new_ad.status=1
-        db.session.commit()
-        flash(u'已经冻结')
-        return redirect( url_for('home.adminuser'))
+        try:
+            db.session.commit()
+            flash(u'已经冻结')
+            return redirect( url_for('home.adminuser'))
+        except Exception as  e:
+            db.session.rollback()
+            flash(u'冻结用户失败！原因：%s'%e)
+            return redirect(url_for('home.adminuser'))
 class FrereView(View):#解冻
     methods=['GET']
     @login_required
@@ -139,9 +147,14 @@ class FrereView(View):#解冻
         if new_ad==user:
             if new_ad.is_sper==1:
                 new_ad.status = 0
-                db.session.commit()
-                flash(u'已经解冻')
-                return redirect(url_for('home.adminuser'))
+                try:
+                    db.session.commit()
+                    flash(u'已经解冻')
+                    return redirect(url_for('home.adminuser'))
+                except Exception as e:
+                    db.session.rollback()
+                    flash(u'解冻失败,原因是：%s'%e)
+                    return  redirect(url_for('home.adminuser'))
             flash(u'自己不能解冻自己')
             return redirect(url_for('home.adminuser'))
         new_ad.status=0
@@ -160,9 +173,14 @@ class RedpassView(View):#重置密码
         if new_ad!=user:
             if user.is_sper ==1:
                 new_ad.set_password('111111')
-                db.session.commit()
-                flash(u'已经重置！密码：111111')
-                return redirect(url_for('home.adminuser'))
+                try:
+                    db.session.commit()
+                    flash(u'已经重置！密码：111111')
+                    return redirect(url_for('home.adminuser'))
+                except Exception as e:
+                    db.session.rollback()
+                    flash('重置密码失败，原因：%s'%e)
+                    return  redirect(url_for('home.adminuser'))
             flash(u'不是管理员不能重置')
             return redirect(url_for('home.adminuser'))
         return redirect(url_for('home.adminuser'))
@@ -243,9 +261,14 @@ class DeleteView(View):#删除邮件
         user_id=current_user.id
         if email_re.email_re_user_id==int(user_id):
             email_re.status=True
-            db.session.commit()
-            flash(u'删除成功')
-            return redirect(url_for('user.setting'))
+            try:
+                db.session.commit()
+                flash(u'删除成功')
+                return redirect(url_for('user.setting'))
+            except Exception as e:
+                db.session.rollback()
+                flash(u'删除失败,原因：%s'%e)
+                return  redirect(url_for('user.setting'))
         flash(u'您没有权限删除')
         return redirect(url_for('user.setting'))
 class EditemailView(MethodView):#编辑邮件
@@ -299,9 +322,14 @@ class QuzhiMoView(View):#取消默认
             if int(current_user.id)==del_em.email_re_user_id:
                 del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True,status=True).all()
                 del_e.default_set=False
-                db.session.commit()
-                flash(u'取消默认成功')
-                return redirect(url_for('user.setting'))
+                try:
+                    db.session.commit()
+                    flash(u'取消默认成功')
+                    return redirect(url_for('user.setting'))
+                except Exception as e:
+                    db.session.rollback()
+                    flash(u'取消默认失败')
+                    return  redirect(url_for('user.setting'))
             flash(u'您没有权限来取消')
             return redirect(url_for('user.setting'))
         flash(u'你要取消的默认不存在')
@@ -318,9 +346,14 @@ class ShezhiMoView(View):#设置默认
                     flash(u'一个账户只能有一个默认设置')
                     return redirect(url_for('user.setting'))
                 shezi_em.default_set=True
-                db.session.commit()
-                flash(u'设置默认成功')
-                return redirect(url_for('user.setting'))
+                try:
+                    db.session.commit()
+                    flash(u'设置默认成功')
+                    return redirect(url_for('user.setting'))
+                except Exception as e:
+                    db.session.rollback()
+                    flash(u'设置默认失败，原因：%s'%e)
+                    return redirect(url_for('user.setting'))
             flash(u'您没有权限来设置')
             return redirect(url_for('user.setting'))
         flash(u'你要设置的默认邮箱配置不存在')

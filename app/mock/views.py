@@ -8,7 +8,7 @@ from app.models import *
 from flask.views import MethodView,View
 from flask_login import current_user,login_required
 from app import loginManager
-from app.common.parsenei import get_to_data
+from app.common.mockservermeth import get_to_data
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

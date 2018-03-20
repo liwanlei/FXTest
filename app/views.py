@@ -79,11 +79,19 @@ class DelemodelView(View):
     @login_required
     def dispatch_request(self,id):
         next = request.headers.get('Referer')
-        model=Model.query.filter_by(id=id).first()
+        model=Model.query.filter_by(id=id,status=False).first()
+        if not  model:
+            flash(u'要删除的模块不存在')
+            return  redirect(next or url_for('home.model'))
         model.status=True
-        db.session.commit()
-        flash(u'删除成功')
-        return redirect(next or url_for('home.model'))
+        try:
+            db.session.commit()
+            flash(u'模块：%s 删除成功'%model.model_name)
+            return redirect(next or url_for('home.model'))
+        except Exception as e:
+            db.session.rollback()
+            flash(u'模块：%s 删除失败，原因：%s'%(model.model_name,e))
+            return  redirect(next or url_for('home.model'))
 class DeleproView(View):
     methods=['GET','POST']
     @login_required
@@ -91,11 +99,19 @@ class DeleproView(View):
         if  current_user.is_sper == False:
             flash('权限不足，不能删除项目')
             return redirect(request.headers.get('Referer'))
-        proje=Project.query.filter_by(id=id).first()
+        proje=Project.query.filter_by(id=id,status=False).first()
+        if not  proje:
+            flash('删除的项目不存在或者已经删除')
+            return  redirect(url_for('home.project'))
         proje.status=True
-        db.session.commit()
-        flash(u'删除成功')
-        return redirect( url_for('home.project'))
+        try:
+            db.session.commit()
+            flash(u'项目删除成功')
+            return redirect( url_for('home.project'))
+        except Exception as e:
+            db.session.rollback()
+            flash(u'删除项目失败，原因是：%s'%e)
+            return  redirect(url_for('home.project'))
 class EditmoelView(MethodView):
     @login_required
     def get(self,id):
@@ -144,11 +160,19 @@ class DeleteResultView(View):
         if chckuserpermisson() == False:
             flash('权限不足，不能删除测试报告')
             return  redirect(request.headers.get('Referer'))
-        delTest=TestResult.query.filter_by(id=id).first()
+        delTest=TestResult.query.filter_by(id=id,status=False).first()
+        if not  delTest:
+            flash('要删除的测试报告不存在')
+            return  redirect(url_for('home.test_rep'))
         delTest.status=True
-        db.session.commit()
-        flash(u'删除成功')
-        return redirect( url_for('home.test_rep'))
+        try:
+            db.session.commit()
+            flash(u'删除成功')
+            return redirect( url_for('home.test_rep'))
+        except Exception as e:
+            db.session.rollback()
+            flash('删除测试报告失败，原因：%s'%e)
+            return  redirect(url_for('home.test_rep'))
 class ADDTesteventView(MethodView):#添加测试环境
     @login_required
     def get(self):
@@ -281,3 +305,9 @@ class Getyongli(MethodView):
         for i in tesatcaelist:
             caselit.append(i.id)
         return  jsonify({'code':200,'msg':'成功','data':(caselit)})
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('500.html')

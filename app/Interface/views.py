@@ -33,7 +33,6 @@ class InterfaceaddView(MethodView):
     @login_required
     def post(self):
         data=request.get_json()
-        print(data)
         project_id=Project.query.filter_by(project_name=data['project']).first().id
         models_id=Model.query.filter_by(model_name=data['model']).first().id
         try:
@@ -76,46 +75,53 @@ class EditInterfaceView(MethodView):
                     if i.projects.status == False:
                         projects.append(i.projects)
                         id.append(i.projects)
-        if request.method=='POST':
-            projecct=request.form.get('project')
-            model=request.form.get('model')
-            intername=request.form.get('inter_name')
-            url=request.form.get('url')
-            headers=request.form.get('headers')
-            meth=request.form.get('meth')
-            reques=request.form.get('reque')
-            back=request.form.get('back')
-            if projecct is None or model is None or intername=='' or headers =='' or url=='' or meth=='' or back=='':
-                flash(u'请确定各项参数都正常填写')
-                return render_template('edit/edit_inter.html', interfac=interface, projects=projects, models=models)
-            project_id = Project.query.filter_by(project_name=projecct).first().id
-            models_id = Model.query.filter_by(model_name=model).first().id
-            interface.projects_id=project_id
-            interface.model_id=models_id
-            interface.Interface_name=intername
-            interface.Interface_headers=headers
-            interface.Interface_url=url
-            interface.Interface_meth=meth
-            interface.Interface_par=reques
-            interface.Interface_back=back
-            interface.Interface_user_id=current_user.id
-            try:
-                flash('编辑成功')
-                db.session.commit()
-                return redirect(url_for('home.interface'))
-            except:
-                db.session.rollback()
-                flash(u'编辑失败')
-                return redirect(url_for('home.interface'))
-        return render_template('edit/edit_inter.html', interfac=interface, projects=projects, models=models)
+
+        projecct=request.form.get('project')
+        model=request.form.get('model')
+        intername=request.form.get('inter_name')
+        url=request.form.get('url')
+        headers=request.form.get('headers')
+        meth=request.form.get('meth')
+        reques=request.form.get('reque')
+        back=request.form.get('back')
+        if projecct is None or model is None or intername=='' or headers =='' or url=='' or meth=='' or back=='':
+            flash(u'请确定各项参数都正常填写')
+            return render_template('edit/edit_inter.html', interfac=interface, projects=projects, models=models)
+        project_id = Project.query.filter_by(project_name=projecct).first().id
+        models_id = Model.query.filter_by(model_name=model).first().id
+        interface.projects_id=project_id
+        interface.model_id=models_id
+        interface.Interface_name=intername
+        interface.Interface_headers=headers
+        interface.Interface_url=url
+        interface.Interface_meth=meth
+        interface.Interface_par=reques
+        interface.Interface_back=back
+        interface.Interface_user_id=current_user.id
+        try:
+            flash('编辑成功')
+            db.session.commit()
+            return redirect(url_for('home.interface'))
+        except:
+            db.session.rollback()
+            flash(u'编辑失败')
+            return redirect(url_for('home.interface'))
 class DeleinterView(MethodView):
     @login_required
     def get(self,id):
         interface=Interface.query.filter_by(id=id).first()
+        if not  interface:
+            flash(u'删除失败，没有获到你要删除的接口，请重新选择要删除的接口重试')
+            return redirect(url_for('home.interface'))
         interface.status=True
-        db.session.commit()
-        flash(u'删除成功')
-        return redirect(url_for('home.interface'))
+        try:
+            db.session.commit()
+            flash(u'删除成功')
+            return redirect(url_for('home.interface'))
+        except Exception as e:
+            db.session.rollback()
+            flash(u'删除失败！原因：%s'%e)
+            return redirect(url_for('home.interface'))
 class DaoruinterView(View):
     methods=['GET','POST']
     @login_required
