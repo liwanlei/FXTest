@@ -242,4 +242,4 @@ class TestcaseResult(db.Model):
     date=db.Column(db.DateTime(),default=datetime.datetime.now())
     testevir=db.Column(db.Integer,db.ForeignKey('ceshihuanjing.id'),nullable=True)
     def __repr__(self):
-        return  self.id
+        return  str(self.id)

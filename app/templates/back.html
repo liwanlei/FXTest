@@ -65,7 +65,7 @@
                 </li>
                 <li class="tpl-left-nav-item">
                     <a href="{{url_for('home.model')}}" class="nav-link tpl-left-nav-link-list">
-                        <i class="am-icon-adn"></i>
+                        <i class="am-icon-battery-0"></i>
                         <span>模块</span>
                     </a>
                 </li>
@@ -99,12 +99,21 @@
                         <span>测试报告</span>
                     </a>
                 </li>
+                {% if current_user.is_sper== 1 %}
                 <li class="tpl-left-nav-item">
                     <a href="{{url_for('home.adminuser')}}" class="nav-link tpl-left-nav-link-list">
                         <span class=" am-icon-user"></span>
                         <span>用户管理</span>
                     </a>
                 </li>
+                    <li class="tpl-left-nav-item">
+                    <a href="{{url_for('admin.index')}}" class="nav-link tpl-left-nav-link-list">
+                        <span class=" am-icon-user-plus"></span>
+                        <span>后台管理</span>
+                    </a>
+                </li>
+                {% else %}
+                {% endif %}
             </ul>
         </div>
     </div>
