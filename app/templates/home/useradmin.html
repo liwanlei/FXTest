@@ -46,9 +46,15 @@
                 {%for user in users%}
                     <tr>
                         <td>{{user.id}}</td>
-                        <td><label class="label label-default">{{user.username}}</label></td>
-                        <td><label class="label label-primary">{{user.user_email}}</label></td>
-                        <td><label class="label label-info">{{user.works}}</label></td>
+                        <td>
+                            <label class="label label-default">{{user.username}}</label>
+                        </td>
+                        <td>
+                            <label class="label label-primary">{{user.user_email}}</label>
+                        </td>
+                        <td>
+                            <label class="label label-info">{{user.works}}</label>
+                        </td>
                         <td >
                             {% for i in user.quanxians %}
                                 {%  if i.rose==1 %}

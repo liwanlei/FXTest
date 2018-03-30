@@ -25,33 +25,30 @@
                     <option>{{ project.project_name }}</option>
                 {% endfor %}
             </select>
+            <span>接口的类型：</span>
+            <select id="interfacetype" onclick="getprointer()">
+                <option>http</option>
+                <option>dubbo</option>
+            </select>
             <div style="margin-top: 10px">
-                <a href="{{url_for('interface.interface_add')}}"><input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success"> </a>
-{#                <a href="{{url_for('interface.daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn am-btn-default am-btn-success"></a>#}
+                <a href="{{url_for('interface.interface_add')}}">
+                    <input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success">
+                </a>
+                {#                <a href="{{url_for('interface.daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn am-btn-default am-btn-success"></a>#}
             </div>
             <table class="am-table am-table-hover table-main" style="width:100%;table-layout:fixed;">
                 <thead>
-                <tr>
-                    <th>接口id</th>
-                    <th>项目名称</th>
-                    <th>所属模块</th>
-                    <th>接口名称</th>
-                    <th style="overflow:hidden;">接口地址</th>
-                    <th>接口headers</th>
-                    <th>接口请求方法</th>
-                    <th>接口请求参数</th>
-                    <th>接口返回参数</th>
-                    <th>操作</th>
+                <tr  id="interfacete">
                 </tr>
                 </thead>
                 <tbody id="testyonglis" >
                 </tbody>
             </table>
             <nav aria-label="Page navigation" class="pull-right">
-            <ul class="pagination">
-                {{ html|safe }}
-            </ul>
-        </nav>
+                <ul class="pagination">
+                    {{ html|safe }}
+                </ul>
+            </nav>
         </div>
     </div>
     <script type="text/javascript">
@@ -60,17 +57,31 @@
             var obj = document.getElementById('projectinter');
             var index=obj.selectedIndex;
             var value = obj.options[index].value;
+            var interfacetest = document.getElementById('interfacetype');
+            var inde=interfacetest.selectedIndex;
+            var valu = interfacetest.options[inde].value;
+            var data={};
+            data['project']=value;
+            data['interfacetype']=valu;
             $.ajax({
                 url:'{{ url_for('interface.ser_inter') }}',
                 type:'POST',
-                data:value,
+                data:JSON.stringify(data),
                 contentType: 'application/json; charset=UTF-8',
                 processData:false,
                 success:function(data){
                     if (data['code']==200 ){
                         var mdata =data['data'];
                         var insertss=$('#testyonglis');
+                        var inte=$('#interfacete');
                         insertss.empty();
+                        if (data['typeinter']=='http'){
+                            inte.empty();
+                            inte.append("<th>接口id</th><th>项目名称</th><th>所属模块</th><th>接口名称</th><th style='overflow:hidden;'>接口地址</th><th>接口headers</th><th>接口请求方法</th><th>接口请求参数</th><th>接口返回参数</th><th>操作</th>")
+                        }else if(data['typeinter']=='dubbo'){
+                            inte.empty();
+                            inte.append("<th>id</th><th>项目名称</th><th>模块</th><th>接口名称</th><th style='overflow:hidden;'>url地址</th><th>接口名称</th><th>接口请求方法</th><th>接口请求参数</th><th>接口返回参数</th><th>操作</th>")
+                        }
                         if (mdata.length<1){
                             insertss.append("<tr><td><h5><strong style='color:red'>没有找到接口</strong></h5><td></tr>")
                         }
@@ -82,6 +93,6 @@
                     window.location.reload();
                 }
             })
-        };
+        }
     </script>
 {% endblock %}

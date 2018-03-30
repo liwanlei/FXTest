@@ -31,7 +31,8 @@
                     </div>
                 </div>
                 <table class="am-table am-table-striped am-table-hover table-main" >
-                    <caption><strong></strong></caption>
+                    <caption><strong>
+                    </strong></caption>
                     <thead>
                     <tr>
                         <th>项目名</th>
@@ -42,14 +43,20 @@
                     <tbody>
                     {%for project in projects%}
                         <tr>
-                            <td><label class="" style="background-color: white"><strong>{{project.project_name}}</strong></label></td>
+                            <td><label class="" style="background-color: white">
+                                <strong>{{project.project_name}}</strong>
+                            </label></td>
                             <td><label class="label-primary" style="background: white">{{ project.users }}</label></td>
                             <td>
                                 <span><a href="{{url_for('edit_pro',id=project.id)}}">
                                     <input type="button" value="编辑" class="btn btn-primary"></a></span>
                                 {%if current_user.role_id !=1 and current_user.role_id !=None  %}
-                                    <span><a href="{{url_for('dele_pro',id=project.id)}}">
-                                        <input type="button" value="删除" class="btn btn-danger"></a></span>{%endif%}
+                                    <span>
+                                        <a href="{{url_for('dele_pro',id=project.id)}}">
+                                        <input type="button" value="删除" class="btn btn-danger">
+                                        </a>
+                                    </span>
+                                {%endif%}
                             </td>
                         </tr>
                     {%endfor%}

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-07-20 21:06:16
 # @Author  : lileilei
-from app.common.requ_case import Api
-from app.common.dict_com import assert_in
-from app.common.panduan import pare_result_mysql
-from app.common.log import log_t
+from common.requ_case import Api
+from common.panduan import assert_in
+from common.panduan import pare_result_mysql
+from common.log import log_t
 from app.models import InterfaceTest,TestcaseResult
-from app.common.mysqldatabasecur import *
+from common.mysqldatabasecur import *
 from  app import db
 class ApiTestCase():
     def __init__(self,inteface_url,inteface_meth,inteface_parm,inteface_assert,file,headers,pid,yilaidata,saveresult,id_list,

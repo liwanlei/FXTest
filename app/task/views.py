@@ -9,10 +9,10 @@ from flask.views import MethodView
 from flask_login import current_user,login_required
 from app import loginManager
 import  time,os
-from app.common.py_Html import createHtml
+from common.py_Html import createHtml
 from app.test_case.Test_case import ApiTestCase
 from app import  scheduler
-from app.common.Dingtalk import send_ding
+from common.Dingtalk import send_ding
 task = Blueprint('task', __name__)
 def addtask(id):#定时任务执行的时候所用的函数
     in_id=int(id)
