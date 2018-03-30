@@ -10,7 +10,7 @@ from app.form import  *
 import os
 from flask.views import MethodView,View
 from flask_login import current_user,login_required
-from app.common.decorators import chckuserpermisson
+from common.decorators import chckuserpermisson
 def get_pro_mo():
     projects=Project.query.all()
     model=Model.query.all()

@@ -46,8 +46,9 @@
                             <td>{{ inter.projects }}</td>
                             <td style="width: 5px">{{ inter.task_make_email }}</td>
                             {% if inter.yunxing_status=='创建'or inter.yunxing_status=='关闭' %}
-                                <td><a href="{{ url_for('task.starttask',id=inter.id) }}">
-                                    <input type="button" class="btn btn-default" value="启动"></a></td>
+                                <td>
+                                    <a href="{{ url_for('task.starttask',id=inter.id) }}">
+                                        <input type="button" class="btn btn-default" value="启动"></a></td>
                             {% elif inter.yunxing_status=='启动' %}
                                 <td><a href="{{ url_for('task.zantingtask',id=inter.id) }}">
                                     <input type="button" class="btn btn-success" value="暂停"></a>
@@ -70,7 +71,9 @@
                                 <a  href="{{ url_for('task.testfortask',id=inter.id) }}">
                                     <input type="button" value="用例" class="btn btn-default"></a>
                             </td>
-                        </tr>{% endfor %}{% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
                 </tbody>
             </table>
         </div>

@@ -16,7 +16,8 @@
             <div class="header " style="">
                 <h1 style="text-align: center;">登录</h1>
             </div>
-            <div style="text-align: center;color: red" id="duanyan"></div>
+            <div style="text-align: center;color: red" id="duanyan">
+            </div>
             <div style="text-align: center;color: red">
                 {% with messages = get_flashed_messages() %}
                     {% if messages %}
@@ -26,8 +27,10 @@
                             {% endfor %}
                         </ul>
                     {% endif %}
-                {% endwith %}</div>
-            {% block body %}{% endblock %}
+                {% endwith %}
+            </div>
+            {% block body %}
+            {% endblock %}
             <form class="form-auth-small"  method="POST" style="width: 40%;margin-left: 30%;">
                 {{form.hidden_tag()}}
                 <div class="form-group">

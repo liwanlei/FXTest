@@ -46,12 +46,24 @@
                         {{ form.interface_name(id='interfacename') }}</div>
                     <span>&nbsp;</span>
                     <div class="form-group">
+                        <strong>接口协议类型:</strong>
+                        <select name="interface_type">
+                            <option class="glyphicon-option-vertical">http</option>
+                            <option>dubbo</option>
+                        </select>
+                    </div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
                         <strong>接口url:</strong>
                         {{ form.interface_url(id='interfaceurl') }}</div>
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>接口headers:</strong>
-                        {{ form.interface_headers (id='interfheader')}}</div>
+                        {{ form.interface_headers (id='interfheader')}}
+                        <span style="color: #8D99A8">
+                            **dubbo接口这里需要填写入参对象
+                        </span>
+                    </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>请求方式:</strong>
@@ -72,8 +84,8 @@
                     <div class="form-group">
                         <p>
                             <strong>请选择依赖接口:</strong>
-                        <select id="jiekou" name="jiekou">
-                        </select>
+                            <select id="jiekou" name="jiekou">
+                            </select>
                         </p>
                         <strong>从依赖接口中获取参数：</strong>
                         <input type="text" name="yilaicanshu" placeholder="请输入要依赖接口测试结果中的数据">

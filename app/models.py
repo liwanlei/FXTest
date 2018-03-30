@@ -91,6 +91,7 @@ class Interface(db.Model):
     Interface_back=db.Column(db.String(252))
     Interface_headers = db.Column(db.String(252))
     Interface_user_id=db.Column(db.Integer(),db.ForeignKey('users.id'))
+    interfacetype = db.Column(db.String(32), default='http')
     status=db.Column(db.Boolean(),default=False)
     def __repr__(self):
         return  self.Interface_name
@@ -99,6 +100,7 @@ class InterfaceTest(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     model_id=db.Column(db.Integer(),db.ForeignKey('models.id'))
     projects_id=db.Column(db.Integer(),db.ForeignKey('projects.id'))
+    interface_type=db.Column(db.String(16))
     Interface_name= db.Column(db.String(252))
     Interface_url = db.Column(db.String(252))
     Interface_meth = db.Column(db.String(252))

@@ -8,7 +8,7 @@ from  flask import  redirect,request,render_template,session,url_for,flash,jsoni
 from  app.models import *
 from app.form import  *
 from flask.views import MethodView,View
-from  app.common.decorators import chckuserpermisson
+from common.decorators import chckuserpermisson
 from flask_login import current_user,login_required
 from config import OneAdminCount
 class AdduserView(MethodView):#添加用户
