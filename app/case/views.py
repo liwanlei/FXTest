@@ -6,21 +6,22 @@
 from  flask import  redirect,request,render_template,session,url_for,flash,jsonify,Blueprint
 from  app.models import *
 from app.form import  *
-import os,time,datetime
-from app.common.pares_excel_inter import pasre_inter
-from app.common.py_Html import createHtml
-from app.common.requ_case import Api
-from app.common.panduan import assert_in,pare_result_mysql
+import os,time,datetime,json
+from common.pares_excel_inter import pasre_inter
+from common.py_Html import createHtml
+from common.requ_case import Api
+from common.panduan import assert_in,pare_result_mysql
 from app.test_case.Test_case import ApiTestCase
-from app.common.send_email import send_emails
+from common.send_email import send_emails
 from flask.views import View,MethodView
 from flask_login import current_user,login_required
-from app.common.Dingtalk import send_ding
-from app.common.mysqldatabasecur import *
+from common.Dingtalk import send_ding
+from common.mysqldatabasecur import *
+from common.dubbo_feng import DubboInterface
 case = Blueprint('case', __name__)
 def get_pro_mo():
     projects=Project.query.all()
-    model=Model.query.all()
+    model=Model.query.filter_by(status=False).all()
     return  projects,model
 class AddtestcaseView(View):
     methods=['GET','POST']
@@ -51,6 +52,7 @@ class AddtestcaseView(View):
             yilai_data=request.values.get("yilaicanshu")
             yilai_test= request.values.get("jiekou")
             shifoujiaoyan = request.values.get("database")
+            interface_type=request.values.get('interface_type')
             if shifoujiaoyan == 'on':
                 databasesql=request.values.get('databasesql')
                 databijiao=request.values.get('databijiao')
@@ -86,7 +88,8 @@ class AddtestcaseView(View):
                                       Interface_meth=interface_meth,Interface_pase=interface_can,
                                       Interface_assert=interface_re,Interface_user_id=current_user.id,
                                       saveresult=saves,pid=(yilai_tes),getattr_p=yilai_dat,
-                                      is_database=is_database,chaxunshujuku=databasesql,databaseziduan=databijiao)
+                                      is_database=is_database,chaxunshujuku=databasesql,databaseziduan=databijiao,
+                                      interface_type=interface_type)
                 db.session.add(newcase)
                 db.session.commit()
                 flash(u'添加用例成功')
@@ -145,6 +148,7 @@ class EditcaseView(View):
             yilai_data = request.values.get("yilaicanshu")
             yilai_test = request.values.get("jiekou")
             shifoujiaoyan = request.values.get("database")
+            interface_type = request.values.get('interface_type')
             if shifoujiaoyan == 'on':
                 databasesql = request.values.get('databasesql')
                 databijiao = request.values.get('databijiao')
@@ -188,6 +192,7 @@ class EditcaseView(View):
             edit_case.is_database = is_database
             edit_case.chaxunshujuku = databasesql
             edit_case.databaseziduan = databijiao
+            edit_case.interface_type=interface_type
             try:
                 db.session.commit()
                 flash(u'用例：%s编辑成功'%id)
@@ -201,14 +206,22 @@ class SeryongliView(MethodView):
     @login_required
     def post(self):
         id = request.get_data('id')
-        project = id.decode('utf-8')
+        project = json.loads(id.decode('utf-8'))
         if not project:
             return jsonify({'msg': '没有发送数据', 'code': 108})
-        project_is = Project.query.filter_by(project_name=project).first()
+        project_name=str(project['project'])
+        project_is = Project.query.filter_by(project_name=project_name).first()
         testevent=Interfacehuan.query.filter_by(projects=project_is,status=False).all()
+        interfatype=project['interface_type']
+        if interfatype=='http':
+            typeinterface='http'
+        elif interfatype=='dubbo':
+            typeinterface='dubbo'
+        else:
+            typeinterface='none'
         if project_is.status is True:
             return jsonify({'msg': '项目已经删除', 'code': 220})
-        intertestcases = InterfaceTest.query.filter_by(projects_id=project_is.id, status=False).all()
+        intertestcases = InterfaceTest.query.filter_by(projects_id=project_is.id, status=False,interface_type=str(interfatype)).all()
         interfacelist = []
         testeventlist=[]
         for testeven in testevent:
@@ -218,7 +231,7 @@ class SeryongliView(MethodView):
                                   'Interface_name':interface.Interface_name,'Interface_headers':interface.Interface_headers,'Interface_url':interface.Interface_url,
                                   'Interface_meth':interface.Interface_meth,'Interface_pase':interface.Interface_pase,'Interface_assert':interface.Interface_assert,
                                   'Interface_is_tiaoshi':interface.Interface_is_tiaoshi,'Interface_tiaoshi_shifou':interface.Interface_tiaoshi_shifou})
-        return jsonify(({'msg': '成功', 'code':200,'data':interfacelist,'url':testeventlist}))
+        return jsonify(({'msg': '成功', 'code':200,'data':interfacelist,'url':testeventlist,'typeinter':typeinterface}))
 class DaorucaseView(View):
     methods=['GET','POST']
     @login_required
@@ -426,163 +439,179 @@ class MakeonlyoneCase(View):#单个接口测试的代码，为了你的接口测
     @login_required
     def dispatch_request(self):
         projec = (request.get_json())
+        case_id = projec['caseid']
+        url = projec['url']
+        testevent = Interfacehuan.query.filter_by(url=str(url)).first()
+        if not testevent:
+            return jsonify({'code': 153, 'msg': '请确定你所选择的测试环境是否真实存在！'})
+        case = InterfaceTest.query.filter_by(id=int(case_id), status=False).first()
         try:
-            case_id=projec['caseid']
-            url=projec['url']
-            testevent=Interfacehuan.query.filter_by(url=str(url)).first()
-            if not testevent:
-                return jsonify({'code': 153, 'msg': '请确定你所选择的测试环境是否真实存在！'})
-            case=InterfaceTest.query.filter_by(id=int(case_id)).first()
-            if case.pid != 'None':
-                tesyi=InterfaceTest.query.filter_by(id=int(case.pid)).first()
-                if tesyi:
-                    testres=TestcaseResult.query.filter_by(case_id=tesyi.id).first()
-                    if testres is None:
-                        case.Interface_is_tiaoshi = True
-                        case.Interface_tiaoshi_shifou = True
-                        db.session.commit()
-                        return jsonify({'code': 131, 'msg': '找不到依赖的接口的测试结果！请查找依赖接口是否进行测试,获取测试是否通过,接口id是：%s'%(case.pid)})
-                    huoquyilai=testres.result
-                    canshu=case.getattr_p
-                    try:
-                        yilaidata=eval(huoquyilai)[canshu]
-                    except Exception as e:
-                        case.Interface_is_tiaoshi = True
-                        case.Interface_tiaoshi_shifou = True
-                        db.session.commit()
-                        return jsonify({'code': 151, 'msg': '获取依赖数据失败，原因：%s' %e})
+            if not  case:
+                return jsonify({'code': 189, 'msg': '请确定你要测试的用力是否存在！'})
+            if case.interface_type=='http':
+                if case.pid != 'None':
+                    tesyi=InterfaceTest.query.filter_by(id=int(case.pid),status=False).first()
+                    if tesyi:
+                        testres=TestcaseResult.query.filter_by(case_id=tesyi.id,status=False).first()
+                        if testres is None:
+                            case.Interface_is_tiaoshi = True
+                            case.Interface_tiaoshi_shifou = True
+                            db.session.commit()
+                            return jsonify({'code': 131, 'msg': '找不到依赖的接口的测试结果！请查找依赖接口是否进行测试,获取测试是否通过,接口id是：%s'%(case.pid)})
+                        huoquyilai=testres.result
+                        canshu=case.getattr_p
+                        try:
+                            yilaidata=eval(huoquyilai)[canshu]
+                        except Exception as e:
+                            case.Interface_is_tiaoshi = True
+                            case.Interface_tiaoshi_shifou = True
+                            db.session.commit()
+                            return jsonify({'code': 151, 'msg': '获取依赖数据失败，原因：%s' %e})
+                        try:
+                            pasrms = eval(case.Interface_pase)
+                            pasrms.update({canshu: yilaidata})
+                        except:
+                            case.Interface_is_tiaoshi = True
+                            case.Interface_tiaoshi_shifou = True
+                            db.session.commit()
+                            return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
+                    else:
+                        try:
+                            pasrms=eval(case.Interface_pase)
+                        except:
+                            case.Interface_is_tiaoshi = True
+                            case.Interface_tiaoshi_shifou = True
+                            db.session.commit()
+                            return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
+                else:
                     try:
                         pasrms = eval(case.Interface_pase)
-                        pasrms.update({canshu: yilaidata})
                     except:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
                         return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
+                new_headers=case.Interface_headers
+                if  new_headers =='None':
+                    ne={'host':url}
+                elif new_headers is None:
+                    ne = {'host': url}
                 else:
                     try:
-                        pasrms=eval(case.Interface_pase)
+                        ne=eval(new_headers)
+                        ne['host']=url
                     except:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
-            else:
-                try:
-                    pasrms = eval(case.Interface_pase)
-                except:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
-            new_headers=case.Interface_headers
-            if  new_headers =='None':
-                ne={'host':url}
-            elif new_headers is None:
-                ne = {'host': url}
-            else:
-                try:
-                    ne=eval(new_headers)
-                    ne['host']=url
-                except:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 110, 'msg': '测试的请求头应该是字典格式的！'})
-            if case.is_database is True:
-                if case.chaxunshujuku is None or case.databaseziduan is None:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 111, 'msg': '要判断数据库但是没有找到数据库的语句或者断言的字段！'})
-                if testevent.database is None :
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 112, 'msg': '测试环境数据库url配置不存在'})
-                if testevent.dbport is None:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 113, 'msg': '测试环境数据库port配置不存在'})
-                if testevent.dbhost is None:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 114, 'msg': '测试环境数据库host配置不存在'})
-                if testevent.databaseuser is None:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 115, 'msg': '测试环境数据库登录user配置不存在'})
-                if testevent.databasepassword is None:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 116, 'msg': '测试环境数据库登录密码配置不存在'})
-                conncts=cursemsql(host=testevent.dbhost,port=testevent.dbport,user=testevent.databaseuser,password=testevent.databasepassword,database=testevent.database)
-                if conncts['code']==0:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 117, 'msg': '链接数据库出现问题，原因是：%s'%conncts['error']})
-                else:
-                    result_myql=excemysql(conne=conncts['conne'],Sqlmy=case.chaxunshujuku)
-                    if result_myql['code']==0:
+                        return jsonify({'code': 110, 'msg': '测试的请求头应该是字典格式的！'})
+                if case.is_database is True:
+                    if case.chaxunshujuku is None or case.databaseziduan is None:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonify({'code': 117, 'msg': '查询数据库出现问题，原因是：%s' % conncts['error']})
-                    mysql_result=result_myql['result']
-            else:
-                mysql_result=[]
-            try:
-                data=eval(pasrms)
-            except Exception as e:
-                case.Interface_is_tiaoshi = True
-                case.Interface_tiaoshi_shifou = True
-                db.session.commit()
-                return jsonify({'code': 159, 'msg': '转化请求参数失败，原因：%s' % e})
-            me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=data,headers=ne)
-            result = me.testapi()
-            return_mysql=pare_result_mysql(mysqlresult=mysql_result,return_result=result,paseziduan=case.databaseziduan)
-            retur_re = assert_in(case.Interface_assert, result)
-            try:
-                if retur_re =='pass'  and return_mysql['result']=='pass':
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = False
-                    if case.saveresult is True:
-                        new_testre = TestcaseResult(case_id=case.id)
-                        new_testre.result = str(result)
-                        new_testre.testevir=(url)
-                        db.session.add(new_testre)
-                    db.session.commit()
-                    return jsonify({'code':200,'msg':'测试用例调试通过！'})
-                elif retur_re =='fail' or return_mysql['result']=='fail':
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    if case.saveresult is True:
-                        new_testre = TestcaseResult(case_id=case.id)
-                        new_testre.result = str(result)
-                        new_testre.testevir = (url)
-                        db.session.add(new_testre)
-                    db.session.commit()
-                    return jsonify({'code': 101, 'msg': '测试用例测试失败,请检查用例！'})
-                else:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    if case.saveresult is True:
-                        new_testre = TestcaseResult(case_id=case)
-                        new_testre.result =str(result)
-                        new_testre.testevir = url
-                        db.session.add(new_testre)
+                        return jsonify({'code': 111, 'msg': '要判断数据库但是没有找到数据库的语句或者断言的字段！'})
+                    if testevent.database is None :
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                    return jsonify({'code': 102, 'msg': '测试返回异常，,请检查用例！'})
-            except Exception as e:
-                case.Interface_is_tiaoshi = True
-                case.Interface_tiaoshi_shifou = True
-                db.session.commit()
-                return jsonify({'code': 103, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(e)})
+                        return jsonify({'code': 112, 'msg': '测试环境数据库url配置不存在'})
+                    if testevent.dbport is None:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 113, 'msg': '测试环境数据库port配置不存在'})
+                    if testevent.dbhost is None:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 114, 'msg': '测试环境数据库host配置不存在'})
+                    if testevent.databaseuser is None:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 115, 'msg': '测试环境数据库登录user配置不存在'})
+                    if testevent.databasepassword is None:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 116, 'msg': '测试环境数据库登录密码配置不存在'})
+                    conncts=cursemsql(host=testevent.dbhost,port=testevent.dbport,user=testevent.databaseuser,password=testevent.databasepassword,database=testevent.database)
+                    if conncts['code']==0:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 117, 'msg': '链接数据库出现问题，原因是：%s'%conncts['error']})
+                    else:
+                        result_myql=excemysql(conne=conncts['conne'],Sqlmy=case.chaxunshujuku)
+                        if result_myql['code']==0:
+                            case.Interface_is_tiaoshi = True
+                            case.Interface_tiaoshi_shifou = True
+                            db.session.commit()
+                            return jsonify({'code': 117, 'msg': '查询数据库出现问题，原因是：%s' % conncts['error']})
+                        mysql_result=result_myql['result']
+                else:
+                    mysql_result=[]
+                try:
+                    data=eval(pasrms)
+                except Exception as e:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 159, 'msg': '转化请求参数失败，原因：%s' % e})
+                me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=data,headers=ne)
+                result = me.testapi()
+                return_mysql=pare_result_mysql(mysqlresult=mysql_result,return_result=result,paseziduan=case.databaseziduan)
+                retur_re = assert_in(case.Interface_assert, result)
+                if case.saveresult is True:
+                    new_testre = TestcaseResult(case_id=case)
+                    new_testre.result = str(result)
+                    new_testre.testevir = url
+                    db.session.add(new_testre)
+                    db.session.commit()
+                try:
+                    if retur_re =='pass'  and return_mysql['result']=='pass':
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = False
+                        db.session.commit()
+                        return jsonify({'code':200,'msg':'测试用例调试通过！'})
+                    elif retur_re =='fail' or return_mysql['result']=='fail':
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 101, 'msg': '测试用例测试失败,请检查用例！'})
+                    else:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 102, 'msg': '测试返回异常，,请检查用例！'})
+                except Exception as e:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 103, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(e)})
+            elif case.interface_type=='dubbo':
+                try:
+                    data=eval(case.Interface_pase)
+                except Exception as e:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 159, 'msg': '转化请求参数失败，原因：%s' % e})
+                dubboapi = DubboInterface(url=case.Interface_url, interface=case.Interface_pase, method=case.Interface_meth,
+                                          param=case.Interface_headers, **(data))
+                dubboapireslu = dubboapi.getresult()
+                if case.saveresult is True:
+                    new_testre = TestcaseResult(case_id=case.id)
+                    new_testre.result = str(dubboapireslu)
+                    new_testre.testevir = (url)
+                    db.session.add(new_testre)
+                    db.session.commit()
+                if dubboapireslu['code'] == 0:
+                    pass
+                    # assert_re = assert_in(asserqiwang=case.Interface_assert,fanhuijson=dubboapireslu)
+            else:
+                return jsonify({'code': 316, 'msg': '目前还不支持你所选择的类型的协议！'})
         except Exception as e:
             case.Interface_is_tiaoshi = True
             case.Interface_tiaoshi_shifou = True

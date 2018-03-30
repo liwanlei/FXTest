@@ -3,7 +3,7 @@
 # @File    : views.py
 # @Time    : 2017/12/7 9:23
 from flask import  Blueprint,jsonify
-from app.common.hebinglist import hebinglist
+from common.hebinglist import hebinglist
 from  flask import  redirect,request,render_template,url_for,session
 home = Blueprint('home', __name__)
 from app.models import *
@@ -12,10 +12,10 @@ from flask.views import MethodView,View
 from flask_login import login_required,login_user,logout_user,current_user
 from app import loginManager
 from config import PageShow
-from app.common.fenye import Pagination
+from common.fenye import Pagination
 def get_pro_mo():
     projects=Project.query.all()
-    model=Model.query.all()
+    model=Model.query.filter_by(status=False).all()
     return  projects,model
 @loginManager.user_loader
 def load_user(user_id):

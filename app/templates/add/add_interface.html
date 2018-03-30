@@ -9,7 +9,8 @@
                     <span class="am-icon-code"></span> 添加接口
                 </div>
             </div>
-            <div style="text-align: center ;color: red" id="messgae"></div>
+            <div style="text-align: center ;color: red" id="messgae">
+            </div>
             <form >
                 {{form.hidden_tag()}}
                 {{form.csrf_token}}
@@ -18,7 +19,9 @@
                     {% for project in  projects %}
                         <input type='radio' value="{{  project.project_name }}" name="project"
                                style="">{{ project.project_name }}
-                    {% endfor %}</div><span>&nbsp;</span>
+                    {% endfor %}
+                </div>
+                <span>&nbsp;</span>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>模块名字:</strong>
@@ -26,11 +29,21 @@
                         {% for model in  models %}
                             <input type='radio' value="{{  model.model_name }}" name="modelssss">{{ model.model_name }}
                         {% endfor %}
-                    </span></div>
+                    </span>
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>接口协议类型:</strong>
+                    <select name="interface_type">
+                        <option class="glyphicon-option-vertical">http</option>
+                        <option>dubbo</option>
+                    </select>
+                </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口名字:</strong>
-                    {{ form.interface_name(id='interfacename') }}</div>
+                    {{ form.interface_name(id='interfacename') }}
+                </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口地址:</strong>
@@ -38,20 +51,27 @@
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口headers:</strong>
-                    {{ form.interface_headers(id='interface_headers') }}</div>
+                    {{ form.interface_headers(id='interface_headers') }}
+                    <span style="color: #8D99A8">
+                        dubbo接口这里需要填写入参对象
+                    </span>
+                </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>请求方式:</strong>
-                    {{ form.interface_meth(id='interface_meth') }}</div>
+                    {{ form.interface_meth(id='interface_meth') }}
+                </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
-                    <strong>请求示例:</strong>
-                    {{ form.interface_par(id='interface_par')}}</div>
+                    <strong>请求参数示例:</strong>
+                    {{ form.interface_par(id='interface_par')}}
+                </div>
                 <span>&nbsp;</span>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>返回示例:</strong>
-                    {{ form.interface_bas(id='interface_bas') }}</div>
+                    {{ form.interface_bas(id='interface_bas') }}
+                </div>
                 <button type="button" class="am-btn am-btn-primary " onclick="addinterface()">添加</button>
             </form>
         </div>
@@ -72,6 +92,9 @@
                     model=obj[i].value;
                 }
             }
+            var test=document.getElementById("interface_type");
+            var index=document.getElementById("interface_type").selectedIndex;
+            var interface_type=test.options[index];
             var interfacename=document.getElementById('interfacename');
             var interface_url=document.getElementById('interface_url');
             var interface_headers=document.getElementById('interface_headers');
@@ -88,6 +111,7 @@
             data['interface_meth']=interface_meth.value;
             data['interface_par']=interface_par.value;
             data['interface_bas']=interface_bas.value;
+            data['interface_type']=interface_type.value;
             if (prokect.length<1){
                 message.innerHTML='必须选择项目';
             }else {

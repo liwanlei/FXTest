@@ -5,7 +5,7 @@
 """
 from  flask import  request,abort,jsonify,make_response
 from app.models import *
-from app.common.dict_com import comp_dict,dict_par
+from common.dict_com import comp_dict,dict_par
 import  json
 def get_to_data(path):
     huoqupath = Mockserver.query.filter_by(path=path, status=True).first()

@@ -6,7 +6,8 @@
         <div class="tpl-portlet-components">
             <div class="portlet-title">
                 <div class="caption font-green bold">
-                    <span class="am-icon-code"></span> 编辑接口
+                    <span class="am-icon-code">
+                    </span> 编辑接口
                 </div>
                 <div class="tpl-portlet-input tpl-fz-ml">
                     <div class="portlet-input input-small input-inline">
@@ -50,6 +51,14 @@
                     </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
+                        <strong>接口协议类型:</strong>
+                        <select name="interface_type">
+                            <option >http</option>
+                            <option>dubbo</option>
+                        </select>
+                    </div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
                         <strong>接口名字:</strong>
                         <input type="text" name="inter_name" value="{{interfac.Interface_name}}">
                     </div>
@@ -62,6 +71,9 @@
                     <div class="form-group">
                         <strong>接口headers:</strong>
                         <input type="text" name="headers" value="{{ interfac.Interface_headers }}">
+                        <span style="color: #8D99A8">
+                            dubbo接口这里需要填写入参对象
+                        </span>
                     </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
@@ -70,7 +82,7 @@
                     </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
-                        <strong>请求示例:</strong>
+                        <strong>请求参数示例:</strong>
                         <input type="text" name="reque" value="{{interfac.Interface_par}}">
                     </div>
                     <span>&nbsp;</span>

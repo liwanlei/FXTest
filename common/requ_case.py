@@ -2,7 +2,7 @@
 # @Date    : 2017-07-20 13:07:22
 # @Author  : lileilei
 '''接口请求封装后的使用模块'''
-from app.common.test_feng import reques
+from common.test_feng import reques
 requ=reques()
 response=[]
 class Api():

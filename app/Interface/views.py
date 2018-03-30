@@ -6,19 +6,20 @@
 from  flask import  redirect,request,render_template,session,url_for,flash,Blueprint,jsonify
 from  app.models import *
 from app.form import  *
-from app.common.pares_excel_inter import pasre_inter
+from common.pares_excel_inter import pasre_inter
 from flask.views import MethodView,View
 from flask_login import login_required,current_user
+import json
 interfac = Blueprint('interface', __name__)
 def get_pro_mo():
     projects=Project.query.all()
-    model=Model.query.all()
+    model=Model.query.filter_by(status=False).all()
     return  projects,model
 class InterfaceaddView(MethodView):
     @login_required
     def get(self):
         form=InterForm()
-        project,models=get_pro_mo()
+        models=Model.query.filter_by(status=False).first()
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
         else:
@@ -38,7 +39,7 @@ class InterfaceaddView(MethodView):
         try:
             new_interface=Interface(model_id=models_id,projects_id=project_id,Interface_name=data['interfacename'],Interface_url=data['interface_url'],
                                     Interface_meth=data['interface_meth'],Interface_par=data['interface_par'],Interface_back=data['interface_bas'],
-                                    Interface_user_id=current_user.id,Interface_headers=data['interface_headers'])
+                                    Interface_user_id=current_user.id,Interface_headers=data['interface_headers'],interfacetype=data['interface_type'])
             db.session.add(new_interface)
             db.session.commit()
             return jsonify({'msg': '成功', 'code': 200})
@@ -60,6 +61,7 @@ class EditInterfaceView(MethodView):
                         projects.append(i.projects)
                         id.append(i.projects)
         project, models = get_pro_mo()
+
         return render_template('edit/edit_inter.html', interfac=interface, projects=projects, models=models)
     @login_required
     def post(self,id):
@@ -75,11 +77,11 @@ class EditInterfaceView(MethodView):
                     if i.projects.status == False:
                         projects.append(i.projects)
                         id.append(i.projects)
-
         projecct=request.form.get('project')
         model=request.form.get('model')
         intername=request.form.get('inter_name')
         url=request.form.get('url')
+        interfa_tey=request.form.get('interface_type')
         headers=request.form.get('headers')
         meth=request.form.get('meth')
         reques=request.form.get('reque')
@@ -98,6 +100,7 @@ class EditInterfaceView(MethodView):
         interface.Interface_par=reques
         interface.Interface_back=back
         interface.Interface_user_id=current_user.id
+        interface.interfacetype=interfa_tey
         try:
             flash('编辑成功')
             db.session.commit()
@@ -150,18 +153,26 @@ class DaoruinterView(View):
 class SerinterView(MethodView):
     @login_required
     def post(self):
-        id = request.get_data('id')
-        project = id.decode('utf-8')
+        data = request.get_data('data')
+        project = json.loads(data.decode('utf-8'))
+        projec=project['project']
+        interfatype=project['interfacetype']
+        if interfatype=='http':
+            typeinterface='http'
+        elif interfatype=='dubbo':
+            typeinterface='dubbo'
+        else:
+            typeinterface='none'
         if not project:
             return jsonify({'msg': '没有发送数据', 'code': 108})
-        project_is = Project.query.filter_by(project_name=project).first()
+        project_is = Project.query.filter_by(project_name=str(projec)).first()
         if project_is.status is True:
             return jsonify({'msg': '项目已经删除', 'code': 220})
-        interfaclist = Interface.query.filter_by(projects_id=project_is.id, status=False).all()
+        interfaclist = Interface.query.filter_by(projects_id=project_is.id, status=False,interfacetype=interfatype).all()
         interfaclists=[]
         for interface in interfaclist:
             interfaclists.append({'model_id':interface.models.model_name,'projects_id':interface.projects.project_name,
                                   'id':interface.id,'Interface_url':interface.Interface_url,'Interface_meth':interface.Interface_meth,
                                   'Interface_headers':interface.Interface_headers,'Interface_par':interface.Interface_par,'Interface_back':interface.Interface_back,
                                   'Interface_name':interface.Interface_name})
-        return  jsonify(({'msg': '成功', 'code':200,'data':interfaclists}))
+        return  jsonify(({'msg': '成功', 'code':200,'data':interfaclists,'typeinter':typeinterface}))
