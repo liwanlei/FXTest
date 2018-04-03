@@ -11,6 +11,8 @@ from app.mock import  mock
 from app.task import  task
 from app.users import  user
 from app.case import case
+from gevent import monkey
+from gevent.pywsgi import WSGIServer
 import logging
 from app.Interface import interfac
 app.register_blueprint(home)
@@ -29,4 +31,5 @@ if __name__ == '__main__':
     scheduler.init_app(app=app)
     scheduler.start()
     app.logger.addHandler(handler)
-    app.run()
+    http_server = WSGIServer(('127.0.0.1', 5000), app)
+    http_server.serve_forever()

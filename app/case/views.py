@@ -390,6 +390,7 @@ class DuoyongliView(View):
                                       yilaidata=Interface_yilai_list,saveresult=Interface_save_list,id_list=id_list,is_database=Interface_is_data_list,
                                       data_mysql=Interface_mysql_list,data_ziduan=Interface_msyql_ziduan_list,urltest=testevent)
                 result_toal, result_pass, result_fail, relusts, bask_list,result_cashu,result_wei,result_except= apitest.testapi()
+                print(result_toal, result_pass, result_fail, relusts, bask_list,result_cashu,result_wei,result_except)
                 endtime = datetime.datetime.now()
                 end = time.time()
                 createHtml(titles=u'接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,

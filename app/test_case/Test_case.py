@@ -49,8 +49,8 @@ class ApiTestCase():
                 continue
             mysql_result=[]
             if testcase.pid !="None":
-                testret=TestcaseResult.query.filter_by(case_id=int(testcase.pid)).first()
-                if testret:
+                try:
+                    testret=TestcaseResult.query.filter_by(case_id=int(testcase.pid)).first()
                     data=testret.result
                     if data:
                         try:
@@ -62,18 +62,21 @@ class ApiTestCase():
                             self.result_except += 1
                             self.bask_list.append('获取依赖的字段异常，%s'%e)
                             self.result_pf.append('Exception')
+                            continue
+
                     else:
                         self.log_can.info_log('用例：%s接口依赖结果没有保存!'%self.id[case] )
                         self.result_toal += 1
                         self.result_wei += 1
                         self.bask_list.append('依赖的测试结果没有保存')
                         self.result_pf.append(u'Exception')
-                else:
+                except Exception as e :
                     self.log_can.info_log('用例：%s 依赖接口找不到!' % self.id[case])
                     self.result_toal += 1
                     self.result_wei += 1
                     self.bask_list.append('依赖的测试用例找不到')
                     self.result_pf.append(u'error')
+                    continue
             if self.is_database[case] is True:
                 if self.urltest is None:
                     self.result_toal += 1
@@ -114,53 +117,54 @@ class ApiTestCase():
                         self.bask_list.append(conncts['e'])
                         self.result_pf.append('Exception')
                     mysql_result=result_myql['result']
-            try:
-                api = Api(url=self.url[case], fangshi=self.meth[case], params=yuanlai,
-                              headers=self.headers[case])
-                apijson = api.getJson()
-                if self.saveresult[case] is True:
-                    new_case = TestcaseResult(result=str(apijson), case_id=testcase.id)
-                    db.session.add(new_case)
-                    try:
-                        db.session.commit()
-                    except Exception as e:
-                        db.session.rollback()
-                        self.log_can.info_log('用例：%s保存测试结果失败!原因：%s' % (self.id[case],e))
-                self.log_can.info_log(u'测试的:接口地址：%s,请求头：%s,参数:%s,实际返回:%s,预期:%s' % (
-                self.url[case], self.headers[case], self.parm[case], apijson, self.assert_test[case]))
-                come = assert_in(self.assert_test[case], apijson)
-                return_mysql = pare_result_mysql(mysqlresult=mysql_result, return_result=come,
-                                                 paseziduan=self.data_ziduan[case])
-                if come == 'pass' and return_mysql['result']=='pass':
-                    self.result_pass += 1
-                    self.result_toal += 1
-                    self.bask_list.append(apijson)
-                    self.result_pf.append('pass')
-                elif come == 'fail' or return_mysql['result']=='fail':
-                    self.result_fail += 1
-                    self.result_toal += 1
-                    self.bask_list.append(apijson)
-                    self.result_pf.append('fail')
-                elif come == '预期不存在':
-                    self.result_toal += 1
-                    self.result_cashu += 1
-                    self.bask_list.append(apijson)
-                    self.result_pf.append(u'预期不存在')
-                elif '异常' in come or return_mysql['code']== 1 :
+            else:
+                try:
+                    api = Api(url=self.url[case], fangshi=self.meth[case], params=yuanlai,
+                                  headers=self.headers[case])
+                    apijson = api.getJson()
+                    if self.saveresult[case] is True:
+                        new_case = TestcaseResult(result=str(apijson), case_id=testcase.id)
+                        db.session.add(new_case)
+                        try:
+                            db.session.commit()
+                        except Exception as e:
+                            db.session.rollback()
+                            self.log_can.info_log('用例：%s保存测试结果失败!原因：%s' % (self.id[case],e))
+                    self.log_can.info_log(u'测试的:接口地址：%s,请求头：%s,参数:%s,实际返回:%s,预期:%s' % (
+                    self.url[case], self.headers[case], self.parm[case], apijson, self.assert_test[case]))
+                    come = assert_in(self.assert_test[case], apijson)
+                    return_mysql = pare_result_mysql(mysqlresult=mysql_result, return_result=come,
+                                                     paseziduan=self.data_ziduan[case])
+                    if come == 'pass' and return_mysql['result']=='pass':
+                        self.result_pass += 1
+                        self.result_toal += 1
+                        self.bask_list.append(apijson)
+                        self.result_pf.append('pass')
+                    elif come == 'fail' or return_mysql['result']=='fail':
+                        self.result_fail += 1
+                        self.result_toal += 1
+                        self.bask_list.append(apijson)
+                        self.result_pf.append('fail')
+                    elif come == '预期不存在':
+                        self.result_toal += 1
+                        self.result_cashu += 1
+                        self.bask_list.append(apijson)
+                        self.result_pf.append(u'预期不存在')
+                    elif '异常' in come or return_mysql['code']== 1 :
+                        self.result_toal += 1
+                        self.result_except += 1
+                        self.bask_list.append((apijson,return_mysql['result']))
+                        self.result_pf.append('Exception')
+                    else:
+                        self.result_toal += 1
+                        self.result_wei += 1
+                        self.bask_list.append(apijson)
+                        self.result_pf.append(u'未知错误')
+                except Exception as e:
+                    self.log_can.info_log('用例：%s执行失败!原因：%s' % (self.id[case], e))
                     self.result_toal += 1
                     self.result_except += 1
-                    self.bask_list.append((apijson,return_mysql['result']))
+                    self.bask_list.append(e)
                     self.result_pf.append('Exception')
-                else:
-                    self.result_toal += 1
-                    self.result_wei += 1
-                    self.bask_list.append(apijson)
-                    self.result_pf.append(u'未知错误')
-            except Exception as e:
-                self.log_can.info_log('用例：%s执行失败!原因：%s' % (self.id[case], e))
-                self.result_toal += 1
-                self.result_except += 1
-                self.bask_list.append(e)
-                self.result_pf.append('Exception')
-                continue
+                    continue
         return self.result_toal ,self.result_pass,self.result_fail,self.result_pf,self.bask_list,self.result_cashu,self.result_wei,self.result_except

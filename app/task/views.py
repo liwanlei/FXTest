@@ -20,9 +20,10 @@ def addtask(id):#定时任务执行的时候所用的函数
     starttime = datetime.datetime.now()
     star = time.time()
     day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    file_dir = os.path.join(basedir, 'upload')
+    pad = os.getcwd()
+    file_dir = pad + '\\app\\upload'
     file = os.path.join(file_dir, (day + '.log'))
+    print(file)
     if os.path.exists(file) is False:
         os.system('touch %s' % file)
     filepath = os.path.join(file_dir, (day + '.html'))
@@ -270,6 +271,7 @@ class Editmingtaskview(MethodView):
         task_one.taskrepor_cao=cao_email
         task_one.task_make_email=weihu
         task_one.makeuser=current_user.id
+        task_one.taskstart=tinmingtime
         try:
             db.session.commit()
             flash(u'编辑成功')
