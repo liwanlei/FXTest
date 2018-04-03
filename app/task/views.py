@@ -64,7 +64,7 @@ def addtask(id):#定时任务执行的时候所用的函数
     apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list,
                           inteface_parm=Interface_pase_list,inteface_assert=Interface_assert_list,
                           file=file, headers=Interface_headers_list,pid=Interface_pid_list,is_database=Interface_is_data_list,
-                           data_mysql=Interface_mysql_list,data_ziduan=Interface_msyql_ziduan_list,urltest=testevent,
+                          data_mysql=Interface_mysql_list,data_ziduan=Interface_msyql_ziduan_list,urltest=testevent,
                           yilaidata=Interface_yilai_list, saveresult=Interface_save_list, id_list=id_list)
     result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, result_wei, result_except = apitest.testapi()
     endtime = datetime.datetime.now()
@@ -84,7 +84,7 @@ def addtask(id):#定时任务执行的时候所用的函数
     db.session.commit()
     try:
         send_ding(content="%s定时任务执行完毕，测试时间：%s，\\n 通过用例：%s，失败用例：%s，\\n,详情见测试平台测试报告！" % (
-        task.taskname, starttime, result_pass, result_fail))
+            task.taskname, starttime, result_pass, result_fail))
     except Exception as e:
         flash('定时任务的钉钉消息发送失败！原因:%s'%e)
 @loginManager.user_loader
@@ -215,12 +215,12 @@ class AddtimingtaskView(MethodView):
         taskname_is = Task.query.filter_by(taskname=data['taskname']).first()
         testevent=Interfacehuan.query.filter_by(url=data['testevent']).first()
         if not testevent:
-            return jsonify({'code': 337, 'msg': '任务的测试环境不存在', 'data': ''})
+            return jsonify({'code': 22, 'msg': '任务的测试环境不存在', 'data': ''})
         if taskname_is:
-            return jsonify({'code':330,'msg':'任务名不能重复','data':''})
+            return jsonify({'code':23,'msg':'任务名不能重复','data':''})
         procjt=Project.query.filter_by(project_name=data['projects'],status=False).first()
         if not  procjt:
-            return jsonify({'code': 338, 'msg': '任务的所属项目不存在', 'data': ''})
+            return jsonify({'code': 24, 'msg': '任务的所属项目不存在', 'data': ''})
         new_task=Task(taskname=data['taskname'],taskstart=data['time'],taskrepor_to=data['to_email'],taskrepor_cao=data['cao_email'],task_make_email=data['weihu'],
                       makeuser=current_user.id,prject=procjt.id,testevent=testevent.id)
         db.session.add(new_task)
@@ -228,7 +228,7 @@ class AddtimingtaskView(MethodView):
             return jsonify({'code': 200, 'msg': '成功', 'data': ''})
         except Exception as e:
             db.session.rollback()
-            return jsonify({'code': 331, 'msg': '任务添加失败，原因：%s'%e, 'data': ''})
+            return jsonify({'code': 25, 'msg': '任务添加失败，原因：%s'%e, 'data': ''})
 class Editmingtaskview(MethodView):
     @login_required
     def get(self,id):
@@ -306,9 +306,9 @@ class GettesView(MethodView):
         project=project.decode('utf-8')
         changpr=Project.query.filter_by(project_name=project).first()
         if not changpr :
-            return  jsonify({"code":231,'msg':'项目查询不到'})
+            return  jsonify({"code":26,'msg':'项目查询不到'})
         if changpr.status==True:
-            return  jsonify({"code":232,'msg':'项目已经删除或者冻结'})
+            return  jsonify({"code":27,'msg':'项目已经删除或者冻结'})
         testevent=Interfacehuan.query.filter_by(projects=changpr,status=False).all()
         testeventlist=[]
         for testeven in testevent:

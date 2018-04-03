@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-08-14 20:58:13
 # @Author  : lileilei
+'''判断是否是管理员'''
 from flask_login import current_user
 def chckuserpermisson():
     for rosse in current_user.quanxians:

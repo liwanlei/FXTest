@@ -4,6 +4,7 @@
 @file: py_Html.py
 @time: 2017/6/5 17:04
 """
+'''自己封装的html测试报告'''
 # import sys  
 # reload(sys)  
 # sys.setdefaultencoding('utf8') 

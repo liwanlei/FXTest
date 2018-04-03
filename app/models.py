@@ -4,6 +4,7 @@
 @file: models.py
 @time: 2017/7/13 16:43
 """
+'''数据库'''
 from  app import  db
 import datetime
 from werkzeug.security import check_password_hash,generate_password_hash

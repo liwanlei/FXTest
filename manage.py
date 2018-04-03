@@ -4,14 +4,15 @@
 @file: manage.py
 @time: 2017/7/13 16:39
 """
+'''主要运行文件，
+使用gevent异步请求，'''
 from  app import  app
 from app import scheduler
 from app.home import home
-from app.mock import  mock
-from app.task import  task
-from app.users import  user
+from app.mock import mock
+from app.task import task
+from app.users import user
 from app.case import case
-from gevent import monkey
 from gevent.pywsgi import WSGIServer
 import logging
 from app.Interface import interfac

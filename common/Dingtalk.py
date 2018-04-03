@@ -1,9 +1,9 @@
 """ 
 @author: lileilei
-@license: Apache Licence  
 @file: Dingtalk.py 
 @time: 2017/12/26 17:34 
 """
+'''封装钉钉群发消息'''
 import  requests,json
 from  config import Dingtalk_access_token
 def send_ding(content):

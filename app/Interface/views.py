@@ -45,7 +45,7 @@ class InterfaceaddView(MethodView):
             return jsonify({'msg': '成功', 'code': 200})
         except Exception as e:
             db.session.rollback()
-            return jsonify({'msg': '添加接口失败，原因:%s'%e, 'code': 236})
+            return jsonify({'msg': '添加接口失败，原因:%s'%e, 'code': 30})
 class EditInterfaceView(MethodView):
     @login_required
     def get(self,id):
@@ -164,10 +164,10 @@ class SerinterView(MethodView):
         else:
             typeinterface='none'
         if not project:
-            return jsonify({'msg': '没有发送数据', 'code': 108})
+            return jsonify({'msg': '没有发送数据', 'code': 31})
         project_is = Project.query.filter_by(project_name=str(projec)).first()
         if project_is.status is True:
-            return jsonify({'msg': '项目已经删除', 'code': 220})
+            return jsonify({'msg': '项目已经删除', 'code': 32})
         interfaclist = Interface.query.filter_by(projects_id=project_is.id, status=False,interfacetype=interfatype).all()
         interfaclists=[]
         for interface in interfaclist:

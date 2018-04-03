@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-07-20 13:07:22
 # @Author  : lileilei
-'''接口请求封装后的使用模块'''
+'''
+接口请求封装后的使用模块
+'''
 from common.test_feng import reques
 requ=reques()
 response=[]

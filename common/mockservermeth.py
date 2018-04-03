@@ -3,6 +3,7 @@
 @file: parsenei.py 
 @time: 2018/3/14 16:17 
 """
+'''mockserver封装'''
 from  flask import  request,abort,jsonify,make_response
 from app.models import *
 from common.dict_com import comp_dict,dict_par

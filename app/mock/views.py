@@ -22,7 +22,7 @@ class AddmockViews(MethodView):#添加mock服务的详细内容
         data_post=request.get_json()
         name_is=Mockserver.query.filter_by(name=data_post['name']).first()
         if name_is:
-            return jsonify({"code":231,'message':'mockserver的名称不能重复'})
+            return jsonify({"code":28,'message':'mockserver的名称不能重复'})
         if data_post['checkout'] ==u'是':
             is_check=True
         else:is_check=False
@@ -51,7 +51,7 @@ class AddmockViews(MethodView):#添加mock服务的详细内容
             return jsonify({"code": 200, 'message': '成功'})
         except:
             db.session.rollback()
-            return jsonify({"code": 232, 'message': '创建新的mock接口出错,原因：%s'%Exception})
+            return jsonify({"code": 29, 'message': '创建新的mock接口出错,原因：%s'%Exception})
 class DeletemockViews(MethodView):#删除mock
     @login_required
     def get(self,id):

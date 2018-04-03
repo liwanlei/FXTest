@@ -4,6 +4,7 @@
 @file: form.py
 @time: 2017/7/13 16:42
 """
+'''form表单'''
 from flask_wtf import  Form
 from wtforms import  StringField,validators,PasswordField,SelectField
 from wtforms.validators import Email

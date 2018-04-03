@@ -38,19 +38,19 @@ class LoginView(MethodView):#登录
         username=data['username']
         password=data['password']
         if username is None:
-            return  jsonify({'msg':'用户名没有输入','code':311,'data':''})
+            return  jsonify({'msg':'用户名没有输入','code':33,'data':''})
         if password is None:
-            return jsonify({'msg':'密码没有输入','code':312,'data':''})
+            return jsonify({'msg':'密码没有输入','code':34,'data':''})
         user=User.query.filter_by(username=username).first()
         if user:
             if user.status is False:
-                return jsonify({'msg': '用户冻结！', 'code': 316, 'data': ''})
+                return jsonify({'msg': '用户冻结！', 'code': 35, 'data': ''})
             if user.check_password(password):
                 login_user(user)
                 session['username'] = username
                 return jsonify({'msg': '登录成功！', 'code': 200, 'data': ''})
-            return jsonify({'msg': '密码错误', 'code': 313, 'data': ''})
-        return jsonify({'msg': '用户不存在', 'code': 314, 'data': ''})
+            return jsonify({'msg': '密码错误', 'code': 36, 'data': ''})
+        return jsonify({'msg': '用户不存在', 'code': 37, 'data': ''})
 class LogtView(MethodView):#退出
     def get(self):
         session.clear()
@@ -168,7 +168,7 @@ class GettProtestreport(MethodView):
         id = request.get_data('id')
         project = id.decode('utf-8')
         if not  project:
-            return jsonify({'msg': '没有发送数据', 'code': 108})
+            return jsonify({'msg': '没有发送数据', 'code': 38})
         project_is=Project.query.filter_by(project_name=project).first()
         testreport=TestResult.query.filter_by(projects_id=project_is.id, status=False).order_by('-id').all()
         testreportlist=[]

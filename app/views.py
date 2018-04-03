@@ -13,7 +13,7 @@ from flask_login import current_user,login_required
 from common.decorators import chckuserpermisson
 def get_pro_mo():
     projects=Project.query.all()
-    model=Model.query.all()
+    model=Model.query.filter_by(status=False).all()
     return  projects,model
 @app.route('/down_jiekou',methods=['GET'])
 @login_required
@@ -44,7 +44,7 @@ class AddmodelView(MethodView):
         modelnew=model.decode('utf-8')
         models = Model.query.filter_by(model_name=modelnew).first()
         if models:
-            return jsonify({'code': 315,'msg':'模块不能重复存在','data':''})
+            return jsonify({'code': 1,'msg':'模块不能重复存在','data':''})
         new_moel = Model(model_name=modelnew, model_user_id=current_user.id)
         db.session.add(new_moel)
         try:
@@ -52,28 +52,28 @@ class AddmodelView(MethodView):
             return  jsonify({'code':200,'msg':'添加成功','data':''})
         except Exception as e:
             db.session.rollback()
-            return jsonify({'code': 316,'msg':'添加失败，原因：%s'%e,'data':''})
+            return jsonify({'code': 2,'msg':'添加失败，原因：%s'%e,'data':''})
 class AddproView(MethodView):
     def  get(self):
         return  render_template('add/add_pro.html')
     def post(self):
         if current_user.is_sper is False:
-            return jsonify({'code': 317, 'msg': '权限不足！' , 'data': ''})
+            return jsonify({'code': 3, 'msg': '权限不足！' , 'data': ''})
         model = request.get_data('projectname')
         modelnew = model.decode('utf-8')
         if modelnew =='':
-            return jsonify({'code': 329, 'msg': '不能为空！', 'data': ''})
+            return jsonify({'code': 4, 'msg': '不能为空！', 'data': ''})
         projec=Project.query.filter_by(project_name=modelnew).first()
         if projec:
-            return jsonify({'code': 319, 'msg': '项目不能重复！', 'data': ''})
+            return jsonify({'code': 5, 'msg': '项目不能重复！', 'data': ''})
         new_moel=Project(project_name=modelnew,project_user_id=current_user.id)
         db.session.add(new_moel)
         try:
             db.session.commit()
-            return jsonify({'code': 200, 'msg': '添加成功！', 'data': ''})
+            return jsonify({'code': 6, 'msg': '添加成功！', 'data': ''})
         except Exception as e:
             db.session.rollback()
-            return jsonify({'code': 219, 'msg': '添加失败，原因:%s！'%e, 'data': ''})
+            return jsonify({'code': 7, 'msg': '添加失败，原因:%s！'%e, 'data': ''})
 class DelemodelView(View):
     methods=['GET','POST']
     @login_required
@@ -296,10 +296,10 @@ class Getyongli(MethodView):
         id = request.get_data('id')
         project=id.decode('utf-8')
         if not project:
-            return jsonify({'msg':'没有发送数据','code':108})
+            return jsonify({'msg':'没有发送数据','code':8})
         peoject = Project.query.filter_by(project_name=project).first()
         if not  peoject:
-            return jsonify({'msg': '数据库找不到项目', 'code': 109})
+            return jsonify({'msg': '数据库找不到项目', 'code': 9})
         tesatcaelist=InterfaceTest.query.filter_by(projects_id=peoject.id,status=False).all()
         caselit=[]
         for i in tesatcaelist:

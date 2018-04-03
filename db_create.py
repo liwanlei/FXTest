@@ -2,6 +2,7 @@
 # @Time    : 2017/7/13 20:53
 # @Author  : lileilei
 # @File    : db_create.py
+'''创建数据库'''
 from app import  db
 from  app.models import Permisson,Role
 def create_roles():#创建角色

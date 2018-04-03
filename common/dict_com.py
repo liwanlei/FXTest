@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-07-20 21:34:12
 # @Author  : lileilei
+'''字典比较判断'''
 def comp_dict(dict1,dict2):
     try:
         for k,v in dict1.items():
@@ -11,6 +12,7 @@ def comp_dict(dict1,dict2):
                     return False
     except:
         return False
+'''断言封装'''
 def assert_in(asserqiwang,fanhuijson):
     if len(asserqiwang.split('=')) > 1:
         try:

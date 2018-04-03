@@ -3,6 +3,7 @@
 @file: dubbo_feng.py 
 @time: 2018/3/29 12:26 
 """
+'''dubbo接口封装'''
 from  pyhessian.client import  HessianProxy
 from  pyhessian import protocol
 class DubboInterface:
