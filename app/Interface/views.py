@@ -19,7 +19,7 @@ class InterfaceaddView(MethodView):
     @login_required
     def get(self):
         form=InterForm()
-        models=Model.query.filter_by(status=False).first()
+        models=Model.query.filter_by(status=False).all()
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
         else:
