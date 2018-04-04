@@ -24,12 +24,15 @@
                     <div class="am-u-sm-12 am-u-md-6">
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <a href="{{ url_for('mock.addmock') }}"> <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
+                                <a href="{{ url_for('mock.addmock') }}">
+                                    <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加">
+                                </a>
                                 <span style="float: right;margin-left: 20px;">
                                     <form method="post" action="{{ url_for('mock.sermock') }}">
                                         <input placeholder="请输入要查询的mock接口" type="text" name="mock">
                                         <input type="submit" value="搜索" class="am-icon-search btn-success" >
-                                    </form></span>
+                                    </form>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -75,7 +78,8 @@
                             </td>
                             <td style="width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
                                 <label class="label-primary" style="background: white">{{ int.rebacktype }}
-                                </label></td>
+                                </label>
+                            </td>
                             <td>
                                 <label class="label-primary" style="background: white">{{(int.update_time)}}</label>
                             </td>
@@ -117,10 +121,13 @@
                                 <label class="label-primary" style="background: white">{{ int.users }}</label>
                             </td>
                             <td>
-                                <span><a href="{{ url_for('mock.editmockserver',id=int.id) }}">
-                                    <i class="am-icon-edit"></i></a></span>  {%if current_user.role_id !=1 and current_user.role_id !=None  %}
-                                <span><a href="{{ url_for('mock.deletemock',id=int.id) }}">
-                                    <i class="am-icon-remove"></i></a>
+                                <span>
+                                    <a href="{{ url_for('mock.editmockserver',id=int.id) }}">
+                                        <i class="am-icon-edit"></i></a></span>  {%if current_user.role_id !=1 and current_user.role_id !=None  %}
+                                <span>
+                                    <a href="{{ url_for('mock.deletemock',id=int.id) }}">
+                                        <i class="am-icon-remove"></i>
+                                    </a>
                                 </span>
                             {%endif%}
                             </td>

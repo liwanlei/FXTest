@@ -7,7 +7,7 @@ from  flask import  redirect,request,render_template,session,url_for,flash,jsoni
 from  app.models import *
 from app.form import  *
 import os,time,datetime,json
-from common.pares_excel_inter import pasre_inter
+from common.pares_excel_inter import paser_interface_case
 from common.py_Html import createHtml
 from common.requ_case import Api
 from common.panduan import assert_in,pare_result_mysql
@@ -18,6 +18,7 @@ from flask_login import current_user,login_required
 from common.Dingtalk import send_ding
 from common.mysqldatabasecur import *
 from common.dubbo_feng import DubboInterface
+from config import  Config_daoru_xianzhi
 case = Blueprint('case', __name__)
 def get_pro_mo():
     projects=Project.query.all()
@@ -241,14 +242,53 @@ class DaorucaseView(View):
             if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
                 filename='jiekoucase.xlsx'
                 file.save(filename)
-                jiekou_bianhao,interface_name,project_nam, model_nam, interface_url,interfac_header, interface_meth, interface_par, interface_bas = pasre_inter(filename)
+                jiekou_bianhao,interface_name,project_nam, model_nam, interface_url,interfac_header, \
+                interface_meth, interface_par, interface_bas,interface_type,is_save_result,yilai_is,\
+                yilai,yilai_ziduan,is_cha_data,data_sql,paser_base = paser_interface_case(filename)
+                if len(yilai)>Config_daoru_xianzhi:
+                    flash(u'一次导入超过了系统的上限')
+                    return redirect(url_for('home.daoru_case'))
                 try:
                     for i in range(len(jiekou_bianhao)):
-                        projects_id = Project.query.filter_by(project_name=project_nam[i]).first().id
-                        model_id = Model.query.filter_by(model_name=model_nam[i]).first().id
-                        new_interface = InterfaceTest(projects_id=projects_id, model_id=model_id,Interface_name=str(interface_name[i]), Interface_url=str(interface_url[i]),Interface_headers=interfac_header[i],Interface_meth=str(interface_meth[i]), Interface_pase=(interface_par[i]),Interface_assert=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+                        projects_id = Project.query.filter_by(project_name=str(project_nam[i])).first()
+                        model_id = Model.query.filter_by(model_name=str(model_nam[i])).first()
+                        if projects_id is None or model_id is None:
+                            flash(u'导入失败,项目或者模块不存在')
+                            return redirect(url_for('home.daoru_case'))
+                        if is_save_result[i]=='是':
+                            save_reslt=True
+                        elif is_save_result[i]=='否':
+                            save_reslt=False
+                        else:
+                            save_reslt=False
+                        if is_cha_data[i]=='是':
+                            chaxun=True
+                        elif is_cha_data[i]=='否':
+                            chaxun=False
+                        else:
+                            chaxun=False
+                        if yilai_is[i]=='否':
+                            yilai_case=yilai[i]
+                            ziduan_case=yilai_ziduan[i]
+                        else:
+                            yilai_case=''
+                            ziduan_case=''
+                        new_interface = InterfaceTest(projects_id=projects_id.id, model_id=model_id.id,
+                                                      Interface_name=str(interface_name[i]),
+                                                      Interface_url=str(interface_url[i]),
+                                                      Interface_headers=interfac_header[i],
+                                                      Interface_meth=str(interface_meth[i]),
+                                                      Interface_pase=(interface_par[i]),
+                                                      Interface_assert=str(interface_bas[i]),
+                                                      saveresult=save_reslt,
+                                                      is_database=chaxun,
+                                                      chaxunshujuku=data_sql[i],
+                                                      databaseziduan=paser_base[i],
+                                                      pid=yilai_case,
+                                                      getattr_p=ziduan_case,
+                                                      Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
                         db.session.add(new_interface)
-                    db.session.commit()
+                        db.session.commit()
                     flash(u'导入成功')
                     return redirect(url_for('home.yongli'))
                 except Exception as e:
@@ -385,12 +425,15 @@ class DuoyongliView(View):
                 return redirect(next or url_for('duoyongli'))
             testevent = Interfacehuan.query.filter_by(url=testurl).first()
             try:
-                apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list, inteface_parm=Interface_pase_list,
-                                      inteface_assert=Interface_assert_list, file=file, headers=Interface_headers_list,pid=Interface_pid_list,
-                                      yilaidata=Interface_yilai_list,saveresult=Interface_save_list,id_list=id_list,is_database=Interface_is_data_list,
-                                      data_mysql=Interface_mysql_list,data_ziduan=Interface_msyql_ziduan_list,urltest=testevent)
-                result_toal, result_pass, result_fail, relusts, bask_list,result_cashu,result_wei,result_except= apitest.testapi()
-                print(result_toal, result_pass, result_fail, relusts, bask_list,result_cashu,result_wei,result_except)
+                apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list,
+                                      inteface_parm=Interface_pase_list,inteface_assert=Interface_assert_list,
+                                      file=file, headers=Interface_headers_list,pid=Interface_pid_list,
+                                      yilaidata=Interface_yilai_list,saveresult=Interface_save_list,
+                                      id_list=id_list,is_database=Interface_is_data_list,
+                                      data_mysql=Interface_mysql_list,
+                                      data_ziduan=Interface_msyql_ziduan_list,urltest=testevent)
+                result_toal, result_pass, result_fail, relusts, bask_list,result_cashu,\
+                result_wei,result_except= apitest.testapi()
                 endtime = datetime.datetime.now()
                 end = time.time()
                 createHtml(titles=u'接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
@@ -402,13 +445,14 @@ class DuoyongliView(View):
                 user_id = current_user.id
                 new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
                                        fail_num=result_fail, test_time=starttime, hour_time=hour,
-                                       test_rep=(day + '.html'), test_log=(day + '.log'),Exception_num=result_except,can_num=result_cashu,
+                                       test_rep=(day + '.html'), test_log=(day + '.log'),
+                                       Exception_num=result_except,can_num=result_cashu,
                                        wei_num=result_wei,projects_id=projecct_list[0].id)
                 db.session.add(new_reust)
                 db.session.commit()
                 if f_dingding == 'email':
                     email = EmailReport.query.filter_by(email_re_user_id=int(current_user.id),
-                                                       default_set=True).first()
+                                                        default_set=True).first()
                     if email:
                         m = send_emails(sender=email.send_email, receivers=email.to_email,
                                         password=email.send_email_password,
@@ -431,7 +475,6 @@ class DuoyongliView(View):
                 flash(u'测试已经完成，测试报告已经生成')
                 return redirect(url_for('home.test_rep'))
             except Exception as e:
-                print(e)
                 flash(u'测试失败，请检查您的测试用例单个执行是否出错')
                 return redirect(next or url_for('home.yongli'))
         return redirect(url_for('home.yongli'))
@@ -439,7 +482,7 @@ class MakeonlyoneCase(View):
     methods = ['GET', 'POST']
     @login_required
     def dispatch_request(self):
-        projec = (request.get_json())
+        projec = request.get_json()
         case_id = projec['caseid']
         url = projec['url']
         testevent = Interfacehuan.query.filter_by(url=str(url)).first()
@@ -458,7 +501,7 @@ class MakeonlyoneCase(View):
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
-                            return jsonify({'code': 43, 'msg': '找不到依赖的接口的测试结果！请查找依赖接口是否进行测试,获取测试是否通过,接口id是：%s'%(case.pid)})
+                            return jsonify({'code': 43, 'msg': u'找不到依赖的接口的测试结果！请查找依赖接口是否进行测试,获取测试是否通过,接口id是：%s'%(case.pid)})
                         huoquyilai=testres.result
                         canshu=case.getattr_p
                         try:

@@ -25,7 +25,8 @@
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
                                 <a href="{{ url_for('mock.addmock') }}">
-                                    <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
+                                    <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加">
+                                </a>
                                 <span style="float: right;margin-left: 20px;">
                                     <form method="post" action="{{ url_for('sermock') }}">
                                         <input placeholder="请输入要查询的mock接口" type="text" name="mock">
@@ -59,47 +60,73 @@
                             {% if int.delete ==1 %}
                                 <td onclick="show({{ int.id }})">{{ int.name }}</td>
                                 <td onclick="show({{ int.id }})">{{ int.description }}</td>
-                            {% else %}<td>{{ int.name }}</td>
-                                <td>{{ int.description }}</td>{% endif %}
+                            {% else %}
+                                <td>{{ int.name }}</td>
+                                <td>{{ int.description }}</td>
+                            {% endif %}
                             {% if int.status==1 %}
-                                <td><a href="{{ url_for('mackserver',path=int.path) }}" target="_blank">{{ int.path }}</a></td>
+                                <td>
+                                    <a href="{{ url_for('mackserver',path=int.path) }}" target="_blank">{{ int.path }}</a>
+                                </td>
                             {% else %}
                                 <td>{{ int.path }}</td>
                             {% endif %}
-                            <td><label class="label-primary" style="background: white">{{ int.methods }}</label></td>
-                            <td><label class="label-primary" style="background: white">{{ int.rebacktype }}</label></td>
-                            <td><label class="label-primary" style="background: white">{{(int.update_time)}}</label></td>
+                            <td>
+                                <label class="label-primary" style="background: white">{{ int.methods }}</label>
+                            </td>
+                            <td>
+                                <label class="label-primary" style="background: white">{{ int.rebacktype }}</label>
+                            </td>
+                            <td>
+                                <label class="label-primary" style="background: white">{{(int.update_time)}}</label>
+                            </td>
                             {% if int.ischeck ==0  %}
                                 <td>否</td>
                             {% elif int.ischeck==1 %}
                                 <td>是</td>
                             {% endif %}
                             {% if int.is_headers==0 %}
-                                <td><label class="label-primary" style="background: white">
-                                    <i class="am-icon-check"></i>
-                                </label></td>
+                                <td>
+                                    <label class="label-primary" style="background: white">
+                                        <i class="am-icon-check"></i>
+                                    </label>
+                                </td>
                             {% elif int.is_headers==1 %}
-                                <td><label class="label-primary" style="background: white">
-                                    <i class="am-icon-close"></i>
-                                </label></td>
+                                <td>
+                                    <label class="label-primary" style="background: white">
+                                        <i class="am-icon-close"></i>
+                                    </label>
+                                </td>
                             {% endif %}
                             {% if int.status==0 %}
-                                <td><label class="label-primary" style="background: white">
-                                    <a href="{{ url_for('mock.startmock',id=int.id) }}">
-                                        <i class="am-icon-lock"></i></a>
-                                </label></td>
+                                <td>
+                                    <label class="label-primary" style="background: white">
+                                        <a href="{{ url_for('mock.startmock',id=int.id) }}">
+                                            <i class="am-icon-lock"></i>
+                                        </a>
+                                    </label>
+                                </td>
                             {% elif int.status==1 %}
-                                <td><label class="label-primary" style="background: white">
-                                    <a href="{{ url_for('mock.closemock',id=int.id) }}">
-                                        <i class="am-icon-unlock"></i></a></label></td>
+                                <td>
+                                    <label class="label-primary" style="background: white">
+                                        <a href="{{ url_for('mock.closemock',id=int.id) }}">
+                                            <i class="am-icon-unlock"></i>
+                                        </a>
+                                    </label>
+                                </td>
                             {% endif %}
                             <td><label class="label-primary" style="background: white">{{ int.users }}</label></td>
                             <td>
-                                <span><a href="{{ url_for('mock.editmockserver',id=int.id) }}">
-                                    <i class="am-icon-edit"></i></a></span>
+                                <span>
+                                    <a href="{{ url_for('mock.editmockserver',id=int.id) }}">
+                                        <i class="am-icon-edit"></i></a></span>
                                 {%if current_user.role_id !=1 and current_user.role_id !=None  %}
-                                    <span><a href="{{ url_for('mock.deletemock',id=int.id) }}">
-                                        <i class="am-icon-remove"></i></a></span>{%endif%}
+                                    <span>
+                                        <a href="{{ url_for('mock.deletemock',id=int.id) }}">
+                                            <i class="am-icon-remove"></i>
+                                        </a>
+                                    </span>
+                                {%endif%}
                             </td>
                         </tr>
                         <tr  style="width:10px;display: none"  id="{{ int.id }}">

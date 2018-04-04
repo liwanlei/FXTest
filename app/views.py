@@ -270,7 +270,10 @@ def gettest():#ajax获取项目的测试用例
     testyong=InterfaceTest.query.filter_by(projects_id=proje.id).all()
     testyong_list=[]
     for i in testyong:
-        testyong_list.append({'name':i.Interface_name,'id':i.id})
+        if i.status==True:
+            continue
+        else:
+            testyong_list.append({'name':i.Interface_name,'id':i.id})
     return   jsonify({'data':testyong_list})
 @app.route('/getprojects',methods=['GET','POST'])
 @login_required
@@ -288,18 +291,18 @@ def getprojects():
     for huanjing in testhuanjing:
         url_list.append(huanjing.url)
     if not  peoject:
-        return jsonify({'data':'数据库找不到项目','code':109})
-    return  jsonify({'data':str(result),'huanjing':url_list,'code':200})
+        return jsonify({'msg':'数据库找不到项目','code':109,'data':''})
+    return  jsonify({'data':str(result),'huanjing':url_list,'code':200,'msg':u'请求成功'})
 class Getyongli(MethodView):
     @login_required
     def post(self):
         id = request.get_data('id')
         project=id.decode('utf-8')
         if not project:
-            return jsonify({'msg':'没有发送数据','code':8})
+            return jsonify({'msg':'没有发送数据','code':8,'data':''})
         peoject = Project.query.filter_by(project_name=project).first()
         if not  peoject:
-            return jsonify({'msg': '数据库找不到项目', 'code': 9})
+            return jsonify({'msg': '数据库找不到项目', 'code': 9,'data':''})
         tesatcaelist=InterfaceTest.query.filter_by(projects_id=peoject.id,status=False).all()
         caselit=[]
         for i in tesatcaelist:

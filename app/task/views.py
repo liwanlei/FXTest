@@ -63,10 +63,12 @@ def addtask(id):#定时任务执行的时候所用的函数
     testevent=task.testevent
     apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list,
                           inteface_parm=Interface_pase_list,inteface_assert=Interface_assert_list,
-                          file=file, headers=Interface_headers_list,pid=Interface_pid_list,is_database=Interface_is_data_list,
-                          data_mysql=Interface_mysql_list,data_ziduan=Interface_msyql_ziduan_list,urltest=testevent,
+                          file=file, headers=Interface_headers_list,pid=Interface_pid_list,
+                          is_database=Interface_is_data_list,data_mysql=Interface_mysql_list,
+                          data_ziduan=Interface_msyql_ziduan_list,urltest=testevent,
                           yilaidata=Interface_yilai_list, saveresult=Interface_save_list, id_list=id_list)
-    result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, result_wei, result_except = apitest.testapi()
+    result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, result_wei, \
+    result_except = apitest.testapi()
     endtime = datetime.datetime.now()
     end = time.time()
     createHtml(titles=u'定时任务接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
@@ -129,8 +131,11 @@ class TestforTaskView(MethodView):#为测试任务添加测试用例
         for oldtask in task_one.interface.all():
             task_one.interface.remove(oldtask)
         for yongli in test_yongli:
-            task_yong=InterfaceTest.query.filter_by(id=(yongli)).first()
-            task_one.interface.append(task_yong)
+            task_yong=InterfaceTest.query.filter_by(id=yongli).first()
+            if task_yong.status is True:
+                continue
+            else:
+                task_one.interface.append(task_yong)
         task_one.prject = proc_test
         db.session.add(task_one)
         try:
@@ -306,9 +311,9 @@ class GettesView(MethodView):
         project=project.decode('utf-8')
         changpr=Project.query.filter_by(project_name=project).first()
         if not changpr :
-            return  jsonify({"code":26,'msg':'项目查询不到'})
+            return  jsonify({"code":26,'msg':'项目查询不到','data':''})
         if changpr.status==True:
-            return  jsonify({"code":27,'msg':'项目已经删除或者冻结'})
+            return  jsonify({"code":27,'msg':'项目已经删除或者冻结','data':''})
         testevent=Interfacehuan.query.filter_by(projects=changpr,status=False).all()
         testeventlist=[]
         for testeven in testevent:

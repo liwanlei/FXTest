@@ -34,7 +34,10 @@
                 <a href="{{url_for('interface.interface_add')}}">
                     <input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success">
                 </a>
-                {#                <a href="{{url_for('interface.daoru_inter')}}"><input type="button" name=""  value="导入" class="am-btn am-btn-default am-btn-success"></a>#}
+                <a href="{{url_for('interface.daoru_inter')}}">
+                    <input type="button" name=""  value="批量导入" class="am-btn am-btn-default am-btn-success">
+                </a>
+                <button class="btn-default am-btn-default am-btn" onclick="shezhiguanliyuan()">导出接口</button>
             </div>
             <table class="am-table am-table-hover table-main" style="width:100%;table-layout:fixed;">
                 <thead>
@@ -50,6 +53,23 @@
                 </ul>
             </nav>
         </div>
+    </div>
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="ceshiyongli">
+    <form method="POST" action="{{url_for('interface.daochuinterface')}}">
+        <div style="height: 5px;">请选择导出接口项目：</div>
+        <div style="background-color: whitesmoke;margin-top: 24px" >
+        选择导出的项目:
+            <select name="interface_type"  >
+                {% for project in projects %}
+                    <option name="project">{{ project.project_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="margin-top: 50%;margin-bottom: auto">
+            <input value="导出" type="submit" class="btn-default shezhiguanliyuan" >
+            <input value="取消" type="button" class=" btn-default"  onclick="guanbi()" >
+        </div>
+        </form>
     </div>
     <script type="text/javascript">
         window.onload=getprointer();
@@ -93,6 +113,14 @@
                     window.location.reload();
                 }
             })
+        }
+        function  shezhiguanliyuan() {
+            var  divshow=document.getElementById('ceshiyongli');
+                divshow.style.display='block';
+        }
+        function guanbi() {
+            var  divshow=document.getElementById('ceshiyongli');
+            divshow.style.display='none';
         }
     </script>
 {% endblock %}

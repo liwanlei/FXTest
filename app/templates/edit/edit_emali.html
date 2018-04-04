@@ -21,26 +21,36 @@
             <form  action="{{ url_for('user.editemail',id=emai.id) }}" method="POST" >
                 <div class="form-group">
                     <strong>邮箱名字:</strong>
-                    <input type="text" name="meth" value="{{emai.send_email}}"></div>
+                    <input type="text" name="meth" value="{{emai.send_email}}">
+                </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>邮箱安全密码:</strong>
-                    <input type="text" name="meth" value="{{emai.send_email_password}}"></div>
+                    <input type="text" name="meth" value="{{emai.send_email_password}}">
+                </div>
                 <div class="form-group">
-                    <strong><span>&nbsp;</span>
+                    <strong>
+                        <span>&nbsp;</span>
                         邮箱stmp地址：</strong>
-                    <label><input name="stmp" type="text" > </label>
+                    <label>
+                        <input name="stmp" type="text" >
+                    </label>
                     <span>&nbsp;</span></div>
                 <div class="form-group">
                     <strong><span>&nbsp;</span>
                         stmp端口号</strong>
-                    <label><input name="port" type="text" > </label>
-                    <span>&nbsp;</span></div>
+                    <label>
+                        <input name="port" type="text" >
+                    </label>
+                    <span>&nbsp;</span>
+                </div>
                 <div class="form-group">
                     <strong><span>&nbsp;</span>
                         是否设置默认</strong>
-                    <label><input name="checkbox" type="checkbox" > </label>
-                    <span>&nbsp;</span></div>
+                    <label><input name="checkbox" type="checkbox" >
+                    </label>
+                    <span>&nbsp;</span>
+                </div>
                 <div class="form-group">
                     <strong>接受邮箱:</strong>
                     <input type="text" name="email" placeholder="请输入接受邮箱" value='{{emai.to_email}}'> <text style="color: lightsteelblue;">多个邮箱请用逗号隔开</text>

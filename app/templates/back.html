@@ -15,9 +15,9 @@
 </head>
 <body style="background-color: #f5f5f5" >
 <header class="am-topbar am-topbar-inverse admin-header">
-    <div class="am-topbar-brand">
+    <div class="am-topbar-brand" style="height: 65px;">
         <a href="javascript:;" class="tpl-logo">
-            <img src="{{url_for('static',filename='img/logo.png')}}" alt="" >
+            <img src="{{url_for('static',filename='img/logo.png')}}"  height="80px" alt="" >
         </a>
     </div>
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
@@ -29,13 +29,10 @@
                     <span class="tpl-header-list-user-nick" >
                         {{session.username}}
                     </span>
-                    <span class="tpl-header-list-user-ico">
-
-                    </span>
                 </a>
             </li>
             <li><a href="{{url_for('home.logt')}}" class="tpl-header-list-link">
-                <span class="am-icon-sign-out tpl-header-list-ico-out-size">
+                <span class="am-icon-sign-out ">
                 </span>
             </a></li>
         </ul>

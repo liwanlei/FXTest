@@ -8,7 +8,8 @@
                     <span class="am-icon-code"></span> 编辑测试环境
                 </div>
             </div>
-            <div style="text-align: center ;color: red" id="messgae"></div>
+            <div style="text-align: center ;color: red" id="messgae">
+            </div>
             <form  >
                 <div class="form-group">
                     <strong>项目名字:</strong>
@@ -19,8 +20,10 @@
                             {% else %}
                                 <option>{{  project.project_name }}</option>
                             {% endif %}
-                        {% endfor %}</select>
-                </div><span>&nbsp;</span>
+                        {% endfor %}
+                    </select>
+                </div>
+                <span>&nbsp;</span>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>测试环境url:</strong>

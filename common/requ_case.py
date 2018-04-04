@@ -27,3 +27,5 @@ class Api():
 	def getJson(self):
 		json_data=self.testapi()
 		return json_data
+	def getCode(self):
+		return self.testapi().status_code

@@ -14,7 +14,7 @@ from app import loginManager
 from config import PageShow
 from common.fenye import Pagination
 def get_pro_mo():
-    projects=Project.query.all()
+    projects=Project.query.filter_by(status=False).all()
     model=Model.query.filter_by(status=False).all()
     return  projects,model
 @loginManager.user_loader
@@ -27,8 +27,9 @@ class Indexview(MethodView):#首页
         interfaceTest_cunt=InterfaceTest.query.filter_by(status=False).count()
         resu_cout=TestResult.query.filter_by(status=False).count()
         project_cout=Project.query.filter_by(status=False).count()
-        model_cout=Model.query.count()
-        return  render_template('home/index.html', yongli=interfaceTest_cunt, jiekou=interface_cont, report=resu_cout, project_cout=project_cout, model_cout=model_cout)
+        model_cout=Model.query.filter_by(status=False).count()
+        return  render_template('home/index.html', yongli=interfaceTest_cunt, jiekou=interface_cont,
+                                report=resu_cout, project_cout=project_cout, model_cout=model_cout)
 class LoginView(MethodView):#登录
     def get(self):
         form=LoginFrom()
@@ -161,14 +162,12 @@ class TimingtasksView(MethodView):#定时任务
                     id.append(project.projects.id)
         return render_template('home/timingtask.html', inte=task)
 class GettProtestreport(MethodView):
-    def get(self):
-        pass
     @login_required
     def post(self):
         id = request.get_data('id')
         project = id.decode('utf-8')
         if not  project:
-            return jsonify({'msg': '没有发送数据', 'code': 38})
+            return jsonify({'msg': '没有发送数据', 'code': 38,'data':''})
         project_is=Project.query.filter_by(project_name=project).first()
         testreport=TestResult.query.filter_by(projects_id=project_is.id, status=False).order_by('-id').all()
         testreportlist=[]

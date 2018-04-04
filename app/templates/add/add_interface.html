@@ -33,14 +33,6 @@
                 </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
-                    <strong>接口协议类型:</strong>
-                    <select name="interface_type">
-                        <option class="glyphicon-option-vertical">http</option>
-                        <option>dubbo</option>
-                    </select>
-                </div>
-                <span>&nbsp;</span>
-                <div class="form-group">
                     <strong>接口名字:</strong>
                     {{ form.interface_name(id='interfacename') }}
                 </div>
@@ -48,6 +40,14 @@
                 <div class="form-group">
                     <strong>接口地址:</strong>
                     {{ form.interface_url (id='interface_url')}}</div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>接口协议类型:</strong>
+                    <select name="interface_type">
+                        <option class="glyphicon-option-vertical">http</option>
+                        <option>dubbo</option>
+                    </select>
+                </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口headers:</strong>

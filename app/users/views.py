@@ -55,21 +55,21 @@ class SetadView(View):#设置管理员
     @login_required
     def dispatch_request(self):
         if chckuserpermisson() == False:
-            return jsonify({'code': 13, 'msg': '权限不足，不能设置管理员'})
+            return jsonify({'code': 13, 'msg': '权限不足，不能设置管理员','data':''})
         projec = request.get_json()
         try:
             username=projec['username']
             por=projec['url']
             if por=='':
-                return jsonify({'code': 14,'msg': '请选择项目'})
+                return jsonify({'code': 14,'msg': '请选择项目','data':''})
             pan_user=User.query.filter_by(username=username).first()
             if not pan_user:
-                return  jsonify({'code':15,'msg':'设置的用户不存在'})
+                return  jsonify({'code':15,'msg':'设置的用户不存在','data':''})
             if pan_user.is_sper is True:
-                return jsonify({'code': 16,'msg': '超级管理员不用设置项目'})
+                return jsonify({'code': 16,'msg': '超级管理员不用设置项目','data':''})
             pand_por=Project.query.filter_by(project_name=por).first()
             if not  pand_por:
-                return jsonify({'code': 17, 'msg': '设置的项目不存在'})
+                return jsonify({'code': 17, 'msg': '设置的项目不存在','data':''})
             pro_per=Quanxian.query.filter_by(project=pand_por.id).all()
             oneadmin=[]
             for i in pro_per:
@@ -87,9 +87,9 @@ class SetadView(View):#设置管理员
                 return jsonify({'code': 200,'msg': '设置管理成功'})
             except:
                 db.session.rollback()
-                return jsonify({'code': 20,'msg': '设置管理失败'})
+                return jsonify({'code': 20,'msg': '设置管理失败','data':''})
         except Exception as e:
-            return  jsonify({'code':21,'msg':'设置过程目前存在异常,原因是：%s'%e})
+            return  jsonify({'code':21,'msg':'设置过程目前存在异常,原因是：%s'%e,'data':''})
 class DeladView(View):#取消管理员
     methods=['GET','POST']
     @login_required

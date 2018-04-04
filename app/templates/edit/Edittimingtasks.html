@@ -28,9 +28,11 @@
                 <div class="form-group">
                     <p style="margin-top: 20px">
                         <strong >任务名称:</strong>
-                        <input type="text" name="taskname"  placeholder="请输入任务名！" value="{{ task_one.taskname }}"></p>
+                        <input type="text" name="taskname"  placeholder="请输入任务名！" value="{{ task_one.taskname }}">
+                    </p>
                     <p style="margin-top: 20px"><strong>测试时间:</strong>
-                        <input type="text" name="time"  placeholder="请输入con表达式！" value="{{ task_one.taskstart }}"></p>
+                        <input type="text" name="time"  placeholder="请输入con表达式！" value="{{ task_one.taskstart }}">
+                    </p>
                     <p style="margin-top: 20px"><strong>邮件主送:</strong>
                         <textarea type="text" name="to_email"  placeholder="测试报告发送谁给，逗号分隔多个！" style="width: 200px;height: 100px;">
                             {{ task_one.taskrepor_to }}
@@ -38,15 +40,15 @@
                     <p style="margin-top: 20px"> <strong>邮件抄送:</strong>
                         <textarea type="text" name="cao_email"  placeholder="测试报告抄送的人，用逗号分隔！" style="width: 200px;height: 100px;">
                             {{ task_one.taskrepor_cao }}
-                        </textarea></p>
+                        </textarea>
+                    </p>
                     <p style="margin-top: 20px">
                         <strong>支持人邮件:</strong>
-                        <input type="text" name="weihu"  placeholder="维护改测试计划的人！" value="{{ task_one.task_make_email }}"></p>
+                        <input type="text" name="weihu"  placeholder="维护改测试计划的人！" value="{{ task_one.task_make_email }}">
+                    </p>
                 </div>
                 <button type="submit" class="am-btn am-btn-primary ">编辑</button>
             </form>
         </div>
     </div>
 {%endblock%}
-
-

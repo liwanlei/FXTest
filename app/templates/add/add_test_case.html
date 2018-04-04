@@ -13,7 +13,8 @@
                         <div class="input-icon right">
                         </div>
                     </div>
-                </div></div>
+                </div>
+            </div>
             {% with messages = get_flashed_messages()%}
                 {% if messages%}
                     <ul class='flashes'>
@@ -32,7 +33,8 @@
                         {% for project in  projects %}
                             <input type='radio' value="{{  project.project_name }}" name="project" class="projects" onclick="yilai()">
                             {{ project.project_name }}
-                        {% endfor %}</div>
+                        {% endfor %}
+                    </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>模块名字:</strong>
@@ -43,7 +45,8 @@
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>接口名字:</strong>
-                        {{ form.interface_name(id='interfacename') }}</div>
+                        {{ form.interface_name(id='interfacename') }}
+                    </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>接口协议类型:</strong>
@@ -55,7 +58,8 @@
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>接口url:</strong>
-                        {{ form.interface_url(id='interfaceurl') }}</div>
+                        {{ form.interface_url(id='interfaceurl') }}
+                    </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>接口headers:</strong>
@@ -67,15 +71,18 @@
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>请求方式:</strong>
-                        {{ form.interface_meth(id='interfacemeth') }}</div>
+                        {{ form.interface_meth(id='interfacemeth') }}
+                    </div>
                     <span>&nbsp;</span>
                     <div class="form-group" >
                         <strong>请求参数:</strong>
-                        {{ form.interface_can (id='interfacedata')}}</div>
+                        {{ form.interface_can (id='interfacedata')}}
+                    </div>
                     <span>&nbsp;</span>
                     <div class="form-group" >
                         <strong>请求预期:</strong>
-                        {{ form.interface_rest(id='interfaceyuqi') }}</div>
+                        {{ form.interface_rest(id='interfaceyuqi') }}
+                    </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>是否保存测试结果:</strong>

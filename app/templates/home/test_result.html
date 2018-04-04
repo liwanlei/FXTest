@@ -16,7 +16,8 @@
                 {% if messages %}
                     <ul class='flashes'>
                         {% for message in messages %}
-                            <li style="color: red">{{ message }}</li></ul>
+                            <li style="color: red">{{ message }}</li>
+                            </ul>
                         {% endfor %}
                 {% endif %}
             {% endwith %}
@@ -33,7 +34,8 @@
             <table class="am-table am-table-striped am-table-hover table-main" >
                 <caption>
                     <strong>
-                    </strong></caption>
+                    </strong>
+                </caption>
                 <thead>
                 <tr>
                     <th>测试数量</th>
@@ -48,9 +50,9 @@
                     <th>测试用户</th>
                     <th>报告下载</th>
                     <th>日志下载</th>
-                    {%if current_user.role_id !=1 and
-          current_user.role_id !=None  %}
-                        <th>操作</th>{%endif%}
+                    {%if current_user.role_id !=1 and current_user.role_id !=None  %}
+                        <th>操作</th>
+                    {%endif%}
                 </tr>
                 </thead>
                 <tbody id="testyonglis" >
@@ -80,7 +82,7 @@
                         var insertss=$('#testyonglis');
                         insertss.empty();
                         for(var i=0;i<mdata.length;i++){
-                            insertss.append("<tr ><td id='test_num' class='test_num' >"+ mdata[i]['test_num'] +"</td><td id='pass_num' class='pass_num'><label class='label-success'>"+ mdata[i]['pass_num']+"</label></td><td id='fail_num' class='fail_num'>"+ mdata[i]['fail_num']+"</td><td >"+  mdata[i]['Exception_num']+"</td><td>"+ mdata[i]['can_num']+"</td><td>" + mdata[i]['wei_num']+"</td><td class='test_date'>"+ mdata[i]['test_time']+"</td><td>"+ mdata[i]['hour_time']+"</td><td class='proce'>"+ (mdata[i]['fenshu']+"</td><td>"+ mdata[i]['Test_user_id']+"</td><td><a href='/load/"+mdata[i]["test_rep"]+"'>报告下载</a></td><td><a href='/load/"+ mdata[i]['test_log']+"'>日志下载</a></td><th><a href='deletre/"+( mdata[i]["id"])+"'><input type='button' value='删除' class='btn btn-danger'></a></th></tr>"));
+                            insertss.append("<tr ><td id='test_num' class='test_num' >"+ mdata[i]['test_num'] +"</td><td id='pass_num' class='pass_num'><label class='label-success' style='color:black'>"+ mdata[i]['pass_num']+"</label></td><td id='fail_num' class='fail_num'>"+ mdata[i]['fail_num']+"</td><td >"+  mdata[i]['Exception_num']+"</td><td>"+ mdata[i]['can_num']+"</td><td>" + mdata[i]['wei_num']+"</td><td class='test_date'>"+ mdata[i]['test_time']+"</td><td>"+ mdata[i]['hour_time']+"</td><td class='proce'>"+ (mdata[i]['fenshu']+"</td><td>"+ mdata[i]['Test_user_id']+"</td><td><a href='/load/"+mdata[i]["test_rep"]+"'>报告下载</a></td><td><a href='/load/"+ mdata[i]['test_log']+"'>日志下载</a></td><th><a href='deletre/"+( mdata[i]["id"])+"'><input type='button' value='删除' class='btn btn-danger'></a></th></tr>"));
                         };
                     }
                 },error:function (res) {

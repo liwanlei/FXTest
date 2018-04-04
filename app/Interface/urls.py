@@ -10,3 +10,4 @@ interfac.add_url_rule('/daoru_inter',view_func=DaoruinterView.as_view('daoru_int
 interfac.add_url_rule('/interface_add',view_func=InterfaceaddView.as_view('interface_add'))
 interfac.add_url_rule('/interfac_edit/<int:id>',view_func=EditInterfaceView.as_view('interfac_edit'))
 interfac.add_url_rule('/dele_inter/<int:id>',view_func=DeleinterView.as_view('dele_inter'))
+interfac.add_url_rule('/daochuinterface',view_func=DaochuInterfa.as_view('daochuinterface'))

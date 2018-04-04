@@ -48,10 +48,10 @@ class AddmockViews(MethodView):#添加mock服务的详细内容
         db.session.add(new_mock)
         try:
             db.session.commit()
-            return jsonify({"code": 200, 'message': '成功'})
+            return jsonify({"code": 200, 'message': '成功','data':''})
         except:
             db.session.rollback()
-            return jsonify({"code": 29, 'message': '创建新的mock接口出错,原因：%s'%Exception})
+            return jsonify({"code": 29, 'message': '创建新的mock接口出错,原因：%s'%Exception,'data':''})
 class DeletemockViews(MethodView):#删除mock
     @login_required
     def get(self,id):
@@ -135,7 +135,7 @@ class StartmockView(MethodView):#开启mock服务
     @login_required
     def get(self,id):
         next = request.headers.get('Referer')
-        start=Mockserver.query.filter_by(id=id).first()
+        start=Mockserver.query.filter_by(id=id,status=False).first()
         if start:
             start.status=True
             try:
@@ -163,22 +163,19 @@ class ClosemockView(MethodView):#关闭mock服务
                 return redirect(next or url_for('home.mockserver'))
         flash(u'mock的服务关闭失败，因为不存在')
         return redirect(next or url_for('mockserver'))
-class SermockView(View):#搜索mock接口
-    methods=['GET','POST']
+class SermockView(MethodView):#搜索mock接口
     @login_required
-    def dispatch_request(self):
-        if request.method=='POST':
-            mock=request.form.get('mock')
-            if mock=='':
-                flash(u'请输入您要查询的mock')
-                return redirect(url_for('home.mockserver'))
-            try:
-                use=Mockserver.query.filter(Mockserver.name.like('%'+mock+'%')).order_by('-id').all()
-                if len(use)<=0:
-                    flash(u'没有找到您输入的mock接口')
-                    return redirect(url_for('home.mockserver'))
-                return render_template('home/serch_mockserver.html', inte=use)
-            except:
+    def post(self):
+        mock=request.form.get('mock')
+        if mock=='':
+            flash(u'请输入您要查询的mock')
+            return redirect(url_for('home.mockserver'))
+        try:
+            use=Mockserver.query.filter(Mockserver.name.like('%'+mock+'%')).order_by('-id').all()
+            if len(use)<=0:
                 flash(u'没有找到您输入的mock接口')
                 return redirect(url_for('home.mockserver'))
-        return redirect(url_for('home.mockserver'))
+            return render_template('home/serch_mockserver.html', inte=use)
+        except:
+            flash(u'没有找到您输入的mock接口')
+            return redirect(url_for('home.mockserver'))

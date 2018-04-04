@@ -15,6 +15,8 @@ from app.users import user
 from app.case import case
 from gevent.pywsgi import WSGIServer
 import logging
+from gevent import  monkey
+monkey.patch_all()
 from app.Interface import interfac
 app.register_blueprint(home)
 app.register_blueprint(mock)

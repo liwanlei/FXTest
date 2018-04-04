@@ -10,8 +10,8 @@ from app.models import InterfaceTest,TestcaseResult
 from common.mysqldatabasecur import *
 from  app import db
 class ApiTestCase():
-    def __init__(self,inteface_url,inteface_meth,inteface_parm,inteface_assert,file,headers,pid,yilaidata,saveresult,id_list,
-                 is_database,data_mysql,data_ziduan,urltest):
+    def __init__(self,inteface_url,inteface_meth,inteface_parm,inteface_assert,file,headers,pid,
+                 yilaidata,saveresult,id_list,is_database,data_mysql,data_ziduan,urltest):
         self.result_pass=0
         self.result_fail=0
         self.result_toal=0
@@ -64,7 +64,6 @@ class ApiTestCase():
                             self.bask_list.append('获取依赖的字段异常，%s'%e)
                             self.result_pf.append('Exception')
                             continue
-
                     else:
                         self.log_can.info_log('用例：%s接口依赖结果没有保存!'%self.id[case] )
                         self.result_toal += 1
@@ -72,10 +71,10 @@ class ApiTestCase():
                         self.bask_list.append('依赖的测试结果没有保存')
                         self.result_pf.append(u'Exception')
                 except Exception as e :
-                    self.log_can.info_log('用例：%s 依赖接口找不到!' % self.id[case])
+                    self.log_can.info_log('用例：%s 测试出错了' %e)
                     self.result_toal += 1
                     self.result_wei += 1
-                    self.bask_list.append('依赖的测试用例找不到')
+                    self.bask_list.append('测试出错了，原因：%s'%e)
                     self.result_pf.append(u'error')
                     continue
             if self.is_database[case] is True:
@@ -121,7 +120,7 @@ class ApiTestCase():
             else:
                 try:
                     api = Api(url=self.url[case], fangshi=self.meth[case], params=yuanlai,
-                                  headers=self.headers[case])
+                              headers=self.headers[case])
                     apijson = api.getJson()
                     if self.saveresult[case] is True:
                         new_case = TestcaseResult(result=str(apijson), case_id=testcase.id)
@@ -132,7 +131,7 @@ class ApiTestCase():
                             db.session.rollback()
                             self.log_can.info_log('用例：%s保存测试结果失败!原因：%s' % (self.id[case],e))
                     self.log_can.info_log(u'测试的:接口地址：%s,请求头：%s,参数:%s,实际返回:%s,预期:%s' % (
-                    self.url[case], self.headers[case], self.parm[case], apijson, self.assert_test[case]))
+                        self.url[case], self.headers[case], self.parm[case], apijson, self.assert_test[case]))
                     come = assert_in(self.assert_test[case], apijson)
                     return_mysql = pare_result_mysql(mysqlresult=mysql_result, return_result=come,
                                                      paseziduan=self.data_ziduan[case])

@@ -3,13 +3,14 @@
 @file: views.py 
 @time: 2018/1/31 13:31 
 """
-from  flask import  redirect,request,render_template,session,url_for,flash,Blueprint,jsonify
+from  flask import  redirect,request,render_template,session,url_for,flash,Blueprint,jsonify,make_response,send_from_directory
 from  app.models import *
 from app.form import  *
 from common.pares_excel_inter import pasre_inter
 from flask.views import MethodView,View
 from flask_login import login_required,current_user
-import json
+import json,os
+from  config import  Config_daoru_xianzhi
 interfac = Blueprint('interface', __name__)
 def get_pro_mo():
     projects=Project.query.all()
@@ -42,10 +43,10 @@ class InterfaceaddView(MethodView):
                                     Interface_user_id=current_user.id,Interface_headers=data['interface_headers'],interfacetype=data['interface_type'])
             db.session.add(new_interface)
             db.session.commit()
-            return jsonify({'msg': '成功', 'code': 200})
+            return jsonify({'msg': '成功', 'code': 200,'data':''})
         except Exception as e:
             db.session.rollback()
-            return jsonify({'msg': '添加接口失败，原因:%s'%e, 'code': 30})
+            return jsonify({'msg': '添加接口失败，原因:%s'%e, 'code': 30,'data':''})
 class EditInterfaceView(MethodView):
     @login_required
     def get(self,id):
@@ -134,18 +135,37 @@ class DaoruinterView(View):
             if file and '.' in file.filename and file.filename.split('.')[1]=='xlsx':
                 filename='jiekou.xlsx'
                 file.save(filename)
-                jiekou_bianhao,project_nam,model_nam,interface_name,interface_url, interface_header,interface_meth, interface_par, interface_bas = pasre_inter(filename)
+                jiekou_bianhao,project_nam,model_nam,interface_name,interface_url, interface_header,\
+                interface_meth, interface_par, interface_bas,interface_type = pasre_inter(filename)
+                if len(interface_meth) >Config_daoru_xianzhi:
+                    flash(u'系统目前支持的导入有限制，请分开导入')
+                    return redirect(url_for('interface.daoru_inter'))
                 try:
                     for i in range(len(jiekou_bianhao)):
-                        projects_id = Project.query.filter_by(project_name=project_nam[i]).first().id
-                        model_id = Model.query.filter_by(model_name=model_nam[i]).first().id
-                        new_interface=Interface(projects_id=projects_id,model_id=model_id,Interface_name=str(interface_name[i]),Interface_url=str(interface_url[i]),Interface_headers=str(interface_header[i]),Interface_meth=str(interface_meth[i]),Interface_par=(interface_par[i]),Interface_back=str(interface_bas[i]),Interface_user_id=User.query.filter_by(username=session.get('username')).first().id)
+                        projects_id = Project.query.filter_by(project_name=project_nam[i]).first()
+                        if projects_id is None:
+                            flash('找不到项目，请确定导入的项目是否存在')
+                            return redirect(url_for('interface.daoru_inter'))
+                        model_id = Model.query.filter_by(model_name=model_nam[i]).first()
+                        if model_id is None:
+                            flash('找不到模块不存在！，请确定导入的项目是否存在')
+                            return redirect(url_for('interface.daoru_inter'))
+                        new_interface=Interface(projects_id=projects_id.id,model_id=model_id.id,
+                                                Interface_name=str(interface_name[i]),
+                                                Interface_url=str(interface_url[i]),
+                                                Interface_headers=str(interface_header[i]),
+                                                Interface_meth=str(interface_meth[i]),
+                                                Interface_par=(interface_par[i]),
+                                                Interface_back=str(interface_bas[i]),
+                                                Interface_user_id=User.query.filter_by(username=session.get('username')).first().id,
+                                                interfacetype=interface_type[i])
                         db.session.add(new_interface)
-                    db.session.commit()
+                        db.session.commit()
                     flash(u'导入成功')
                     return redirect(url_for('home.interface'))
-                except:
-                    flash(u'导入失败，请检查格式是否正确')
+                except Exception as e:
+                    print(e)
+                    flash(u'导入失败，请检查')
                     return render_template('daoru.html')
             flash(u'导入失败')
             return render_template('daoru.html')
@@ -164,10 +184,10 @@ class SerinterView(MethodView):
         else:
             typeinterface='none'
         if not project:
-            return jsonify({'msg': '没有发送数据', 'code': 31})
+            return jsonify({'msg': '没有发送数据', 'code': 31,'data':''})
         project_is = Project.query.filter_by(project_name=str(projec)).first()
         if project_is.status is True:
-            return jsonify({'msg': '项目已经删除', 'code': 32})
+            return jsonify({'msg': '项目已经删除', 'code': 32,'data':''})
         interfaclist = Interface.query.filter_by(projects_id=project_is.id, status=False,interfacetype=interfatype).all()
         interfaclists=[]
         for interface in interfaclist:
@@ -176,3 +196,13 @@ class SerinterView(MethodView):
                                   'Interface_headers':interface.Interface_headers,'Interface_par':interface.Interface_par,'Interface_back':interface.Interface_back,
                                   'Interface_name':interface.Interface_name})
         return  jsonify(({'msg': '成功', 'code':200,'data':interfaclists,'typeinter':typeinterface}))
+class DaochuInterfa(MethodView):
+    @login_required
+    def post(self):
+        project=request.form.get('interface_type')
+        project_case=Project.query.filter_by(project_name=str(project),status=False).first()
+        if project_case is None:
+            flash('你选择导出接口的项目不存在')
+            return redirect(url_for('home.interface'))
+        caselist=Interface.query.filter_by(projects_id=project_case.id,status=False).all()
+        return

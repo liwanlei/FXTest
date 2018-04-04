@@ -32,10 +32,11 @@
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>邮箱安全:</strong>
-                    {{ form.password }}</div>{% if form.password.errors %}
-                {% for e in form.password.errors %}
-                    <span class="help-block" style='color:red'>{{ e }}</span>
-                {% endfor %}
+                    {{ form.password }}</div>
+                {% if form.password.errors %}
+                    {% for e in form.password.errors %}
+                        <span class="help-block" style='color:red'>{{ e }}</span>
+                    {% endfor %}
                 {% endif %}
                 <div class="form-group">
                     <strong>

@@ -32,7 +32,9 @@
                             <input type='radio' value="{{project.project_name}}" name="project" class="projects"  checked='checked' >{{ project.project_name }}
                         {% else %}
                             <input type='radio' value="{{project.project_name}}" name="project" class="projects" >{{ project.project_name }}
-                        {% endif %}{% endfor %}</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>模块名字:</strong>
@@ -112,7 +114,9 @@
                     </div>
                 </div>
                 <button type="submit" class="am-btn am-btn-primary">修改</button>
-            </form></div></div>
+            </form>
+        </div>
+    </div>
 {%endblock%}
 {% block js %}
     <script language="JavaScript">

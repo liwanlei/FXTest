@@ -26,6 +26,11 @@
                     </ul>
                 {% endif %}
             {% endwith %}
+            <p> 没有模板？点击链接下载接口用例模板：
+                <strong>
+                <a href="{{url_for('down_case')}}">测试用例模板</a>
+                </strong>
+            </p>
             <form method="POST" action="{{url_for('case.daoru_case')}}"  enctype=multipart/form-data>
                 <span>&nbsp;</span>
                 <input type="file" name="myfile">

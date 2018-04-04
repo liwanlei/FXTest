@@ -20,7 +20,8 @@
             <form   style="width: 40%;margin-left: 30%;">
                 <div class="form-group">
                     <p style="margin-top: 20px"><strong >任务名称:</strong>
-                        <input type="text" id="taskname"  placeholder="请输入任务名！"></p>
+                        <input type="text" id="taskname"  placeholder="请输入任务名！">
+                    </p>
                     <p style="margin-top: 20px"><strong >所属项目:</strong>
                         <select id="project" onclick="cheangeevnt()">
                             {% for pro in projects %}
@@ -30,18 +31,29 @@
                             {% endfor %}
                         </select>
                     </p>
-                    <p style="margin-top: 20px"><strong >所属项目测试环境:</strong>
+                    <p style="margin-top: 20px">
+                        <strong >所属项目测试环境:</strong>
                         <select id="urlproee" name="testevent">
                         </select>
                     </p>
-                    <p style="margin-top: 20px"><strong>测试时间:</strong>
-                        <input type="text" id="time"  placeholder="请输入con表达式！格式如： {'type': 'cron',  'day_of_week':‘mon-fri’, 'hour':'13',  'minute':'14'}"></p>
-                    <p style="margin-top: 20px"><strong>邮件主送:</strong>
-                        <textarea type="text" id="to_email"  placeholder="测试报告发送谁给，逗号分隔多个！" style="width: 200px;height: 100px;"></textarea></p>
-                    <p style="margin-top: 20px"> <strong>邮件抄送:</strong>
-                        <textarea type="text" id="cao_email"  placeholder="测试报告抄送的人，用逗号分隔！" style="width: 200px;height: 100px;"></textarea></p>
-                    <p style="margin-top: 20px"> <strong>支持人邮件:</strong>
-                        <input type="text" id="weihu"  placeholder="维护改测试计划的人！"></p>
+                    <p style="margin-top: 20px">
+                        <strong>测试时间:</strong>
+                        <input type="text" id="time"  placeholder="请输入con表达式！格式如： {'type': 'cron',  'day_of_week':‘mon-fri’, 'hour':'13',  'minute':'14'}">
+                    </p>
+                    <p style="margin-top: 20px">
+                        <strong>邮件主送:</strong>
+                        <textarea type="text" id="to_email"  placeholder="测试报告发送谁给，逗号分隔多个！" style="width: 200px;height: 100px;">
+                        </textarea>
+                    </p>
+                    <p style="margin-top: 20px">
+                        <strong>邮件抄送:</strong>
+                        <textarea type="text" id="cao_email"  placeholder="测试报告抄送的人，用逗号分隔！" style="width: 200px;height: 100px;">
+                        </textarea>
+                    </p>
+                    <p style="margin-top: 20px">
+                        <strong>支持人邮件:</strong>
+                        <input type="text" id="weihu"  placeholder="维护改测试计划的人！">
+                    </p>
                 </div>
                 <button type="button" class="am-btn am-btn-primary " onclick="addtimingtasks()">添加</button>
             </form>
