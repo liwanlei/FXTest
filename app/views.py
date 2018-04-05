@@ -44,15 +44,15 @@ class AddmodelView(MethodView):#添加模块
         modelnew=model.decode('utf-8')
         models = Model.query.filter_by(model_name=modelnew).first()
         if models:
-            return jsonify({'code': 1,'msg':'模块不能重复存在','data':''})
+            return jsonify({'code': 1,'msg':u'模块不能重复存在','data':''})
         new_moel = Model(model_name=modelnew, model_user_id=current_user.id)
         db.session.add(new_moel)
         try:
             db.session.commit()
-            return  jsonify({'code':200,'msg':'添加成功','data':''})
+            return  jsonify({'code':200,'msg':u'添加成功','data':''})
         except Exception as e:
             db.session.rollback()
-            return jsonify({'code': 2,'msg':'添加失败，原因：%s'%e,'data':''})
+            return jsonify({'code': 2,'msg':u'添加失败，原因：%s'%e,'data':''})
 class AddproView(MethodView):#添加项目
     def  get(self):
         return  render_template('add/add_pro.html')

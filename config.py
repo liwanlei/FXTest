@@ -17,7 +17,7 @@ class beijing:
 	SQLALCHEMY_TRACK_MODIFICATIONS=False
 	CSRF_ENABLED = True
 	UPLOAD_FOLDER='/upload'
-	DEBUG = True
+#	DEBUG = Flase
 	@staticmethod
 	def init_app(app):
 		pass

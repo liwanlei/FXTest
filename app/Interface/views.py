@@ -44,16 +44,16 @@ class InterfaceaddView(MethodView):
                                     Interface_user_id=current_user.id,Interface_headers=data['interface_headers'],interfacetype=data['interface_type'])
             db.session.add(new_interface)
             db.session.commit()
-            return jsonify({'msg': '成功', 'code': 200,'data':''})
+            return jsonify({'msg': u'成功', 'code': 200,'data':''})
         except Exception as e:
             db.session.rollback()
-            return jsonify({'msg': '添加接口失败，原因:%s'%e, 'code': 30,'data':''})
+            return jsonify({'msg': u'添加接口失败，原因:%s'%e, 'code': 30,'data':''})
 class EditInterfaceView(MethodView):
     @login_required
     def get(self,id):
         interface=Interface.query.filter_by(id=id,status=False).first()
         if interface is None:
-            flash('要编辑的测试用例不存在')
+            flash(u'要编辑的测试用例不存在')
             return  redirect(url_for('home.interface'))
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
@@ -71,7 +71,7 @@ class EditInterfaceView(MethodView):
     def post(self,id):
         interface=Interface.query.filter_by(id=id,status=False).first()
         if interface is None:
-            flash('要编辑的测试用例不存在')
+            flash(u'要编辑的测试用例不存在')
             return  redirect(url_for('home.interface'))
         project, models = get_pro_mo()
         if current_user.is_sper == True:
@@ -109,7 +109,7 @@ class EditInterfaceView(MethodView):
         interface.Interface_user_id=current_user.id
         interface.interfacetype=interfa_tey
         try:
-            flash('编辑成功')
+            flash(u'编辑成功')
             db.session.commit()
             return redirect(url_for('home.interface'))
         except:
@@ -150,11 +150,11 @@ class DaoruinterView(View):
                     for i in range(len(jiekou_bianhao)):
                         projects_id = Project.query.filter_by(project_name=project_nam[i]).first()
                         if projects_id is None:
-                            flash('找不到项目，请确定导入的项目是否存在')
+                            flash(u'找不到项目，请确定导入的项目是否存在')
                             return redirect(url_for('interface.daoru_inter'))
                         model_id = Model.query.filter_by(model_name=model_nam[i]).first()
                         if model_id is None:
-                            flash('找不到模块不存在！，请确定导入的项目是否存在')
+                            flash(u'找不到模块不存在！，请确定导入的项目是否存在')
                             return redirect(url_for('interface.daoru_inter'))
                         new_interface=Interface(projects_id=projects_id.id,model_id=model_id.id,
                                                 Interface_name=str(interface_name[i]),
@@ -189,10 +189,10 @@ class SerinterView(MethodView):
         else:
             typeinterface='none'
         if not project:
-            return jsonify({'msg': '没有发送数据', 'code': 31,'data':''})
+            return jsonify({'msg': u'没有发送数据', 'code': 31,'data':''})
         project_is = Project.query.filter_by(project_name=str(projec)).first()
         if project_is.status is True:
-            return jsonify({'msg': '项目已经删除', 'code': 32,'data':''})
+            return jsonify({'msg': u'项目已经删除', 'code': 32,'data':''})
         interfaclist = Interface.query.filter_by(projects_id=project_is.id, status=False,interfacetype=interfatype).all()
         interfaclists=[]
         for interface in interfaclist:
@@ -200,25 +200,25 @@ class SerinterView(MethodView):
                                   'id':interface.id,'Interface_url':interface.Interface_url,'Interface_meth':interface.Interface_meth,
                                   'Interface_headers':interface.Interface_headers,'Interface_par':interface.Interface_par,'Interface_back':interface.Interface_back,
                                   'Interface_name':interface.Interface_name})
-        return  jsonify(({'msg': '成功', 'code':200,'data':interfaclists,'typeinter':typeinterface}))
+        return  jsonify(({'msg': u'成功', 'code':200,'data':interfaclists,'typeinter':typeinterface}))
 class DaochuInterfa(MethodView):
     @login_required
     def post(self):
         project=request.form.get('interface_type')
         project_case=Project.query.filter_by(project_name=str(project),status=False).first()
         if project_case is None:
-            flash('你选择导出接口的项目不存在')
+            flash(u'你选择导出接口的项目不存在')
             return redirect(url_for('home.interface'))
         interface_list=Interface.query.filter_by(projects_id=project_case.id,status=False).all()
         pad=os.getcwd()
         day = time.strftime("%Y%m", time.localtime(time.time()))
-        file_dir = pad + '\\app\\upload'
+        file_dir = pad + '/app/upload'
         file = os.path.join(file_dir, (day + '.xls'))
         if os.path.exists(file) is False:
             os.system('touch %s' % file)
         result=create_interface(filename=file,interfacelist=interface_list)
         if result['code']==1:
-            flash('导出失败！原因：%s'%result['error'])
+            flash(u'导出失败！原因：%s'%result['error'])
             return redirect(url_for('home.interface'))
         response = make_response(send_from_directory(file_dir,filename=day+'.xls', as_attachment=True))
         return response

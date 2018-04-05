@@ -372,7 +372,7 @@ class DuoyongliView(View):
         star=time.time()
         day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
         pad=os.getcwd()
-        file_dir = pad+'\\app\\upload'
+        file_dir = pad+'/app/upload'
         file = os.path.join(file_dir, (day + '.log'))
         if os.path.exists(file) is False:
             os.system('touch %s' % file)
@@ -481,7 +481,7 @@ class DuoyongliView(View):
         return redirect(url_for('home.yongli'))
 class MakeonlyoneCase(MethodView):
     @login_required
-    def get(self):
+    def post(self):
         projec = request.get_json()
         case_id = projec['caseid']
         url = projec['url']
@@ -696,7 +696,7 @@ class DaochuCase(MethodView):
         interface_list = InterfaceTest.query.filter_by(projects_id=project_case.id, status=False).all()
         pad = os.getcwd()
         day = time.strftime("%Y%m%d", time.localtime(time.time()))
-        file_dir = pad + '\\app\\upload'
+        file_dir = pad + '/app/upload'
         file = os.path.join(file_dir,(day + '.xls'))
         if os.path.exists(file) is False:
             os.system('touch %s' % file)

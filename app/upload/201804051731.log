@@ -1,0 +1,5 @@
+2018-04-05 17:31:08,251 - 测试日志 - INFO - 32：测试用例开始执行
+2018-04-05 17:31:08,254 - 测试日志 - INFO - 用例：'NoneType' object has no attribute 'result' 测试出错了
+2018-04-05 17:31:08,254 - 测试日志 - INFO - 38：测试用例开始执行
+2018-04-05 17:31:08,274 - 测试日志 - INFO - 56：测试用例开始执行
+2018-04-05 17:31:08,279 - 测试日志 - INFO - 测试的:接口地址：http://www.tuling123.com/openapi/api,请求头：{'Accept-Encoding':'gzip, deflate, br'},参数:56,实际返回:{'post请求出错': "错误原因:'str' object has no attribute 'items'"},预期:code=40007

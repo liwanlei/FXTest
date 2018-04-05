@@ -21,7 +21,7 @@ def addtask(id):#定时任务执行的时候所用的函数
     star = time.time()
     day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
     pad = os.getcwd()
-    file_dir = pad + '\\app\\upload'
+    file_dir = pad + '/app/upload'
     file = os.path.join(file_dir, (day + '.log'))
     if os.path.exists(file) is False:
         os.system('touch %s' % file)
