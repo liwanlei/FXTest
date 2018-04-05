@@ -39,6 +39,7 @@
                         <input type="button" name="" class="am-btn am-btn-default am-btn-success" value="批量导入">
                     </a>
                     <button class="am-btn am-btn-default am-btn-success">批量执行</button>
+                    <input type="button" value="导出接口用例" class="btn-default am-btn-default am-btn" onclick="dakai()">
                     <label>
                         <input name="dingding" type="radio" value="email">
                     </label>
@@ -66,18 +67,36 @@
         </div>
     </div>
     <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="ceshiyongli">
-    <div style="height: 5px;">请选择测试用例执行的测试环境</div>
-    <div style="background-color: whitesmoke;margin-top: 24px" >
-        <span style="text-align: center">
-            项目：<strong id="ceshiyongprco"></strong>
-        </span>
-        <span>所属测试环境：</span>
-        <select id="xuanzehuanjing">
-        </select>
+        <div style="height: 5px;">请选择测试用例执行的测试环境</div>
+        <div style="background-color: whitesmoke;margin-top: 24px" >
+            <span style="text-align: center">
+                项目：<strong id="ceshiyongprco"></strong>
+            </span>
+            <span>所属测试环境：</span>
+            <select id="xuanzehuanjing">
+            </select>
+        </div>
+        <div style="margin-top: 50%;margin-bottom: auto">
+            <input value="执行" type="button" class="btn-default" id="zhixingceshiyongli" onclick="ceshiyongli()" >
+            <input value="取消" type="button" class=" btn-default"  onclick="guanbi()" >
+        </div>
     </div>
-    <div style="margin-top: 50%;margin-bottom: auto">
-        <input value="执行" type="button" class="btn-default" id="zhixingceshiyongli" onclick="ceshiyongli()" >
-        <input value="取消" type="button" class=" btn-default"  onclick="guanbi()" >
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="daochucase">
+        <div style="height: 5px;">请选择导出测试用例的项目</div>
+        <form method="POST" action="{{url_for('case.daochucase')}}">
+            <div style="background-color: whitesmoke;margin-top: 24px" >
+                选择导出的项目:
+                <select name="interface_type"  >
+                    {% for project in projects %}
+                        <option name="project">{{ project.project_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="margin-top: 50%;margin-bottom: auto">
+                <input value="导出" type="submit" class="btn-default" >
+                <input value="取消" type="button" class=" btn-default" onclick="closeone()" >
+            </div>
+        </form>
     </div>
 {% endblock %}
 {% block js %}
@@ -208,6 +227,14 @@
                     window.location.reload();
                 }
             })
+        }
+        function closeone() {
+            var  divshow=document.getElementById('daochucase');
+            divshow.style.display='none';
+        }
+        function dakai() {
+            var  divshow=document.getElementById('daochucase');
+            divshow.style.display='block';
         }
     </script>
 {% endblock %}

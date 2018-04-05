@@ -53,6 +53,7 @@ class LoginView(MethodView):#登录
             return jsonify({'msg': '密码错误', 'code': 36, 'data': ''})
         return jsonify({'msg': '用户不存在', 'code': 37, 'data': ''})
 class LogtView(MethodView):#退出
+    @login_required
     def get(self):
         session.clear()
         logout_user()

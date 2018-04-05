@@ -46,4 +46,3 @@ def pare_result_mysql(mysqlresult,paseziduan,return_result):
         return ({'code': 2, 'result': 'pass'})
     else:
         return ({'code': 3, 'result': 'fail'})
-

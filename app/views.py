@@ -12,7 +12,7 @@ from flask.views import MethodView,View
 from flask_login import current_user,login_required
 from common.decorators import chckuserpermisson
 def get_pro_mo():
-    projects=Project.query.all()
+    projects=Project.query.filter_by(status=False).all()
     model=Model.query.filter_by(status=False).all()
     return  projects,model
 @app.route('/down_jiekou',methods=['GET'])
@@ -29,14 +29,14 @@ def down_case():
     file_dir=os.path.join(basedir,'upload')
     response=make_response(send_from_directory(file_dir,'interface_case.xlsx',as_attachment=True))
     return response
-class LoadView(View):
-    methods=['GET']
-    def dispatch_request(self,filename):
+class LoadView(MethodView):
+    @login_required
+    def get(self,filename):
         basedir = os.path.abspath(os.path.dirname(__file__))
         file_dir=os.path.join(basedir,'upload')
         response=make_response(send_from_directory(file_dir,filename,as_attachment=True))
         return response
-class AddmodelView(MethodView):
+class AddmodelView(MethodView):#添加模块
     def get(self):
         return render_template('add/add_moel.html')
     def post(self):
@@ -53,11 +53,11 @@ class AddmodelView(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({'code': 2,'msg':'添加失败，原因：%s'%e,'data':''})
-class AddproView(MethodView):
+class AddproView(MethodView):#添加项目
     def  get(self):
         return  render_template('add/add_pro.html')
     def post(self):
-        if current_user.is_sper is False:
+        if current_user.is_sper == False:
             return jsonify({'code': 3, 'msg': '权限不足！' , 'data': ''})
         model = request.get_data('projectname')
         modelnew = model.decode('utf-8')
@@ -70,14 +70,13 @@ class AddproView(MethodView):
         db.session.add(new_moel)
         try:
             db.session.commit()
-            return jsonify({'code': 6, 'msg': '添加成功！', 'data': ''})
+            return jsonify({'code': 200, 'msg': '添加成功！', 'data': ''})
         except Exception as e:
             db.session.rollback()
             return jsonify({'code': 7, 'msg': '添加失败，原因:%s！'%e, 'data': ''})
-class DelemodelView(View):
-    methods=['GET','POST']
+class DelemodelView(MethodView):#删除模块
     @login_required
-    def dispatch_request(self,id):
+    def get(self,id):
         next = request.headers.get('Referer')
         model=Model.query.filter_by(id=id,status=False).first()
         if not  model:
@@ -92,16 +91,15 @@ class DelemodelView(View):
             db.session.rollback()
             flash(u'模块：%s 删除失败，原因：%s'%(model.model_name,e))
             return  redirect(next or url_for('home.model'))
-class DeleproView(View):
-    methods=['GET','POST']
+class DeleproView(MethodView):#删除项目
     @login_required
-    def dispatch_request(self,id):
-        if  current_user.is_sper == False:
+    def get(self,id):
+        if  current_user.is_sper is False:
             flash('权限不足，不能删除项目')
             return redirect(request.headers.get('Referer'))
         proje=Project.query.filter_by(id=id,status=False).first()
         if not  proje:
-            flash('删除的项目不存在或者已经删除')
+            flash(u'删除的项目不存在或者已经删除')
             return  redirect(url_for('home.project'))
         proje.status=True
         try:
@@ -112,10 +110,13 @@ class DeleproView(View):
             db.session.rollback()
             flash(u'删除项目失败，原因是：%s'%e)
             return  redirect(url_for('home.project'))
-class EditmoelView(MethodView):
+class EditmoelView(MethodView):#编辑模块
     @login_required
     def get(self,id):
-        model=Model.query.filter_by(id=id).first()
+        model=Model.query.filter_by(id=id,status=False).first()
+        if model is None:
+            flash(u'你要编辑的模块不存在或者已经删除!')
+            return  redirect(url_for('home.model'))
         return render_template('edit/edit_model.html', mode=model)
     @login_required
     def post(self,id):
@@ -131,7 +132,7 @@ class EditmoelView(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({'msg': '编辑模块出现问题！原因：%s'%e, 'code': 308})
-class EditproView(MethodView):
+class EditproView(MethodView):#编辑项目
     @login_required
     def get(self,id):
         if current_user.is_sper is False:
@@ -153,7 +154,7 @@ class EditproView(MethodView):
         except Exception as e:
             db.session.rollback()
             return  jsonify({"code":302,'msg':'编辑出现问题！原因：%s'%e})
-class DeleteResultView(View):
+class DeleteResultView(View):#删除测试报告
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
@@ -218,9 +219,13 @@ class DeleteEventViews(MethodView):
         next = request.headers.get('Referer')
         event=Interfacehuan.query.filter_by(id=id).first()
         event.status=True
-        db.session.commit()
-        flash(u'删除成功')
-        return  redirect(next or url_for('home.ceshihuanjing'))
+        try:
+            db.session.commit()
+            flash(u'删除成功')
+            return  redirect(next or url_for('home.ceshihuanjing'))
+        except Exception as e:
+            flash('删除失败，原因：%s'%e)
+            return  redirect(next or url_for('home.ceshihuanjing'))
 class EditEventViews(MethodView):#编辑测试环境
     @login_required
     def get(self,id):
@@ -277,7 +282,7 @@ def gettest():#ajax获取项目的测试用例
     return   jsonify({'data':testyong_list})
 @app.route('/getprojects',methods=['GET','POST'])
 @login_required
-def getprojects():
+def getprojects():#获取项目
     id = request.get_data('id')
     if not id:
         return jsonify({'msg':'没有发送数据','code':108})
@@ -293,7 +298,7 @@ def getprojects():
     if not  peoject:
         return jsonify({'msg':'数据库找不到项目','code':109,'data':''})
     return  jsonify({'data':str(result),'huanjing':url_list,'code':200,'msg':u'请求成功'})
-class Getyongli(MethodView):
+class Getyongli(MethodView):#获取用例
     @login_required
     def post(self):
         id = request.get_data('id')

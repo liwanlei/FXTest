@@ -3,7 +3,7 @@
 @file: view.py 
 @time: 2018/1/31 13:20 
 """
-from  flask import  redirect,request,render_template,session,url_for,flash,jsonify,Blueprint
+from  flask import  redirect,request,render_template,session,url_for,flash,jsonify,Blueprint,make_response,send_from_directory
 from  app.models import *
 from app.form import  *
 import os,time,datetime,json
@@ -19,9 +19,10 @@ from common.Dingtalk import send_ding
 from common.mysqldatabasecur import *
 from common.dubbo_feng import DubboInterface
 from config import  Config_daoru_xianzhi
+from common.excet_excel import create_interface_case
 case = Blueprint('case', __name__)
 def get_pro_mo():
-    projects=Project.query.all()
+    projects=Project.query.filter_by(status=False).all()
     model=Model.query.filter_by(status=False).all()
     return  projects,model
 class AddtestcaseView(View):
@@ -475,13 +476,12 @@ class DuoyongliView(View):
                 flash(u'测试已经完成，测试报告已经生成')
                 return redirect(url_for('home.test_rep'))
             except Exception as e:
-                flash(u'测试失败，请检查您的测试用例单个执行是否出错')
+                flash(u'测试失败，出错原因:%s'%e)
                 return redirect(next or url_for('home.yongli'))
         return redirect(url_for('home.yongli'))
-class MakeonlyoneCase(View):
-    methods = ['GET', 'POST']
+class MakeonlyoneCase(MethodView):
     @login_required
-    def dispatch_request(self):
+    def get(self):
         projec = request.get_json()
         case_id = projec['caseid']
         url = projec['url']
@@ -652,8 +652,32 @@ class MakeonlyoneCase(View):
                     db.session.add(new_testre)
                     db.session.commit()
                 if dubboapireslu['code'] == 0:
-                    pass
-                    # assert_re = assert_in(asserqiwang=case.Interface_assert,fanhuijson=dubboapireslu)
+                    assert_re = assert_in(asserqiwang=case.Interface_assert,fanhuijson=json.loads(dubboapireslu))
+                    if assert_re=='pass':
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = False
+                        db.session.commit()
+                        return jsonify({'code': 200, 'msg': '测试用例调试通过！'})
+                    elif assert_re=='fail':
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
+                    else:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
+                elif dubboapireslu['code']==1:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 63, 'msg': '接口测试出错了！原因:%s' %dubboapireslu['result']})
+                else:
+                    case.Interface_is_tiaoshi = True
+                    case.Interface_tiaoshi_shifou = True
+                    db.session.commit()
+                    return jsonify({'code': 630, 'msg': 'dubbo接口测试返回异常，请检查dubbo测试接口'})
             else:
                 return jsonify({'code': 62, 'msg': '目前还不支持你所选择的类型的协议！'})
         except Exception as e:
@@ -661,3 +685,24 @@ class MakeonlyoneCase(View):
             case.Interface_tiaoshi_shifou = True
             db.session.commit()
             return  jsonify({'code':63,'msg':'接口测试出错了！原因:%s'%e})
+class DaochuCase(MethodView):
+    @login_required
+    def post(self):
+        project = request.form.get('interface_type')
+        project_case = Project.query.filter_by(project_name=str(project), status=False).first()
+        if project_case is None:
+            flash('你选择导出接口的项目不存在')
+            return redirect(url_for('home.interface'))
+        interface_list = InterfaceTest.query.filter_by(projects_id=project_case.id, status=False).all()
+        pad = os.getcwd()
+        day = time.strftime("%Y%m%d", time.localtime(time.time()))
+        file_dir = pad + '\\app\\upload'
+        file = os.path.join(file_dir,(day + '.xls'))
+        if os.path.exists(file) is False:
+            os.system('touch %s' % file)
+        result = create_interface_case(filename=file,caselist=interface_list)
+        if result['code'] == 1:
+            flash('导出接口失败！原因：%s' % result['error'])
+            return redirect(url_for('home.yongli'))
+        response = make_response(send_from_directory(file_dir, filename=day + '.xls', as_attachment=True))
+        return response

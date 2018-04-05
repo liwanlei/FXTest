@@ -60,6 +60,8 @@ class User(db.Model):
     phone = db.relationship('TestResult', backref='users', lazy='dynamic')
     project=db.relationship('Project',backref='users', lazy='dynamic')
     model = db.relationship('Model', backref='users', lazy='dynamic')
+    Interface = db.relationship('Interface', backref='users', lazy='dynamic')
+    intfacecase = db.relationship('InterfaceTest', backref='users', lazy='dynamic')
     email=db.relationship('EmailReport', backref='users', lazy='dynamic')
     huanjing = db.relationship('Interfacehuan', backref='users', lazy='dynamic')
     mock = db.relationship('Mockserver', backref='users', lazy='dynamic')

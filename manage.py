@@ -13,11 +13,11 @@ from app.mock import mock
 from app.task import task
 from app.users import user
 from app.case import case
+from app.Interface import interfac
 from gevent.pywsgi import WSGIServer
 import logging
 from gevent import  monkey
 monkey.patch_all()
-from app.Interface import interfac
 app.register_blueprint(home)
 app.register_blueprint(mock)
 app.register_blueprint(task)

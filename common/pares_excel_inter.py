@@ -2,10 +2,10 @@
 # @Date    : 2017-07-18 13:26:17
 # @Author  : lileilei
 '''
-这里为导入测试用例的地方
+导入测试接口等封装
 '''
 import xlrd
-def pasre_inter(filename):
+def pasre_inter(filename):#导入接口
 	file=xlrd.open_workbook(filename)
 	me=file.sheets()[0]
 	nrows=me.nrows
@@ -34,6 +34,7 @@ def pasre_inter(filename):
 		i+=1
 	return jiekou_bianhao,interface_name,project_name,model_name,interface_url,\
 		   interface_header,interface_meth,interface_par,interface_bas,interface_type
+#导入测试用例
 def paser_interface_case(filename):
 	file=xlrd.open_workbook(filename)
 	me=file.sheets()[0]

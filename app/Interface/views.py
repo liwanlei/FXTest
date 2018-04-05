@@ -9,11 +9,12 @@ from app.form import  *
 from common.pares_excel_inter import pasre_inter
 from flask.views import MethodView,View
 from flask_login import login_required,current_user
-import json,os
+import json,os,time
 from  config import  Config_daoru_xianzhi
+from  common.excet_excel import create_interface
 interfac = Blueprint('interface', __name__)
 def get_pro_mo():
-    projects=Project.query.all()
+    projects=Project.query.filter_by(status=False).all()
     model=Model.query.filter_by(status=False).all()
     return  projects,model
 class InterfaceaddView(MethodView):
@@ -50,7 +51,10 @@ class InterfaceaddView(MethodView):
 class EditInterfaceView(MethodView):
     @login_required
     def get(self,id):
-        interface=Interface.query.filter_by(id=id).first()
+        interface=Interface.query.filter_by(id=id,status=False).first()
+        if interface is None:
+            flash('要编辑的测试用例不存在')
+            return  redirect(url_for('home.interface'))
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
         else:
@@ -62,11 +66,13 @@ class EditInterfaceView(MethodView):
                         projects.append(i.projects)
                         id.append(i.projects)
         project, models = get_pro_mo()
-
         return render_template('edit/edit_inter.html', interfac=interface, projects=projects, models=models)
     @login_required
     def post(self,id):
-        interface=Interface.query.filter_by(id=id).first()
+        interface=Interface.query.filter_by(id=id,status=False).first()
+        if interface is None:
+            flash('要编辑的测试用例不存在')
+            return  redirect(url_for('home.interface'))
         project, models = get_pro_mo()
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
@@ -113,7 +119,7 @@ class EditInterfaceView(MethodView):
 class DeleinterView(MethodView):
     @login_required
     def get(self,id):
-        interface=Interface.query.filter_by(id=id).first()
+        interface=Interface.query.filter_by(id=id,status=False).first()
         if not  interface:
             flash(u'删除失败，没有获到你要删除的接口，请重新选择要删除的接口重试')
             return redirect(url_for('home.interface'))
@@ -164,7 +170,6 @@ class DaoruinterView(View):
                     flash(u'导入成功')
                     return redirect(url_for('home.interface'))
                 except Exception as e:
-                    print(e)
                     flash(u'导入失败，请检查')
                     return render_template('daoru.html')
             flash(u'导入失败')
@@ -204,5 +209,16 @@ class DaochuInterfa(MethodView):
         if project_case is None:
             flash('你选择导出接口的项目不存在')
             return redirect(url_for('home.interface'))
-        caselist=Interface.query.filter_by(projects_id=project_case.id,status=False).all()
-        return
+        interface_list=Interface.query.filter_by(projects_id=project_case.id,status=False).all()
+        pad=os.getcwd()
+        day = time.strftime("%Y%m", time.localtime(time.time()))
+        file_dir = pad + '\\app\\upload'
+        file = os.path.join(file_dir, (day + '.xls'))
+        if os.path.exists(file) is False:
+            os.system('touch %s' % file)
+        result=create_interface(filename=file,interfacelist=interface_list)
+        if result['code']==1:
+            flash('导出失败！原因：%s'%result['error'])
+            return redirect(url_for('home.interface'))
+        response = make_response(send_from_directory(file_dir,filename=day+'.xls', as_attachment=True))
+        return response

@@ -14,11 +14,11 @@ from config import OneAdminCount
 class AdduserView(MethodView):#添加用户
     @login_required
     def get(self):
-        if chckuserpermisson() is False:
+        if chckuserpermisson() == False:
             flash('权限不足，不能为项目添加用户')
             return  redirect(request.headers.get('Referer'))
         wrok=Work.query.all()
-        projects=Project.query.all()
+        projects=Project.query.filter_by(status=False).all()
         return render_template('add/add_user.html', wroks=wrok, projects=projects)
     @login_required
     def post(self):
@@ -117,16 +117,16 @@ class FreadView(View):#冻结
             flash('权限不足，不能冻结')
             return redirect(request.headers.get('Referer'))
         new_ad=User.query.filter_by(id=id).first()
-        if new_ad.status==1:
-            flash(u'已经冻结')
+        if new_ad.status==True:
+            flash(u'已经冻结,无需再次冻结')
             return redirect( url_for('home.adminuser'))
         if new_ad==user:
             flash(u'自己不能冻结自己')
             return redirect( url_for('home.adminuser'))
-        new_ad.status=1
+        new_ad.status=True
         try:
             db.session.commit()
-            flash(u'已经冻结')
+            flash(u'已经冻结成功')
             return redirect( url_for('home.adminuser'))
         except Exception as  e:
             db.session.rollback()
@@ -141,15 +141,15 @@ class FrereView(View):#解冻
             return  redirect(request.headers.get('Referer'))
         user=User.query.filter_by(username=session.get('username')).first()
         new_ad=User.query.filter_by(id=id).first()
-        if new_ad.status==0:
-            flash(u'已经解冻')
+        if new_ad.status==False:
+            flash(u'用户没有处于冻结状态')
             return redirect(url_for('home.adminuser'))
-        if new_ad==user:
+        if new_ad!=user:
             if new_ad.is_sper==1:
-                new_ad.status = 0
+                new_ad.status =False
                 try:
                     db.session.commit()
-                    flash(u'已经解冻')
+                    flash(u'解冻成功')
                     return redirect(url_for('home.adminuser'))
                 except Exception as e:
                     db.session.rollback()
@@ -157,9 +157,9 @@ class FrereView(View):#解冻
                     return  redirect(url_for('home.adminuser'))
             flash(u'自己不能解冻自己')
             return redirect(url_for('home.adminuser'))
-        new_ad.status=0
+        new_ad.status=False
         db.session.commit()
-        flash(u'已经解冻')
+        flash(u'解冻成功！')
         return redirect(url_for('home.adminuser'))
 class RedpassView(View):#重置密码
     methods=['GET']
@@ -183,31 +183,29 @@ class RedpassView(View):#重置密码
                     return  redirect(url_for('home.adminuser'))
             flash(u'不是管理员不能重置')
             return redirect(url_for('home.adminuser'))
+        flash(u'自己不能重置自己的密码')
         return redirect(url_for('home.adminuser'))
-class SeruserView(View):#查询用户
-    methods=['GET','POST']
+class SeruserView(MethodView):#查询用户
     @login_required
-    def dispatch_request(self):
-        if request.method=='POST':
-            user=request.form.get('user')
-            if user=='':
-                flash(u'请输入您要查询的用户')
+    def get(self):
+        
+        user=request.form.get('user')
+        if user=='':
+            flash(u'请输入您要查询的用户')
+            return redirect(url_for('home.adminuser'))
+        try:
+            use=User.query.filter(User.username.like('%'+user+'%')).order_by('-id').all()
+            if len(use)<=0:
+                flash(u'没有找到您输入的用户')
                 return redirect(url_for('home.adminuser'))
-            try:
-                use=User.query.filter(User.username.like('%'+user+'%')).order_by('-id').all()
-                if len(use)<=0:
-                    flash(u'没有找到您输入的用户')
-                    return redirect(url_for('home.adminuser'))
-                return render_template('home/user_ser.html', users=use)
-            except:
-                flash(u'查找用户出现异常！请重新查找')
-                return redirect(url_for('home.adminuser'))
-        return redirect(url_for('home.adminuser'))
+            return render_template('home/user_ser.html', users=use)
+        except:
+            flash(u'查找用户出现异常！请重新查找')
+            return redirect(url_for('home.adminuser'))
 class Set_emaiView(MethodView):#设置发送测试报告的邮件的
     @login_required
     def get(self):
-        user=User.query.filter_by(username=session.get('username')).first().id
-        email_report=EmailReport.query.filter_by(email_re_user_id=user).all()
+        email_report=EmailReport.query.filter_by(email_re_user_id=current_user.id,status=False).all()
         if len(email_report)<=0:
             return render_template('home/set_send.html', errmessage=u'您还没有设置发送测试报告邮件')
         return render_template('home/set_send.html', email_reports=email_report)
@@ -257,7 +255,7 @@ class DeleteView(View):#删除邮件
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
-        email_re=EmailReport.query.filter_by(id=id).first()
+        email_re=EmailReport.query.filter_by(id=id,status=False).first()
         user_id=current_user.id
         if email_re.email_re_user_id==int(user_id):
             email_re.status=True
@@ -313,11 +311,10 @@ class EditemailView(MethodView):#编辑邮件
             db.session.rollback()
             flash(u'编辑过程中出现了小抑菌')
             return redirect(url_for('user.setting'))
-class QuzhiMoView(View):#取消默认
-    methods=['GET','POST']
+class QuzhiMoView(MethodView):#取消默认
     @login_required
-    def dispatch_request(self,id):
-        del_em=EmailReport.query.filter_by(id=id).first()
+    def get(self,id):
+        del_em=EmailReport.query.filter_by(id=id,status=False).first()
         if del_em:
             if int(current_user.id)==del_em.email_re_user_id:
                 del_e=EmailReport.query.filter_by(email_re_user_id=int(current_user.id),default_set=True,status=True).all()
@@ -334,10 +331,9 @@ class QuzhiMoView(View):#取消默认
             return redirect(url_for('user.setting'))
         flash(u'你要取消的默认不存在')
         return redirect(url_for('user.setting'))
-class ShezhiMoView(View):#设置默认
-    methods=['GET']
+class ShezhiMoView(MethodView):#设置默认
     @login_required
-    def dispatch_request(self,id):
+    def get(self,id):
         shezi_em=EmailReport.query.filter_by(id=id).first()
         if shezi_em:
             if int(current_user.id)==shezi_em.email_re_user_id:
