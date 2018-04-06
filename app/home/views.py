@@ -23,13 +23,40 @@ def load_user(user_id):
 class Indexview(MethodView):
     @login_required
     def get(self):
-        interface_cont=Interface.query.filter_by(status=False).count()
-        interfaceTest_cunt=InterfaceTest.query.filter_by(status=False).count()
-        resu_cout=TestResult.query.filter_by(status=False).count()
+        interface_cont=Interface.query.filter_by(status=False).all()
+        interface_list=[]
+        for interface in range(len(interface_cont)):
+            try:
+                if interface_cont[interface].projects.status==False :
+                    interface_list.append(interface_cont[interface])
+                else:
+                    interface+=1
+            except:
+                interface += 1
+        interfaceTest_cunt=InterfaceTest.query.filter_by(status=False).all()
+        case_list=[]
+        for case in range(len(interfaceTest_cunt)):
+            try:
+                if interfaceTest_cunt[case].projects.status==False and interfaceTest_cunt[case].models.status==False:
+                    case_list.append(interfaceTest_cunt[case])
+                else:
+                    case+=1
+            except:
+                case += 1
+        resu_cout=TestResult.query.filter_by(status=False).all()
+        reslut_list=[]
+        for result in range(len(resu_cout)):
+            try:
+                if resu_cout[result].projects.status == False :
+                    reslut_list.append(resu_cout[result])
+                else:
+                    result += 1
+            except:
+                result += 1
         project_cout=Project.query.filter_by(status=False).count()
         model_cout=Model.query.filter_by(status=False).count()
-        return  render_template('home/index.html', yongli=interfaceTest_cunt, jiekou=interface_cont,
-                                report=resu_cout, project_cout=project_cout, model_cout=model_cout)
+        return  render_template('home/index.html', yongli=len(case_list), jiekou=len(interface_list),
+                                report=len(reslut_list), project_cout=project_cout, model_cout=model_cout)
 class LoginView(MethodView):
     def get(self):
         form=LoginFrom()
