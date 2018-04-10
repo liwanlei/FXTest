@@ -14,3 +14,4 @@ case.add_url_rule('/makeonlyonecase',view_func=MakeonlyoneCase.as_view('makeonly
 case.add_url_rule('/make_one_case/<int:id>',view_func=MakeonecaseView.as_view('make_one_case'))
 case.add_url_rule('/duoyongli',view_func=DuoyongliView.as_view('duoyongli'))
 case.add_url_rule('/daochucase',view_func=DaochuCase.as_view('daochucase'))
+case.add_url_rule('/caseonedeteil',view_func=OnecaseDetial.as_view('caseonedeteil'))

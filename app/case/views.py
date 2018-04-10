@@ -706,3 +706,19 @@ class DaochuCase(MethodView):
             return redirect(url_for('home.yongli'))
         response = make_response(send_from_directory(file_dir, filename=day + '.xls', as_attachment=True))
         return response
+class OnecaseDetial(MethodView):
+    @login_required
+    def post(self):
+        case_id = request.get_data().decode('utf-8')
+        case_one=InterfaceTest.query.filter_by(id=int(case_id)).first()
+        if not  case_one:
+            return jsonify({'code':99,'messgage':'没有找到你需要的测试用例','data':''})
+        test_result=TestcaseResult.query.filter_by(case_id=case_one.id).all()
+        if not test_result or len(test_result)<=0:
+            return jsonify({'code': 101, 'messgage': '您的测试用例没有在任何环境调试过', 'data': ''})
+        result_all=[]
+        for rest_one in test_result:
+            result_all.append({'result':rest_one.result,
+                               'date':rest_one.date.strftime( '%Y-%m-%d %H:%M:%S'),
+                               'event':rest_one.ceshihuanjing })
+        return  jsonify({'code': 200, 'messgage': '请求成功', 'data': result_all})
