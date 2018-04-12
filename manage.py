@@ -25,9 +25,9 @@ app.register_blueprint(user)
 app.register_blueprint(case)
 app.register_blueprint(interfac)
 from config import Config
-app.config.from_object('config')
 scheduler.init_app(app=app)
 scheduler.start()
+app.config.from_object('config')
 def app_start():
 	handler = logging.FileHandler('./log/flask.log', encoding='UTF-8')
 	handler.setLevel(logging.INFO)

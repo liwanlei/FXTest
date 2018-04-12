@@ -1,0 +1,16 @@
+2018-04-12 11:11:00,184 - 测试日志 - INFO - 29：测试用例开始执行
+2018-04-12 11:11:00,186 - 测试日志 - INFO - 用例：int() argument must be a string, a bytes-like object or a number, not 'NoneType' 测试出错了
+2018-04-12 11:11:00,187 - 测试日志 - INFO - 30：测试用例开始执行
+2018-04-12 11:11:00,188 - 测试日志 - INFO - 用例：int() argument must be a string, a bytes-like object or a number, not 'NoneType' 测试出错了
+2018-04-12 11:11:03,569 - 测试日志 - INFO - 32：测试用例开始执行
+2018-04-12 11:11:03,571 - 测试日志 - INFO - 用例：'NoneType' object has no attribute 'result' 测试出错了
+2018-04-12 11:11:03,572 - 测试日志 - INFO - 79：测试用例开始执行
+2018-04-12 11:11:03,573 - 测试日志 - ERROR - 用例：79转化参数！原因：name 'asdasdasdasd' is not defined
+2018-04-12 11:11:03,574 - 测试日志 - INFO - 99：测试用例开始执行
+2018-04-12 11:11:03,575 - 测试日志 - ERROR - 用例：99转化参数！原因：name '第三方割发代首法规的法规' is not defined
+2018-04-12 11:11:03,575 - 测试日志 - INFO - 100：测试用例开始执行
+2018-04-12 11:11:03,577 - 测试日志 - ERROR - 用例：100转化参数！原因：name '的方式公司的分公司电饭锅' is not defined
+2018-04-12 11:11:05,108 - 测试日志 - INFO - 29：测试用例开始执行
+2018-04-12 11:11:05,113 - 测试日志 - INFO - 用例：int() argument must be a string, a bytes-like object or a number, not 'NoneType' 测试出错了
+2018-04-12 11:11:05,114 - 测试日志 - INFO - 30：测试用例开始执行
+2018-04-12 11:11:05,117 - 测试日志 - INFO - 用例：int() argument must be a string, a bytes-like object or a number, not 'NoneType' 测试出错了

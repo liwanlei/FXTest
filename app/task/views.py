@@ -2,7 +2,7 @@
 # @Author  : lileilei
 # @File    : views.py
 # @Time    : 2017/12/7 12:19
-from flask import  Blueprint,jsonify,sessions
+from flask import  Blueprint,jsonify
 from  flask import  redirect,request,render_template,url_for,flash
 from app.models import *
 from flask.views import MethodView
