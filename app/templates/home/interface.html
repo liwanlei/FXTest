@@ -97,16 +97,16 @@
                         insertss.empty();
                         if (data['typeinter']=='http'){
                             inte.empty();
-                            inte.append("<th>接口id</th><th>项目名称</th><th>所属模块</th><th>接口名称</th><th style='overflow:hidden;'>接口地址</th><th>接口headers</th><th>接口请求方法</th><th>接口请求参数</th><th>接口返回参数</th><th>操作</th>")
+                            inte.append("<th>接口id</th><th>项目名称</th><th>所属模块</th><th>接口名称</th><th style='overflow:hidden;'>接口地址</th><th>接口headers</th><th>接口请求方法</th><th>操作</th>")
                         }else if(data['typeinter']=='dubbo'){
                             inte.empty();
-                            inte.append("<th>id</th><th>项目名称</th><th>模块</th><th>接口名称</th><th style='overflow:hidden;'>url地址</th><th>接口名称</th><th>接口请求方法</th><th>接口请求参数</th><th>接口返回参数</th><th>操作</th>")
+                            inte.append("<th>id</th><th>项目名称</th><th>模块</th><th>接口名称</th><th style='overflow:hidden;'>url地址</th><th>接口名称</th><th>接口请求方法</th><th>操作</th>")
                         }
                         if (mdata.length<1){
                             insertss.append("<tr><td><h5><strong style='color:red'>没有找到接口</strong></h5><td></tr>")
                         }
                         else for(var i=0;i<mdata.length;i++){
-                            insertss.append("<tr><td>"+mdata[i].id+"</td><td><label class='label-important'>"+mdata[i].projects_id+"</label></td><td>"+mdata[i].model_id+"</td><td>"+mdata[i].Interface_name+"</td><td>"+mdata[i].Interface_url+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+mdata[i].Interface_par+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"+mdata[i].Interface_back+"</td><td><a href='/interfac_edit/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a><a href='/dele_inter/"+mdata[i].id+"'><input type='button' value='删除' class='btn btn-danger'></a></td></tr>")};
+                            insertss.append("<tr><td>"+mdata[i].id+"</td><td><label class='label-important'>"+mdata[i].projects_id+"</label></td><td>"+mdata[i].model_id+"</td><td>"+mdata[i].Interface_name+"</td><td>"+mdata[i].Interface_url+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td><a href='/interfac_edit/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a><a href='/dele_inter/"+mdata[i].id+"'><input type='button' value='删除' class='btn btn-danger'></a><a href='/interface_one/"+mdata[i].id+"'' ><input type='button' class='btn btn-primary' value='详情' ></a></td></tr>")};
                     }
                 },error:function (res) {
                     alert('异步请求失败，请联系管理员！！！');

@@ -40,9 +40,9 @@ def create_interface(filename:str,interfacelist:list):
         table.write(0, 5, '接口协议', style=style)
         table.write(0, 6, '请求头', style=style)
         table.write(0, 7, '请求方式', style=style)
-        table.write(0, 8, '请求示例', style=style)
-        table.write(0, 9, '请求返回示例', style=style)
-        table.write(0, 10, '添加人', style=style)
+        # table.write(0, 8, '请求示例', style=style)
+        # table.write(0, 9, '请求返回示例', style=style)
+        table.write(0, 8, '添加人', style=style)
         stylen=yangshi2()
         for i in range(len(interfacelist)):
             table.write(i + 1, 0, str(interfacelist[i].id), style=stylen)
@@ -53,9 +53,9 @@ def create_interface(filename:str,interfacelist:list):
             table.write(i + 1, 5, interfacelist[i].interfacetype, style=stylen)
             table.write(i + 1, 6, interfacelist[i].Interface_headers, style=stylen)
             table.write(i + 1, 7, interfacelist[i].Interface_meth, style=stylen)
-            table.write(i + 1, 8, interfacelist[i].Interface_par, style=stylen)
-            table.write(i + 1, 9, interfacelist[i].Interface_back, style=stylen)
-            table.write(i + 1, 10, str(interfacelist[i].users), style=stylen)
+            # table.write(i + 1, 8, interfacelist[i].Interface_par, style=stylen)
+            # table.write(i + 1, 9, interfacelist[i].Interface_back, style=stylen)
+            table.write(i + 1, 8, str(interfacelist[i].users), style=stylen)
             i+=1
         file.save(filename)
         return {'code':0,'message':filename}

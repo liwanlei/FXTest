@@ -12,6 +12,7 @@ from flask_login import login_required,current_user
 import json,os,time
 from  config import  Config_daoru_xianzhi
 from  common.excet_excel import create_interface
+from  common.hebing import hebingDict
 interfac = Blueprint('interface', __name__)
 def get_pro_mo():
     projects=Project.query.filter_by(status=False).all()
@@ -39,9 +40,13 @@ class InterfaceaddView(MethodView):
         project_id=Project.query.filter_by(project_name=data['project']).first().id
         models_id=Model.query.filter_by(model_name=data['model']).first().id
         try:
-            new_interface=Interface(model_id=models_id,projects_id=project_id,Interface_name=data['interfacename'],Interface_url=data['interface_url'],
-                                    Interface_meth=data['interface_meth'],Interface_par=data['interface_par'],Interface_back=data['interface_bas'],
-                                    Interface_user_id=current_user.id,Interface_headers=data['interface_headers'],interfacetype=data['interface_type'])
+            new_interface=Interface(model_id=models_id,projects_id=project_id,
+                                    Interface_name=data['interfacename'],
+                                    Interface_url=data['interface_url'],
+                                    Interface_meth=data['interface_meth'],
+                                    face_user_id=current_user.id,
+                                    Interface_headers=data['interface_headers'],
+                                    interfacetype=data['interface_type'])
             db.session.add(new_interface)
             db.session.commit()
             return jsonify({'msg': u'成功', 'code': 200,'data':''})
@@ -91,9 +96,7 @@ class EditInterfaceView(MethodView):
         interfa_tey=request.form.get('interface_type')
         headers=request.form.get('headers')
         meth=request.form.get('meth')
-        reques=request.form.get('reque')
-        back=request.form.get('back')
-        if projecct is None or model is None or intername=='' or headers =='' or url=='' or meth=='' or back=='':
+        if projecct is None or model is None or intername=='' or headers =='' or url=='' or meth=='':
             flash(u'请确定各项参数都正常填写')
             return render_template('edit/edit_inter.html', interfac=interface, projects=projects, models=models)
         project_id = Project.query.filter_by(project_name=projecct).first().id
@@ -104,8 +107,6 @@ class EditInterfaceView(MethodView):
         interface.Interface_headers=headers
         interface.Interface_url=url
         interface.Interface_meth=meth
-        interface.Interface_par=reques
-        interface.Interface_back=back
         interface.Interface_user_id=current_user.id
         interface.interfacetype=interfa_tey
         try:
@@ -198,7 +199,7 @@ class SerinterView(MethodView):
         for interface in interfaclist:
             interfaclists.append({'model_id':interface.models.model_name,'projects_id':interface.projects.project_name,
                                   'id':interface.id,'Interface_url':interface.Interface_url,'Interface_meth':interface.Interface_meth,
-                                  'Interface_headers':interface.Interface_headers,'Interface_par':interface.Interface_par,'Interface_back':interface.Interface_back,
+                                  'Interface_headers':interface.Interface_headers,
                                   'Interface_name':interface.Interface_name})
         return  jsonify(({'msg': u'成功', 'code':200,'data':interfaclists,'typeinter':typeinterface}))
 class DaochuInterfa(MethodView):
@@ -222,3 +223,139 @@ class DaochuInterfa(MethodView):
             return redirect(url_for('home.interface'))
         response = make_response(send_from_directory(file_dir,filename=day+'.xls', as_attachment=True))
         return response
+class XiangqingView(MethodView):
+    @login_required
+    def get(self,id):
+        interface_one=Interface.query.filter_by(id=id,status=False).first()
+        if not  interface_one:
+            flash('要查看的接口不存在')
+            return  redirect(url_for('home.interface'))
+        parme=Parameter.query.filter_by(interface_id=interface_one.id,status=False).all()
+        rucan=[]
+        rucan_deft=[]
+        chucan_deft=[]
+        chucan=[]
+        for i in range(len(parme)):
+            if parme[i].type==1:
+                chucan.append(parme[i])
+                chucan_deft.append(str(parme[i].default))
+            else:
+                rucan.append(parme[i])
+                rucan_deft.append(str(parme[i].default))
+        return  render_template('home/interface_one.html',id_one=interface_one,chucanlist=chucan,
+                                rucanlist=rucan,chucan_def=hebingDict(chucan_deft),
+                                rucan_def=hebingDict(rucan_deft))
+class ADdparmsView(MethodView):
+    @login_required
+    def get(self,id):
+        self.interface = Interface.query.filter_by(id=str(id), status=False).first()
+        if self.interface is None:
+            flash('添加参数的接口不存在')
+            return redirect(url_for('home.interface'))
+        return  render_template('add/addparmes.html',interface=self.interface)
+    @login_required
+    def post(self,id):
+        self.interface = Interface.query.filter_by(id=str(id), status=False).first()
+        name=request.form.get('name')
+        type=request.form.get('type')
+        nuss=request.form.get('nussu')
+        typec=request.form.get('typechu')
+        desec=request.form.get('desec')
+        shili=request.form.get('shili')
+        if name is None or name=='':
+            flash('参数的名字不能为空')
+            return render_template('add/addparmes.html', interface=self.interface)
+        if type is None or type=='':
+            flash('参数格式类型必须填写进去')
+            return render_template('add/addparmes.html', interface=self.interface)
+        old_name=Parameter.query.filter_by(interface_id=self.interface.id,status=False,parameter_name=name).first()
+        if old_name:
+            flash('参数名称已经存在于该接口')
+            return render_template('add/addparmes.html', interface=self.interface)
+        if nuss=='是':
+            if_nuss=True
+        else:
+            if_nuss=False
+        if typec=='出参':
+            is_chu=1
+        else:
+            is_chu=0
+        new=Parameter(interface_id=self.interface.id,parameter_name=name,parameter_type=type,
+                      necessary=if_nuss,type=is_chu,default=shili,desc=desec,user_id=current_user.id)
+        db.session.add(new)
+        try:
+            db.session.commit()
+            return redirect(url_for('interface.interface_one',id=self.interface.id))
+        except Exception as  e:
+            db.session.rollback()
+            flash('添加失败！原因：%s'%e)
+            return render_template('add/addparmes.html', interface=self.interface)
+class DeleteParmsView(MethodView):
+    @login_required
+    def get(self,id):
+        passem=Parameter.query.filter_by(id=id,status=False).first()
+        if not passem:
+            flash('不存在的参数')
+            return redirect(url_for('interface.interface_one', id=passem.interfaces.id))
+        passem.status=True
+        try:
+            db.session.commit()
+            flash('删除参数成功')
+            return redirect(url_for('interface.interface_one', id=passem.interfaces.id))
+        except Exception as e:
+            db.session.rollback()
+            flash('删除失败！原因：%s'%e)
+            return redirect(url_for('interface.interface_one', id=passem.interfaces.id))
+class EditParmsView(MethodView):
+    @login_required
+    def get(self,id,inte_id):
+        pasrm=Parameter.query.filter_by(id=id).first()
+        interface_one = Interface.query.filter_by(id=inte_id, status=False).first()
+        if  interface_one is None:
+            flash('要查看的接口不存在')
+            return redirect(url_for('home.interface'))
+        if pasrm is None:
+            flash('参数无法编辑，请确定是否存在')
+            return  redirect(url_for('interface.interface_one',id=inte_id))
+        return render_template('edit/edtiparmes.html',pasrm=pasrm,interface_one=interface_one)
+    @login_required
+    def post(self,id,inte_id):
+        pasrm = Parameter.query.filter_by(id=int(id)).first()
+        interface_one = Interface.query.filter_by(id=inte_id, status=False).first()
+        if  interface_one is None:
+            flash('要查看的参数的接口不存在')
+            return redirect(url_for('home.interface'))
+        if pasrm is None:
+            flash('参数无法编辑，请确定是否存在')
+            return redirect(url_for('interface.interface_one', id=inte_id))
+        type = request.form.get('type')
+        nuss = request.form.get('nussu')
+        typec = request.form.get('typechu')
+        desec = request.form.get('desec')
+        shili = request.form.get('shili')
+        name = request.form.get('name')
+        if name is None or name=='':
+            flash('参数的名字不能为空')
+            return render_template('edit/edtiparmes.html', pasrm=pasrm, interface_one=interface_one)
+        if nuss=='是':
+            if_nuss=True
+        else:
+            if_nuss=False
+        if typec=='出参':
+            is_chu=1
+        else:
+            is_chu=0
+        if type is None or type == '':
+            flash('参数格式类型必须填写进去')
+            return render_template('edit/edtiparmes.html', pasrm=pasrm, interface_one=interface_one)
+        pasrm.type=is_chu
+        pasrm.necessary=if_nuss
+        pasrm.desc=desec
+        pasrm.default=shili
+        try:
+            flash('编辑参数成功')
+            db.session.commit()
+            return  redirect(url_for('interface.interface_one',id=inte_id))
+        except Exception as e:
+            flash('编辑出错，原因：%s'%e)
+            return render_template('edit/edtiparmes.html',pasrm=pasrm,interface_one=interface_one)
