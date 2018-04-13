@@ -66,6 +66,7 @@ class User(db.Model):
     huanjing = db.relationship('Interfacehuan', backref='users', lazy='dynamic')
     mock = db.relationship('Mockserver', backref='users', lazy='dynamic')
     task = db.relationship('Task', backref='users', lazy='dynamic')
+    paemase = db.relationship('Parameter', backref='users', lazy='dynamic')
     def __repr__(self):
         return  self.username
     def is_administrator(self):     
@@ -90,11 +91,10 @@ class Interface(db.Model):
     Interface_name=db.Column(db.String(252))
     Interface_url=db.Column(db.String(252))
     Interface_meth= db.Column(db.String(252),default='GET')
-    Interface_par=db.Column(db.String(252))
-    Interface_back=db.Column(db.String(252))
     Interface_headers = db.Column(db.String(252))
     Interface_user_id=db.Column(db.Integer(),db.ForeignKey('users.id'))
     interfacetype = db.Column(db.String(32), default='http')
+    interfapar = db.relationship('Parameter', backref='interfaces', lazy='dynamic')
     status=db.Column(db.Boolean(),default=False)
     def __repr__(self):
         return  self.Interface_name
@@ -246,5 +246,19 @@ class TestcaseResult(db.Model):
     result=db.Column(db.String(252))
     date=db.Column(db.DateTime(),default=datetime.datetime.now())
     testevir=db.Column(db.Integer,db.ForeignKey('ceshihuanjing.id'),nullable=True)
+    def __repr__(self):
+        return  str(self.id)
+class Parameter(db.Model):#参数
+    __tablename__ ='parames'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    interface_id = db.Column(db.Integer, db.ForeignKey("interfaces.id"))#接口id
+    parameter_type = db.Column(db.String(64))#参数类型
+    parameter_name = db.Column(db.String(64))#参数名字
+    necessary = db.Column(db.Boolean(),default=False)#是否必须
+    type = db.Column(db.Integer(),default=0)#类型,返回还是传参，入参为0  出参为1
+    status=db.Column(db.Boolean(),default=False)#状态
+    default=db.Column(db.String(63))#示例
+    desc=db.Column(db.String(252))#参数描述
+    user_id=db.Column(db.Integer,db.ForeignKey('users.id'))
     def __repr__(self):
         return  str(self.id)

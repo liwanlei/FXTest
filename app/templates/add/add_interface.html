@@ -62,16 +62,6 @@
                     {{ form.interface_meth(id='interface_meth') }}
                 </div>
                 <span>&nbsp;</span>
-                <div class="form-group">
-                    <strong>请求参数示例:</strong>
-                    {{ form.interface_par(id='interface_par')}}
-                </div>
-                <span>&nbsp;</span>
-                <span>&nbsp;</span>
-                <div class="form-group">
-                    <strong>返回示例:</strong>
-                    {{ form.interface_bas(id='interface_bas') }}
-                </div>
                 <button type="button" class="am-btn am-btn-primary " onclick="addinterface()">添加</button>
             </form>
         </div>
@@ -99,8 +89,6 @@
             var interface_url=document.getElementById('interface_url');
             var interface_headers=document.getElementById('interface_headers');
             var interface_meth=document.getElementById('interface_meth');
-            var interface_par=document.getElementById('interface_par');
-            var interface_bas=document.getElementById('interface_bas');
             var message=document.getElementById('messgae');
             var data={};
             data['project']=prokect;
@@ -109,8 +97,6 @@
             data['interface_url']=interface_url.value;
             data['interface_headers']=interface_headers.value;
             data['interface_meth']=interface_meth.value;
-            data['interface_par']=interface_par.value;
-            data['interface_bas']=interface_bas.value;
             data['interface_type']=interface_type.value;
             if (prokect.length<1){
                 message.innerHTML='必须选择项目';
@@ -124,32 +110,25 @@
                         if(interface_meth.value.length<1){
                             message.innerHTML='接口请求类型必须填写';
                         }else {
-                            if(interface_par.value.length<1){
-                                message.innerHTML='接口请求示例必须填写！';
-                            }else {
-                                if(interface_bas.value.length<1){
-                                    message.innerHTML='接口返回示例必须填写！';
-                                }else {
-                                    if(model.length<1){
-                                        message.innerHTML='模块必须选择！';
-                                    }else{
-                                        $.ajax({
-                                            url: '{{ url_for('interface.interface_add') }}',
-                                            type: 'POST',
-                                            data: JSON.stringify(data),
-                                            contentType: 'application/json; charset=UTF-8',
-                                            processData: false,
-                                            success: function (result) {
-                                                if (result['code'] == 200) {
-                                                    location.href='{{ url_for('home.interface') }}';
-                                                }
-                                                else {
-                                                    message.innerHTML=(result['msg']);
-                                                }
-                                            }
-                                        }); }
-                                }
-                            }
+
+                            if(model.length<1){
+                                message.innerHTML='模块必须选择！';
+                            }else{
+                                $.ajax({
+                                    url: '{{ url_for('interface.interface_add') }}',
+                                    type: 'POST',
+                                    data: JSON.stringify(data),
+                                    contentType: 'application/json; charset=UTF-8',
+                                    processData: false,
+                                    success: function (result) {
+                                        if (result['code'] == 200) {
+                                            location.href='{{ url_for('home.interface') }}';
+                                        }
+                                        else {
+                                            message.innerHTML=(result['msg']);
+                                        }
+                                    }
+                                }); }
                         }
                     }
                 }
