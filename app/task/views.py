@@ -7,12 +7,10 @@ from  flask import  redirect,request,render_template,url_for,flash
 from app.models import *
 from flask.views import MethodView
 from flask_login import current_user,login_required
-from app import loginManager
+from app import loginManager,sched
 import  time,os
 from common.py_Html import createHtml
 from app.test_case.Test_case import ApiTestCase
-from app import  scheduler
-from common.Dingtalk import send_ding
 task = Blueprint('task', __name__)
 def addtask(id):#定时任务执行的时候所用的函数
     in_id=int(id)
@@ -151,12 +149,17 @@ class StartTaskView(MethodView):#开始定时任务
             flash(u'定时任务执行过程的测试用例为多用例，请你谅解')
             return  redirect(url_for('home.timingtask'))
         try:
-            scheduler.add_job(func=addtask, id=str(id), args=str(id),trigger=eval(task.taskstart),replace_existing=True)
+            time_start=eval(task.taskstart)
+            day_week=time_start['day_of_week']
+            hour=time_start['hour']
+            mindes=time_start['minute']
+            sched.add_job(func=addtask,id=str(id),args=[str(id)],trigger='cron',day_of_week=day_week,hour=hour,minute=mindes,jobstore='redis',replace_existing=True)
             task.yunxing_status='启动'
             db.session.commit()
             flash(u'定时任务启动成功！')
             return  redirect(url_for('home.timingtask'))
         except Exception as e:
+            print(e)
             flash(u'定时任务启动失败！原因：%e'%e)
             return redirect(url_for('home.timingtask'))
 class ZantingtaskView(MethodView):#暂停定时任务
@@ -165,7 +168,7 @@ class ZantingtaskView(MethodView):#暂停定时任务
         next = request.headers.get('Referer')
         task = Task.query.filter_by(id=id).first()
         try:
-            scheduler.pause_job(str(id))
+            sched.pause_job(str(id))
             task.yunxing_status = u'暂停'
             db.session.commit()
             flash(u'定时任务暂停成功！')
@@ -181,15 +184,15 @@ class HuifutaskView(MethodView):#回复定时任务
         task = Task.query.filter_by(id=id).first()
         next = request.headers.get('Referer')
         try:
-            scheduler.resume_job(str(id))
+            sched.resume_job(str(id))
             task.yunxing_status=u'启动'
             db.session.commit()
             flash(u'定时任务恢复成功！')
             return redirect(next or url_for('home.timingtask'))
-        except:
+        except Exception as e:
             task.yunxing_status = u'创建'
             db.session.commit()
-            flash(u'定时任务恢复失败！已经为您初始化')
+            flash(u'定时任务恢复失败！已经为您初始化,原因：%s'%e)
             return redirect(next or url_for('home.timingtask'))
 class YichuTaskView(MethodView):#移除定时任务
     @login_required
@@ -197,7 +200,7 @@ class YichuTaskView(MethodView):#移除定时任务
         next = request.headers.get('Referer')
         task = Task.query.filter_by(id=id).first()
         try:
-            scheduler.delete_job(str(id))
+            sched.remove_job(str(id))
             task.yunxing_status=u'关闭'
             db.session.commit()
             flash(u'定时任务移除成功！')
@@ -215,6 +218,7 @@ class AddtimingtaskView(MethodView):
     @login_required
     def post(self):
         data=request.get_json()
+        task_time={'type': 'cron','day_of_week':data['week'],'hour':data['hour'],'minute':data['minx']}
         taskname_is = Task.query.filter_by(taskname=data['taskname']).first()
         testevent=Interfacehuan.query.filter_by(url=data['testevent']).first()
         if not testevent:
@@ -224,7 +228,7 @@ class AddtimingtaskView(MethodView):
         procjt=Project.query.filter_by(project_name=data['projects'],status=False).first()
         if not  procjt:
             return jsonify({'code': 24, 'msg': '任务的所属项目不存在', 'data': ''})
-        new_task=Task(taskname=data['taskname'],taskstart=data['time'],taskrepor_to=data['to_email'],taskrepor_cao=data['cao_email'],task_make_email=data['weihu'],
+        new_task=Task(taskname=data['taskname'],taskstart=str(task_time),taskrepor_to=data['to_email'],taskrepor_cao=data['cao_email'],task_make_email=data['weihu'],
                       makeuser=current_user.id,prject=procjt.id,testevent=testevent.id)
         db.session.add(new_task)
         try:
@@ -250,18 +254,19 @@ class Editmingtaskview(MethodView):
             flash(u'你编辑的不存在')
             return  redirect(url_for('home.timingtask'))
         return  render_template('edit/Edittimingtasks.html', task_one=task_one, porjects=projects)
+    @login_required
     def post(self,id):
         task_one = Task.query.filter_by(id=id).first()
         taskname = request.form['taskname']
-        tinmingtime = request.form['time']
         to_email_data = request.form['to_email']
         cao_email = request.form['cao_email']
+        week=request.form['week']
+        hour=request.form['hours']
+        minute=request.form['minute']
+        task_time = {'type': 'cron','day_of_week': week, 'hour':hour, 'minute':minute}
         weihu = request.form['weihu']
         if taskname =='':
             flash(u'任务名不能为空！')
-            return render_template('add/addtimingtasks.html')
-        if tinmingtime =='':
-            flash(u'任务执行时间不能为空！')
             return render_template('add/addtimingtasks.html')
         if to_email_data=='':
             flash(u'发送给谁邮件不能为空！')
@@ -274,7 +279,7 @@ class Editmingtaskview(MethodView):
         task_one.taskrepor_cao=cao_email
         task_one.task_make_email=weihu
         task_one.makeuser=current_user.id
-        task_one.taskstart=tinmingtime
+        task_one.taskstart=str(task_time)
         try:
             db.session.commit()
             flash(u'编辑成功')

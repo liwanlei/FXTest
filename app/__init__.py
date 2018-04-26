@@ -11,7 +11,8 @@ from  flask_sqlalchemy import  SQLAlchemy
 from flask_bootstrap import  Bootstrap
 from flask_login import LoginManager
 from config import lod
-from flask_apscheduler import  APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+from  config import jobstores,executors
 from flask_admin import  Admin
 app=Flask(__name__)
 conf=lod()
@@ -22,6 +23,6 @@ loginManager.session_protection = "strong"
 loginManager.login_view='home.login'
 loginManager.login_message=u'FXTest测试平台必须登录，请登录您的FXTest平台账号！'
 db=SQLAlchemy(app)
-scheduler=APScheduler()
+sched = BackgroundScheduler(jobstores=jobstores, executors=executors)
 admin=Admin(app,name=u'FXTest系统管理后台')
 from  app import  views ,models,url,apiadmin

@@ -31,8 +31,28 @@
                         <input type="text" name="taskname"  placeholder="请输入任务名！" value="{{ task_one.taskname }}">
                     </p>
                     <p style="margin-top: 20px"><strong>测试时间:</strong>
-                        <input type="text" name="time"  placeholder="请输入con表达式！" value="{{ task_one.taskstart }}">
-                    </p>
+                         <strong>周：</strong>
+                        <select  name="week">
+                            <option>mon-tue</option>
+                            <option>mon-wed</option>
+                            <option>mon-thu</option>
+                            <option>mon-fri</option>
+                            <option>mon-sat</option>
+                            <option>mon-sun</option>
+                        </select>
+                        <strong>时钟:</strong>
+                        <select  name="hours">
+                           {% for j in range(25) %}
+                            <option>{{ j }}</option>
+                            {% endfor %}
+                        </select>
+                        <strong>分钟:</strong>
+                        <select  name="minute">
+                            {% for i in range(61) %}
+                            <option>{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                          </p>
                     <p style="margin-top: 20px"><strong>邮件主送:</strong>
                         <textarea type="text" name="to_email"  placeholder="测试报告发送谁给，逗号分隔多个！" style="width: 200px;height: 100px;">
                             {{ task_one.taskrepor_to }}
