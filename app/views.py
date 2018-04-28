@@ -305,7 +305,7 @@ class Getyongli(MethodView):#获取用例
         project=id.decode('utf-8')
         if not project:
             return jsonify({'msg':'没有发送数据','code':8,'data':''})
-        peoject = Project.query.filter_by(project_name=project).first()
+        peoject = Project.query.filter_by(project_name=project,status=False).first()
         if not  peoject:
             return jsonify({'msg': '数据库找不到项目', 'code': 9,'data':''})
         tesatcaelist=InterfaceTest.query.filter_by(projects_id=peoject.id,status=False).all()

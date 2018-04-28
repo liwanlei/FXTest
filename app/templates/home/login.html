@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>API自动化平台</title>
+    <title>API自动化平台--登录界面</title>
     <link href="{{url_for('static',filename='css/bootstrap.css')}}"  rel="stylesheet">
     <link href="{{url_for('static',filename='css/demo.css')}}"  rel="stylesheet">
     <link href="{{url_for('static',filename='css/main.css')}}"  rel="stylesheet">
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
     <script src="{{url_for('static',filename='js/jquery.min.js')}}"></script>
+    <style type="text/css">
+        body { background: url({{url_for('static',filename='img/bg-login.jpg')}}) !important; }
+    </style>
 </head>
 <body style="    background-color: beige;">
 <div id="wrapper">
@@ -23,31 +26,31 @@
                     {% if messages %}
                         <ul class=flashes>
                             {% for message in messages %}
-                                <li >{{ message }}</li>
+                                <li ><strong>{{ message }}</strong></li>
                             {% endfor %}
                         </ul>
                     {% endif %}
                 {% endwith %}
             </div>
-            {% block body %}
-            {% endblock %}
-            <form class="form-auth-small"  method="POST" style="width: 40%;margin-left: 30%;">
-                {{form.hidden_tag()}}
-                <div class="form-group">
-                    {% if form.username.errors %}
-                        {% for e in form.username.errors %}
-                            <p class="flashes">{{ e }}</p>
-                        {% endfor %}
-                    {% endif %}
-                    {{ form.username(class='form-control',id='username') }}
+            <div style="">
+                <form class="form-auth-small"  method="POST" style="width: 40%;margin-left: 30%;">
+                    {{form.hidden_tag()}}
                     <div class="form-group">
-                        {{ form.password(class='form-control',id='password') }}
+                        {% if form.username.errors %}
+                            {% for e in form.username.errors %}
+                                <p class="flashes">{{ e }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        {{ form.username(class='form-control',id='username') }}
+                        <div class="form-group">
+                            {{ form.password(class='form-control',id='password') }}
+                        </div>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="login()">登录</button>
                     </div>
-                    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="login()">登录</button>
-                </div>
-            </form>
-            <h3 style="text-align: center">管理员：liwanlei  密码:liwanlei </h3>
-            <h4 style="text-align: center " >
+                </form>
+            </div>
+            <h3 style="text-align: center;color: red">管理员：liwanlei  密码:liwanlei </h3>
+            <h4 style="text-align: center;color: red " >
                 <strong>现在系统没有注册功能可以在之前版本把注册功能还原到本版本，也可以通过用户管理添加</strong>
             </h4>
         </div>

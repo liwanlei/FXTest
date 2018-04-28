@@ -12,6 +12,7 @@ from flask.views import MethodView,View
 from flask_login import login_required,login_user,logout_user,current_user
 from app import loginManager
 from config import PageShow
+from common.pagin_fen import  fenye_list
 from common.fenye import Pagination
 def get_pro_mo():
     projects=Project.query.filter_by(status=False).all()
@@ -25,7 +26,7 @@ class Indexview(MethodView):
     def get(self):
         interface_cont=Interface.query.filter_by(status=False).all()
         interface_list=[]
-        for interface in range(len(interface_cont)):
+        for interface in range(len(interface_cont)+1):
             try:
                 if interface_cont[interface].projects.status==False :
                     interface_list.append(interface_cont[interface])
@@ -37,7 +38,7 @@ class Indexview(MethodView):
         case_list=[]
         for case in range(len(interfaceTest_cunt)):
             try:
-                if interfaceTest_cunt[case].projects.status==False and interfaceTest_cunt[case].models.status==False:
+                if interfaceTest_cunt[case].projects.status==False :
                     case_list.append(interfaceTest_cunt[case])
                 else:
                     case+=1
@@ -97,7 +98,7 @@ class InterfaceView(MethodView):
         return  render_template('home/interface.html', projects=projects)
 class YongliView(MethodView):
     @login_required
-    def get(self):
+    def get(self,page=1):
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).all()
         else:
@@ -126,18 +127,24 @@ class AdminuserView(MethodView):
 class TestrepView(View):
     methods=['GET','POST']
     @login_required
-    def dispatch_request(self):
+    def dispatch_request(self,page=1):
         if current_user.is_sper == True:
             project=Project.query.filter_by(status=False).all()
         else:
             project=[]
             for projec in current_user.quanxians:
                 project.append(projec.projects)
-        return render_template('home/test_result.html', projects=(project))
+        projects_lsit = fenye_list(Ob_list=project, split=PageShow)
+        pages = range(1, len(projects_lsit) + 1)
+        try:
+            pyth_post1 = projects_lsit[int(page) - 1]
+            return render_template('home/test_result.html', projects=pyth_post1,pages=pages)
+        except:
+            return redirect(url_for('home.test_rep'))
 class ProjectView(View):
     methods=['GET','POST']
     @login_required
-    def dispatch_request(self):
+    def dispatch_request(self,page=1):
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
         else:
@@ -148,16 +155,28 @@ class ProjectView(View):
                     if i.projects.status ==False:
                         projects.append(i.projects)
                         id.append(i.projects)
-        return  render_template('home/project.html', projects=projects)
+        projects_lsit=fenye_list(Ob_list=projects,split=PageShow)
+        pages = range(1, len(projects_lsit) + 1)
+        try:
+            pyth_post1 = projects_lsit[int(page) - 1]
+            return  render_template('home/project.html', projects=pyth_post1,pages=pages)
+        except:
+            return redirect(url_for('home.project'))
 class ModelView(View):
     methods=['GET']
     @login_required
-    def dispatch_request(self):
+    def dispatch_request(self,page=1):
         models=Model.query.filter_by(status=False).order_by('-id').all()
-        return  render_template('home/model.html', projects=models)
+        projects_lsit = fenye_list(Ob_list=models, split=PageShow)
+        pages = range(1, len(projects_lsit) + 1)
+        try:
+            pyth_post1 = projects_lsit[int(page) - 1]
+            return  render_template('home/model.html', projects=pyth_post1,pages=pages)
+        except:
+            return redirect(url_for('home.model'))
 class TesteventVies(MethodView):
     @login_required
-    def get(self):
+    def get(self,page=1):
         if current_user.is_sper==True:
             events=[]
             events.append(Interfacehuan.query.filter_by(status=False).order_by('-id').all())
@@ -168,7 +187,13 @@ class TesteventVies(MethodView):
                 if (project.projects.id in id)==False:
                     events.append(Interfacehuan.query.filter_by(project=project.projects.id,status=False).order_by('-id').all())
                     id.append(project.projects.id)
-        return render_template('home/events.html', events=events)
+        projects_lsit = fenye_list(Ob_list=events, split=PageShow)
+        pages = range(1, len(projects_lsit) + 1)
+        try:
+            pyth_post1 = projects_lsit[int(page) - 1]
+            return render_template('home/events.html', events=pyth_post1,pages=pages)
+        except:
+            return redirect(url_for('home.ceshihuanjing'))
 class MockViews(MethodView):
     @login_required
     def get(self,page=1):
@@ -177,7 +202,7 @@ class MockViews(MethodView):
         return render_template('home/mockserver.html', inte=inter, pagination=mock)
 class TimingtasksView(MethodView):
     @login_required
-    def get(self):
+    def get(self,page=1):
         if current_user.is_sper==True:
             task=[]
             task.append(Task.query.filter_by(status=False).order_by('-id').all())
@@ -188,7 +213,15 @@ class TimingtasksView(MethodView):
                 if (project.projects.id in id)==False:
                     task.append(Task.query.filter_by(prject=project.projects.id,status=False).all())
                     id.append(project.projects.id)
-        return render_template('home/timingtask.html', inte=task)
+
+        old_yask=hebinglist(task)
+        projects_lsit = fenye_list(Ob_list=old_yask, split=PageShow)
+        pages = range(1, len(projects_lsit) + 1)
+        try:
+            pyth_post1 = projects_lsit[int(page) - 1]
+            return render_template('home/timingtask.html', inte=pyth_post1,pages=pages)
+        except:
+            return  redirect(url_for('home.timingtask'))
 class GettProtestreport(MethodView):
     @login_required
     def post(self):

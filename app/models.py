@@ -12,6 +12,10 @@ registrations=db.Table('registrations',db.Column('task_id',db.Integer(),db.Forei
                        db.Column('interfacetests_id',db.Integer(),db.ForeignKey('interfacetests.id')))
 quanxianuser=db.Table('quanxianusers',db.Column('user_id',db.Integer(),db.ForeignKey('users.id')),
                       db.Column('quanxians_id',db.Integer(),db.ForeignKey('quanxians.id')))
+rely_case=db.Table('yilai',
+                   db.Column('case_id',db.Integer(),db.ForeignKey('interfacetests.id')),
+                    db.Column('cases_id', db.Integer(), db.ForeignKey('interfacetests.id')),
+                   db.Column('attred',db.String()))
 class Permisson:
     ADD = 0x01
     EDIT = 0x02
@@ -112,6 +116,10 @@ class InterfaceTest(db.Model):
     Interface_headers = db.Column(db.String(252))
     pid = db.Column(db.Integer(), db.ForeignKey('interfacetests.id'),nullable=True)
     getattr_p=db.Column(db.String(252),nullable=True)
+    rely = db.relationship('InterfaceTest', secondary=rely_case,
+                           primaryjoin=(rely_case.c.case_id == id),
+                           secondaryjoin=(rely_case.c.cases_id == id),
+                              backref=db.backref('interfacetests', lazy='dynamic'), lazy='dynamic')
     Interface_is_tiaoshi=db.Column(db.Boolean(),default=False)
     Interface_tiaoshi_shifou=db.Column(db.Boolean(),default=True,nullable=True)
     Interface_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))

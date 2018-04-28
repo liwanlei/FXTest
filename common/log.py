@@ -4,7 +4,7 @@
 """日志模块，
 这里会记录测试的日志。"""
 import logging
-class log_t():
+class log_t(object):
 	def __init__(self,title,filename):
 		self.logger = logging.Logger(title)
 		self.logger.setLevel(logging.INFO)

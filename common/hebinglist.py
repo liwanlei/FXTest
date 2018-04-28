@@ -5,7 +5,7 @@
 """
 """
 list的合并"""
-def hebinglist(list1):
+def hebinglist(list1:list):
     new=[]
     for m in list1:
         for h in m:

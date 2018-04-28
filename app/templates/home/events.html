@@ -1,7 +1,7 @@
 {% extends "back.html" %}
 {% block hello %}
     {% import "fenye.html" as macros %}
-    <div class="tpl-content-wrapper">
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -13,7 +13,7 @@
                 {% endif %}
             {% endwith %}
         </div>
-        <div class="tpl-portlet-components">
+        <div class="tpl-portlet-components" style="background-color: whitesmoke;">
             <div class="portlet-title">
                 <div class="caption font-green bold">
                     <span class="am-icon-code"></span><strong>测试环境</strong>
@@ -87,5 +87,19 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <div style="text-align: center;">
+                    <ul class="pagination">
+                        <li  >
+                            <a  href="{{url_for('home.ceshihuanjing') }}">首页</a>
+                        </li>
+                        {%for page in pages%}
+                            <li>
+                                <a id='{{page}}' onclick="h=window.location.href.split('/'),m=document.getElementById({{page}}),m.setAttribute('href','/'+h[3]+'/'+{{page}})" >{{page}}</a>
+                            </li>
+                        {%endfor%}
+                    </ul>
+                </div>
             </div>
+        </div>
+    </div>
 {% endblock %}

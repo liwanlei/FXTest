@@ -212,7 +212,7 @@ class SeryongliView(MethodView):
         if not project:
             return jsonify({'msg': '没有发送数据', 'code':39})
         project_name=str(project['project'])
-        project_is = Project.query.filter_by(project_name=project_name).first()
+        project_is = Project.query.filter_by(project_name=project_name,status=False).first()
         testevent=Interfacehuan.query.filter_by(projects=project_is,status=False).all()
         interfatype=project['interface_type']
         if interfatype=='http':
@@ -230,9 +230,11 @@ class SeryongliView(MethodView):
             testeventlist.append({'url':testeven.url,'id':testeven.id})
         for interface in intertestcases:
             interfacelist.append({'id':interface.id,'model':interface.models.model_name,"project":interface.projects.project_name,
-                                  'Interface_name':interface.Interface_name,'Interface_headers':interface.Interface_headers,'Interface_url':interface.Interface_url,
-                                  'Interface_meth':interface.Interface_meth,'Interface_pase':interface.Interface_pase,'Interface_assert':interface.Interface_assert,
-                                  'Interface_is_tiaoshi':interface.Interface_is_tiaoshi,'Interface_tiaoshi_shifou':interface.Interface_tiaoshi_shifou})
+                                  'Interface_name':interface.Interface_name,'Interface_headers':interface.Interface_headers,
+                                  'Interface_url':interface.Interface_url,'Interface_meth':interface.Interface_meth,
+                                  'Interface_pase':interface.Interface_pase,'Interface_assert':interface.Interface_assert,
+                                  'Interface_is_tiaoshi':interface.Interface_is_tiaoshi,
+                                  'Interface_tiaoshi_shifou':interface.Interface_tiaoshi_shifou})
         return jsonify(({'msg': '成功', 'code':200,'data':interfacelist,'url':testeventlist,'typeinter':typeinterface}))
 class DaorucaseView(View):
     methods=['GET','POST']

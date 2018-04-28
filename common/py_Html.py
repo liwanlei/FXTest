@@ -5,9 +5,6 @@
 @time: 2017/6/5 17:04
 """
 '''自己封装的html测试报告'''
-# import sys  
-# reload(sys)  
-# sys.setdefaultencoding('utf8') 
 titles=u'接口测试'
 def title(titles):
     title='''<!DOCTYPE html>
@@ -85,8 +82,7 @@ def ceshixiangqing(id,name,coneent,url,meth,yuqi,json,relust,headers):
             <td>%s</td>
             <td>%s</td>
             %s
-        </tr>
-        
+        </tr>    
     '''%(id,name,coneent,url,meth,headers,yuqi,json,(passfail(relust)))
     return xiangqing
 weibu='''
