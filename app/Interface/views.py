@@ -44,7 +44,7 @@ class InterfaceaddView(MethodView):
                                     Interface_name=data['interfacename'],
                                     Interface_url=data['interface_url'],
                                     Interface_meth=data['interface_meth'],
-                                    face_user_id=current_user.id,
+                                    Interface_user_id=current_user.id,
                                     Interface_headers=data['interface_headers'],
                                     interfacetype=data['interface_type'])
             db.session.add(new_interface)
@@ -328,7 +328,7 @@ class EditParmsView(MethodView):
         if pasrm is None:
             flash('参数无法编辑，请确定是否存在')
             return redirect(url_for('interface.interface_one', id=inte_id))
-        type = request.form.get('type')
+        type_is = request.form.get('type')
         nuss = request.form.get('nussu')
         typec = request.form.get('typechu')
         desec = request.form.get('desec')
@@ -345,7 +345,7 @@ class EditParmsView(MethodView):
             is_chu=1
         else:
             is_chu=0
-        if type is None or type == '':
+        if type_is is None or type_is == '':
             flash('参数格式类型必须填写进去')
             return render_template('edit/edtiparmes.html', pasrm=pasrm, interface_one=interface_one)
         pasrm.type=is_chu
