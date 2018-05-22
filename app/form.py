@@ -45,6 +45,7 @@ class InterForm(Form):#接口的表单
     interface_bas= StringField(u'请求返回示例', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口返回示例'})
 class Interface_yong_Form(Form):#测试用例的表单
     yongli_name=StringField(u'项目', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口项目名称'})
+    test_name=StringField(u'用例编号', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口用例编号'})
     model_name=StringField(u'模块', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口模块名称'})
     interface_name = StringField(u'接口名字', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口名称'})
     interface_url = StringField(u'接口url', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口url'})

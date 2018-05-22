@@ -3,7 +3,7 @@
     <div class="tpl-content-wrapper" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
-        <div class="tpl-portlet-components" style="background-color: whitesmoke;">
+        <div class="tpl-portlet-components" >
             <div class="portlet-title">
                 <div class="caption font-green bold">
                     <span class="am-icon-code"></span> 添加测试用用例
@@ -41,6 +41,11 @@
                         {% for model in  models %}
                             <input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
                         {% endfor %}
+                    </div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>用例编号:</strong>
+                        {{ form.test_name(id='test_name') }}
                     </div>
                     <span>&nbsp;</span>
                     <div class="form-group">

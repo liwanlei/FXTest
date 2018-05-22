@@ -107,6 +107,7 @@ class InterfaceTest(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     model_id=db.Column(db.Integer(),db.ForeignKey('models.id'))
     projects_id=db.Column(db.Integer(),db.ForeignKey('projects.id'))
+    interface_testnum=db.Column(db.String(252))
     interface_type=db.Column(db.String(16))
     Interface_name= db.Column(db.String(252))
     Interface_url = db.Column(db.String(252))

@@ -45,6 +45,7 @@ class AddtestcaseView(View):
             save=request.form.get('save')
             yongli_nam=request.form.get('project')
             mode=request.form.get('model')
+            test_num=request.form.get('test_name')
             interface_name=request.form.get('interface_name')
             interface_url=request.form.get('interface_url')
             interface_header=request.form.get('interface_headers')
@@ -72,11 +73,36 @@ class AddtestcaseView(View):
                     flash(u'选择依赖后必须填写获取依赖的接口的字段')
                     return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
                 yilai_dat=yilai_data
-            if yongli_nam is None or mode is None or interface_name=='' or interface_header==''or interface_url=='' or interface_meth=='' or interface_re=='':
-                flash(u'请准确填写用例的各项信息')
+            if test_num =='' or test_num is None:
+                flash(u'用例编号不能为空')
                 return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
-            project_id = Project.query.filter_by(project_name=yongli_nam).first().id
+            if yongli_nam is None or yongli_nam =='':
+                flash(u'请准确用例的项目')
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+            if mode is None or mode =='':
+                flash(u'请准确用例的模块')
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+            if interface_name is None or interface_name=='':
+                flash(u'请准确用例的接口名称')
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+            if interface_header==''or interface_header==None:
+                flash(u'请准确用例的请求头')
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+            if interface_url=='' or interface_url==None:
+                flash(u'请准确用例的请求地址')
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+            if interface_meth=='' or interface_meth==None:
+                flash(u'请准确用例的请求方法')
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+            if interface_re=='' or interface_re ==None:
+                flash(u'请准确用例的预期')
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+            project_id = Project.query.filter_by(project_name=yongli_nam).first()
             models_id = Model.query.filter_by(model_name=mode).first().id
+            is_test_num=InterfaceTest.query.filter_by(interface_testnum=test_num,projects=project_id).first()
+            if is_test_num:
+                flash(u'你输入的测试用例编号已经存在于数据库')
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
             if save==1 or save=='1':
                 saves=False
             elif save==2 or save=='2':
@@ -85,7 +111,7 @@ class AddtestcaseView(View):
                 flash(u'选择保存测试结果出现异常')
                 return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
             try:
-                newcase=InterfaceTest(projects_id=project_id,model_id=models_id,Interface_name=interface_name,
+                newcase=InterfaceTest(interface_testnum=test_num,projects_id=project_id.id,model_id=models_id,Interface_name=interface_name,
                                       Interface_headers=interface_header,Interface_url=interface_url,
                                       Interface_meth=interface_meth,Interface_pase=interface_can,
                                       Interface_assert=interface_re,Interface_user_id=current_user.id,
@@ -147,6 +173,7 @@ class EditcaseView(View):
             headers=request.form.get('headers')
             parme=request.form.get('parme')
             reque=request.form.get('reque')
+            test_num=request.form.get('test_name')
             yilai_data = request.values.get("yilaicanshu")
             yilai_test = request.values.get("jiekou")
             shifoujiaoyan = request.values.get("database")
@@ -168,8 +195,26 @@ class EditcaseView(View):
                     flash(u'选择依赖后必须填写获取依赖的接口的字段')
                     return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
                 yilai_dat = yilai_data
-            if yongli_nam ==None  or mode== None or url==''or headers=='' or meth==''  or reque=='':
-                flash(u'请确定各项参数都正常填写')
+            if test_num ==None or test_num =='':
+                flash(u'用例编号必须填写')
+                return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+            if yongli_nam ==None or yongli_nam=='':
+                flash(u'项目不能为空！')
+                return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+            if  mode== None or mode=='':
+                flash(u'模块不能为空！')
+                return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+            if url==''or url==None:
+                flash(u'url不能为空！')
+                return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+            if headers=='' or headers==None:
+                flash(u'headers不能为空！')
+                return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+            if meth==''  or meth==None:
+                flash(u'请求方式不能为空！')
+                return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+            if reque=='' or reque==None:
+                flash(u'预期不能为空！')
                 return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
             projects_id = Project.query.filter_by(project_name=yongli_nam).first().id
             model_id = Model.query.filter_by(model_name=mode).first().id
@@ -183,6 +228,7 @@ class EditcaseView(View):
             edit_case.projects_id=projects_id
             edit_case.model_id=model_id
             edit_case.Interface_url=url
+            edit_case.interface_testnum=test_num
             edit_case.Interface_headers=headers
             edit_case.Interface_meth=meth
             edit_case.Interface_pase=parme
@@ -213,7 +259,7 @@ class SeryongliView(MethodView):
             return jsonify({'msg': '没有发送数据', 'code':39})
         project_name=str(project['project'])
         project_is = Project.query.filter_by(project_name=project_name,status=False).first()
-        testevent=Interfacehuan.query.filter_by(projects=project_is,status=False).all()
+        testevent=Interfacehuan.query.filter_by(projects=project_is,status=False).order_by('-id').all()
         interfatype=project['interface_type']
         if interfatype=='http':
             typeinterface='http'
@@ -233,7 +279,7 @@ class SeryongliView(MethodView):
                                   'Interface_name':interface.Interface_name,'Interface_headers':interface.Interface_headers,
                                   'Interface_url':interface.Interface_url,'Interface_meth':interface.Interface_meth,
                                   'Interface_pase':interface.Interface_pase,'Interface_assert':interface.Interface_assert,
-                                  'Interface_is_tiaoshi':interface.Interface_is_tiaoshi,
+                                  'Interface_is_tiaoshi':interface.Interface_is_tiaoshi,'testnum':interface.interface_testnum,
                                   'Interface_tiaoshi_shifou':interface.Interface_tiaoshi_shifou})
         return jsonify(({'msg': '成功', 'code':200,'data':interfacelist,'url':testeventlist,'typeinter':typeinterface}))
 class DaorucaseView(View):
@@ -276,7 +322,8 @@ class DaorucaseView(View):
                         else:
                             yilai_case=''
                             ziduan_case=''
-                        new_interface = InterfaceTest(projects_id=projects_id.id, model_id=model_id.id,
+                        new_interface = InterfaceTest(projects_id=projects_id.id, 
+                                                      model_id=model_id.id,
                                                       Interface_name=str(interface_name[i]),
                                                       Interface_url=str(interface_url[i]),
                                                       Interface_headers=interfac_header[i],
@@ -331,7 +378,9 @@ class MakeonecaseView(View):#这里的为不需要测试环境的测试，目前
             pasrms.update({canshu: yilaidata})
         except:
             return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
-        me=Api(url=case.Interface_url,fangshi=case.Interface_meth,params=pasrms,headers=case.Interface_headers)
+        me=Api(url=case.Interface_url,
+            fangshi=case.Interface_meth,
+            params=pasrms,headers=case.Interface_headers)
         result=me.testapi()
         retur_re=assert_in(case.Interface_assert,result)
         try:

@@ -3,7 +3,7 @@
     <div class="tpl-content-wrapper" onload="yilai();" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
-        <div class="tpl-portlet-components" style="background-color: whitesmoke;">
+        <div class="tpl-portlet-components" >
             <div class="portlet-title">
                 <div class="caption font-green bold">
                     <span class="am-icon-code"></span> 编辑测试用例
@@ -24,7 +24,7 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <form  action="{{ url_for('case.edit_case',id=edit.id) }}" method="POST" style="margin-left:28%">
+            <form  action="{{ url_for('case.edit_case',id=edit.id) }}" method="POST" style="margin-left:2%">
                 <div class="form-group">
                     <strong>项目:</strong>
                     {% for project in  projects %}
@@ -48,6 +48,11 @@
                         {% endfor %}
                     </span>
                 </div>
+                <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>用例编号:</strong>
+                        <input type="text" name="test_name" value="{{edit.interface_testnum}}">
+                    </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口名字:</strong>
