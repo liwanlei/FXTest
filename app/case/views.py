@@ -223,7 +223,7 @@ class SeryongliView(MethodView):
             typeinterface='none'
         if project_is.status is True:
             return jsonify({'msg': '项目已经删除', 'code':40})
-        intertestcases = InterfaceTest.query.filter_by(projects_id=project_is.id, status=False,interface_type=str(interfatype)).all()
+        intertestcases = InterfaceTest.query.filter_by(projects_id=project_is.id, status=False,interface_type=str(interfatype)).order_by('-id').all()
         interfacelist = []
         testeventlist=[]
         for testeven in testevent:
@@ -276,11 +276,13 @@ class DaorucaseView(View):
                         else:
                             yilai_case=''
                             ziduan_case=''
-                        new_interface = InterfaceTest(projects_id=projects_id.id, model_id=model_id.id,
+                        new_interface = InterfaceTest(projects_id=projects_id.id,
+                                                      model_id=model_id.id,
                                                       Interface_name=str(interface_name[i]),
                                                       Interface_url=str(interface_url[i]),
                                                       Interface_headers=interfac_header[i],
                                                       Interface_meth=str(interface_meth[i]),
+                                                      interface_type=str(interface_type[i]),
                                                       Interface_pase=(interface_par[i]),
                                                       Interface_assert=str(interface_bas[i]),
                                                       saveresult=save_reslt,
