@@ -30,5 +30,5 @@ def app_start():
 	http_server = WSGIServer(('127.0.0.1', 5000), app)
 	http_server.serve_forever()
 if __name__ == '__main__':
-    app.run()
-	# app_start()
+	app_start()
+	#app.run()

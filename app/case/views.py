@@ -159,12 +159,12 @@ class EditcaseView(View):
                 databasesql = None
                 databijiao = None
                 is_database = False
-            if yilai_test is None or yilai_test == '请选择依赖接口':
+            if yilai_test is None or  yilai_test == '请选择依赖接口' or yilai_test =='':
                 yilai_dat = None
                 yilai_tes = None
             else:
                 yilai_tes = yilai_test
-                if yilai_data is None or yilai_data == '':
+                if yilai_data is None or yilai_data == '' :
                     flash(u'选择依赖后必须填写获取依赖的接口的字段')
                     return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
                 yilai_dat = yilai_data
@@ -270,12 +270,12 @@ class DaorucaseView(View):
                             chaxun=False
                         else:
                             chaxun=False
-                        if yilai_is[i]=='否':
+                        if yilai_is[i]=='是':
                             yilai_case=yilai[i]
                             ziduan_case=yilai_ziduan[i]
                         else:
-                            yilai_case=''
-                            ziduan_case=''
+                            yilai_case=None
+                            ziduan_case=None
                         new_interface = InterfaceTest(projects_id=projects_id.id,
                                                       model_id=model_id.id,
                                                       Interface_name=str(interface_name[i]),
@@ -497,7 +497,7 @@ class MakeonlyoneCase(MethodView):
             if not  case:
                 return jsonify({'code':42, 'msg': '请确定你要测试的用力是否存在！'})
             if case.interface_type=='http':
-                if case.pid != 'None':
+                if case.pid is not None and case.pid != 'None'  and case.pid!='':
                     tesyi=InterfaceTest.query.filter_by(id=int(case.pid),status=False).first()
                     if tesyi:
                         testres=TestcaseResult.query.filter_by(case_id=tesyi.id,status=False).first()
@@ -539,6 +539,7 @@ class MakeonlyoneCase(MethodView):
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
                         return jsonify({'code':47, 'msg': '测试参数应该是字典格式！'})
+
                 new_headers=case.Interface_headers
                 if  new_headers =='None':
                     ne={'host':url}
@@ -609,6 +610,7 @@ class MakeonlyoneCase(MethodView):
                     return jsonify({'code': 57, 'msg': '转化请求参数失败，原因：%s' % e})
                 me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=data,headers=ne)
                 result = me.testapi()
+                print(result)
                 return_mysql=pare_result_mysql(mysqlresult=mysql_result,return_result=result,paseziduan=case.databaseziduan)
                 retur_re = assert_in(case.Interface_assert, result)
                 if case.saveresult is True:
@@ -618,6 +620,7 @@ class MakeonlyoneCase(MethodView):
                     db.session.add(new_testre)
                     db.session.commit()
                 try:
+                    print(retur_re,return_mysql)
                     if retur_re =='pass'  and return_mysql['result']=='pass':
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = False
@@ -634,6 +637,7 @@ class MakeonlyoneCase(MethodView):
                         db.session.commit()
                         return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
                 except Exception as e:
+                    print(e)
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
                     db.session.commit()
@@ -685,6 +689,7 @@ class MakeonlyoneCase(MethodView):
             else:
                 return jsonify({'code': 62, 'msg': '目前还不支持你所选择的类型的协议！'})
         except Exception as e:
+            print(e)
             case.Interface_is_tiaoshi = True
             case.Interface_tiaoshi_shifou = True
             db.session.commit()
