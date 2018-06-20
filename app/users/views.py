@@ -145,21 +145,16 @@ class FrereView(View):#解冻
             flash(u'用户没有处于冻结状态')
             return redirect(url_for('home.adminuser'))
         if new_ad!=user:
-            if new_ad.is_sper==1:
-                new_ad.status =False
-                try:
-                    db.session.commit()
-                    flash(u'解冻成功')
-                    return redirect(url_for('home.adminuser'))
-                except Exception as e:
-                    db.session.rollback()
-                    flash(u'解冻失败,原因是：%s'%e)
-                    return  redirect(url_for('home.adminuser'))
-            flash(u'自己不能解冻自己')
-            return redirect(url_for('home.adminuser'))
-        new_ad.status=False
-        db.session.commit()
-        flash(u'解冻成功！')
+            new_ad.status=False
+            try:
+                db.session.commit()
+                flash(u'解冻成功')
+                return redirect(url_for('home.adminuser'))
+            except Exception as e:
+                db.session.rollback()
+                flash(u'解冻失败,原因是：%s'%e)
+                return  redirect(url_for('home.adminuser'))
+        flash(u'自己不能解冻自己')
         return redirect(url_for('home.adminuser'))
 class RedpassView(View):#重置密码
     methods=['GET']
