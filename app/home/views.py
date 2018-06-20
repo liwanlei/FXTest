@@ -110,6 +110,8 @@ class YongliView(MethodView):
 class AdminuserView(MethodView):
     @login_required
     def get(self):
+        wrok = Work.query.all()
+        projects = Project.query.filter_by(status=False).all()
         if current_user.is_sper == True:
             pagination=(User.query.order_by('-id').all())
         else:
@@ -124,7 +126,46 @@ class AdminuserView(MethodView):
                                per_page_count=PageShow)
         index_list = pagination[pager_obj.start:pager_obj.end]
         html = pager_obj.page_html()
-        return render_template('home/useradmin.html', users=index_list,html=html)
+        return render_template('home/useradmin.html', users=index_list,html=html, wroks=wrok, projects=projects)
+    @login_required
+    def post(self):
+        data=request.get_json()
+        name=data['name']
+        password=data['password']
+        work=data['work']
+        project=data['project']
+        email=data['email']
+        use = User.query.filter_by(username=name).first()
+        if use:
+            return jsonify({'data': '用户已经存在！不能重复!', 'code': 10})
+        emai = User.query.filter_by(user_email=str(email)).first()
+        if emai:
+            return jsonify({'data': '邮箱已经存在！请选个邮箱!', 'code': 11})
+        wrok = Work.query.filter_by(name=work).first()
+        new_user = User(username=name, user_email=email)
+        new_user.set_password(password)
+        new_user.work_id = wrok.id
+        db.session.add(new_user)
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'data': '添加失败，原因：%s' % e, 'code': 3})
+        if len(project)<=0:
+            return jsonify({'data': '成功', 'code': 2})
+        else:
+            try:
+                user_id = User.query.filter_by(username=name).first()
+                for proj in project:
+                    project_one=Project.query.filter_by(project_name=proj).first()
+                    quanxian = Quanxian(project=project_one.id, rose=1)
+                    quanxian.user.append(user_id)
+                    db.session.add(quanxian)
+                db.session.commit()
+                return jsonify({'data': '成功', 'code': 2})
+            except Exception as e:
+                db.session.rollback()
+                return jsonify({'data': '添加失败，原因：%s' % e, 'code':1})
 class TestrepView(MethodView):
     @login_required
     def get(self,page=1):

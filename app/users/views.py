@@ -11,45 +11,6 @@ from flask.views import MethodView,View
 from common.decorators import chckuserpermisson
 from flask_login import current_user,login_required
 from config import OneAdminCount
-class AdduserView(MethodView):#添加用户
-    @login_required
-    def get(self):
-        if chckuserpermisson() == False:
-            flash('权限不足，不能为项目添加用户')
-            return  redirect(request.headers.get('Referer'))
-        wrok=Work.query.all()
-        projects=Project.query.filter_by(status=False).all()
-        return render_template('add/add_user.html', wroks=wrok, projects=projects)
-    @login_required
-    def post(self):
-        data=request.get_json()
-        use=User.query.filter_by(username=data['username']).first()
-        if use:
-            return  jsonify({'msg':'用户已经存在！不能重复!','code':10,'data':''})
-        emai=User.query.filter_by(user_email=data['eamil']).first()
-        if emai:
-            return jsonify({'msg': '邮箱已经存在！请选个邮箱!', 'code': 11, 'data': ''})
-        wrok=Work.query.filter_by(id=data['work']).first()
-        new_user=User(username=data['username'],user_email=data['eamil'])
-        new_user.set_password(data['password'])
-        new_user.work_id=wrok.id
-        db.session.add(new_user)
-        try:
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({'msg': '添加失败，原因：%s'%e, 'code': 326, 'data': ''})
-        try:
-            user_id = User.query.filter_by(username=data['username']).first()
-            for proj in data['xiangmu']:
-                quanxian = Quanxian(project=proj, rose=1)
-                quanxian.user.append(user_id)
-            db.session.add(quanxian)
-            db.session.commit()
-            return jsonify({'msg': '成功', 'code': 200, 'data': ''})
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({'msg': '添加失败，原因：%s'%e, 'code': 12, 'data': ''})
 class SetadView(View):#设置管理员
     methods=['GET','POST']
     @login_required
@@ -180,23 +141,6 @@ class RedpassView(View):#重置密码
             return redirect(url_for('home.adminuser'))
         flash(u'自己不能重置自己的密码')
         return redirect(url_for('home.adminuser'))
-class SeruserView(MethodView):#查询用户
-    @login_required
-    def get(self):
-        
-        user=request.form.get('user')
-        if user=='':
-            flash(u'请输入您要查询的用户')
-            return redirect(url_for('home.adminuser'))
-        try:
-            use=User.query.filter(User.username.like('%'+user+'%')).order_by('-id').all()
-            if len(use)<=0:
-                flash(u'没有找到您输入的用户')
-                return redirect(url_for('home.adminuser'))
-            return render_template('home/user_ser.html', users=use)
-        except:
-            flash(u'查找用户出现异常！请重新查找')
-            return redirect(url_for('home.adminuser'))
 class Set_emaiView(MethodView):#设置发送测试报告的邮件的
     @login_required
     def get(self):
