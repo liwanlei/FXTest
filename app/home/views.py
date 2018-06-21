@@ -9,7 +9,7 @@ from  flask import  redirect,request,render_template,url_for,session
 home = Blueprint('home', __name__)
 from app.models import *
 from app.form import  *
-from flask.views import MethodView,View
+from flask.views import MethodView
 from flask_login import login_required,login_user,logout_user,current_user
 from app import loginManager
 from config import PageShow
@@ -90,13 +90,53 @@ class LogtView(MethodView):
 class InterfaceView(MethodView):
     @login_required
     def get(self):
+        models = Model.query.filter_by(status=False).all()
         if current_user.is_sper==True:
             projects = Project.query.filter_by(status=False).all()
         else:
             projects = []
             for pros in current_user.quanxians:
                 projects.append(pros.projects)
-        return  render_template('home/interface.html', projects=projects)
+        return  render_template('home/interface.html', projects=projects,models=models)
+    @login_required
+    def post(self):
+        data=request.get_json()
+        project=data['project']
+        model=data['model']
+        name=data['name']
+        url=data['url']
+        headers=data['headers']
+        xieyi=data['xieyi']
+        meth=data['meth']
+        project_id = Project.query.filter_by(project_name=project).first().id
+        models_id = Model.query.filter_by(model_name=model).first().id
+        try:
+            new_interface = Interface(model_id=models_id, projects_id=project_id,
+                                      Interface_name=name,
+                                      Interface_url=url,
+                                      Interface_meth=meth,
+                                      Interface_user_id=current_user.id,
+                                      Interface_headers=headers,
+                                      interfacetype=xieyi)
+            db.session.add(new_interface)
+            db.session.commit()
+            return jsonify({'data': u'添加成功', 'code': 2})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'data': u'添加接口失败，原因:%s' % e, 'code': 3})
+    @login_required
+    def delete(self):
+        data = request.data.decode('utf-8')
+        interface = Interface.query.filter_by(id=data, status=False).first()
+        if not interface:
+            return jsonify({"data": '删除接口不存在', 'code': 4})
+        interface.status = True
+        try:
+            db.session.commit()
+            return jsonify({"data": '删除成功', 'code':2})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"data": '删除接口失败，原因：%s'%e, 'code':3})
 class YongliView(MethodView):
     @login_required
     def get(self,page=1):
@@ -107,6 +147,19 @@ class YongliView(MethodView):
             for i in current_user.quanxians:
                 projects.append(i.projects)
         return  render_template('home/interface_yongli.html',projects=projects)
+    @login_required
+    def delete(self):
+        data = request.data.decode('utf-8')
+        testcase = InterfaceTest.query.filter_by(id=data).first()
+        if not testcase:
+            return jsonify({"data": '删除用例不存在', 'code': 4})
+        try:
+            testcase.status = True
+            db.session.commit()
+            return jsonify({"data": '删除用例成功', 'code':2})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"data": '删除用例失败，原因：%s'%e, 'code':3})
 class AdminuserView(MethodView):
     @login_required
     def get(self):
@@ -182,6 +235,19 @@ class TestrepView(MethodView):
             return render_template('home/test_result.html', projects=pyth_post1,pages=pages)
         except:
             return redirect(url_for('home.test_rep'))
+    @login_required
+    def delete(self):
+        data = request.data.decode('utf-8')
+        delTest=TestResult.query.filter_by(id=data,status=False).first()
+        if not  delTest:
+            return jsonify({"data": '删除的测试报告不存在', 'code':3})
+        delTest.status=True
+        try:
+            db.session.commit()
+            return jsonify({"data": '删除测试报告成功', 'code':2})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"data": '删除测试报告失败！', 'code': 2})
 class ProjectView(MethodView):
     @login_required
     def get(self,page=1):
@@ -244,14 +310,14 @@ class ProjectView(MethodView):
         data = request.data.decode('utf-8')
         proje = Project.query.filter_by(id=data, status=False).first()
         if not proje:
-            return jsonify({"data": '编辑的项目不存在', 'code': 4})
+            return jsonify({"data": '删除项目不存在', 'code': 4})
         proje.status = True
         try:
             db.session.commit()
             return jsonify({"data": '删除成功', 'code':2})
         except Exception as e:
             db.session.rollback()
-            return jsonify({"data": '删除失败', 'code': 4})
+            return jsonify({"data": '删除失败', 'code':3})
 class ModelView(MethodView):
     @login_required
     def get(self,page=1):

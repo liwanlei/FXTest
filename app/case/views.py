@@ -101,24 +101,6 @@ class AddtestcaseView(View):
                 flash(u'添加用例失败，原因是：%s'%e)
                 return redirect(url_for('home.yongli'))
         return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
-class Deletecase(View):
-    methods=['GET','POST']
-    @login_required
-    def dispatch_request(self,id):
-        next=request.headers.get('Referer')
-        testcase=InterfaceTest.query.filter_by(id=id).first()
-        if  not testcase:
-            flash(u'删除的测试用例:%s不存在'%id)
-            return redirect(next or url_for('home.yongli'))
-        try:
-            testcase.status=True
-            db.session.commit()
-            flash(u'用例：%s 删除成功'%id)
-            return redirect(next or url_for('home.yongli'))
-        except Exception as e:
-            db.session.rollback()
-            flash(u'用例：%s删除失败！原因：%s'%(id,e))
-            return redirect(next or url_for('home.yongli'))
 class EditcaseView(View):
     methods=['GET','POST']
     @login_required

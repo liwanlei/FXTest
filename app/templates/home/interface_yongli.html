@@ -231,13 +231,13 @@
                         }
 
                         else for(var i=0;i<mdata.length;i++){
-                            if(mdata[i].Interface_is_tiaoshi==0 ){
-                                insertss.append("<tr><td><input type='checkbox' name='yongli' value='"+mdata[i].id+"'></td><td>"+mdata[i].id+"</td><td>"+mdata[i].project+"</td><td>"+mdata[i].model+"</td><td>"+mdata[i].Interface_url+"</td><td >"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td>"+mdata[i].Interface_pase+"</td><td>"+mdata[i].Interface_assert+"</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a> <a href='/delete_case/"+mdata[i].id+"'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-default' id='"+mdata[i].id+"' onclick='testcase(this.id)'><input type='button' value='日志' class='btn btn-default' id='"+mdata[i].id+"' onclick='caseshowone(this.id)'></div></div></td></tr>")
+                            if(mdata[i].Interface_is_tiaoshi == 0 ){
+                                insertss.append("<tr id='"+mdata[i].id+"'><td><input type='checkbox' name='yongli' value='"+mdata[i].id+"'></td><td>"+mdata[i].id+"</td><td>"+mdata[i].project+"</td><td>"+mdata[i].model+"</td><td>"+mdata[i].Interface_url+"</td><td >"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td>"+mdata[i].Interface_pase+"</td><td>"+mdata[i].Interface_assert+"</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a> <a onclick='deletcase("+mdata[i].id+")'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-default' id='"+mdata[i].id+"' onclick='testcase(this.id)'><input type='button' value='日志' class='btn btn-default' id='"+mdata[i].id+"' onclick='caseshowone(this.id)'></div></div></td></tr>")
                             }
-                            else if(mdata[i].Interface_is_tiaoshi==1 &&mdata[i].Interface_tiaoshi_shifou==1){
-                                insertss.append("<tr><td><input type='checkbox' name='yongli' value='"+mdata[i].id+"'></td><td>"+mdata[i].id+"</td><td>"+mdata[i].project+"</td><td>"+mdata[i].model+"</td><td>"+mdata[i].Interface_url+"</td><td >"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td>"+mdata[i].Interface_pase+"</td><td>"+mdata[i].Interface_assert+"</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a> <a href='/delete_case/"+mdata[i].id+"'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-danger' id='"+mdata[i].id+"' onclick='testcase(this.id)'><input type='button' value='日志' class='btn btn-default' id='"+mdata[i].id+"' onclick='caseshowone(this.id)'></div></div></td></tr>")
-                            }else if(mdata[i].Interface_is_tiaoshi==1 &&mdata[i].Interface_tiaoshi_shifou==0) {
-                                insertss.append("<tr><td><input type='checkbox' name='yongli' value='"+mdata[i].id+"'></td><td>"+mdata[i].id+"</td><td>"+mdata[i].project+"</td><td>"+mdata[i].model+"</td><td>"+mdata[i].Interface_url+"</td><td >"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td>"+mdata[i].Interface_pase+"</td><td>"+mdata[i].Interface_assert+"</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a> <a href='/delete_case/"+mdata[i].id+"'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-success' id='"+mdata[i].id+"' onclick='testcase(this.id)'><input type='button' value='日志' class='btn btn-default' id='"+mdata[i].id+"' onclick='caseshowone(this.id)'></div></div></td></tr>")
+                            else if(mdata[i].Interface_is_tiaoshi == 1 && mdata[i].Interface_tiaoshi_shifou == 1){
+                                insertss.append("<tr  id='"+mdata[i].id+"'><td><input type='checkbox' name='yongli' value='"+mdata[i].id+"'></td><td>"+mdata[i].id+"</td><td>"+mdata[i].project+"</td><td>"+mdata[i].model+"</td><td>"+mdata[i].Interface_url+"</td><td >"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td>"+mdata[i].Interface_pase+"</td><td>"+mdata[i].Interface_assert+"</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a> <a onclick='deletcase("+mdata[i].id+")'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-danger' id='"+mdata[i].id+"' onclick='testcase(this.id)'><input type='button' value='日志' class='btn btn-default' id='"+mdata[i].id+"' onclick='caseshowone(this.id)'></div></div></td></tr>")
+                            }else if(mdata[i].Interface_is_tiaoshi==1 && mdata[i].Interface_tiaoshi_shifou==0) {
+                                insertss.append("<tr  id='"+mdata[i].id+"'><td><input type='checkbox' name='yongli' value='"+mdata[i].id+"'></td><td>"+mdata[i].id+"</td><td>"+mdata[i].project+"</td><td>"+mdata[i].model+"</td><td>"+mdata[i].Interface_url+"</td><td >"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td>"+mdata[i].Interface_pase+"</td><td>"+mdata[i].Interface_assert+"</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a> <a onclick='deletcase("+mdata[i].id+")'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-success' id='"+mdata[i].id+"' onclick='testcase(this.id)'><input type='button' value='日志' class='btn btn-default' id='"+mdata[i].id+"' onclick='caseshowone(this.id)'></div></div></td></tr>")
                             }
                         };
                     }
@@ -287,6 +287,23 @@
                     alert('异步请求失败，请联系管理员！！！');
                     window.location.reload();
                 }
+            })
+        }
+        function deletcase(id) {
+            $.ajax({
+                url:'{{url_for( 'home.yongli') }}',
+                type:'DELETE',
+                data:id,
+                contentType: 'application/json; charset=UTF-8',
+                processData:false,
+                success:function(data){
+                    if(data['code']!=2){
+                        alert(data['data'])
+                    }else{
+                        alert(data['data'])
+                        caseid=document.getElementById(id);
+                        caseid.hidden=true;
+                    }}
             })
         }
     </script>

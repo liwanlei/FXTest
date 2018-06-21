@@ -18,41 +18,6 @@ def get_pro_mo():
     projects=Project.query.filter_by(status=False).all()
     model=Model.query.filter_by(status=False).all()
     return  projects,model
-class InterfaceaddView(MethodView):
-    @login_required
-    def get(self):
-        form=InterForm()
-        models=Model.query.filter_by(status=False).all()
-        if current_user.is_sper == True:
-            projects=Project.query.filter_by(status=False).order_by('-id').all()
-        else:
-            projects=[]
-            id=[]
-            for i in current_user.quanxians:
-                if  (i.projects in id)==False:
-                    if i.projects.status == False:
-                        projects.append(i.projects)
-                        id.append(i.projects)
-        return render_template('add/add_interface.html', form=form, projects=projects, models=models)
-    @login_required
-    def post(self):
-        data=request.get_json()
-        project_id=Project.query.filter_by(project_name=data['project']).first().id
-        models_id=Model.query.filter_by(model_name=data['model']).first().id
-        try:
-            new_interface=Interface(model_id=models_id,projects_id=project_id,
-                                    Interface_name=data['interfacename'],
-                                    Interface_url=data['interface_url'],
-                                    Interface_meth=data['interface_meth'],
-                                    face_user_id=current_user.id,
-                                    Interface_headers=data['interface_headers'],
-                                    interfacetype=data['interface_type'])
-            db.session.add(new_interface)
-            db.session.commit()
-            return jsonify({'msg': u'成功', 'code': 200,'data':''})
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({'msg': u'添加接口失败，原因:%s'%e, 'code': 30,'data':''})
 class EditInterfaceView(MethodView):
     @login_required
     def get(self,id):
@@ -116,22 +81,6 @@ class EditInterfaceView(MethodView):
         except:
             db.session.rollback()
             flash(u'编辑失败')
-            return redirect(url_for('home.interface'))
-class DeleinterView(MethodView):
-    @login_required
-    def get(self,id):
-        interface=Interface.query.filter_by(id=id,status=False).first()
-        if not  interface:
-            flash(u'删除失败，没有获到你要删除的接口，请重新选择要删除的接口重试')
-            return redirect(url_for('home.interface'))
-        interface.status=True
-        try:
-            db.session.commit()
-            flash(u'删除成功')
-            return redirect(url_for('home.interface'))
-        except Exception as e:
-            db.session.rollback()
-            flash(u'删除失败！原因：%s'%e)
             return redirect(url_for('home.interface'))
 class DaoruinterView(View):
     methods=['GET','POST']

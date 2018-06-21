@@ -4,13 +4,11 @@
 @time: 2017/7/13 16:42
 """
 from app import  app
-from  flask import  redirect,request,render_template,url_for,flash,make_response,send_from_directory,jsonify
+from  flask import  request,render_template,make_response,send_from_directory,jsonify
 from  app.models import *
-from app.form import  *
 import os
-from flask.views import MethodView,View
-from flask_login import current_user,login_required
-from common.decorators import chckuserpermisson
+from flask.views import MethodView
+from flask_login import login_required
 def get_pro_mo():
     projects=Project.query.filter_by(status=False).all()
     model=Model.query.filter_by(status=False).all()
@@ -36,26 +34,6 @@ class LoadView(MethodView):
         file_dir=os.path.join(basedir,'upload')
         response=make_response(send_from_directory(file_dir,filename,as_attachment=True))
         return response
-class DeleteResultView(View):#删除测试报告
-    methods=['GET','POST']
-    @login_required
-    def dispatch_request(self,id):
-        if chckuserpermisson() == False:
-            flash('权限不足，不能删除测试报告')
-            return  redirect(request.headers.get('Referer'))
-        delTest=TestResult.query.filter_by(id=id,status=False).first()
-        if not  delTest:
-            flash('要删除的测试报告不存在')
-            return  redirect(url_for('home.test_rep'))
-        delTest.status=True
-        try:
-            db.session.commit()
-            flash(u'删除成功')
-            return redirect( url_for('home.test_rep'))
-        except Exception as e:
-            db.session.rollback()
-            flash('删除测试报告失败，原因：%s'%e)
-            return  redirect(url_for('home.test_rep'))
 @app.route('/gettest',methods=['POST'])
 @login_required
 def gettest():#ajax获取项目的测试用例
