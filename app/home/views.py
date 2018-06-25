@@ -481,6 +481,53 @@ class MockViews(MethodView):
         mock=Mockserver.query.filter_by(delete=False).order_by('-id').paginate(page, per_page=int(PageShow),error_out=False)
         inter = mock.items
         return render_template('home/mockserver.html', inte=inter, pagination=mock)
+    @login_required
+    def post(self):
+        data_post = request.get_json()
+        name_is = Mockserver.query.filter_by(name=data_post['name']).first()
+        if name_is:
+            return jsonify({"code": 28, 'data': 'mockserver的名称不能重复'})
+        if data_post['checkout'] == u'是':
+            is_check = True
+        else:
+            is_check = False
+        if data_post['checkouheaders'] == u'是':
+            is_headers = True
+        else:
+            is_headers = False
+        if data_post['kaiqi'] == u'是':
+            is_kaiqi = True
+        else:
+            is_kaiqi = False
+        new_mock = Mockserver(name=data_post['name'])
+        new_mock.make_uers = current_user.id
+        new_mock.path = data_post['path']
+        new_mock.methods = data_post['meth']
+        new_mock.headers = data_post['headers']
+        new_mock.description = data_post['desc']
+        new_mock.fanhui = data_post['back']
+        new_mock.params = data_post['parm']
+        new_mock.rebacktype = data_post['type']
+        new_mock.status = is_kaiqi
+        new_mock.ischeck = is_check
+        new_mock.is_headers = is_headers
+        new_mock.update_time = datetime.datetime.now()
+        db.session.add(new_mock)
+        try:
+            db.session.commit()
+            return jsonify({"code": 2, 'data': '添加mock成功'})
+        except:
+            db.session.rollback()
+            return jsonify({"code": 29, 'data': '创建新的mock接口出错,原因：%s' % Exception})
+    @login_required
+    def delete(self):
+        data = request.data.decode('utf-8')
+        ded = Mockserver.query.filter_by(id=data, status=False).first()
+        if ded:
+            ded.delete = True
+            db.session.commit()
+            return jsonify({'data': '删除成功', 'code': 2})
+        return jsonify({'data': '删除失败，找不到mocksever', 'code':3})
 class TimingtasksView(MethodView):
     @login_required
     def get(self,page=1):
@@ -511,6 +558,8 @@ class GettProtestreport(MethodView):
         if not  project:
             return jsonify({'msg': u'没有发送数据', 'code': 38,'data':''})
         project_is=Project.query.filter_by(project_name=project).first()
+        if not  project_is:
+            return jsonify(({'msg': u'成功', 'code': 200, 'data':[]}))
         testreport=TestResult.query.filter_by(projects_id=project_is.id, status=False).order_by('-id').all()
         testreportlist=[]
         for test in testreport:

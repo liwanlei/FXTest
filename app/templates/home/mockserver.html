@@ -24,15 +24,10 @@
                     <div class="am-u-sm-12 am-u-md-6">
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <a href="{{ url_for('mock.addmock') }}">
+                                <a onclick="addmock()">
                                     <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加">
                                 </a>
-                                <span style="float: right;margin-left: 20px;">
-                                    <form method="post" action="{{ url_for('mock.sermock') }}">
-                                        <input placeholder="请输入要查询的mock接口" type="text" name="mock">
-                                        <input type="submit" value="搜索" class="am-icon-search btn-success" >
-                                    </form>
-                                </span>
+
                             </div>
                         </div>
                     </div>
@@ -57,7 +52,7 @@
                     </tr>
                     </thead>
                     <tbody>{% for int in inte %}
-                        <tr >
+                        <tr  >
                             <td onclick="show({{ int.id }})">
                                 <label class="label-primary" style="background: white">{{ int.name }}
                                 </label>
@@ -125,9 +120,9 @@
                                     <a href="{{ url_for('mock.editmockserver',id=int.id) }}">
                                         <i class="am-icon-edit"></i></a></span>  {%if current_user.role_id !=1 and current_user.role_id !=None  %}
                                 <span>
-                                    <a href="{{ url_for('mock.deletemock',id=int.id) }}">
+                                    <button onclick="deleteproject({{ int.id }})">
                                         <i class="am-icon-remove"></i>
-                                    </a>
+                                    </button>
                                 </span>
                             {%endif%}
                             </td>
@@ -161,6 +156,62 @@
             </div>
         </div>
     </div>
+     <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="addmock">
+        <div style="height: 5px;">添加mock接口</div>
+        <div style="background-color: whitesmoke;margin-top: 24px" >
+           <p>mock接口名字：
+                        <input type="text" placeholder="请输入mock接口名字" id="name"></p>
+                    <p> mock接口描述：
+                        <input type="text" placeholder="请输入mock接口描述" id="desc"></p>
+                    <p> mock 接口路径：
+                        <input type="text" placeholder="请输入mock接口路径" id="path"></p>
+                    <p>  mock接口请求方式：
+                        <select id="meth" class="select2-results">
+                            <option>get</option>
+                            <option>post</option>
+                            <option>delete</option>
+                            <option>put</option>
+                            <option>push</option>
+                        </select>
+                    </p>
+                    <p>mock接口类型参数：<select id="type">
+                        <option>json</option>
+                        <option>xml</option>
+                    </select>
+                    </p>
+                    <p>mock接口请求头：
+                        <textarea id="headers" style="width: 200px;height: 100px;"></textarea>
+                    </p>
+                    <p>mock接口请求参数：
+                        <textarea id="parm"  style="width: 200px;height: 100px;">
+                        </textarea>
+                    </p>
+                    <p>mock接口返回参数：
+                        <textarea id="back" style="width: 200px;height: 100px;"></textarea>
+                    </p>
+                    <p>mock接口是否校验：<select id="checkout">
+                        <option>是</option>
+                        <option>否</option>
+                    </select>
+                    </p>
+                    <p>mock接口是否校验请求头：
+                        <select id="checkouheaders">
+                            <option>是</option>
+                            <option>否</option>
+                        </select>
+                    </p>
+                    <p>mock接口是否开启：
+                        <select id="kaiqi">
+                            <option>是</option>
+                            <option>否</option>
+                        </select>
+                    </p>
+        </div>
+        <div style="margin-top: 1%;margin-bottom: auto">
+            <input value="添加" type="button" class="btn-default"  onclick="add_mock()" >
+            <input value="取消" type="button" class=" btn-default"  onclick="guanbi()" >
+        </div>
+    </div>
     <script type="application/javascript">
         function show(id) {
             var obj=document.getElementById(id);
@@ -169,6 +220,102 @@
             }else {
                 obj.style.display ='none';
             }
+        }
+        function addmock() {
+            var  dakai=document.getElementById('addmock');
+            dakai.style.display='';
+        }
+        function  guanbi() {
+            var dakai=document.getElementById('addmock');
+            dakai.style.display='none'
+        }
+        function  add_mock() {
+            var  name=document.getElementById('name');
+            var desc=document.getElementById('desc');
+            var  path=document.getElementById('path');
+            var headers=document.getElementById('headers');
+            var parm=document.getElementById('parm');
+            var back=document.getElementById('back');
+            var obj = document.getElementById('meth');
+            var index=obj.selectedIndex;
+            var meth = obj.options[index].value;
+            var ob = document.getElementById('type');
+            var inde=ob.selectedIndex;
+            var type = ob.options[inde].value;
+            var obd = document.getElementById('checkout');
+            var ind=obd.selectedIndex;
+            var checkout = obd.options[ind].value;
+            var obds = document.getElementById('checkouheaders');
+            var insd=obds.selectedIndex;
+            var checkouheaders = obds.options[insd].value;
+            var kaiqis = document.getElementById('kaiqi');
+            var insds=kaiqis.selectedIndex;
+            var kaiqi = kaiqis.options[insds].value;
+            if(name.value.length<1){
+                alert('mock接口的名字不能为空');
+            }else {
+                if(path.value.length<1){
+                    alert('mock接口的路径不能为空');
+                }else {
+                    if(parm.value.length<1){
+                        alert('mock接口的参数不能为空');
+                    }else {
+                        if(back.value.length<1){
+                            alert('mock接口的返回参数不能为空');
+                        }else {
+                            if(meth.length<1){
+                                alert('mock接口请求方式不能为空！');
+                            }else {
+                                var data={};
+                                data['name']=name.value;
+                                data['desc']=desc.value;
+                                data['path']=path.value;
+                                data['headers']=headers.value;
+                                data['parm']=parm.value;
+                                data['back']=back.value;
+                                data['meth']=meth;
+                                data['type']=type;
+                                data['checkout']=checkout;
+                                data['checkouheaders']=checkouheaders;
+                                data['kaiqi']=kaiqi;
+                                $.ajax({
+                                    url: '{{ url_for('home.mockserver') }}',
+                                    type: 'POST',
+                                    data:  JSON.stringify(data),
+                                    contentType: 'application/json; charset=UTF-8',
+                                    processData: false,
+                                    success: function (result) {
+                                        if(result['code']==2){
+                                            alert(result['data']);
+                                            location.reload()
+                                        }
+                                        else{
+                                            alert(result['data']);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        function deleteproject(id) {
+            $.ajax({
+                url:'{{url_for( 'home.mockserver') }}',
+                type:'DELETE',
+                data:id,
+                contentType: 'application/json; charset=UTF-8',
+                processData:false,
+                success:function(data){
+                    if(data['code']!=2){
+                        alert(data['data'])
+                    }else{
+                        alert(data['data']);
+                        location.reload()
+                    }
+                }
+            })
         }
     </script>
 {% endblock %}
