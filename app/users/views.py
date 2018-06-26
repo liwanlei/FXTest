@@ -4,7 +4,8 @@
 # @Time    : 2017/12/7 12:25
 from flask import  Blueprint
 user = Blueprint('user', __name__)
-from  flask import  redirect,request,render_template,session,url_for,flash,jsonify
+from  flask import  redirect,request,render_template,\
+    session,url_for,flash,jsonify
 from  app.models import *
 from app.form import  *
 from flask.views import MethodView,View

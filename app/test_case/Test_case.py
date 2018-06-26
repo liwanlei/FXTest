@@ -10,8 +10,9 @@ from app.models import InterfaceTest,TestcaseResult
 from common.mysqldatabasecur import *
 from  app import db
 class ApiTestCase():
-    def __init__(self,inteface_url,inteface_meth,inteface_parm,inteface_assert,file,headers,pid,
-                 yilaidata,saveresult,id_list,is_database,data_mysql,data_ziduan,urltest):
+    def __init__(self,inteface_url,inteface_meth,inteface_parm,
+                 inteface_assert,file,headers,pid,yilaidata,saveresult,
+                 id_list,is_database,data_mysql,data_ziduan,urltest):
         self.result_pass=0
         self.result_fail=0
         self.result_toal=0

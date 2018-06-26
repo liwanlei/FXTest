@@ -19,5 +19,5 @@ def create_roles():#创建角色
         db.session.add(role)
     db.session.commit()
 if __name__=='__main__':
-    # create_roles()
-    db.create_all()
+     create_roles()
+    #db.create_all()

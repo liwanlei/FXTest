@@ -218,7 +218,8 @@ class AddtimingtaskView(MethodView):
     @login_required
     def post(self):
         data=request.get_json()
-        task_time={'type': 'cron','day_of_week':data['week'],'hour':data['hour'],'minute':data['minx']}
+        task_time={'type': 'cron','day_of_week':data['week'],
+                   'hour':data['hour'],'minute':data['minx']}
         taskname_is = Task.query.filter_by(taskname=data['taskname']).first()
         testevent=Interfacehuan.query.filter_by(url=data['testevent']).first()
         if not testevent:
@@ -228,8 +229,10 @@ class AddtimingtaskView(MethodView):
         procjt=Project.query.filter_by(project_name=data['projects'],status=False).first()
         if not  procjt:
             return jsonify({'code': 24, 'msg': '任务的所属项目不存在', 'data': ''})
-        new_task=Task(taskname=data['taskname'],taskstart=str(task_time),taskrepor_to=data['to_email'],taskrepor_cao=data['cao_email'],task_make_email=data['weihu'],
-                      makeuser=current_user.id,prject=procjt.id,testevent=testevent.id)
+        new_task=Task(taskname=data['taskname'],taskstart=str(task_time),
+                      taskrepor_to=data['to_email'],taskrepor_cao=data['cao_email'],
+                      task_make_email=data['weihu'],makeuser=current_user.id,
+                      prject=procjt.id,testevent=testevent.id)
         db.session.add(new_task)
         try:
             return jsonify({'code': 200, 'msg': '成功', 'data': ''})
@@ -253,7 +256,8 @@ class Editmingtaskview(MethodView):
         if not task_one:
             flash(u'你编辑的不存在')
             return  redirect(url_for('home.timingtask'))
-        return  render_template('edit/Edittimingtasks.html', task_one=task_one, porjects=projects)
+        return  render_template('edit/Edittimingtasks.html',
+                                task_one=task_one, porjects=projects)
     @login_required
     def post(self,id):
         task_one = Task.query.filter_by(id=id).first()

@@ -3,6 +3,7 @@
 @file: pagin_fen.py 
 @time: 2018/4/28 9:47 
 """
+'''分页'''
 def fenye_list(Ob_list:list,split:int):
     New_list=[]
     if len(Ob_list)<=split:

@@ -19,7 +19,6 @@ Flask-WTF==0.14.2
 Jinja2==2.9.6
 Logbook==1.1.0
 lxml==3.7.3
-PyMySQL==0.7.11
 PyYAML==3.12
 requests==2.18.4
 SQLAlchemy==1.1.9

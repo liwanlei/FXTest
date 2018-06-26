@@ -4,7 +4,8 @@
 @time: 2017/7/13 16:42
 """
 from app import  app
-from  flask import  request,render_template,make_response,send_from_directory,jsonify
+from  flask import  request,render_template,\
+    make_response,send_from_directory,jsonify
 from  app.models import *
 import os
 from flask.views import MethodView

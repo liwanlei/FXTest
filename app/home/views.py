@@ -57,8 +57,10 @@ class Indexview(MethodView):
                 result += 1
         project_cout=Project.query.filter_by(status=False).count()
         model_cout=Model.query.filter_by(status=False).count()
-        return  render_template('home/index.html', yongli=len(case_list), jiekou=len(interface_list),
-                                report=len(reslut_list), project_cout=project_cout, model_cout=model_cout)
+        return  render_template('home/index.html', yongli=len(case_list),
+                                jiekou=len(interface_list),
+                                report=len(reslut_list), project_cout=project_cout,
+                                model_cout=model_cout)
 class LoginView(MethodView):
     def get(self):
         form=LoginFrom()

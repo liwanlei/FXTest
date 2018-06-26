@@ -3,7 +3,8 @@
 # @File    : views.py
 # @Time    : 2017/12/7 12:11
 from flask import  Blueprint
-from  flask import  redirect,request,render_template,url_for,flash
+from  flask import  redirect,request,\
+    render_template,url_for,flash
 from app.models import *
 from flask.views import MethodView
 from flask_login import current_user,login_required

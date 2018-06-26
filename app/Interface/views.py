@@ -3,9 +3,10 @@
 @file: views.py 
 @time: 2018/1/31 13:31 
 """
-from  flask import  redirect,request,render_template,session,url_for,flash,Blueprint,jsonify,make_response,send_from_directory
+from  flask import  redirect,request,\
+    render_template,session,url_for,flash,Blueprint,\
+    jsonify,make_response,send_from_directory
 from  app.models import *
-from app.form import  *
 from common.pares_excel_inter import pasre_inter
 from flask.views import MethodView,View
 from flask_login import login_required,current_user
