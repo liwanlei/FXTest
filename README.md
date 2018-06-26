@@ -19,7 +19,7 @@
 ## v3.3版本更新日志
 ###  利用resetful api 思想优化代码，实现前后端分离。
 
-## [其他版本更新日志]() 
+## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md) 
 
 # 有问题可以联系我：QQ:952943386 email:leileili126@163.com  qq群：194704520  新群：683894834
 # 微信打赏
