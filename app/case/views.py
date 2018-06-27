@@ -32,6 +32,7 @@ class AddtestcaseView(View):
     def dispatch_request(self):
         form=Interface_yong_Form()
         project, models = get_pro_mo()
+        inrterface_list=Interface.query.filter_by(status=False).all()
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
         else:
@@ -45,8 +46,8 @@ class AddtestcaseView(View):
         if request.method=='POST' and form.validate_on_submit :
             save=request.form.get('save')
             yongli_nam=request.form.get('project')
-            mode=request.form.get('model')
-            interface_name=request.form.get('interface_name')
+            mode=request.form.get('mode')
+            interface_name=request.form.get('inerfa')
             interface_url=request.form.get('interface_url')
             interface_header=request.form.get('interface_headers')
             interface_meth=request.form.get('interface_meth')
@@ -71,27 +72,30 @@ class AddtestcaseView(View):
                 yilai_tes=yilai_test
                 if yilai_data is None or yilai_data=='':
                     flash(u'选择依赖后必须填写获取依赖的接口的字段')
-                    return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+                    return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list)
                 yilai_dat=yilai_data
-            if yongli_nam is None or mode is None or interface_name=='' or interface_header==''or interface_url=='' or interface_meth=='' or interface_re=='':
+            if yongli_nam =='' or mode ==''  or interface_header==''or interface_url=='' or interface_meth=='' :
                 flash(u'请准确填写用例的各项信息')
-                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list)
             project_id = Project.query.filter_by(project_name=yongli_nam).first().id
             models_id = Model.query.filter_by(model_name=mode).first().id
+            interface=Interface.query.filter_by(Interface_name=interface_name).first().id
             if save==1 or save=='1':
                 saves=False
             elif save==2 or save=='2':
                 saves=True
             else:
                 flash(u'选择保存测试结果出现异常')
-                return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list)
+
             try:
-                newcase=InterfaceTest(projects_id=project_id,model_id=models_id,Interface_name=interface_name,
-                                      Interface_headers=interface_header,Interface_url=interface_url,
+                newcase=InterfaceTest(projects_id=project_id,model_id=models_id,interface_id=interface,
+                                      Interface_headers=interface_header,bian_num=interface_url,
                                       Interface_meth=interface_meth,Interface_pase=interface_can,
                                       Interface_assert=interface_re,Interface_user_id=current_user.id,
                                       saveresult=saves,pid=(yilai_tes),getattr_p=yilai_dat,
-                                      is_database=is_database,chaxunshujuku=databasesql,databaseziduan=databijiao,
+                                      is_database=is_database,chaxunshujuku=databasesql,
+                                      databaseziduan=databijiao,
                                       interface_type=interface_type)
                 db.session.add(newcase)
                 db.session.commit()
@@ -101,12 +105,13 @@ class AddtestcaseView(View):
                 db.session.rollback()
                 flash(u'添加用例失败，原因是：%s'%e)
                 return redirect(url_for('home.yongli'))
-        return render_template('add/add_test_case.html', form=form, projects=projects, models=models)
+        return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list)
 class EditcaseView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
         project, models = get_pro_mo()
+        inrterface_list = Interface.query.filter_by(status=False).all()
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
         else:
@@ -132,6 +137,7 @@ class EditcaseView(View):
             reque=request.form.get('reque')
             yilai_data = request.values.get("yilaicanshu")
             yilai_test = request.values.get("jiekou")
+            inerfa=request.form.get('inerfa')
             shifoujiaoyan = request.values.get("database")
             interface_type = request.values.get('interface_type')
             if shifoujiaoyan == 'on':
@@ -149,23 +155,31 @@ class EditcaseView(View):
                 yilai_tes = yilai_test
                 if yilai_data is None or yilai_data == '' :
                     flash(u'选择依赖后必须填写获取依赖的接口的字段')
-                    return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+                    return render_template('edit/edit_case.html', edit=edit_case,
+                                           projects=projects, models=models,
+                                           inerfacelist=inrterface_list)
                 yilai_dat = yilai_data
             if yongli_nam ==None  or mode== None or url==''or headers=='' or meth==''  or reque=='':
                 flash(u'请确定各项参数都正常填写')
-                return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+                return render_template('edit/edit_case.html', edit=edit_case, projects=projects,
+                                       models=models,
+                                           inerfacelist=inrterface_list)
             projects_id = Project.query.filter_by(project_name=yongli_nam).first().id
             model_id = Model.query.filter_by(model_name=mode).first().id
+            interface=Interface.query.filter_by(Interface_name=inerfa).first().id
             if  save is None:
                 saves = False
             elif  save =='是':
                 saves = True
             else:
-                flash(u'选择保存测试结果出现异常')
-                return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+                flash(u'选择保存测试用例异常')
+                return render_template('edit/edit_case.html',
+                                       edit=edit_case, projects=projects, models=models,
+                                           inerfacelist=inrterface_list)
             edit_case.projects_id=projects_id
             edit_case.model_id=model_id
-            edit_case.Interface_url=url
+            edit_case.interface_id=interface
+            edit_case.bianhao=url
             edit_case.Interface_headers=headers
             edit_case.Interface_meth=meth
             edit_case.Interface_pase=parme
@@ -185,8 +199,11 @@ class EditcaseView(View):
             except:
                 db.session.rollback()
                 flash(u'用例：%s 编辑失败，请重新编辑！'%id)
-                return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
-        return render_template('edit/edit_case.html', edit=edit_case, projects=projects, models=models)
+                return render_template('edit/edit_case.html',
+                                       edit=edit_case, projects=projects, models=models,
+                                           inerfacelist=inrterface_list)
+        return render_template('edit/edit_case.html', edit=edit_case, projects=projects,
+                               models=models,inerfacelist=inrterface_list)
 class SeryongliView(MethodView):
     @login_required
     def post(self):
@@ -322,7 +339,8 @@ class MakeonecaseView(View):#这里的为不需要测试环境的测试，目前
             pasrms.update({canshu: yilaidata})
         except:
             return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
-        me=Api(url=case.Interface_url,fangshi=case.Interface_meth,params=pasrms,headers=case.Interface_headers)
+        me=Api(url=case.interface_id.Interface_url,fangshi=case.Interface_meth,
+               params=pasrms,headers=case.Interface_headers)
         result=me.testapi()
         retur_re=assert_in(case.Interface_assert,result)
         try:
@@ -405,7 +423,7 @@ class DuoyongliView(View):
                 id_list.append(case_one.id)
                 projecct_list.append(case_one.projects)
                 model_list.append(case_one.models)
-                Interface_url_list.append(case_one.Interface_url)
+                Interface_url_list.append(case_one.interface_id.Interface_url)
                 Interface_name_list.append(case_one.Interface_name)
                 Interface_meth_list.append(case_one.Interface_meth)
                 Interface_pase_list.append(case_one.Interface_pase)
@@ -597,9 +615,8 @@ class MakeonlyoneCase(MethodView):
                     case.Interface_tiaoshi_shifou = True
                     db.session.commit()
                     return jsonify({'code': 57, 'msg': '转化请求参数失败，原因：%s' % e})
-                me = Api(url=case.Interface_url, fangshi=case.Interface_meth, params=data,headers=ne)
+                me = Api(url=case.interface_id.Interface_url, fangshi=case.Interface_meth, params=data,headers=ne)
                 result = me.testapi()
-                print(result)
                 return_mysql=pare_result_mysql(mysqlresult=mysql_result,return_result=result,paseziduan=case.databaseziduan)
                 retur_re = assert_in(case.Interface_assert, result)
                 if case.saveresult is True:
@@ -609,7 +626,6 @@ class MakeonlyoneCase(MethodView):
                     db.session.add(new_testre)
                     db.session.commit()
                 try:
-                    print(retur_re,return_mysql)
                     if retur_re =='pass'  and return_mysql['result']=='pass':
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = False
@@ -626,7 +642,6 @@ class MakeonlyoneCase(MethodView):
                         db.session.commit()
                         return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
                 except Exception as e:
-                    print(e)
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
                     db.session.commit()
@@ -678,7 +693,6 @@ class MakeonlyoneCase(MethodView):
             else:
                 return jsonify({'code': 62, 'msg': '目前还不支持你所选择的类型的协议！'})
         except Exception as e:
-            print(e)
             case.Interface_is_tiaoshi = True
             case.Interface_tiaoshi_shifou = True
             db.session.commit()

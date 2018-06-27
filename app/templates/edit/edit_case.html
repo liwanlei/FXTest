@@ -50,8 +50,17 @@
                 </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
-                    <strong>接口名字:</strong>
-                    <input type="text" name="model" value="{{edit.Interface_name}}" >
+                    <strong>接口:</strong>
+                    <select name="inerfa">
+                        {% for  terf in inerfacelist %}
+                            {% if terf.Interface_name == edit.interface_id.Interface_name %}
+                        <option selected>{{ terf.Interface_name }}</option>
+                            {% else %}
+                             <option >{{ terf.Interface_name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
                 </div>
                 <div class="form-group">
                     <strong>接口协议类型:</strong>
@@ -62,8 +71,8 @@
                 </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
-                    <strong>接口url:</strong>
-                    <input type="text" name="url" value="{{edit.Interface_url}}">
+                    <strong>接口编号:</strong>
+                    <input type="text" name="url" value="{{edit.bian_num}}">
                 </div>
                 <span>&nbsp;</span>
                 <div class="form-group">

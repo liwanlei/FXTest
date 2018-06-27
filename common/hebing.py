@@ -4,11 +4,12 @@
 @time: 2018/4/13 13:24 
 """
 '''字典的合并'''
-def hebingDict(dict_list:list):
+def hebingDict(dict_list:dict):
     dictMerged ={}
     for item in dict_list:
         try:
             dictMerged.update(eval(item))
-        except:
-            continue
+        except Exception as e:
+        	print(e)
+           # continue
     return dictMerged

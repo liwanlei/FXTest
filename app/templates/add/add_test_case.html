@@ -38,14 +38,20 @@
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>模块名字:</strong>
+                        <select name="mode">
                         {% for model in  models %}
-                            <input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
+                            <option>{{  model.model_name }}</option> 
                         {% endfor %}
+                        </select>
                     </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
-                        <strong>接口名字:</strong>
-                        {{ form.interface_name(id='interfacename') }}
+                        <strong>接口:</strong>
+                        <select name="interface_name">
+                            {%for interfact in inrterface_list%}
+                            <option>{{interfact.Interface_name}}</option>
+                            {%endfor%}
+                        </select>
                     </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
@@ -57,7 +63,7 @@
                     </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
-                        <strong>接口url:</strong>
+                        <strong>接口编号:</strong>
                         {{ form.interface_url(id='interfaceurl') }}
                     </div>
                     <span>&nbsp;</span>
