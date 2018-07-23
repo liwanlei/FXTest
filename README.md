@@ -21,6 +21,8 @@
 
 ## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md)
 # 有问题可以联系我：QQ:952943386 email:leileili126@163.com  qq群：194704520  python测试开发群：683894834
+#   flask部署相关文章：![Alt text](http://www.cnblogs.com/leiziv5/p/7137277.html)
+#                     ![Alt text](http://www.cnblogs.com/leiziv5/p/8807135.html)                    
 # 友情推荐本人其他开源代码：
 #      1.python app自动化测试平台版本：![Alt text](https://github.com/liwanlei/UFATestPlan)
 #      2.python+flask 做后台，实现微信小程序：![Alt text](https://github.com/liwanlei/webchat_app)
