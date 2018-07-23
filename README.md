@@ -19,9 +19,12 @@
 ## v3.3版本更新日志
 ###  利用resetful api 思想优化代码，实现前后端分离。
 
-## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md) 
-
-# 有问题可以联系我：QQ:952943386 email:leileili126@163.com  qq群：194704520  新群：683894834
+## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md)
+# 有问题可以联系我：QQ:952943386 email:leileili126@163.com  qq群：194704520  python测试开发群：683894834
+# 友情推荐本人其他开源代码：
+#      1.python app自动化测试平台版本：![Alt text](https://github.com/liwanlei/UFATestPlan)
+#      2.python+flask 做后台，实现微信小程序：![Alt text](https://github.com/liwanlei/webchat_app)
+#      3.python接口测试非平台版本![Alt text](https://github.com/liwanlei/jiekou-python3)
 # 微信打赏
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/weixin.png)
  ----------------

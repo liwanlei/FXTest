@@ -47,7 +47,7 @@ class AddtestcaseView(View):
             save=request.form.get('save')
             yongli_nam=request.form.get('project')
             mode=request.form.get('mode')
-            interface_name=request.form.get('inerfa')
+            interface_name=request.form.get('interface_name')
             interface_url=request.form.get('interface_url')
             interface_header=request.form.get('interface_headers')
             interface_meth=request.form.get('interface_meth')

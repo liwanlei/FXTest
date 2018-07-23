@@ -27,7 +27,7 @@ from config import Config
 app.config.from_object('config')
 def app_start():
 	sched.start()
-	http_server = WSGIServer(('127.0.0.1', 5000), app)
+	http_server = WSGIServer(('127.0.0.1', 5001), app)
 	http_server.serve_forever()
 if __name__ == '__main__':
 	app_start()
