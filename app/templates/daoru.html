@@ -24,14 +24,14 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <p> 没有模板？点击链接下载接口模板：
+            <p> 没有模板？<a href="{{url_for('down_jiekou')}}" >点击链接</a>下载接口模板：
                 <strong>
                     <a href="{{url_for('down_jiekou')}}" >接口模板</a>
                 </strong>
             </p>
             <form method="POST" action="{{url_for('interface.daoru_inter')}}"  enctype=multipart/form-data>
                 <input type="file" name="myfile">
-                <button type='submit' class="am-btn am-btn-primary">导入</button>
+                <button type='submit' class="am-btn am-btn-primary">导入接口</button>
             </form>
         </div>
     </div>

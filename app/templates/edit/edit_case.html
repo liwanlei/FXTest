@@ -24,7 +24,7 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <form  action="{{ url_for('case.edit_case',id=edit.id) }}" method="POST" style="margin-left:28%">
+            <form  action="{{ url_for('case.edit_case',id=edit.id) }}" method="POST" >
                 <div class="form-group">
                     <strong>项目:</strong>
                     {% for project in  projects %}
@@ -72,7 +72,7 @@
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口编号:</strong>
-                    <input type="text" name="url" value="{{edit.bian_num}}">
+                    <input type="text" name="url" value="{{edit.bian_num}}" placeholder="接口用例编号">
                 </div>
                 <span>&nbsp;</span>
                 <div class="form-group">

@@ -38,7 +38,7 @@ class InterForm(Form):#接口的表单
     project_name=StringField(u'项目名字', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口所属项目名称'})
     model_name=StringField(u'模块名字', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口所属模块名称'})
     interface_name=StringField(u'接口名字', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口名称'})
-    interface_url=StringField(u'接口url', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口url'})
+    interface_url=StringField(u'编号', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口url'})
     interface_headers= StringField(u'接口headers', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口headers'})
     interface_meth=StringField(u'请求方式', [validators.DataRequired()],render_kw={'placeholder': u'请输入接口请求方式'})
     interface_par = StringField(u'请求示例', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口参数示例'})

@@ -51,14 +51,14 @@ class Role(db.Model):
             role.default = roles[r][1]
             db.session.add(role)
         db.session.commit()
-class Work(db.Model):
+class Work(db.Model):#岗位表
     __tablename__='works'
     id=db.Column(db.Integer(),primary_key=True)
     name=db.Column(db.String(),unique=True)
     user= db.relationship('User', backref='works', lazy='dynamic')
     def __repr__(self):
         return  self.name
-class User(db.Model):
+class User(db.Model):#用户表
     __tablename__='users'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
     username=db.Column(db.String(63),unique=True)
@@ -93,7 +93,7 @@ class User(db.Model):
         return False
     def get_id(self):
         return self.id
-class Interface(db.Model):
+class Interface(db.Model):#接口表
     __tablename__='interfaces'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
     model_id=db.Column(db.Integer(),db.ForeignKey('models.id'))
@@ -109,7 +109,7 @@ class Interface(db.Model):
     status=db.Column(db.Boolean(),default=False)
     def __repr__(self):
         return  self.Interface_name
-class InterfaceTest(db.Model):
+class InterfaceTest(db.Model):#测试用例表
     __tablename__='interfacetests'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     model_id=db.Column(db.Integer(),db.ForeignKey('models.id'))
@@ -142,7 +142,7 @@ class InterfaceTest(db.Model):
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.Interface_name
-class TestResult(db.Model):
+class TestResult(db.Model):#测试结果表
     __tablename__='tstresults'
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
     Test_user_id=db.Column(db.Integer(),db.ForeignKey('users.id'))
@@ -253,7 +253,7 @@ class Task(db.Model):#定时任务的
                               backref=db.backref('tasks'), lazy='dynamic')#多对多到测试用例
     def __repr__(self):
         return  self.taskname
-class Quanxian(db.Model):
+class Quanxian(db.Model):#权限表
     __tablename__='quanxians'
     id = db.Column(db.Integer, primary_key=True)
     rose=db.Column(db.Integer(),db.ForeignKey('roles.id'))
@@ -262,7 +262,7 @@ class Quanxian(db.Model):
                          lazy='dynamic')
     def __repr__(self):
         return  str(self.id)
-class TestcaseResult(db.Model):
+class TestcaseResult(db.Model):#测试用例结果
     __tablename__='testcaseresults'
     id=db.Column(db.Integer,primary_key=True)
     case_id=db.Column(db.Integer,db.ForeignKey('interfacetests.id'),nullable=True)

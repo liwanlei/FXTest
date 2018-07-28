@@ -4,7 +4,7 @@
 @file: manage.py
 @time: 2017/7/13 16:39
 """
-'''主要运行文件，
+'''主运行文件，
 使用gevent异步请求，'''
 from  app import  app
 from app import sched
@@ -27,7 +27,7 @@ from config import Config
 app.config.from_object('config')
 def app_start():
 	sched.start()
-	http_server = WSGIServer(('127.0.0.1', 5001), app)
+	http_server = WSGIServer(('127.0.0.1', 5000), app)
 	http_server.serve_forever()
 if __name__ == '__main__':
 	app_start()

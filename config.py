@@ -4,6 +4,7 @@
 @file: config.py
 @time: 2017/7/13 16:39
 """
+'''配置文件，后台一些需要的配置需要在这里进行配置'''
 import  os
 from apscheduler.jobstores.redis import RedisJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
@@ -14,10 +15,10 @@ executors = {
     'default': ThreadPoolExecutor(10),
     'processpool': ProcessPoolExecutor(3)
 }
-PageShow=25#这里配置的就是每个页显示多少
+PageShow=25#这里配置的就是每个页显示多少条数据
 Dingtalk_access_token=''#在这里配置您的接受通知的钉钉群自定义机器人webhook，
-OneAdminCount=3 #设置项目管理员的数量
-Config_daoru_xianzhi=30#配置可以导入限制
+OneAdminCount=10 #设置项目管理员的数量
+Config_daoru_xianzhi=50#配置可以导入限制
 class beijing(object):
 	SECRET_KEY = 'BaSeQuie'
 	basedir=os.path.abspath(os.path.dirname(__file__))
