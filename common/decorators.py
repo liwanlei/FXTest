@@ -5,7 +5,7 @@
 from flask_login import current_user
 def chckuserpermisson():
     for rosse in current_user.quanxians:
-        if int(rosse.rose)==2  or current_user.is_sper ==1 :
+        if int(rosse.rose)==2  or current_user.is_sper ==1:
             return  True
         else:
             return  False

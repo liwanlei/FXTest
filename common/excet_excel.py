@@ -3,7 +3,7 @@
 @file: excet_excel.py 
 @time: 2018/4/4 16:10 
 """
-'''写入Excel'''
+'''写入Excel,导入接口的可以用到'''
 import xlwt
 from xlwt import *
 def yangshi1():

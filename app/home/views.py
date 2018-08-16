@@ -3,7 +3,7 @@
 # @File    : views.py
 # @Time    : 2017/12/7 9:23
 from flask import  Blueprint,jsonify
-import  json
+import  json,datetime
 from common.hebinglist import hebinglist
 from  flask import  redirect,request,render_template,url_for,session
 home = Blueprint('home', __name__)
@@ -11,7 +11,7 @@ from app.models import *
 from app.form import  *
 from flask.views import MethodView
 from flask_login import login_required,login_user,logout_user,current_user
-from app import loginManager
+from app import loginManager,sched
 from config import PageShow
 from common.pagin_fen import  fenye_list
 from common.fenye import Pagination
@@ -55,12 +55,18 @@ class Indexview(MethodView):
                     result += 1
             except:
                 result += 1
+        My_task=[]
+        time_format = "%Y-%m-%d %H:%M:%S"
+        for job in sched.get_jobs():
+            job_task=Task.query.filter_by(id=job.id).first()
+            if job_task.makeuser==current_user.id:
+                My_task.append({'taskname':job_task.taskname,'next_run':job.next_run_time.strftime( '%Y-%m-%d %H:%M:%S ')})
         project_cout=Project.query.filter_by(status=False).count()
         model_cout=Model.query.filter_by(status=False).count()
         return  render_template('home/index.html', yongli=len(case_list),
                                 jiekou=len(interface_list),
                                 report=len(reslut_list), project_cout=project_cout,
-                                model_cout=model_cout)
+                                model_cout=model_cout,my_tasl=My_task)
 class LoginView(MethodView):
     def get(self):
         form=LoginFrom()
@@ -480,7 +486,9 @@ class TesteventVies(MethodView):
 class MockViews(MethodView):
     @login_required
     def get(self,page=1):
-        mock=Mockserver.query.filter_by(delete=False).order_by('-id').paginate(page, per_page=int(PageShow),error_out=False)
+        mock=Mockserver.query.filter_by(delete=False).order_by('-id').paginate(page,
+                                                                               per_page=int(PageShow),
+                                                                               error_out=False)
         inter = mock.items
         return render_template('home/mockserver.html', inte=inter, pagination=mock)
     @login_required
@@ -543,7 +551,6 @@ class TimingtasksView(MethodView):
                 if (project.projects.id in id)==False:
                     task.append(Task.query.filter_by(prject=project.projects.id,status=False).all())
                     id.append(project.projects.id)
-
         old_yask=hebinglist(task)
         projects_lsit = fenye_list(Ob_list=old_yask, split=PageShow)
         pages = range(1, len(projects_lsit) + 1)
@@ -565,6 +572,11 @@ class GettProtestreport(MethodView):
         testreport=TestResult.query.filter_by(projects_id=project_is.id, status=False).order_by('-id').all()
         testreportlist=[]
         for test in testreport:
-            testreportlist.append({'test_num':test.test_num,'pass_num':test.pass_num,'fail_num':test.fail_num,'hour_time':str(test.hour_time),'test_rep':test.test_rep,'test_log':test.test_log,
-                                   'Exception_num':test.Exception_num,'can_num':test.can_num,'wei_num':test.wei_num,'test_time':str(test.test_time),'Test_user_id':test.users.username,'id':test.id,'fenshu':test.pass_num/test.test_num})
+            testreportlist.append({'test_num':test.test_num,'pass_num':test.pass_num,
+                                   'fail_num':test.fail_num,'hour_time':str(test.hour_time),
+                                   'test_rep':test.test_rep,'test_log':test.test_log,
+                                   'Exception_num':test.Exception_num,'can_num':test.can_num,
+                                   'wei_num':test.wei_num,'test_time':str(test.test_time),
+                                   'Test_user_id':test.users.username,'id':test.id,
+                                   'fenshu':test.pass_num/test.test_num})
         return jsonify(({'msg': u'成功', 'code': 200,'data':(testreportlist)}))

@@ -89,5 +89,22 @@
                 </div>
             </div>
         </div>
+        <div>
+            <strong>我的定时任务</strong>
+            <table class="am-table am-table-striped am-table-hover table-main ">
+                <thead>
+                <tr>
+                    <th>任务名称</th>
+                    <th>下次执行</th>
+                </tr>
+                </thead>
+                {% for task in my_tasl %}
+                    <tr>
+                        <td>{{ task.taskname }}</td>
+                        <td>{{ task.next_run}}</td></tr>
+                {% endfor %}
+            </table>
+
+        </div>
     </div>
 {% endblock %}

@@ -144,11 +144,14 @@ class SerinterView(MethodView):
         project_is = Project.query.filter_by(project_name=str(projec)).first()
         if project_is.status is True:
             return jsonify({'msg': u'项目已经删除', 'code': 32,'data':''})
-        interfaclist = Interface.query.filter_by(projects_id=project_is.id, status=False,interfacetype=interfatype).all()
+        interfaclist = Interface.query.filter_by(projects_id=project_is.id, status=False,
+                                                 interfacetype=interfatype).all()
         interfaclists=[]
         for interface in interfaclist:
-            interfaclists.append({'model_id':interface.models.model_name,'projects_id':interface.projects.project_name,
-                                  'id':interface.id,'Interface_url':interface.Interface_url,'Interface_meth':interface.Interface_meth,
+            interfaclists.append({'model_id':interface.models.model_name,
+                                  'projects_id':interface.projects.project_name,
+                                  'id':interface.id,'Interface_url':interface.Interface_url,
+                                  'Interface_meth':interface.Interface_meth,
                                   'Interface_headers':interface.Interface_headers,
                                   'Interface_name':interface.Interface_name})
         return  jsonify(({'msg': u'成功', 'code':200,'data':interfaclists,'typeinter':typeinterface}))

@@ -241,7 +241,8 @@ class SeryongliView(MethodView):
                                   'Interface_assert':interface.Interface_assert,
                                   'Interface_is_tiaoshi':interface.Interface_is_tiaoshi,
                                   'Interface_tiaoshi_shifou':interface.Interface_tiaoshi_shifou})
-        return jsonify(({'msg': '成功', 'code':200,'data':interfacelist,'url':testeventlist,'typeinter':typeinterface}))
+        return jsonify(({'msg': '成功', 'code':200,'data':interfacelist,'url':testeventlist,
+                         'typeinter':typeinterface}))
 class DaorucaseView(View):
     methods=['GET','POST']
     @login_required
@@ -592,7 +593,9 @@ class MakeonlyoneCase(MethodView):
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
                         return jsonify({'code': 54, 'msg': '测试环境数据库登录密码配置不存在'})
-                    conncts=cursemsql(host=testevent.dbhost,port=testevent.dbport,user=testevent.databaseuser,password=testevent.databasepassword,database=testevent.database)
+                    conncts=cursemsql(host=testevent.dbhost,port=testevent.dbport,
+                                      user=testevent.databaseuser,password=testevent.databasepassword,
+                                      database=testevent.database)
                     if conncts['code']==0:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
@@ -615,9 +618,11 @@ class MakeonlyoneCase(MethodView):
                     case.Interface_tiaoshi_shifou = True
                     db.session.commit()
                     return jsonify({'code': 57, 'msg': '转化请求参数失败，原因：%s' % e})
-                me = Api(url=case.interface_id.Interface_url, fangshi=case.Interface_meth, params=data,headers=ne)
+                me = Api(url=case.interface_id.Interface_url, fangshi=case.Interface_meth,
+                         params=data,headers=ne)
                 result = me.testapi()
-                return_mysql=pare_result_mysql(mysqlresult=mysql_result,return_result=result,paseziduan=case.databaseziduan)
+                return_mysql=pare_result_mysql(mysqlresult=mysql_result,
+                                               return_result=result,paseziduan=case.databaseziduan)
                 retur_re = assert_in(case.Interface_assert, result)
                 if case.saveresult is True:
                     new_testre = TestcaseResult(case_id=case)
@@ -654,7 +659,8 @@ class MakeonlyoneCase(MethodView):
                     case.Interface_tiaoshi_shifou = True
                     db.session.commit()
                     return jsonify({'code': 61, 'msg': '转化请求参数失败，原因：%s' % e})
-                dubboapi = DubboInterface(url=case.Interface_url, interface=case.Interface_pase, method=case.Interface_meth,
+                dubboapi = DubboInterface(url=case.Interface_url, interface=case.Interface_pase,
+                                          method=case.Interface_meth,
                                           param=case.Interface_headers, **(data))
                 dubboapireslu = dubboapi.getresult()
                 if case.saveresult is True:
@@ -664,7 +670,8 @@ class MakeonlyoneCase(MethodView):
                     db.session.add(new_testre)
                     db.session.commit()
                 if dubboapireslu['code'] == 0:
-                    assert_re = assert_in(asserqiwang=case.Interface_assert,fanhuijson=json.loads(dubboapireslu))
+                    assert_re = assert_in(asserqiwang=case.Interface_assert,
+                                          fanhuijson=json.loads(dubboapireslu))
                     if assert_re=='pass':
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = False

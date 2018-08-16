@@ -14,6 +14,7 @@ from config import lod
 from apscheduler.schedulers.background import BackgroundScheduler
 from  config import jobstores,executors
 from flask_admin import  Admin
+from  flask_moment import  Moment
 app=Flask(__name__)
 conf=lod()
 loginManager = LoginManager(app)
@@ -23,6 +24,7 @@ loginManager.session_protection = "strong"
 loginManager.login_view='home.login'
 loginManager.login_message=u'FXTest测试平台必须登录，请登录您的FXTest平台账号！'
 db=SQLAlchemy(app)
+moment=Moment(app)
 sched = BackgroundScheduler(jobstores=jobstores, executors=executors)
 admin=Admin(app,name=u'FXTest系统管理后台')
 from  app import  views ,models,url,apiadmin

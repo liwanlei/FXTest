@@ -104,7 +104,10 @@ class ApiTestCase():
                     self.result_cashu += 1
                     self.bask_list.append('数据库登录账户没有找到')
                     self.result_pf.append(u'数据库登录账户没有找到')
-                conncts=cursemsql(host=self.urltest.dbhost,port=self.urltest.dbport,user=self.urltest.databaseuser,password=self.urltest.databasepassword,database=self.urltest.database)
+                conncts=cursemsql(host=self.urltest.dbhost,port=self.urltest.dbport,
+                                  user=self.urltest.databaseuser,
+                                  password=self.urltest.databasepassword,
+                                  database=self.urltest.database)
                 if conncts['code']==0:
                     self.result_toal += 1
                     self.result_except += 1
@@ -168,4 +171,5 @@ class ApiTestCase():
                     self.bask_list.append(e)
                     self.result_pf.append('Exception')
                     continue
-        return self.result_toal ,self.result_pass,self.result_fail,self.result_pf,self.bask_list,self.result_cashu,self.result_wei,self.result_except
+        return self.result_toal ,self.result_pass,self.result_fail,self.result_pf,self.bask_list,\
+               self.result_cashu,self.result_wei,self.result_except

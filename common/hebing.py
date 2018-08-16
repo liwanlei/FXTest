@@ -10,6 +10,5 @@ def hebingDict(dict_list:dict):
         try:
             dictMerged.update(eval(item))
         except Exception as e:
-        	print(e)
-           # continue
+            print(e)
     return dictMerged
