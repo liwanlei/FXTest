@@ -16,6 +16,7 @@ Flask-Security==1.7.5
 Flask-SQLAlchemy==2.2
 Flask-WhooshAlchemy==0.56
 Flask-WTF==0.14.2
+python-jenkins==1.1.0
 Jinja2==2.9.6
 Logbook==1.1.0
 lxml==3.7.3

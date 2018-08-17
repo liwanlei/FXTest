@@ -56,11 +56,13 @@ class Indexview(MethodView):
             except:
                 result += 1
         My_task=[]
-        time_format = "%Y-%m-%d %H:%M:%S"
         for job in sched.get_jobs():
-            job_task=Task.query.filter_by(id=job.id).first()
+            job_task=Task.query.filter_by(id=job.id,status=False).first()
             if job_task.makeuser==current_user.id:
-                My_task.append({'taskname':job_task.taskname,'next_run':job.next_run_time.strftime( '%Y-%m-%d %H:%M:%S ')})
+                My_task.append({'taskname':job_task.taskname,
+                                'next_run':job.next_run_time.strftime( '%Y-%m-%d %H:%M:%S '),
+                                'run_status':job_task.yunxing_status,'id':job_task.id
+                                })
         project_cout=Project.query.filter_by(status=False).count()
         model_cout=Model.query.filter_by(status=False).count()
         return  render_template('home/index.html', yongli=len(case_list),
@@ -580,3 +582,9 @@ class GettProtestreport(MethodView):
                                    'Test_user_id':test.users.username,'id':test.id,
                                    'fenshu':test.pass_num/test.test_num})
         return jsonify(({'msg': u'成功', 'code': 200,'data':(testreportlist)}))
+class JenkinsFirst(MethodView):
+    @login_required
+    def get(self):
+        tasks=Task.query.filter_by(makeuser=current_user.id,status=False).all()
+        print(tasks)
+        return render_template('home/jenkins.html')

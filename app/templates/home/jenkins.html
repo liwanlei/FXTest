@@ -1,0 +1,86 @@
+{% extends "back.html" %}
+{% block hello %}
+    {% import "fenye.html" as macros %}
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components" style="">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> jenkins持续集成定时任务
+                </div>
+            </div>
+            <div class="tpl-block">
+                <div class="am-g">
+                    <div class="am-u-sm-12 am-u-md-6">
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button onclick="addmodel()"  class="btn btn-default">
+                                    添加
+                                </button>
+                            </div>
+                        </div>
+                    </div></div>
+                <table class="am-table am-table-striped am-table-hover table-main" >
+                    <caption><strong>
+                    </strong></caption>
+                    <thead>
+                    <tr>
+                        <th>模块名</th>
+                        <th>创建者</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {%for project in projects%}
+                        <tr id="{{ project.id }}">
+                            <td>{{project.model_name}}</td>
+                            <td>{{project.users}}</td>
+                            <td>
+                                <span>
+                                    <button class="btn btn-default" onclick="editproject({{ project.id }})">
+                                        编辑
+                                    </button>
+                                </span>
+                                {%if current_user.role_id !=1 and current_user.role_id !=None  %}
+                                    <span>
+                                        <button class="btn btn-default" onclick="deletemodel({{ project.id }})">
+                                            删除
+                                        </button>
+                                    </span>
+                                {%endif%}
+                            </td>
+                        </tr>
+                        <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="project-{{ project.id }}">
+                            <div style="height: 5px;">编辑项目</div>
+                            <div style="background-color: whitesmoke;margin-top: 24px" >
+                                <span style="text-align: center">
+                                    项目：<input type="text" id="name-{{ project.id }}" placeholder="请写入你要编辑项目的名称" value="{{ project.model_name }}">
+                                </span>
+
+                            </div>
+                            <div style="margin-top: 50%;margin-bottom: auto">
+                                <input value="编辑" type="button" class="btn-default"  onclick="eitproject({{ project.id }})" >
+                                <input value="取消" type="button" class=" btn-default"  onclick="guanbiedit({{ project.id }})" >
+                            </div>
+                        </div>
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="text-align: center;">
+                <ul class="pagination">
+                    <li  >
+                        <a  href="{{url_for('home.model') }}">首页</a>
+                    </li>
+                    {%for page in pages%}
+                        <li>
+                            <a id='{{page}}' onclick="h=window.location.href.split('/'),m=document.getElementById({{page}}),m.setAttribute('href','/'+h[3]+'/'+{{page}})" >{{page}}</a>
+                        </li>
+                    {%endfor%}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
