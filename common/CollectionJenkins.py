@@ -24,8 +24,10 @@ class Conlenct_jenkins(object):
     def job_bulid_list(self,jobname):
         bulid_list=self.servir.get_job_info(jobname)['builds']
         return bulid_list
-    def job_bulid_log(self,url):
-        log=self.servir.jenkins_request(requests.Request('GET', url))
+    def job_bulid_log(self,url,jobname):
+        id=self.servir.get_job_info(jobname)['lastCompletedBuild']['number']
+        url1=url+str(id)+"/console"
+        log=self.servir.jenkins_request(requests.Request('GET',url1)).text
         return log
     def last_build_result(self,id,jobname):
         result=self.servir.get_build_info(jobname,id)['result']
@@ -49,3 +51,6 @@ class Conlenct_jenkins(object):
         self.servir.reconfig_job(jobname,config)
     def stop_build_job(self,jobname,id):
         self.servir.stop_build(jobname,id)
+    def get_all_job(self):
+        jobs=self.servir.get_all_jobs()
+        return  jobs

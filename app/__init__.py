@@ -27,4 +27,4 @@ db=SQLAlchemy(app)
 moment=Moment(app)
 sched = BackgroundScheduler(jobstores=jobstores, executors=executors)
 admin=Admin(app,name=u'FXTest系统管理后台')
-from  app import  views ,models,url,apiadmin,jenki
+from  app import  views ,models,url,apiadmin
