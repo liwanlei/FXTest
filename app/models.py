@@ -165,12 +165,14 @@ class Project(db.Model):#项目
     id=db.Column(db.Integer(), primary_key=True, autoincrement=True)
     project_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
     project_name=db.Column(db.String(252),unique=True)
+    desc=db.Column(db.String(252),nullable=True)
     TestResult = db.relationship('TestResult', backref='projects', lazy='dynamic')
     Interfacetest = db.relationship('InterfaceTest', backref='projects', lazy='dynamic')
     Interface = db.relationship('Interface', backref='projects', lazy='dynamic')
     Interfacehuan = db.relationship('Interfacehuan', backref='projects', lazy='dynamic')
     task = db.relationship('Task', backref='projects', lazy='dynamic')
     quanxian = db.relationship('Quanxian', backref='projects', lazy='dynamic')
+    model = db.relationship('Model', backref='projects', lazy='dynamic')
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.project_name
@@ -179,6 +181,8 @@ class Model(db.Model):#模块，有的接口是根据模块来划分的
     id=db.Column(db.Integer,primary_key=True,autoincrement=True)
     model_name = db.Column(db.String(256))
     model_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    common=db.Column(db.Boolean(),default=False)
+    project=db.Column(db.Integer(),db.ForeignKey('projects.id'),nullable=True)
     Interfacetest = db.relationship('InterfaceTest', backref='models', lazy='dynamic')
     Interface = db.relationship('Interface', backref='models', lazy='dynamic')
     status = db.Column(db.Boolean(), default=False)
@@ -268,6 +272,7 @@ class TestcaseResult(db.Model):#测试用例结果
     case_id=db.Column(db.Integer,db.ForeignKey('interfacetests.id'),nullable=True)
     result=db.Column(db.String(252))
     date=db.Column(db.DateTime(),default=datetime.datetime.now())
+    by=db.Column(db.Boolean(),default=False)
     testevir=db.Column(db.Integer,db.ForeignKey('ceshihuanjing.id'),nullable=True)
     def __repr__(self):
         return  str(self.id)
