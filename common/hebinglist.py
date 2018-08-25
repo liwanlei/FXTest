@@ -11,3 +11,17 @@ def hebinglist(list1:list):
         for h in m:
             new.append(h)
     return new
+def listmax(list2:list):
+    list_int=[]
+    for i in list2:
+        try:
+            list_int.append(float(i))
+        except:
+            list_int.append(0)
+    nsm=0
+    for j in range(len(list_int)):
+        nsm+=float(list_int[j])
+    ma=max(list_int)
+    minx=min(list_int)
+    pingjun=nsm/(len(list_int))
+    return ma,minx,pingjun

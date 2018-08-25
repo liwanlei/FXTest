@@ -1,6 +1,0 @@
-2018-06-26 10:03:58,357 - 测试日志 - INFO - 31：测试用例开始执行
-2018-06-26 10:03:58,359 - 测试日志 - INFO - 用例：int() argument must be a string, a bytes-like object or a number, not 'NoneType' 测试出错了
-2018-06-26 10:03:58,359 - 测试日志 - INFO - 30：测试用例开始执行
-2018-06-26 10:03:58,360 - 测试日志 - INFO - 用例：int() argument must be a string, a bytes-like object or a number, not 'NoneType' 测试出错了
-2018-06-26 10:03:58,361 - 测试日志 - INFO - 28：测试用例开始执行
-2018-06-26 10:03:58,362 - 测试日志 - INFO - 用例：int() argument must be a string, a bytes-like object or a number, not 'NoneType' 测试出错了

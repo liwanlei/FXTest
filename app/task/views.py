@@ -11,6 +11,7 @@ from app import loginManager,sched
 import  time,os
 from common.py_Html import createHtml
 from app.test_case.Test_case import ApiTestCase
+from  common.hebinglist import listmax
 task = Blueprint('task', __name__)
 def addtask(id):#定时任务执行的时候所用的函数
     in_id=int(id)
@@ -64,15 +65,15 @@ def addtask(id):#定时任务执行的时候所用的函数
                           is_database=Interface_is_data_list,data_mysql=Interface_mysql_list,
                           data_ziduan=Interface_msyql_ziduan_list,urltest=testevent,
                           yilaidata=Interface_yilai_list, saveresult=Interface_save_list, id_list=id_list)
-    result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, result_wei, \
-    result_except = apitest.testapi()
+    result_toal, result_pass, result_fail, relusts,bask_list, result_cashu, result_wei,result_except,spendlist = apitest.testapi()
+    large,small,pingjun=listmax(spendlist)
     endtime = datetime.datetime.now()
     end = time.time()
     createHtml(titles=u'定时任务接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
                passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
                headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
                meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
-               excepts=result_except, yuqis=result_cashu, weizhi=result_wei)
+               excepts=result_except, yuqis=result_cashu, weizhi=result_wei,maxs=large,mins=small,pingluns=pingjun)
     hour = end - star
     new_reust = TestResult(Test_user_id=1, test_num=result_toal, pass_num=result_pass,
                            fail_num=result_fail, test_time=starttime, hour_time=hour,
@@ -80,11 +81,11 @@ def addtask(id):#定时任务执行的时候所用的函数
                            can_num=result_cashu, wei_num=result_wei,projects_id=projecct_list[0].id)
     db.session.add(new_reust)
     db.session.commit()
-    #try:
-    #    send_ding(content="%s定时任务执行完毕，测试时间：%s，\\n 通过用例：%s，失败用例：%s，\\n,详情见测试平台测试报告！" % (
-    #        task.taskname, starttime, result_pass, result_fail))
-    #except Exception as e:
-      #  flash('定时任务的钉钉消息发送失败！原因:%s'%e)
+    try:
+        send_ding(content="%s定时任务执行完毕，测试时间：%s，\\n 通过用例：%s，失败用例：%s，\\n,详情见测试平台测试报告！" % (
+            task.taskname, starttime, result_pass, result_fail))
+    except Exception as e:
+        flash('定时任务的钉钉消息发送失败！原因:%s'%e)
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

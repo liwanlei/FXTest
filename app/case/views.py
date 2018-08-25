@@ -21,6 +21,7 @@ from common.mysqldatabasecur import *
 from common.dubbo_feng import DubboInterface
 from config import  Config_daoru_xianzhi
 from common.excet_excel import create_interface_case
+from common.hebinglist import listmax
 case = Blueprint('case', __name__)
 def get_pro_mo():
     projects=Project.query.filter_by(status=False).all()
@@ -310,71 +311,6 @@ class DaorucaseView(View):
             flash(u'导入失败')
             return render_template('daoru_case.html')
         return  render_template('daoru_case.html')
-class MakeonecaseView(View):#这里的为不需要测试环境的测试，目前版本暂时不需要！
-    methods=['GET','POST']
-    @login_required
-    def dispatch_request(self,id):
-        next=request.headers.get('Referer')
-        case=InterfaceTest.query.filter_by(id=id).first()
-        if case.pid != None:
-            tesyi = InterfaceTest.query.filter_by(id=int(case.pid)).first()
-            testres = TestcaseResult.query.filter_by(case_id=tesyi.id).first()
-            if testres is None:
-                case.Interface_is_tiaoshi = True
-                case.Interface_tiaoshi_shifou = True
-                db.session.commit()
-                flash(u'失败，请查看依赖用例是否测试')
-                return redirect(next or url_for('home.yongli'))
-            huoquyilai = testres.result
-            canshu = case.getattr_p
-            try:
-                yilaidata = eval(huoquyilai)[canshu]
-            except :
-                case.Interface_is_tiaoshi = True
-                case.Interface_tiaoshi_shifou = True
-                db.session.commit()
-                flash(u'测试用例获取依赖数据失败')
-                return redirect(next or url_for('home.yongli'))
-        try:
-            pasrms = eval(case.Interface_pase)
-            pasrms.update({canshu: yilaidata})
-        except:
-            return jsonify({'code': 152, 'msg': '测试参数应该是字典格式！'})
-        me=Api(url=case.interface_id.Interface_url,fangshi=case.Interface_meth,
-               params=pasrms,headers=case.Interface_headers)
-        result=me.testapi()
-        retur_re=assert_in(case.Interface_assert,result)
-        try:
-            if retur_re=='pass':
-                case.Interface_is_tiaoshi = True
-                case.Interface_tiaoshi_shifou = False
-                if case.saveresult is True:
-                    new_testre=TestcaseResult(case_id=case.id)
-                    new_testre.result=str(result)
-                    db.session.add(new_testre)
-                db.session.commit()
-                flash(u'用例测试通过')
-                return redirect(next or url_for('home.yongli'))
-            elif retur_re=='fail':
-                case.Interface_is_tiaoshi = True
-                case.Interface_tiaoshi_shifou = True
-                if case.saveresult is True:
-                    new_testre=TestcaseResult(case_id=case.id)
-                    new_testre.result=str(result)
-                    db.session.add(new_testre)
-                db.session.commit()
-                flash(u'用例测试失败')
-                return redirect(next or url_for('home.yongli'))
-            else:
-                case.Interface_is_tiaoshi = True
-                case.Interface_tiaoshi_shifou = True
-                db.session.commit()
-                flash(u'测试用例测试过程中出现异常！%s'%retur_re)
-                return redirect(next or url_for('home.yongli'))
-        except Exception as e:
-            db.session.rollback()
-            flash(u'用例测试失败,失败原因：{},请检查测试用例'.format(e))
-            return redirect(next or url_for('home.yongli'))
 class DuoyongliView(View):
     methods=['GET','POST']
     @login_required
@@ -424,7 +360,7 @@ class DuoyongliView(View):
                 id_list.append(case_one.id)
                 projecct_list.append(case_one.projects)
                 model_list.append(case_one.models)
-                Interface_url_list.append(case_one.interface_id.Interface_url)
+                Interface_url_list.append(case_one.interfaces.Interface_url)
                 Interface_name_list.append(case_one.Interface_name)
                 Interface_meth_list.append(case_one.Interface_meth)
                 Interface_pase_list.append(case_one.Interface_pase)
@@ -446,14 +382,15 @@ class DuoyongliView(View):
                                       data_mysql=Interface_mysql_list,
                                       data_ziduan=Interface_msyql_ziduan_list,urltest=testevent)
                 result_toal, result_pass, result_fail, relusts, bask_list,result_cashu,\
-                result_wei,result_except= apitest.testapi()
+                result_wei,result_except,spend_list= apitest.testapi()
+                large,minx,pinglun=listmax(list2=spend_list)
                 endtime = datetime.datetime.now()
                 end = time.time()
                 createHtml(titles=u'接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
                            passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
                            headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
                            meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
-                           excepts=result_except, yuqis=result_cashu, weizhi=result_wei)
+                           excepts=result_except, yuqis=result_cashu, weizhi=result_wei,maxs=large,mins=minx,pingluns=pinglun)
                 hour = end - star
                 user_id = current_user.id
                 new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
@@ -514,6 +451,11 @@ class MakeonlyoneCase(MethodView):
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
                             return jsonify({'code': 43, 'msg': u'找不到依赖的接口的测试结果！请查找依赖接口是否进行测试,获取测试是否通过,接口id是：%s'%(case.pid)})
+                        if testres.by is False:
+                            case.Interface_is_tiaoshi = True
+                            case.Interface_tiaoshi_shifou = True
+                            db.session.commit()
+                            return jsonify({'code': 43, 'msg': u'依赖用例执行失败'})
                         huoquyilai=testres.result
                         canshu=case.getattr_p
                         try:
@@ -547,7 +489,6 @@ class MakeonlyoneCase(MethodView):
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
                         return jsonify({'code':47, 'msg': '测试参数应该是字典格式！'})
-
                 new_headers=case.Interface_headers
                 if  new_headers =='None':
                     ne={'host':url}
@@ -620,35 +561,51 @@ class MakeonlyoneCase(MethodView):
                     return jsonify({'code': 57, 'msg': '转化请求参数失败，原因：%s' % e})
                 me = Api(url=case.interface_id.Interface_url, fangshi=case.Interface_meth,
                          params=data,headers=ne)
-                result = me.testapi()
+                result= me.getJson()
+                spend=me.spend()
                 return_mysql=pare_result_mysql(mysqlresult=mysql_result,
                                                return_result=result,paseziduan=case.databaseziduan)
                 retur_re = assert_in(case.Interface_assert, result)
-                if case.saveresult is True:
-                    new_testre = TestcaseResult(case_id=case)
-                    new_testre.result = str(result)
-                    new_testre.testevir = url
-                    db.session.add(new_testre)
-                    db.session.commit()
                 try:
                     if retur_re =='pass'  and return_mysql['result']=='pass':
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = False
+                        new_testre = TestcaseResult(case_id=case)
+                        new_testre.result = str(result)
+                        new_testre.testevir = url
+                        new_testre.by=True
+                        new_testre.spend=spend
+                        db.session.add(new_testre)
                         db.session.commit()
                         return jsonify({'code':200,'msg':'测试用例调试通过！'})
                     elif retur_re =='fail' or return_mysql['result']=='fail':
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
+                        new_testre = TestcaseResult(case_id=case)
+                        new_testre.result = str(result)
+                        new_testre.testevir = url
+                        new_testre.by = False
+                        new_testre.spend = spend
                         db.session.commit()
                         return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
                     else:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
+                        new_testre = TestcaseResult(case_id=case)
+                        new_testre.result = str(result)
+                        new_testre.testevir = url
+                        new_testre.by = False
+                        new_testre.spend = spend
                         db.session.commit()
                         return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
                 except Exception as e:
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
+                    new_testre = TestcaseResult(case_id=case)
+                    new_testre.result = str(result)
+                    new_testre.testevir = url
+                    new_testre.by = False
+                    new_testre.spend = spend
                     db.session.commit()
                     return jsonify({'code': 60, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(e)})
             elif case.interface_type=='dubbo':
@@ -657,6 +614,10 @@ class MakeonlyoneCase(MethodView):
                 except Exception as e:
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
+                    new_testre = TestcaseResult(case_id=case)
+                    new_testre.result = str("转换参数失败")
+                    new_testre.testevir = url
+                    new_testre.by = False
                     db.session.commit()
                     return jsonify({'code': 61, 'msg': '转化请求参数失败，原因：%s' % e})
                 dubboapi = DubboInterface(url=case.Interface_url, interface=case.Interface_pase,
@@ -666,7 +627,7 @@ class MakeonlyoneCase(MethodView):
                 if case.saveresult is True:
                     new_testre = TestcaseResult(case_id=case.id)
                     new_testre.result = str(dubboapireslu)
-                    new_testre.testevir = (url)
+                    #new_testre.testevir = url
                     db.session.add(new_testre)
                     db.session.commit()
                 if dubboapireslu['code'] == 0:
@@ -737,7 +698,16 @@ class OnecaseDetial(MethodView):
             return jsonify({'code': 101, 'messgage': '您的测试用例没有在任何环境调试过', 'data': ''})
         result_all=[]
         for rest_one in test_result:
+            if rest_one.spend==None:
+                spend_ed=0
+            else:
+                spend_ed=rest_one.spend
+            if rest_one.ceshihuanjing ==None:
+                ceshihuanjing=''
+            else:
+                ceshihuanjing=rest_one.ceshihuanjing
             result_all.append({'result':rest_one.result,
                                'date':rest_one.date.strftime( '%Y-%m-%d %H:%M:%S'),
-                               'event':rest_one.ceshihuanjing })
+                               'event':ceshihuanjing,
+                               'spend':spend_ed})
         return  jsonify({'code': 200, 'messgage': '请求成功', 'data': result_all})

@@ -108,6 +108,7 @@
                 <th>测试结果</th>
                 <th>测试日期</th>
                 <th>测试环境</th>
+                    <th>接口耗时</th>
                 </tr>
                 </thead>
                 <tbody id="testresult" >
@@ -275,7 +276,7 @@
                      if(data['code']==200){
                          inte.empty();
                          for (var i=0;i<data['data'].length;i++){
-                             inte.append("<tr><td>"+data['data'][i]['result']+"</td><td>"+data['data'][i]['date']+"</td><td>"+data['data'][i]['event']+"</td></tr>")
+                             inte.append("<tr><td>"+data['data'][i]['result']+"</td><td>"+data['data'][i]['date']+"</td><td>"+data['data'][i]['event']+"</td><td>"+data['data'][i]['spend']+"</td></tr>")
                          }
                      }
                      else {

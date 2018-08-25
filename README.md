@@ -12,33 +12,40 @@
 ### flask +gevent+nginx+Gunicorn+supervisor部署flask应用请用flaskapi_su.conf，用gunicorn部署应用，因为在使用uwsgi部署会影响定时任务的执行
 ### supervisor配置可见super.conf文件。
 ### 钉钉群发送多用例测试任务的执行情况的时候，需要在config.py里面进行配置钉钉群自定义机器人webhook，目前体验服没有钉钉配置
-### 定时任务模块定时任务测试完毕会按照config.py设置的钉钉群自定义机器人的配置进行发送通知的，当定时任务完成后，配置钉钉群会默认接受到一条钉钉机器人消息，显示定时任务的完成情况。定时任务现在依赖与redis做持久化，如果有报redis错误，请安装redis服务。
+### 定时任务模块定时任务测试完毕会按照config.py设置的钉钉群自定义机器人的配置进行发送通知的，当定时任务完成后，配置钉钉群会默认接受到一条钉钉机器人消息，显示定时任务的完成情况。
+### 定时任务现在依赖与redis做持久化，如果有报redis错误，请安装redis服务。
 
  ----------------
  
-## v3.3版本更新日志
-###  利用resetful api 思想优化代码，实现前后端分离。
+# v3.3版本更新日志
+
+##  1.利用resetful api 思想优化代码，实现前后端分离。
+
+##  2.用例失败后，所有依赖这个用例的所有用例全部失败
 
 ## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md)
 # 有问题可以联系我：QQ:952943386 email:leileili126@163.com  qq群：194704520  python测试开发群：683894834
-#   flask部署相关文章：![Alt text](http://www.cnblogs.com/leiziv5/p/7137277.html)
-#                     ![Alt text](http://www.cnblogs.com/leiziv5/p/8807135.html)                    
+#   flask部署相关文章：http://www.cnblogs.com/leiziv5/p/7137277.html
+#                     http://www.cnblogs.com/leiziv5/p/8807135.html
 # 友情推荐本人其他开源代码：
-#      1.python app自动化测试平台版本：![Alt text](https://github.com/liwanlei/UFATestPlan)
-#      2.python+flask 做后台，实现微信小程序：![Alt text](https://github.com/liwanlei/webchat_app)
-#      3.python接口测试非平台版本![Alt text](https://github.com/liwanlei/FXTest)
+#      1.python app自动化测试平台版本：https://github.com/liwanlei/UFATestPlan
+#      2.python+flask 做后台，实现微信小程序：https://github.com/liwanlei/webchat_app
+#      3.python接口测试非平台版本：https://github.com/liwanlei/FXTest
 # 微信打赏
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/weixin.png)
  ----------------
 ##    效果图如下：
+
 ### 目录：
+
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/项目目录.png)
+
 
 ### 新目录：
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/最新优化后项目结构.png)
 
-
 ### 效果图：
+
 #### 用户登录
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/denglu.png)
 #### 首页

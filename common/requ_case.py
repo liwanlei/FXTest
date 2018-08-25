@@ -14,18 +14,21 @@ class Api():
 		self.param=params
 		self.headers=headers
 	def testapi(self):
-		global response
+		global response,spend
 		if self.fangsh=='POST' or self.fangsh=='post':
-			response=requ.post(url=self.url,params=self.param,headers=self.headers)
+			response,spend=requ.post(url=self.url,params=self.param,headers=self.headers)
 		elif self.fangsh=='GET' or self.fangsh=='get':
-			response=requ.get(url=self.url,headers=self.headers,parms=self.param)
+			response,spend=requ.get(url=self.url,headers=self.headers,parms=self.param)
 		elif self.fangsh=='PUT' or self.fangsh=='put':
-			response=requ.putfile(url=self.url,params=self.param,headers=self.headers)
+			response,spend=requ.putfile(url=self.url,params=self.param,headers=self.headers)
 		elif self.fangsh=='DELETE' or self.fangsh=='delete':
-			response=requ.delfile(url=self.url,params=self.param,headers=self.headers)
-		return  response
+			response,spend=requ.delfile(url=self.url,params=self.param,headers=self.headers)
+		return  response,spend
 	def getJson(self):
-		json_data=self.testapi()
+		json_data,spend=self.testapi()
 		return json_data
 	def getCode(self):
 		return self.testapi().status_code
+	def spend(self):
+		json_data, spend = self.testapi()
+		return spend

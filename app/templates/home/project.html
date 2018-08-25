@@ -37,6 +37,7 @@
             <thead>
             <tr>
                 <th>项目名</th>
+                <th>项目描述</th>
                 <th>创建者</th>
                 <th>操作</th>
             </tr>
@@ -49,6 +50,11 @@
                             <strong>{{project.project_name}}</strong>
                         </label>
                     </td>
+                    {% if project.desc==None %}
+                    <td></td>
+                {% else %}
+                    <td>{{ project.desc }}</td>
+                {% endif %}
                     <td>
                         <label class="label-primary" style="background: white">{{ project.users }}
                         </label>

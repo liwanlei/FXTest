@@ -271,6 +271,7 @@ class TestcaseResult(db.Model):#测试用例结果
     id=db.Column(db.Integer,primary_key=True)
     case_id=db.Column(db.Integer,db.ForeignKey('interfacetests.id'),nullable=True)
     result=db.Column(db.String(252))
+    spend=db.Column(db.String(252))
     date=db.Column(db.DateTime(),default=datetime.datetime.now())
     by=db.Column(db.Boolean(),default=False)
     testevir=db.Column(db.Integer,db.ForeignKey('ceshihuanjing.id'),nullable=True)

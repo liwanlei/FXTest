@@ -24,149 +24,207 @@
                     <div class="am-u-sm-12 am-u-md-6">
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <button onclick="addmodel()"  class="btn btn-default">
+                                <button onclick="addmodel()" class="btn btn-default">
                                     添加
                                 </button>
                             </div>
                         </div>
-                    </div></div>
-                <table class="am-table am-table-striped am-table-hover table-main" >
+                    </div>
+                </div>
+                <table class="am-table am-table-striped am-table-hover table-main">
                     <caption><strong>
                     </strong></caption>
                     <thead>
                     <tr>
                         <th>模块名</th>
+                        <th>通用模块</th>
+                        <th>所属项目</th>
                         <th>创建者</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {%for project in projects%}
+                    {% for project in projects %}
                         <tr id="{{ project.id }}">
-                            <td>{{project.model_name}}</td>
-                            <td>{{project.users}}</td>
+                            <td>{{ project.model_name }}</td>
+                            {% if project.common==False or project.common == None %}
+                                <td>公共模块</td>
+                            {% else %}
+                                <td>私有模块</td>
+                            {% endif %}
+                            {% if project.project == None %}
+                                <td>公共所有</td>
+                            {% else %}
+                                <td>{{ project.projects.project_name }}</td>
+                            {% endif %}
+                            <td>{{ project.users }}</td>
                             <td>
                                 <span>
                                     <button class="btn btn-default" onclick="editproject({{ project.id }})">
                                         编辑
                                     </button>
                                 </span>
-                                {%if current_user.role_id !=1 and current_user.role_id !=None  %}
+                                {% if current_user.role_id !=1 and current_user.role_id !=None %}
                                     <span>
                                         <button class="btn btn-default" onclick="deletemodel({{ project.id }})">
                                             删除
                                         </button>
                                     </span>
-                                {%endif%}
+                                {% endif %}
                             </td>
                         </tr>
-                        <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="project-{{ project.id }}">
-                            <div style="height: 5px;">编辑项目</div>
-                            <div style="background-color: whitesmoke;margin-top: 24px" >
+                        <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+                             id="project-{{ project.id }}">
+                            <div style="height: 5px;">编辑模块</div>
+                            <div style="background-color: whitesmoke;margin-top: 24px">
                                 <span style="text-align: center">
-                                    项目：<input type="text" id="name-{{ project.id }}" placeholder="请写入你要编辑项目的名称" value="{{ project.model_name }}">
+                                    模块名称：<input type="text" id="name-{{ project.id }}" placeholder="请写入你要编辑模块的名称"
+                                                value="{{ project.model_name }}">
                                 </span>
-
+                                <p>
+                <span>
+                所属项目
+                    <select id="projetc-{{ project.id }}">
+                <option>请选择</option>
+                        {% for pro in project_list %}
+                            {% if project.projects.project_name==pro.project_name %}
+                                <option selected>{{ pro.project_name }}</option>
+                            {% else %}
+                                <option>{{ pro.project_name }}</option>
+                            {% endif %}
+                        {% endfor %}
+            </select>
+            </span>
+                                </p>
                             </div>
                             <div style="margin-top: 50%;margin-bottom: auto">
-                                <input value="编辑" type="button" class="btn-default"  onclick="eitproject({{ project.id }})" >
-                                <input value="取消" type="button" class=" btn-default"  onclick="guanbiedit({{ project.id }})" >
+                                <input value="编辑" type="button" class="btn-default"
+                                       onclick="eitproject({{ project.id }})">
+                                <input value="取消" type="button" class=" btn-default"
+                                       onclick="guanbiedit({{ project.id }})">
                             </div>
                         </div>
-                    {%endfor%}
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
-
             <div style="text-align: center;">
                 <ul class="pagination">
-                    <li  >
-                        <a  href="{{url_for('home.model') }}">首页</a>
+                    <li>
+                        <a href="{{ url_for('home.model') }}">首页</a>
                     </li>
-                    {%for page in pages%}
+                    {% for page in pages %}
                         <li>
-                            <a id='{{page}}' onclick="h=window.location.href.split('/'),m=document.getElementById({{page}}),m.setAttribute('href','/'+h[3]+'/'+{{page}})" >{{page}}</a>
+                            <a id='{{ page }}'
+                               onclick="h=window.location.href.split('/'),m=document.getElementById({{ page }}),m.setAttribute('href','/'+h[3]+'/'+{{ page }})">{{ page }}</a>
                         </li>
-                    {%endfor%}
+                    {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
-    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="model">
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+         id="model">
         <div style="height: 5px;">添加模块</div>
-        <div style="background-color: whitesmoke;margin-top: 24px" >
+        <div style="background-color: whitesmoke;margin-top: 24px">
             <span style="text-align: center">
                 模块：<input type="text" id="name" placeholder="请写入你要添加的模块的名称">
             </span>
-
+            <p>
+                <span>
+                所属项目
+                    <select id="projetc">
+                <option>请选择</option>
+                        {% for pro in project_list %}
+                            <option>{{ pro.project_name }}</option>
+                        {% endfor %}
+            </select>
+            </span>
+            </p>
         </div>
         <div style="margin-top: 5%;margin-bottom: auto">
-            <input value="添加" type="button" class="btn-default"  onclick="tianjian()" >
-            <input value="取消" type="button" class=" btn-default"  onclick="guanbi()" >
+            <input value="添加" type="button" class="btn-default" onclick="tianjian()">
+            <input value="取消" type="button" class=" btn-default" onclick="guanbi()">
         </div>
     </div>
 {% endblock %}
 {% block js %}
     <script type="text/javascript">
         function addmodel() {
-            m=document.getElementById('model');
-            m.style.display=''
+            m = document.getElementById('model');
+            m.style.display = ''
         }
+
         function guanbi() {
-            m=document.getElementById('model');
-            m.style.display='none'
+            m = document.getElementById('model');
+            m.style.display = 'none'
         }
+
         function tianjian() {
-            var project=document.getElementById('name').value;
+            var project = document.getElementById('name').value;
+            var ob = document.getElementById('projetc');
+            var index = ob.selectedIndex;
+            var projec = ob.options[index].value;
+            var data = {};
+            data['name'] = project;
+            data['project'] = projec;
             $.ajax({
                     url: '{{url_for( 'home.model') }}',
                     type: 'POST',
-                    data: project,
+                    data: JSON.stringify(data),
                     contentType: 'application/json; charset=UTF-8',
                     processData: false,
                     success: function (result) {
-                        if(result['code']==2){
+                        if (result['code'] == 2) {
                             alert(result['data']);
                             location.reload()
                         }
-                        else{
+                        else {
                             alert(result['data']);
                         }
                     }
                 }
             )
         }
+
         function deletemodel(id) {
             $.ajax({
-                url:'{{url_for( 'home.model') }}',
-                type:'DELETE',
-                data:id,
+                url: '{{url_for( 'home.model') }}',
+                type: 'DELETE',
+                data: id,
                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(data){
-                    if(data['code']!=2){
+                processData: false,
+                success: function (data) {
+                    if (data['code'] != 2) {
                         alert(data['data'])
-                    }else{
+                    } else {
                         alert(data['data']);
-                        caseid=document.getElementById(id);
-                        caseid.hidden=true;
+                        caseid = document.getElementById(id);
+                        caseid.hidden = true;
                     }
                 }
             })
         }
+
         function editproject(id) {
-            m=document.getElementById('project-'+id);
-            m.style.display=''
+            m = document.getElementById('project-' + id);
+            m.style.display = ''
         }
-        function  guanbiedit(id) {
-            m=document.getElementById('project-'+id);
-            m.style.display='none'
+
+        function guanbiedit(id) {
+            m = document.getElementById('project-' + id);
+            m.style.display = 'none'
         }
+
         function eitproject(id) {
-            var project=document.getElementById('name-'+id).value;
-            var data={};
-            data['id']=id;
-            data['name']=project;
+            var project = document.getElementById('name-' + id).value;
+            var ob = document.getElementById('projetc-' + id);
+            var index = ob.selectedIndex;
+            var projec = ob.options[index].value;
+            var data = {};
+            data['name'] = project;
+            data['project'] = projec;
+            data['id'] = id;
             $.ajax({
                     url: '{{url_for( 'home.model') }}',
                     type: 'PUT',
@@ -174,11 +232,11 @@
                     contentType: 'application/json; charset=UTF-8',
                     processData: false,
                     success: function (result) {
-                        if(result['code']==2){
+                        if (result['code'] == 2) {
                             alert(result['data']);
                             location.reload()
                         }
-                        else{
+                        else {
                             alert(result['data']);
                         }
                     }

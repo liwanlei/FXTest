@@ -31,9 +31,9 @@ def title(titles):
 	'''%(titles)
     return title
 connent='''
-<div  class='col-md-5 col-md-offset-5' style="margin-left: 20%;margin-top: -16px;">
+<div  class='col-md-5 col-md-offset-5' style="margin-left: 2%;margin-top: -16px;">
 <h1>FXTest测试平台接口测试的结果</h1>'''
-def time(starttime,endtime,passge,fail,excepts,yuqi,weizhi):
+def time(starttime,endtime,passge,fail,excepts,yuqi,weizhi,maxs,mins,pingluns):
     beijing='''
     <table  class="table table-hover table-condensed">
             <tbody>
@@ -54,12 +54,19 @@ def time(starttime,endtime,passge,fail,excepts,yuqi,weizhi):
 			<strong >%s</strong>
 			未知错误: 
 			<strong >%s</strong>
-			</td>                  
+			</td>                 
+			   </tr>
+			   <tr>
+			   <td>
+			   <strong>单接口耗时最大值:</strong>%s s，
+			   <strong>最小值:</strong> %s s，
+			   <strong>平均耗时:</strong> %s s
+			   </td>
 			   </tr> 
 			   </tbody></table>
-			   </div> '''%(starttime,endtime,(endtime-starttime),passge,fail,excepts,yuqi,weizhi)
+			   </div> '''%(starttime,endtime,(endtime-starttime),passge,fail,excepts,yuqi,weizhi,maxs,mins,pingluns)
     return beijing
-shanghai='''<div class="row " style="margin:60px">
+shanghai='''<div class="row " style="margin:35px">
         <div style='    margin-top: 18%;' >
         <div class="btn-group" role="group" aria-label="...">
             <button type="button" id="check-all" class="btn btn-primary">所有用例</button>
@@ -146,7 +153,7 @@ weibu='''</div></div></table><script src="https://code.jquery.com/jquery.js"></s
 	});
 </script>
 </body></html>'''
-def relust(titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth,yuqi,json,relust,excepts,yuqis,weizhi):
+def relust(titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth,yuqi,json,relust,excepts,yuqis,weizhi,maxs,mins,pingluns):
     if type(name) is list:
         relus=' '
         for i in range(len(name)):
@@ -159,12 +166,12 @@ def relust(titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth
             else:
                 clazz = 'error'
             relus+=(ceshixiangqing(clazz,id[i],name[i],coneent=coneent[i],url=url[i],headers=headers[i],meth=meth[i],yuqi=yuqi[i],json=json[i],relust=relust[i]))
-        text=title(titles)+connent+time(starttime,endtime,passge,fail,excepts,yuqis,weizhi)+shanghai+relus+weibu
+        text=title(titles)+connent+time(starttime,endtime,passge,fail,excepts,yuqis,weizhi,maxs,mins,pingluns)+shanghai+relus+weibu
     else:
-        text=title(titles)+connent+time(starttime,endtime,passge,fail,excepts,yuqis,weizhi)+shanghai+ceshixiangqing(id=id,name=name,headers=headers,coneent=coneent,url=url,meth=meth,yuqi=int(yuqi),json=json,relust=relust)+weibu
+        text=title(titles)+connent+time(starttime,endtime,passge,fail,excepts,yuqis,weizhi,maxs,mins,pingluns)+shanghai+ceshixiangqing(id=id,name=name,headers=headers,coneent=coneent,url=url,meth=meth,yuqi=int(yuqi),json=json,relust=relust)+weibu
     return text
-def createHtml(filepath,titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth,yuqi,json,relusts,excepts,yuqis,weizhi):
+def createHtml(filepath,titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth,yuqi,json,relusts,excepts,yuqis,weizhi,maxs,mins,pingluns):
     texts=relust(titles=titles,starttime=starttime,endtime=endtime,passge=passge,fail=fail,id=id,name=name,headers=headers,coneent=coneent,
-                 url=url,meth=meth,yuqi=yuqi,json=json,relust=relusts,excepts=excepts,yuqis=yuqis,weizhi=weizhi)
+                 url=url,meth=meth,yuqi=yuqi,json=json,relust=relusts,excepts=excepts,yuqis=yuqis,weizhi=weizhi,maxs=maxs,mins=mins,pingluns=pingluns)
     with open(filepath,'wb') as f:
         f.write(texts.encode())

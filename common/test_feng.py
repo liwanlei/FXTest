@@ -10,8 +10,9 @@ class reques():
         try:
             r = requests.get(url, headers=headers,params=parms)
             r.encoding = 'UTF-8'
+            spend=r.elapsed.total_seconds()
             json_response = json.loads(r.text)
-            return json_response
+            return json_response,spend
         except Exception as e:
             return {'get请求出错':"错误原因:%s"%e}
     def post(self, url, params,headers):#post消息
@@ -19,14 +20,16 @@ class reques():
         try:
             r =requests.post(url,params=data,headers=headers)
             json_response = json.loads(r.text)
-            return json_response
+            spend=r.elapsed.total_seconds()
+            return json_response,spend
         except Exception as e:
             return {'post请求出错': "错误原因:%s" % e}
     def delfile(self,url,params,headers):#删除的请求
         try:
             del_word=requests.delete(url,data=params,headers=headers)
             json_response=json.loads(del_word.text)
-            return json_response
+            spend=del_word.elapsed.total_seconds()
+            return json_response,spend
         except Exception as e:
             return {'del请求出错': "错误原因:%s" % e}
     def putfile(self,url,params,headers):#put请求
@@ -34,6 +37,7 @@ class reques():
             data=json.dumps(params)
             me=requests.put(url,data,headers=headers)
             json_response=json.loads(me.text)
-            return json_response
+            spend=me.elapsed.total_seconds()
+            return json_response,spend
         except Exception as e:
             return {'put请求出错': "错误原因:%s" % e}
