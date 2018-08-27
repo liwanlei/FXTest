@@ -25,7 +25,7 @@
             <li class="am-hide-sm-only">
             </li>
             <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
-                <a class="am-dropdown-toggle tpl-header-list-link" href="{{url_for('user.setting')}}">
+                <a class="am-dropdown-toggle tpl-header-list-link" onclick="changepassword()">
                     <span class="tpl-header-list-user-nick" >
                         {{session.username}}
                     </span>
@@ -122,6 +122,17 @@
             </ul>
         </div>
     </div>
+ <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="changepassword">
+        <div style="height: 5px;">修改密码</div>
+            <div style="background-color: whitesmoke;margin-top: 24px" >
+                新设密码：<input type="password" id="newpassword">
+                <p></p>确认密码：<input type="password" id="new_password">
+            </div>
+            <div style="margin-top: 50%;margin-bottom: auto">
+                <input value="保存" type="submit" class="btn-default" onclick="change()">
+                <input value="取消" type="button" class=" btn-default" onclick="quxiao()" >
+            </div>
+    </div>
     {%block hello%}
     {%endblock%}
 </div>
@@ -143,6 +154,44 @@
                 $(this).addClass('active');
         });
     })
+    function changepassword() {
+        var d=document.getElementById('changepassword');
+        d.style.display=''
+    }
+    function quxiao() {
+        var d=document.getElementById('changepassword');
+        d.style.display='none'
+    }
+    function change() {
+        var password=document.getElementById('newpassword').value;
+        var querenpassword=document.getElementById('new_password').value;
+        if (password!=querenpassword){
+            alert('请确认输入密码是否一致')
+        }
+        else {
+            if(password.length>20 ||  password.length<6){
+                alert('密码长度应该是6-20个字符串长度')
+        }else {
+                $.ajax({
+                url:"{{ url_for('user.changepassword')}}",
+                data:password,
+                type:'POST',
+                 contentType: 'application/json; charset=UTF-8',
+                processData:false,
+                success:function(data){
+                    if(data['code']=='1'){
+                        alert('修改密码成功');
+                         window.location.href=('{{ url_for("home.login") }}')
+                    }else {
+                        alert('修改密码失败')
+                    }
+                },
+
+            })
+            }
+
+        }
+    }
 </script>
 </body>
 </html>
