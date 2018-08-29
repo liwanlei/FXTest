@@ -31,4 +31,4 @@ def app_start():
 	http_server.serve_forever()
 if __name__ == '__main__':
 	#app_start()
-	app.run()
+	app.run(debug=True)

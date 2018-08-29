@@ -27,6 +27,11 @@ class Indexview(MethodView):
     @login_required
     def get(self):
         interface_cont = Interface.query.filter_by(status=False).all()
+        interface_result=TestcaseResult.query.all()
+        result_list_case=[]
+        for result in interface_result:
+            result_list_case.append(result.case_id)
+        all_run_case_count=len(set(result_list_case))
         interface_list = []
         for interface in range(len(interface_cont) + 1):
             try:
@@ -69,7 +74,7 @@ class Indexview(MethodView):
         return render_template('home/index.html', yongli=len(case_list),
                                jiekou=len(interface_list),
                                report=len(reslut_list), project_cout=project_cout,
-                               model_cout=model_cout, my_tasl=My_task)
+                               model_cout=model_cout, my_tasl=My_task,all_run_case_count=all_run_case_count)
 class LoginView(MethodView):
     def get(self):
         form = LoginFrom()
