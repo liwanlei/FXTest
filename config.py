@@ -22,7 +22,7 @@ PageShow=25#这里配置的就是每个页显示多少条数据
 Dingtalk_access_token=''#在这里配置您的接受通知的钉钉群自定义机器人webhook，
 OneAdminCount=10 #设置项目管理员的数量
 Config_daoru_xianzhi=50#配置可以导入限制
-class beijing(object):
+class dev(object):
 	SECRET_KEY = 'BaSeQuie'
 	basedir=os.path.abspath(os.path.dirname(__file__))
 	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "data.sqlite")
@@ -34,8 +34,34 @@ class beijing(object):
 	@staticmethod
 	def init_app(app):
 		pass
+class test(object):
+	SECRET_KEY = 'BaSeQuie'
+	basedir = os.path.abspath(os.path.dirname(__file__))
+	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "test.sqlite")
+	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+	SQLALCHEMY_TRACK_MODIFICATIONS = False
+	CSRF_ENABLED = True
+	UPLOAD_FOLDER = '/upload'
+	DEBUG = True
+
+	@staticmethod
+	def init_app(app):
+		pass
+class produce(object):
+	SECRET_KEY = 'ProduceFXTest'
+	basedir = os.path.abspath(os.path.dirname(__file__))
+	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "produce.sqlite")
+	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+	SQLALCHEMY_TRACK_MODIFICATIONS = False
+	CSRF_ENABLED = True
+	UPLOAD_FOLDER = '/upload'
+	DEBUG = True
+
+	@staticmethod
+	def init_app(app):
+		pass
 def lod():
-	return beijing
+	return dev
 class Config(object):
 	JOBS = [ ]
 	SCHEDULER_API_ENABLED = True
