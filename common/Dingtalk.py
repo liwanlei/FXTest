@@ -5,8 +5,7 @@
 """
 '''封装钉钉群发消息'''
 import  requests,json
-from  config import Dingtalk_access_token
-def send_ding(content):
+def send_ding(content,Dingtalk_access_token):
     try:
         url = Dingtalk_access_token
         pagrem = {

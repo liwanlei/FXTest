@@ -27,8 +27,6 @@ class Api():
 	def getJson(self):
 		json_data,spend=self.testapi()
 		return json_data
-	def getCode(self):
-		return self.testapi().status_code
 	def spend(self):
 		json_data, spend = self.testapi()
 		return spend

@@ -19,9 +19,12 @@ quanxianuser=db.Table('quanxianusers',db.Column('user_id',db.Integer(),
 rely_case=db.Table('yilai',
                    db.Column('case_id',db.Integer(),
                              db.ForeignKey('interfacetests.id')),
-                    db.Column('cases_id', db.Integer(),
-                              db.ForeignKey('interfacetests.id')),
+                   db.Column('cases_id', db.Integer(),
+                             db.ForeignKey('interfacetests.id')),
                    db.Column('attred',db.String()))
+mock_test=db.Table('mocktest',db.Column('mock_id',db.Integer(),db.ForeignKey('mockserver.id')),
+                   db.Column('test_id',db.Integer(),db.ForeignKey('interfacetests.id')),
+                   db.Column('filed',db.String(128)))
 class Permisson:
     ADD = 0x01
     EDIT = 0x02
@@ -77,6 +80,7 @@ class User(db.Model):#用户表
     mock = db.relationship('Mockserver', backref='users', lazy='dynamic')
     task = db.relationship('Task', backref='users', lazy='dynamic')
     paemase = db.relationship('Parameter', backref='users', lazy='dynamic')
+    userpaemase = db.relationship('UserParmeter', backref='users', lazy='dynamic')
     def __repr__(self):
         return  self.username
     def is_administrator(self):     
@@ -102,6 +106,8 @@ class Interface(db.Model):#接口表
     Interface_url=db.Column(db.String(252))
     Interface_meth= db.Column(db.String(252),default='GET')
     Interface_headers = db.Column(db.String(252))
+    asynch=db.Column(db.Boolean(),default=False)
+    timeout=db.Column(db.String(),nullable=True)
     Interface_user_id=db.Column(db.Integer(),db.ForeignKey('users.id'))
     interfacetype = db.Column(db.String(32), default='http')
     interfacetests = db.relationship('InterfaceTest', backref='interfaces', lazy='dynamic')
@@ -123,13 +129,13 @@ class InterfaceTest(db.Model):#测试用例表
     Interface_pase = db.Column(db.String(252))
     Interface_assert=db.Column(db.String(252))
     Interface_headers = db.Column(db.String(252))
+    rely_mock=db.Column(db.Boolean(),default=False)
     pid = db.Column(db.Integer(), db.ForeignKey('interfacetests.id'),nullable=True)
     getattr_p=db.Column(db.String(252),nullable=True)
     rely = db.relationship('InterfaceTest', secondary=rely_case,
                            primaryjoin=(rely_case.c.case_id == id),
                            secondaryjoin=(rely_case.c.cases_id == id),
-                              backref=db.backref('interfacetests',
-                                                 lazy='dynamic'), lazy='dynamic')
+                           backref=db.backref('interfacetests',lazy='dynamic'), lazy='dynamic')
     Interface_is_tiaoshi=db.Column(db.Boolean(),default=False)
     Interface_tiaoshi_shifou=db.Column(db.Boolean(),default=True,nullable=True)
     Interface_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
@@ -289,5 +295,16 @@ class Parameter(db.Model):#参数
     default=db.Column(db.String(63))#示例
     desc=db.Column(db.String(252))#参数描述
     user_id=db.Column(db.Integer,db.ForeignKey('users.id'))
+    def __repr__(self):
+        return  str(self.id)
+class UserParmeter(db.Model):
+    __tablename__='userparmeters'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    parme=db.Column(db.String(252))#参数字段
+    value=db.Column(db.String(252))#参数的值
+    dingding=db.Column(db.String(252))#测试报告的钉钉的地址
+    try_num=db.Column(db.Integer(),nullable=True)#重试的次数
+    user = db.Column(db.Integer, db.ForeignKey('users.id'))
+    status=db.Column(db.Boolean(),default=False)
     def __repr__(self):
         return  str(self.id)

@@ -7,9 +7,10 @@ from  flask import  redirect,request,render_template,\
     session,url_for,flash,jsonify,Blueprint,make_response,send_from_directory
 from  app.models import *
 from app.form import  *
+from config import Dingtalk_access_token
 import os,time,datetime,json
 from common.pares_excel_inter import paser_interface_case
-from common.py_Html import createHtml
+from common.py_html import createHtml
 from common.requ_case import Api
 from common.panduan import assert_in,pare_result_mysql
 from app.test_case.Test_case import ApiTestCase
@@ -416,7 +417,11 @@ class DuoyongliView(View):
                     flash(u'无法完成，需要去您的个人设置去设置一个默认的邮件发送')
                     return redirect(url_for('home.yongli'))
                 if f_dingding=='dingding':
-                    send=send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告"%(result_pass,result_fail))
+                    user_send=UserParmeter.query.filter_by(user=int(current_user.id),status=False).first()
+                    if not user_send or user_send.dingding is None or user_send.dingding =="":
+                        send=send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告"%(result_pass,result_fail),Dingtalk_access_token=Dingtalk_access_token)
+                    else:
+                        send=send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告"%(result_pass,result_fail),Dingtalk_access_token=user_send.dingding)
                     if send is True:
                         flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
                         return redirect(url_for('home.yongli'))

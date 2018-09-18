@@ -5,39 +5,49 @@
 requets模块的简单的封装
 '''
 import requests,json
+from  config import Interface_Time_Out
+from  requests import exceptions
 class reques():
     def get(self, url,headers,parms):#get消息
         try:
-            r = requests.get(url, headers=headers,params=parms)
+            r = requests.get(url, headers=headers,params=parms,timeout=Interface_Time_Out)
             r.encoding = 'UTF-8'
             spend=r.elapsed.total_seconds()
             json_response = json.loads(r.text)
             return json_response,spend
+        except exceptions.Timeout :
+            return {'get请求出错': "请求超时" }
         except Exception as e:
             return {'get请求出错':"错误原因:%s"%e}
     def post(self, url, params,headers):#post消息
         data = json.dumps(params)
         try:
-            r =requests.post(url,params=data,headers=headers)
+            r =requests.post(url,params=data,headers=headers,timeout=Interface_Time_Out)
             json_response = json.loads(r.text)
             spend=r.elapsed.total_seconds()
             return json_response,spend
+        except exceptions.Timeout :
+            return {'post请求出错': "请求超时" }
         except Exception as e:
             return {'post请求出错': "错误原因:%s" % e}
     def delfile(self,url,params,headers):#删除的请求
         try:
-            del_word=requests.delete(url,data=params,headers=headers)
+            del_word=requests.delete(url,data=params,headers=headers,timeout=Interface_Time_Out)
             json_response=json.loads(del_word.text)
             spend=del_word.elapsed.total_seconds()
             return json_response,spend
+        except exceptions.Timeout :
+            return {'del请求出错': "请求超时" }
         except Exception as e:
             return {'del请求出错': "错误原因:%s" % e}
     def putfile(self,url,params,headers):#put请求
         try:
             data=json.dumps(params)
-            me=requests.put(url,data,headers=headers)
+            me=requests.put(url,data,headers=headers,timeout=Interface_Time_Out)
             json_response=json.loads(me.text)
             spend=me.elapsed.total_seconds()
             return json_response,spend
+        except exceptions.Timeout :
+            return {'put请求出错': "请求超时" }
         except Exception as e:
             return {'put请求出错': "错误原因:%s" % e}
