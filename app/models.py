@@ -22,9 +22,6 @@ rely_case=db.Table('yilai',
                    db.Column('cases_id', db.Integer(),
                              db.ForeignKey('interfacetests.id')),
                    db.Column('attred',db.String()))
-mock_test=db.Table('mocktest',db.Column('mock_id',db.Integer(),db.ForeignKey('mockserver.id')),
-                   db.Column('test_id',db.Integer(),db.ForeignKey('interfacetests.id')),
-                   db.Column('filed',db.String(128)))
 class Permisson:
     ADD = 0x01
     EDIT = 0x02
@@ -141,6 +138,8 @@ class InterfaceTest(db.Model):#测试用例表
     Interface_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
     saveresult=db.Column(db.Boolean(),default=False)
     is_database=db.Column(db.Boolean(),default=False)
+    mockcase = db.relationship('mockforcase',
+                                     backref='interfacetests', lazy='dynamic')
     chaxunshujuku=db.Column(db.String(252),nullable=True)
     databaseziduan=db.Column(db.String(252),nullable=True)
     testcaseresult = db.relationship('TestcaseResult',
@@ -243,6 +242,8 @@ class Mockserver(db.Model):#mocksever
     delete=db.Column(db.Boolean(),default=False)#是否删除
     ischeck = db.Column(db.Boolean(),default=False)#是否校验参数
     is_headers=db.Column(db.Boolean(),default=False)#是否对headers进行校验
+    mockcase = db.relationship('mockforcase',
+                                     backref='mockserver', lazy='dynamic')
     def __repr__(self):
         return self.name
 class Task(db.Model):#定时任务的
@@ -308,3 +309,12 @@ class UserParmeter(db.Model):
     status=db.Column(db.Boolean(),default=False)
     def __repr__(self):
         return  str(self.id)
+class mockforcase(db.Model):
+    __tablename__ = 'mockforcases'
+    id = db.Column(db.Integer, primary_key=True)
+    makeuser = db.Column(db.Integer(), db.ForeignKey('users.id'))  # 创建者
+    mock=db.Column(db.Integer(),db.ForeignKey('mockserver.id'))
+    case=db.Column(db.Integer(),db.ForeignKey('interfacetests.id'))
+    filed=db.Column(db.String(252))
+    def __repr__(self):
+        return  self.taskname

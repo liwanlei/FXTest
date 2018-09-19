@@ -8,9 +8,11 @@ from email.header import Header
 def send_emails(sender,receivers,password,smtp,port,fujian1,fujian2,subject,url):
 	message = MIMEMultipart()
 	mail_msg = """
-	<h1>接口测试报告</h1>
+		<h1>接口测试报告</h1>
 	<p>您提交的接口测试已经测试完毕，附件中存放您的测试报告和测试日志，定时测试报告链接如下</p>
-	<p><a href="%s">这是一个链接</a></p>
+	<p>
+	<a href="%s">这是一个链接</a>
+	</p>
 	"""%url
 	message['From'] =sender
 	message['To'] =','.join(receivers)
