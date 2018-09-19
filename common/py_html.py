@@ -1,7 +1,7 @@
 # encoding: utf-8
 """
 @author: lileilei
-@file: py_Html.py
+@file: py_html.py
 @time: 2017/6/5 17:04
 """
 import  os
@@ -152,8 +152,9 @@ weibu='''</div></div></table><script src="https://code.jquery.com/jquery.js"></s
 	    $(".case-tr").removeClass("hidden-tr");
 	});
 </script>
-</body></html>'''
-def relust(titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth,yuqi,json,relust,excepts,yuqis,weizhi,maxs,mins,pingluns):
+</body>
+</html>'''
+def relust(titles,starttime,endtime,passge,fail,id:list,name:list,headers:list,coneent:list,url:list,meth:list,yuqi:list,json:list,relust:list,excepts,yuqis,weizhi,maxs,mins,pingluns):
     if type(name) is list:
         relus=' '
         for i in range(len(name)):

@@ -3,6 +3,9 @@
 @file: CollectionJenkins.py
 @time: 2018/8/17 9:45
 '''
+'''
+jenkins的链接
+'''
 import  jenkins,requests
 from config import  jenkins_password,jenkins_user,jenkins_url
 class Conlenct_jenkins(object):

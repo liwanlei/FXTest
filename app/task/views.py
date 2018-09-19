@@ -9,9 +9,11 @@ from flask.views import MethodView
 from flask_login import current_user,login_required
 from app import loginManager,sched
 import  time,os
-from common.py_Html import createHtml
+from common.py_html import createHtml
 from app.test_case.Test_case import ApiTestCase
 from  common.hebinglist import listmax
+from common.Dingtalk import send_ding
+from config import Dingtalk_access_token
 task = Blueprint('task', __name__)
 def addtask(id):#定时任务执行的时候所用的函数
     in_id=int(id)
@@ -82,8 +84,17 @@ def addtask(id):#定时任务执行的时候所用的函数
     db.session.add(new_reust)
     db.session.commit()
     try:
-        send_ding(content="%s定时任务执行完毕，测试时间：%s，\\n 通过用例：%s，失败用例：%s，\\n,详情见测试平台测试报告！" % (
-            task.taskname, starttime, result_pass, result_fail))
+        user_send = UserParmeter.query.filter_by(user=int(current_user.id), status=False).first()
+        if not user_send or user_send.dingding is None or user_send.dingding == "":
+            send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
+                             Dingtalk_access_token=Dingtalk_access_token)
+        else:
+            send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
+                             Dingtalk_access_token=user_send.dingding)
+        if send is True:
+            flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
+            return redirect(url_for('home.yongli'))
+        flash(u'测试报告发送钉钉讨论群失败！请检查相关配置！')
     except Exception as e:
         flash('定时任务的钉钉消息发送失败！原因:%s'%e)
 @loginManager.user_loader
@@ -160,7 +171,6 @@ class StartTaskView(MethodView):#开始定时任务
             flash(u'定时任务启动成功！')
             return  redirect(url_for('home.timingtask'))
         except Exception as e:
-            print(e)
             flash(u'定时任务启动失败！原因：%e'%e)
             return redirect(url_for('home.timingtask'))
 class ZantingtaskView(MethodView):#暂停定时任务

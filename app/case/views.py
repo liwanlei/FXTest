@@ -7,9 +7,10 @@ from  flask import  redirect,request,render_template,\
     session,url_for,flash,jsonify,Blueprint,make_response,send_from_directory
 from  app.models import *
 from app.form import  *
+from config import Dingtalk_access_token
 import os,time,datetime,json
 from common.pares_excel_inter import paser_interface_case
-from common.py_Html import createHtml
+from common.py_html import createHtml
 from common.requ_case import Api
 from common.panduan import assert_in,pare_result_mysql
 from app.test_case.Test_case import ApiTestCase
@@ -19,10 +20,18 @@ from flask_login import current_user,login_required
 from common.Dingtalk import send_ding
 from common.mysqldatabasecur import *
 from common.dubbo_feng import DubboInterface
-from config import  Config_daoru_xianzhi
+from config import  Config_daoru_xianzhi,redis_host,redis_port,redis_save_result_db,save_duration,xitong_request_toke,test_fail_try_num
 from common.excet_excel import create_interface_case
 from common.hebinglist import listmax
+from common.pyredis import ConRedisOper
 case = Blueprint('case', __name__)
+def save_reslut(key,value):
+    m = ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
+    m.sethase(key,value,save_duration)
+def get_reslut(key):
+    m = ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
+    reslit=m.getset(key)
+    return reslit
 def get_pro_mo():
     projects=Project.query.filter_by(status=False).all()
     model=Model.query.filter_by(status=False).all()
@@ -34,6 +43,7 @@ class AddtestcaseView(View):
         form=Interface_yong_Form()
         project, models = get_pro_mo()
         inrterface_list=Interface.query.filter_by(status=False).all()
+        mock_yilai=Mockserver.query.filter_by(delete=False).all()
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
         else:
@@ -58,6 +68,8 @@ class AddtestcaseView(View):
             yilai_test= request.values.get("jiekou")
             shifoujiaoyan = request.values.get("database")
             interface_type=request.values.get('interface_type')
+            mock=request.values.get('mock')
+            mockdata = request.values.get('mockdata')
             if shifoujiaoyan == 'on':
                 databasesql=request.values.get('databasesql')
                 databijiao=request.values.get('databijiao')
@@ -73,11 +85,11 @@ class AddtestcaseView(View):
                 yilai_tes=yilai_test
                 if yilai_data is None or yilai_data=='':
                     flash(u'选择依赖后必须填写获取依赖的接口的字段')
-                    return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list)
+                    return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list,mock_yilai=mock_yilai)
                 yilai_dat=yilai_data
             if yongli_nam =='' or mode ==''  or interface_header==''or interface_url=='' or interface_meth=='' :
                 flash(u'请准确填写用例的各项信息')
-                return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list)
+                return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list,mock_yilai=mock_yilai)
             project_id = Project.query.filter_by(project_name=yongli_nam).first().id
             models_id = Model.query.filter_by(model_name=mode).first().id
             interface=Interface.query.filter_by(Interface_name=interface_name).first().id
@@ -87,7 +99,7 @@ class AddtestcaseView(View):
                 saves=True
             else:
                 flash(u'选择保存测试结果出现异常')
-                return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list)
+                return render_template('add/add_test_case.html', form=form, projects=projects,mock_yilai=mock_yilai, models=models,inrterface_list=inrterface_list)
 
             try:
                 newcase=InterfaceTest(projects_id=project_id,model_id=models_id,interface_id=interface,
@@ -97,22 +109,32 @@ class AddtestcaseView(View):
                                       saveresult=saves,pid=(yilai_tes),getattr_p=yilai_dat,
                                       is_database=is_database,chaxunshujuku=databasesql,
                                       databaseziduan=databijiao,
+                                      Interface_name=interface_name,Interface_url=interface_url,
                                       interface_type=interface_type)
                 db.session.add(newcase)
                 db.session.commit()
+                if mock == "选择依赖mock":
+                    pass
+                else:
+                    is_mock = Mockserver.query.filter_by(path=mock, delete=False).first()
+                    m=mockforcase(case=newcase.id,mock=is_mock.id,filed=mockdata)
+                    newcase.rely_mock=True
+                    db.session.add(m)
+                    db.session.commit()
                 flash(u'添加用例成功')
                 return redirect(url_for('home.yongli'))
             except Exception as e:
                 db.session.rollback()
                 flash(u'添加用例失败，原因是：%s'%e)
                 return redirect(url_for('home.yongli'))
-        return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list)
+        return render_template('add/add_test_case.html', form=form, projects=projects, models=models,inrterface_list=inrterface_list,mock_yilai=mock_yilai)
 class EditcaseView(View):
     methods=['GET','POST']
     @login_required
     def dispatch_request(self,id):
         project, models = get_pro_mo()
         inrterface_list = Interface.query.filter_by(status=False).all()
+        mock_yilai = Mockserver.query.filter_by(delete=False).all()
         if current_user.is_sper == True:
             projects=Project.query.filter_by(status=False).order_by('-id').all()
         else:
@@ -132,6 +154,8 @@ class EditcaseView(View):
             yongli_nam = request.form.get('project')
             mode = request.form.get('model')
             url=request.form.get('url')
+            mock = request.values.get('mock')
+            mockdata = request.values.get('mockdata')
             meth=request.form.get('meth')
             headers=request.form.get('headers')
             parme=request.form.get('parme')
@@ -158,13 +182,13 @@ class EditcaseView(View):
                     flash(u'选择依赖后必须填写获取依赖的接口的字段')
                     return render_template('edit/edit_case.html', edit=edit_case,
                                            projects=projects, models=models,
-                                           inerfacelist=inrterface_list)
+                                           inerfacelist=inrterface_list,mock_yilai=mock_yilai)
                 yilai_dat = yilai_data
             if yongli_nam ==None  or mode== None or url==''or headers=='' or meth==''  or reque=='':
                 flash(u'请确定各项参数都正常填写')
                 return render_template('edit/edit_case.html', edit=edit_case, projects=projects,
                                        models=models,
-                                           inerfacelist=inrterface_list)
+                                           inerfacelist=inrterface_list,mock_yilai=mock_yilai)
             projects_id = Project.query.filter_by(project_name=yongli_nam).first().id
             model_id = Model.query.filter_by(model_name=mode).first().id
             interface=Interface.query.filter_by(Interface_name=inerfa).first().id
@@ -176,7 +200,7 @@ class EditcaseView(View):
                 flash(u'选择保存测试用例异常')
                 return render_template('edit/edit_case.html',
                                        edit=edit_case, projects=projects, models=models,
-                                           inerfacelist=inrterface_list)
+                                           inerfacelist=inrterface_list,mock_yilai=mock_yilai)
             edit_case.projects_id=projects_id
             edit_case.model_id=model_id
             edit_case.interface_id=interface
@@ -194,6 +218,14 @@ class EditcaseView(View):
             edit_case.databaseziduan = databijiao
             edit_case.interface_type=interface_type
             try:
+                if mock == "选择依赖mock":
+                    pass
+                else:
+                    is_mock = Mockserver.query.filter_by(path=mock, delete=False).first()
+                    m=mockforcase(case=edit_case.id,mock=is_mock.id,filed=mockdata)
+                    edit_case.rely_mock=True
+                    db.session.add(m)
+                    db.session.commit()
                 db.session.commit()
                 flash(u'用例：%s编辑成功'%id)
                 return redirect( url_for('home.yongli'))
@@ -202,9 +234,9 @@ class EditcaseView(View):
                 flash(u'用例：%s 编辑失败，请重新编辑！'%id)
                 return render_template('edit/edit_case.html',
                                        edit=edit_case, projects=projects, models=models,
-                                           inerfacelist=inrterface_list)
+                                           inerfacelist=inrterface_list,mock_yilai=mock_yilai)
         return render_template('edit/edit_case.html', edit=edit_case, projects=projects,
-                               models=models,inerfacelist=inrterface_list)
+                               models=models,inerfacelist=inrterface_list,mock_yilai=mock_yilai)
 class SeryongliView(MethodView):
     @login_required
     def post(self):
@@ -416,7 +448,11 @@ class DuoyongliView(View):
                     flash(u'无法完成，需要去您的个人设置去设置一个默认的邮件发送')
                     return redirect(url_for('home.yongli'))
                 if f_dingding=='dingding':
-                    send=send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告"%(result_pass,result_fail))
+                    user_send=UserParmeter.query.filter_by(user=int(current_user.id),status=False).first()
+                    if not user_send or user_send.dingding is None or user_send.dingding =="":
+                        send=send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告"%(result_pass,result_fail),Dingtalk_access_token=Dingtalk_access_token)
+                    else:
+                        send=send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告"%(result_pass,result_fail),Dingtalk_access_token=user_send.dingding)
                     if send is True:
                         flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
                         return redirect(url_for('home.yongli'))
@@ -438,28 +474,17 @@ class MakeonlyoneCase(MethodView):
         if not testevent:
             return jsonify({'code':41, 'msg': '请确定你所选择的测试环境是否真实存在！'})
         case = InterfaceTest.query.filter_by(id=int(case_id), status=False).first()
+        if not case:
+            return jsonify({'code': 42, 'msg': '请确定你要测试的用力是否存在！'})
         try:
-            if not  case:
-                return jsonify({'code':42, 'msg': '请确定你要测试的用力是否存在！'})
             if case.interface_type=='http':
                 if case.pid is not None and case.pid != 'None'  and case.pid!='':
-                    tesyi=InterfaceTest.query.filter_by(id=int(case.pid),status=False).first()
-                    if tesyi:
-                        testres=TestcaseResult.query.filter_by(case_id=tesyi.id,status=False).first()
-                        if testres is None:
-                            case.Interface_is_tiaoshi = True
-                            case.Interface_tiaoshi_shifou = True
-                            db.session.commit()
-                            return jsonify({'code': 43, 'msg': u'找不到依赖的接口的测试结果！请查找依赖接口是否进行测试,获取测试是否通过,接口id是：%s'%(case.pid)})
-                        if testres.by is False:
-                            case.Interface_is_tiaoshi = True
-                            case.Interface_tiaoshi_shifou = True
-                            db.session.commit()
-                            return jsonify({'code': 43, 'msg': u'依赖用例执行失败'})
-                        huoquyilai=testres.result
+                    tesyi=get_reslut(key=case.id+ "&" + url)
+                    if tesyi is not  None:
                         canshu=case.getattr_p
                         try:
-                            yilaidata=eval(huoquyilai)[canshu]
+                            testres = eval(tesyi.decode('utf-8'))
+                            yilaidata=eval(testres)[canshu]
                         except Exception as e:
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
@@ -559,6 +584,30 @@ class MakeonlyoneCase(MethodView):
                     case.Interface_tiaoshi_shifou = True
                     db.session.commit()
                     return jsonify({'code': 57, 'msg': '转化请求参数失败，原因：%s' % e})
+                if case.rely_mock==True:
+                    m_case=mockforcase.query.filter_by(case=case.id).first()
+                    if not  m_case:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 57, 'msg': '依赖的mock查不到' })
+                    me=Mockserver.query.filter_by(id=m_case.mock,delete=False).first()
+                    if not me:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 57, 'msg': '依赖的mock查不到或者已经删除'})
+                    try:
+                        me = Api(url=me.path, fangshi=me.methods,
+                             params=eval(me.params), headers={'token':xitong_request_toke})
+                        result = me.getJson()
+                        da_ta=result[m_case.filed]
+                        data[m_case.filed]=da_ta
+                    except Exception as e:
+                        case.Interface_is_tiaoshi = True
+                        case.Interface_tiaoshi_shifou = True
+                        db.session.commit()
+                        return jsonify({'code': 57, 'msg': '请求mock接口失败，原因：%s' % e})
                 me = Api(url=case.interface_id.Interface_url, fangshi=case.Interface_meth,
                          params=data,headers=ne)
                 result= me.getJson()
@@ -570,43 +619,22 @@ class MakeonlyoneCase(MethodView):
                     if retur_re =='pass'  and return_mysql['result']=='pass':
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = False
-                        new_testre = TestcaseResult(case_id=case)
-                        new_testre.result = str(result)
-                        new_testre.testevir = url
-                        new_testre.by=True
-                        new_testre.spend=spend
-                        db.session.add(new_testre)
-                        db.session.commit()
+                        save_reslut(key=case.id + "&" + url, value=str(result))
                         return jsonify({'code':200,'msg':'测试用例调试通过！'})
                     elif retur_re =='fail' or return_mysql['result']=='fail':
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
-                        new_testre = TestcaseResult(case_id=case)
-                        new_testre.result = str(result)
-                        new_testre.testevir = url
-                        new_testre.by = False
-                        new_testre.spend = spend
-                        db.session.commit()
+                        save_reslut(key=case.id +"&"+url, value=str(result))
                         return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
                     else:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
-                        new_testre = TestcaseResult(case_id=case)
-                        new_testre.result = str(result)
-                        new_testre.testevir = url
-                        new_testre.by = False
-                        new_testre.spend = spend
-                        db.session.commit()
+                        save_reslut(key=case.id + "&" + url, value=str(result))
                         return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
                 except Exception as e:
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
-                    new_testre = TestcaseResult(case_id=case)
-                    new_testre.result = str(result)
-                    new_testre.testevir = url
-                    new_testre.by = False
-                    new_testre.spend = spend
-                    db.session.commit()
+                    save_reslut(key=case.id + "&" + url, value=str(result))
                     return jsonify({'code': 60, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(e)})
             elif case.interface_type=='dubbo':
                 try:
