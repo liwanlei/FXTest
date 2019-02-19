@@ -148,14 +148,34 @@ class Action(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     user=db.Column(db.Integer(),db.ForeignKey("users.id"))
     name=db.Column(db.String(252),unique=True,index=True,nullable=False)
+    category=db.Column(db.Integer(),default=0)#0前置，1后置
     style=db.Column(db.Integer(),default=0)#动作的类型，0是睡眠，1是sql，2.执行测试用例。3执行请求
     sleepnum=db.Column(db.Integer())
     sql=db.Column(db.String(252))
+    testevent = db.Column(db.Integer(), db.ForeignKey("ceshihuanjing.id"),nullable=True)
     caseid=db.Column(db.Integer())
     requestsurl=db.Column(db.String(252))
     requestsparame=db.Column(db.String(252))
     requestmethod=db.Column(db.String(8))
     status=db.Column(db.Boolean(),default=False)
+    def __repr__(self):
+        return  str(self.id)
+class GeneralConfiguration(db.Model):
+    __tablename__="generalconfigurations"
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    user = db.Column(db.Integer(), db.ForeignKey("users.id"))
+    addtime=db.Column(db.DateTime(),default=datetime.datetime.now())
+    name = db.Column(db.String(252), unique=True, index=True, nullable=False)
+    style = db.Column(db.Integer(), default=0)#通用配置，0 key-value  1，token 2.sql，3.http请求
+    key=db.Column(db.String(252))
+    token_parame=db.Column(db.String(252))
+    token_url=db.Column(db.String(252))
+    token_method=db.Column(db.String(16),default="POST")
+    sqlurl=db.Column(db.String(252))
+    request_url=db.Column(db.String(252))
+    request_parame=db.Column(db.String(252))
+    request_method=db.Column(db.String(252),default="GET")
+    testevent = db.Column(db.Integer(), db.ForeignKey("ceshihuanjing.id"),nullable=True)
     def __repr__(self):
         return  str(self.id)
 class TestResult(db.Model):#测试结果表
