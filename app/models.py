@@ -22,6 +22,7 @@ rely_case=db.Table('yilai',
                     db.Column('cases_id', db.Integer(),
                               db.ForeignKey('interfacetests.id')),
                    db.Column('attred',db.String()))
+
 class Permisson:
     ADD = 0x01
     EDIT = 0x02
@@ -321,3 +322,20 @@ class Parameter(db.Model):#参数
     user_id=db.Column(db.Integer,db.ForeignKey('users.id'))
     def __repr__(self):
         return  str(self.id)
+class CaseGeneral(db.Model):
+    __tablename__ = 'casegenerals'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    case=db.Column(db.Integer(),db.ForeignKey("interfacetests.id"))
+    general=db.Column(db.Integer(),db.ForeignKey("generalconfigurations.id"))
+    filed=db.Column(db.String(252))
+    def __repr__(self):
+        return str(self.id)
+class CaseAction(db.Model):
+    __tablename__ = 'caseactions'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    case = db.Column(db.Integer(), db.ForeignKey("interfacetests.id"))
+    action=db.Column(db.Integer(),db.ForeignKey("actions.id"))
+    actiontype=db.Column(db.Integer(),default=0)
+    filed = db.Column(db.String(252))
+    def __repr__(self):
+        return str(self.id)

@@ -84,13 +84,8 @@ def addtask(id):#定时任务执行的时候所用的函数
     db.session.add(new_reust)
     db.session.commit()
     try:
-        user_send = UserParmeter.query.filter_by(user=int(current_user.id), status=False).first()
-        if not user_send or user_send.dingding is None or user_send.dingding == "":
-            send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
+        send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
                              Dingtalk_access_token=Dingtalk_access_token)
-        else:
-            send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
-                             Dingtalk_access_token=user_send.dingding)
         if send is True:
             flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
             return redirect(url_for('home.yongli'))

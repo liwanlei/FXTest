@@ -20,7 +20,8 @@ from flask_login import current_user,login_required
 from common.Dingtalk import send_ding
 from common.mysqldatabasecur import *
 from common.dubbo_feng import DubboInterface
-from config import  Config_daoru_xianzhi,redis_host,redis_port,redis_save_result_db,save_duration,xitong_request_toke,test_fail_try_num
+from config import  Config_daoru_xianzhi,redis_host,\
+    redis_port,redis_save_result_db,save_duration
 from common.excet_excel import create_interface_case
 from common.hebinglist import listmax
 from common.pyredis import ConRedisOper
@@ -68,8 +69,6 @@ class AddtestcaseView(View):
             yilai_test= request.values.get("jiekou")
             shifoujiaoyan = request.values.get("database")
             interface_type=request.values.get('interface_type')
-            mock=request.values.get('mock')
-            mockdata = request.values.get('mockdata')
             if shifoujiaoyan == 'on':
                 databasesql=request.values.get('databasesql')
                 databijiao=request.values.get('databijiao')
@@ -113,14 +112,36 @@ class AddtestcaseView(View):
                                       interface_type=interface_type)
                 db.session.add(newcase)
                 db.session.commit()
-                if mock == "选择依赖mock":
-                    pass
-                else:
-                    is_mock = Mockserver.query.filter_by(path=mock, delete=False).first()
-                    m=mockforcase(case=newcase.id,mock=is_mock.id,filed=mockdata)
-                    newcase.rely_mock=True
-                    db.session.add(m)
-                    db.session.commit()
+                try:
+                    for key, value in dict(eval(interface_can)):
+                        if str(value).startswith("#"):
+                            if str(value).split(".")[0] =='#action':
+                                action=Action.query.filter_by(name=str(value).split(".")[1]).first()
+                                if not  action:
+                                    flash(u'操作不存在')
+                                    return render_template('add/add_test_case.html', form=form, projects=projects,
+                                                           models=models,
+                                                           inrterface_list=inrterface_list, mock_yilai=mock_yilai)
+                                caseac=CaseAction(case=newcase,action=action,actiontype=action.category,
+                                                  filed=key)
+                                db.session.add(caseac)
+                                db.session.commit()
+                            elif str(value).split(".")[0] =='#conf':
+                                action = GeneralConfiguration.query.filter_by(name=str(value).split(".")[1]).first()
+                                if not action:
+                                    flash(u'配置不存在')
+                                    return render_template('add/add_test_case.html', form=form, projects=projects,
+                                                           models=models,
+                                                           inrterface_list=inrterface_list, mock_yilai=mock_yilai)
+                                caseac = CaseGeneral(case=newcase, general=action, filed=key)
+                                db.session.add(caseac)
+                                db.session.commit()
+                            else:
+                                pass
+                except:
+                    flash(u'测试用例参数仅支持dict格式')
+                    return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
+                                           inrterface_list=inrterface_list, mock_yilai=mock_yilai)
                 flash(u'添加用例成功')
                 return redirect(url_for('home.yongli'))
             except Exception as e:
@@ -154,8 +175,6 @@ class EditcaseView(View):
             yongli_nam = request.form.get('project')
             mode = request.form.get('model')
             url=request.form.get('url')
-            mock = request.values.get('mock')
-            mockdata = request.values.get('mockdata')
             meth=request.form.get('meth')
             headers=request.form.get('headers')
             parme=request.form.get('parme')
@@ -218,14 +237,42 @@ class EditcaseView(View):
             edit_case.databaseziduan = databijiao
             edit_case.interface_type=interface_type
             try:
-                if mock == "选择依赖mock":
-                    pass
-                else:
-                    is_mock = Mockserver.query.filter_by(path=mock, delete=False).first()
-                    m=mockforcase(case=edit_case.id,mock=is_mock.id,filed=mockdata)
-                    edit_case.rely_mock=True
-                    db.session.add(m)
-                    db.session.commit()
+                actioncase=CaseAction.query.filter_by(case=edit_case).all()
+                configcase=CaseGeneral.query.filter_by(case=edit_case).all()
+                db.session.delete(configcase)
+                db.session.delete(actioncase)
+                db.session.commit()
+                try:
+                    for key, value in dict(eval(parme)):
+                        if str(value).startswith("#"):
+                            if str(value).split(".")[0] =='#action':
+                                action=Action.query.filter_by(name=str(value).split(".")[1]).first()
+                                if not  action:
+                                    flash(u'操作不存在')
+                                    return render_template('edit/edit_case.html', edit=edit_case,
+                                                           projects=projects, models=models,
+                                                           inerfacelist=inrterface_list, mock_yilai=mock_yilai)
+                                caseac=CaseAction(case=edit_case,action=action,actiontype=action.category,
+                                                  filed=key)
+                                db.session.add(caseac)
+                                db.session.commit()
+                            elif str(value).split(".")[0] =='#conf':
+                                action = GeneralConfiguration.query.filter_by(name=str(value).split(".")[1]).first()
+                                if not action:
+                                    flash(u'配置不存在')
+                                    return render_template('edit/edit_case.html', edit=edit_case,
+                                                           projects=projects, models=models,
+                                                           inerfacelist=inrterface_list, mock_yilai=mock_yilai)
+                                caseac = CaseGeneral(case=edit_case, general=action, filed=key)
+                                db.session.add(caseac)
+                                db.session.commit()
+                            else:
+                                pass
+                except:
+                    flash(u'测试用例参数仅支持dict格式')
+                    return render_template('edit/edit_case.html', edit=edit_case,
+                                           projects=projects, models=models,
+                                           inerfacelist=inrterface_list, mock_yilai=mock_yilai)
                 db.session.commit()
                 flash(u'用例：%s编辑成功'%id)
                 return redirect( url_for('home.yongli'))
@@ -448,11 +495,7 @@ class DuoyongliView(View):
                     flash(u'无法完成，需要去您的个人设置去设置一个默认的邮件发送')
                     return redirect(url_for('home.yongli'))
                 if f_dingding=='dingding':
-                    user_send=UserParmeter.query.filter_by(user=int(current_user.id),status=False).first()
-                    if not user_send or user_send.dingding is None or user_send.dingding =="":
-                        send=send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告"%(result_pass,result_fail),Dingtalk_access_token=Dingtalk_access_token)
-                    else:
-                        send=send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告"%(result_pass,result_fail),Dingtalk_access_token=user_send.dingding)
+                    send=send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告"%(result_pass,result_fail),Dingtalk_access_token=Dingtalk_access_token)
                     if send is True:
                         flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
                         return redirect(url_for('home.yongli'))
@@ -584,30 +627,7 @@ class MakeonlyoneCase(MethodView):
                     case.Interface_tiaoshi_shifou = True
                     db.session.commit()
                     return jsonify({'code': 57, 'msg': '转化请求参数失败，原因：%s' % e})
-                if case.rely_mock==True:
-                    m_case=mockforcase.query.filter_by(case=case.id).first()
-                    if not  m_case:
-                        case.Interface_is_tiaoshi = True
-                        case.Interface_tiaoshi_shifou = True
-                        db.session.commit()
-                        return jsonify({'code': 57, 'msg': '依赖的mock查不到' })
-                    me=Mockserver.query.filter_by(id=m_case.mock,delete=False).first()
-                    if not me:
-                        case.Interface_is_tiaoshi = True
-                        case.Interface_tiaoshi_shifou = True
-                        db.session.commit()
-                        return jsonify({'code': 57, 'msg': '依赖的mock查不到或者已经删除'})
-                    try:
-                        me = Api(url=me.path, fangshi=me.methods,
-                             params=eval(me.params), headers={'token':xitong_request_toke})
-                        result = me.getJson()
-                        da_ta=result[m_case.filed]
-                        data[m_case.filed]=da_ta
-                    except Exception as e:
-                        case.Interface_is_tiaoshi = True
-                        case.Interface_tiaoshi_shifou = True
-                        db.session.commit()
-                        return jsonify({'code': 57, 'msg': '请求mock接口失败，原因：%s' % e})
+
                 me = Api(url=case.interface_id.Interface_url, fangshi=case.Interface_meth,
                          params=data,headers=ne)
                 result= me.getJson()
@@ -655,7 +675,6 @@ class MakeonlyoneCase(MethodView):
                 if case.saveresult is True:
                     new_testre = TestcaseResult(case_id=case.id)
                     new_testre.result = str(dubboapireslu)
-                    #new_testre.testevir = url
                     db.session.add(new_testre)
                     db.session.commit()
                 if dubboapireslu['code'] == 0:

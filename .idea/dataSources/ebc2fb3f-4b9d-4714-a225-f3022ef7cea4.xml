@@ -13,1062 +13,1130 @@
     <collation id="5" parent="1" name="RTRIM"/>
     <table id="6" parent="2" name="actions"/>
     <table id="7" parent="2" name="alembic_version"/>
-    <table id="8" parent="2" name="ceshihuanjing"/>
-    <table id="9" parent="2" name="emailReports"/>
-    <table id="10" parent="2" name="generalconfigurations"/>
-    <table id="11" parent="2" name="interfaces"/>
-    <table id="12" parent="2" name="interfacetests"/>
-    <table id="13" parent="2" name="mockserver"/>
-    <table id="14" parent="2" name="models"/>
-    <table id="15" parent="2" name="parames"/>
-    <table id="16" parent="2" name="projects"/>
-    <table id="17" parent="2" name="quanxians"/>
-    <table id="18" parent="2" name="quanxianusers"/>
-    <table id="19" parent="2" name="registrations"/>
-    <table id="20" parent="2" name="roles"/>
-    <table id="21" parent="2" name="sqlite_master">
+    <table id="8" parent="2" name="caseactions"/>
+    <table id="9" parent="2" name="casegenerals"/>
+    <table id="10" parent="2" name="ceshihuanjing"/>
+    <table id="11" parent="2" name="emailReports"/>
+    <table id="12" parent="2" name="generalconfigurations"/>
+    <table id="13" parent="2" name="interfaces"/>
+    <table id="14" parent="2" name="interfacetests"/>
+    <table id="15" parent="2" name="mockserver"/>
+    <table id="16" parent="2" name="models"/>
+    <table id="17" parent="2" name="parames"/>
+    <table id="18" parent="2" name="projects"/>
+    <table id="19" parent="2" name="quanxians"/>
+    <table id="20" parent="2" name="quanxianusers"/>
+    <table id="21" parent="2" name="registrations"/>
+    <table id="22" parent="2" name="roles"/>
+    <table id="23" parent="2" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="22" parent="2" name="tasks"/>
-    <table id="23" parent="2" name="testcaseresults"/>
-    <table id="24" parent="2" name="tstresults"/>
-    <table id="25" parent="2" name="users"/>
-    <table id="26" parent="2" name="works"/>
-    <table id="27" parent="2" name="yilai"/>
-    <column id="28" parent="6" name="id">
+    <table id="24" parent="2" name="tasks"/>
+    <table id="25" parent="2" name="testcaseresults"/>
+    <table id="26" parent="2" name="tstresults"/>
+    <table id="27" parent="2" name="users"/>
+    <table id="28" parent="2" name="works"/>
+    <table id="29" parent="2" name="yilai"/>
+    <column id="30" parent="6" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="29" parent="6" name="user">
+    <column id="31" parent="6" name="user">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="30" parent="6" name="name">
+    <column id="32" parent="6" name="name">
       <Position>3</Position>
       <DataType>VARCHAR(252)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="31" parent="6" name="style">
+    <column id="33" parent="6" name="style">
       <Position>4</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="32" parent="6" name="sleepnum">
+    <column id="34" parent="6" name="sleepnum">
       <Position>5</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="33" parent="6" name="sql">
+    <column id="35" parent="6" name="sql">
       <Position>6</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="34" parent="6" name="caseid">
+    <column id="36" parent="6" name="caseid">
       <Position>7</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="35" parent="6" name="requestsurl">
+    <column id="37" parent="6" name="requestsurl">
       <Position>8</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="36" parent="6" name="requestsparame">
+    <column id="38" parent="6" name="requestsparame">
       <Position>9</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="37" parent="6" name="requestmethod">
+    <column id="39" parent="6" name="requestmethod">
       <Position>10</Position>
       <DataType>VARCHAR(8)|0s</DataType>
     </column>
-    <column id="38" parent="6" name="status">
+    <column id="40" parent="6" name="status">
       <Position>11</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="39" parent="6" name="category">
+    <column id="41" parent="6" name="category">
       <Position>12</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="40" parent="6" name="testevent">
+    <column id="42" parent="6" name="testevent">
       <Position>13</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <index id="41" parent="6" name="ix_actions_name">
+    <index id="43" parent="6" name="ix_actions_name">
       <ColNames>name</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="42" parent="6">
+    <key id="44" parent="6">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="43" parent="6">
+    <foreign-key id="45" parent="6">
       <ColNames>user</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="44" parent="6">
+    <foreign-key id="46" parent="6">
       <ColNames>testevent</ColNames>
       <RefTableName>ceshihuanjing</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <check id="45" parent="6">
+    <check id="47" parent="6">
       <Predicate>status IN ( 0 , 1 )</Predicate>
     </check>
-    <column id="46" parent="7" name="version_num">
+    <column id="48" parent="7" name="version_num">
       <Position>1</Position>
       <DataType>VARCHAR(32)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="47" parent="7" name="sqlite_autoindex_alembic_version_1">
+    <index id="49" parent="7" name="sqlite_autoindex_alembic_version_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>version_num</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="48" parent="7" name="alembic_version_pkc">
+    <key id="50" parent="7" name="alembic_version_pkc">
       <ColNames>version_num</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_alembic_version_1</UnderlyingIndexName>
     </key>
-    <column id="49" parent="8" name="id">
+    <column id="51" parent="8" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="50" parent="8" name="make_user">
+    <column id="52" parent="8" name="case">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="51" parent="8" name="url">
+    <column id="53" parent="8" name="action">
       <Position>3</Position>
-      <DataType>VARCHAR|0s</DataType>
+      <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="52" parent="8" name="project">
+    <column id="54" parent="8" name="actiontype">
       <Position>4</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="53" parent="8" name="status">
+    <column id="55" parent="8" name="filed">
       <Position>5</Position>
-      <DataType>BOOLEAN|0s</DataType>
+      <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="54" parent="8" name="desc">
-      <Position>6</Position>
-      <DataType>VARCHAR(255)|0s</DataType>
-    </column>
-    <column id="55" parent="8" name="database">
-      <Position>7</Position>
-      <DataType>VARCHAR(255)|0s</DataType>
-    </column>
-    <column id="56" parent="8" name="databasepassword">
-      <Position>8</Position>
-      <DataType>VARCHAR(32)|0s</DataType>
-    </column>
-    <column id="57" parent="8" name="databaseuser">
-      <Position>9</Position>
-      <DataType>VARCHAR(32)|0s</DataType>
-    </column>
-    <column id="58" parent="8" name="dbhost">
-      <Position>10</Position>
-      <DataType>VARCHAR(255)|0s</DataType>
-    </column>
-    <column id="59" parent="8" name="dbport">
-      <Position>11</Position>
-      <DataType>VARCHAR(255)|0s</DataType>
-    </column>
-    <key id="60" parent="8">
+    <key id="56" parent="8">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="61" parent="8">
+    <foreign-key id="57" parent="8">
+      <ColNames>case</ColNames>
+      <RefTableName>interfacetests</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="58" parent="8">
+      <ColNames>action</ColNames>
+      <RefTableName>actions</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="59" parent="9" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="60" parent="9" name="case">
+      <Position>2</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="61" parent="9" name="general">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="62" parent="9" name="filed">
+      <Position>4</Position>
+      <DataType>VARCHAR(252)|0s</DataType>
+    </column>
+    <key id="63" parent="9">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="64" parent="9">
+      <ColNames>case</ColNames>
+      <RefTableName>interfacetests</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="65" parent="9">
+      <ColNames>general</ColNames>
+      <RefTableName>generalconfigurations</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="66" parent="10" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="67" parent="10" name="make_user">
+      <Position>2</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="68" parent="10" name="url">
+      <Position>3</Position>
+      <DataType>VARCHAR|0s</DataType>
+    </column>
+    <column id="69" parent="10" name="project">
+      <Position>4</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="70" parent="10" name="status">
+      <Position>5</Position>
+      <DataType>BOOLEAN|0s</DataType>
+    </column>
+    <column id="71" parent="10" name="desc">
+      <Position>6</Position>
+      <DataType>VARCHAR(255)|0s</DataType>
+    </column>
+    <column id="72" parent="10" name="database">
+      <Position>7</Position>
+      <DataType>VARCHAR(255)|0s</DataType>
+    </column>
+    <column id="73" parent="10" name="databasepassword">
+      <Position>8</Position>
+      <DataType>VARCHAR(32)|0s</DataType>
+    </column>
+    <column id="74" parent="10" name="databaseuser">
+      <Position>9</Position>
+      <DataType>VARCHAR(32)|0s</DataType>
+    </column>
+    <column id="75" parent="10" name="dbhost">
+      <Position>10</Position>
+      <DataType>VARCHAR(255)|0s</DataType>
+    </column>
+    <column id="76" parent="10" name="dbport">
+      <Position>11</Position>
+      <DataType>VARCHAR(255)|0s</DataType>
+    </column>
+    <key id="77" parent="10">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="78" parent="10">
       <ColNames>make_user</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="62" parent="8">
+    <foreign-key id="79" parent="10">
       <ColNames>project</ColNames>
       <RefTableName>projects</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <check id="63" parent="8">
+    <check id="80" parent="10">
       <Predicate>status IN (0, 1)</Predicate>
     </check>
-    <column id="64" parent="9" name="id">
+    <column id="81" parent="11" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="65" parent="9" name="email_re_user_id">
+    <column id="82" parent="11" name="email_re_user_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="66" parent="9" name="send_email">
+    <column id="83" parent="11" name="send_email">
       <Position>3</Position>
       <DataType>VARCHAR(64)|0s</DataType>
     </column>
-    <column id="67" parent="9" name="send_email_password">
+    <column id="84" parent="11" name="send_email_password">
       <Position>4</Position>
       <DataType>VARCHAR(64)|0s</DataType>
     </column>
-    <column id="68" parent="9" name="to_email">
+    <column id="85" parent="11" name="to_email">
       <Position>5</Position>
       <DataType>VARCHAR|0s</DataType>
     </column>
-    <column id="69" parent="9" name="default_set">
+    <column id="86" parent="11" name="default_set">
       <Position>6</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="70" parent="9" name="port">
+    <column id="87" parent="11" name="port">
       <Position>7</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="71" parent="9" name="stmp_email">
+    <column id="88" parent="11" name="stmp_email">
       <Position>8</Position>
       <DataType>VARCHAR(64)|0s</DataType>
     </column>
-    <column id="72" parent="9" name="status">
+    <column id="89" parent="11" name="status">
       <Position>9</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <key id="73" parent="9">
+    <key id="90" parent="11">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="74" parent="9">
+    <foreign-key id="91" parent="11">
       <ColNames>email_re_user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <check id="75" parent="9">
+    <check id="92" parent="11">
       <Predicate>default_set IN (0, 1)</Predicate>
     </check>
-    <column id="76" parent="10" name="id">
+    <column id="93" parent="12" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="77" parent="10" name="user">
+    <column id="94" parent="12" name="user">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="78" parent="10" name="addtime">
+    <column id="95" parent="12" name="addtime">
       <Position>3</Position>
       <DataType>DATETIME|0s</DataType>
     </column>
-    <column id="79" parent="10" name="name">
+    <column id="96" parent="12" name="name">
       <Position>4</Position>
       <DataType>VARCHAR(252)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="80" parent="10" name="style">
+    <column id="97" parent="12" name="style">
       <Position>5</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="81" parent="10" name="key">
+    <column id="98" parent="12" name="key">
       <Position>6</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="82" parent="10" name="token_parame">
+    <column id="99" parent="12" name="token_parame">
       <Position>7</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="83" parent="10" name="token_url">
+    <column id="100" parent="12" name="token_url">
       <Position>8</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="84" parent="10" name="token_method">
+    <column id="101" parent="12" name="token_method">
       <Position>9</Position>
       <DataType>VARCHAR(16)|0s</DataType>
     </column>
-    <column id="85" parent="10" name="sqlurl">
+    <column id="102" parent="12" name="sqlurl">
       <Position>10</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="86" parent="10" name="request_url">
+    <column id="103" parent="12" name="request_url">
       <Position>11</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="87" parent="10" name="request_parame">
+    <column id="104" parent="12" name="request_parame">
       <Position>12</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="88" parent="10" name="request_method">
+    <column id="105" parent="12" name="request_method">
       <Position>13</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="89" parent="10" name="testevent">
+    <column id="106" parent="12" name="testevent">
       <Position>14</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <index id="90" parent="10" name="ix_generalconfigurations_name">
+    <index id="107" parent="12" name="ix_generalconfigurations_name">
       <ColNames>name</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="91" parent="10">
+    <key id="108" parent="12">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="92" parent="10">
+    <foreign-key id="109" parent="12">
       <ColNames>user</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="93" parent="10">
+    <foreign-key id="110" parent="12">
       <ColNames>testevent</ColNames>
       <RefTableName>ceshihuanjing</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="94" parent="11" name="id">
+    <column id="111" parent="13" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="95" parent="11" name="model_id">
+    <column id="112" parent="13" name="model_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="96" parent="11" name="projects_id">
+    <column id="113" parent="13" name="projects_id">
       <Position>3</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="97" parent="11" name="Interface_name">
+    <column id="114" parent="13" name="Interface_name">
       <Position>4</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="98" parent="11" name="Interface_url">
+    <column id="115" parent="13" name="Interface_url">
       <Position>5</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="99" parent="11" name="Interface_meth">
+    <column id="116" parent="13" name="Interface_meth">
       <Position>6</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="100" parent="11" name="Interface_user_id">
+    <column id="117" parent="13" name="Interface_user_id">
       <Position>7</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="101" parent="11" name="status">
+    <column id="118" parent="13" name="status">
       <Position>8</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="102" parent="11" name="Interface_headers">
+    <column id="119" parent="13" name="Interface_headers">
       <Position>9</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="103" parent="11" name="interfacetype">
+    <column id="120" parent="13" name="interfacetype">
       <Position>10</Position>
       <DataType>VARCHAR(32)|0s</DataType>
     </column>
-    <key id="104" parent="11">
+    <key id="121" parent="13">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="105" parent="11">
+    <foreign-key id="122" parent="13">
       <ColNames>model_id</ColNames>
       <RefTableName>models</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="106" parent="11">
+    <foreign-key id="123" parent="13">
       <ColNames>projects_id</ColNames>
       <RefTableName>projects</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="107" parent="11">
+    <foreign-key id="124" parent="13">
       <ColNames>Interface_user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="108" parent="12" name="id">
+    <column id="125" parent="14" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="109" parent="12" name="model_id">
+    <column id="126" parent="14" name="model_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="110" parent="12" name="projects_id">
+    <column id="127" parent="14" name="projects_id">
       <Position>3</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="111" parent="12" name="Interface_name">
+    <column id="128" parent="14" name="Interface_name">
       <Position>4</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="112" parent="12" name="Interface_url">
+    <column id="129" parent="14" name="Interface_url">
       <Position>5</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="113" parent="12" name="Interface_meth">
+    <column id="130" parent="14" name="Interface_meth">
       <Position>6</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="114" parent="12" name="Interface_pase">
+    <column id="131" parent="14" name="Interface_pase">
       <Position>7</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="115" parent="12" name="Interface_assert">
+    <column id="132" parent="14" name="Interface_assert">
       <Position>8</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="116" parent="12" name="Interface_user_id">
+    <column id="133" parent="14" name="Interface_user_id">
       <Position>9</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="117" parent="12" name="status">
+    <column id="134" parent="14" name="status">
       <Position>10</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="118" parent="12" name="Interface_headers">
+    <column id="135" parent="14" name="Interface_headers">
       <Position>11</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="119" parent="12" name="Interface_is_tiaoshi">
+    <column id="136" parent="14" name="Interface_is_tiaoshi">
       <Position>12</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="120" parent="12" name="Interface_tiaoshi_shifou">
+    <column id="137" parent="14" name="Interface_tiaoshi_shifou">
       <Position>13</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="121" parent="12" name="getattr_p">
+    <column id="138" parent="14" name="getattr_p">
       <Position>14</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="122" parent="12" name="pid">
+    <column id="139" parent="14" name="pid">
       <Position>15</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="123" parent="12" name="saveresult">
+    <column id="140" parent="14" name="saveresult">
       <Position>16</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="124" parent="12" name="chaxunshujuku">
+    <column id="141" parent="14" name="chaxunshujuku">
       <Position>17</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="125" parent="12" name="databaseziduan">
+    <column id="142" parent="14" name="databaseziduan">
       <Position>18</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="126" parent="12" name="is_database">
+    <column id="143" parent="14" name="is_database">
       <Position>19</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="127" parent="12" name="interface_type">
+    <column id="144" parent="14" name="interface_type">
       <Position>20</Position>
       <DataType>VARCHAR(16)|0s</DataType>
     </column>
-    <column id="128" parent="12" name="interface_id">
+    <column id="145" parent="14" name="interface_id">
       <Position>21</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="129" parent="12" name="bian_num">
+    <column id="146" parent="14" name="bian_num">
       <Position>22</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <key id="130" parent="12">
+    <key id="147" parent="14">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="131" parent="12">
+    <foreign-key id="148" parent="14">
       <ColNames>model_id</ColNames>
       <RefTableName>models</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="132" parent="12">
+    <foreign-key id="149" parent="14">
       <ColNames>projects_id</ColNames>
       <RefTableName>projects</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="133" parent="12">
+    <foreign-key id="150" parent="14">
       <ColNames>Interface_user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="134" parent="12">
+    <foreign-key id="151" parent="14">
       <ColNames>interface_id</ColNames>
       <RefTableName>interfaces</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="135" parent="13" name="id">
+    <column id="152" parent="15" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="136" parent="13" name="make_uers">
+    <column id="153" parent="15" name="make_uers">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="137" parent="13" name="name">
+    <column id="154" parent="15" name="name">
       <Position>3</Position>
       <DataType>VARCHAR(55)|0s</DataType>
     </column>
-    <column id="138" parent="13" name="path">
+    <column id="155" parent="15" name="path">
       <Position>4</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="139" parent="13" name="methods">
+    <column id="156" parent="15" name="methods">
       <Position>5</Position>
       <DataType>VARCHAR(50)|0s</DataType>
     </column>
-    <column id="140" parent="13" name="headers">
+    <column id="157" parent="15" name="headers">
       <Position>6</Position>
       <DataType>VARCHAR(500)|0s</DataType>
     </column>
-    <column id="141" parent="13" name="description">
+    <column id="158" parent="15" name="description">
       <Position>7</Position>
       <DataType>VARCHAR(50)|0s</DataType>
     </column>
-    <column id="142" parent="13" name="fanhui">
+    <column id="159" parent="15" name="fanhui">
       <Position>8</Position>
       <DataType>VARCHAR(500)|0s</DataType>
     </column>
-    <column id="143" parent="13" name="params">
+    <column id="160" parent="15" name="params">
       <Position>9</Position>
       <DataType>VARCHAR(500)|0s</DataType>
     </column>
-    <column id="144" parent="13" name="rebacktype">
+    <column id="161" parent="15" name="rebacktype">
       <Position>10</Position>
       <DataType>VARCHAR(32)|0s</DataType>
     </column>
-    <column id="145" parent="13" name="update_time">
+    <column id="162" parent="15" name="update_time">
       <Position>11</Position>
       <DataType>DATETIME|0s</DataType>
     </column>
-    <column id="146" parent="13" name="status">
+    <column id="163" parent="15" name="status">
       <Position>12</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="147" parent="13" name="delete">
+    <column id="164" parent="15" name="delete">
       <Position>13</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="148" parent="13" name="ischeck">
+    <column id="165" parent="15" name="ischeck">
       <Position>14</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="149" parent="13" name="is_headers">
+    <column id="166" parent="15" name="is_headers">
       <Position>15</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <key id="150" parent="13">
+    <key id="167" parent="15">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="151" parent="13">
+    <foreign-key id="168" parent="15">
       <ColNames>make_uers</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <check id="152" parent="13">
+    <check id="169" parent="15">
       <Predicate>&quot;delete&quot; IN ( 0 , 1 )</Predicate>
     </check>
-    <check id="153" parent="13">
+    <check id="170" parent="15">
       <Predicate>is_headers IN ( 0 , 1 )</Predicate>
     </check>
-    <check id="154" parent="13">
+    <check id="171" parent="15">
       <Predicate>ischeck IN ( 0 , 1 )</Predicate>
     </check>
-    <check id="155" parent="13">
+    <check id="172" parent="15">
       <Predicate>status IN ( 0 , 1 )</Predicate>
     </check>
-    <column id="156" parent="14" name="id">
+    <column id="173" parent="16" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="157" parent="14" name="model_name">
+    <column id="174" parent="16" name="model_name">
       <Position>2</Position>
       <DataType>VARCHAR(256)|0s</DataType>
     </column>
-    <column id="158" parent="14" name="model_user_id">
+    <column id="175" parent="16" name="model_user_id">
       <Position>3</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="159" parent="14" name="status">
+    <column id="176" parent="16" name="status">
       <Position>4</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <key id="160" parent="14">
+    <key id="177" parent="16">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="161" parent="14">
+    <foreign-key id="178" parent="16">
       <ColNames>model_user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="162" parent="15" name="id">
+    <column id="179" parent="17" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="163" parent="15" name="interface_id">
+    <column id="180" parent="17" name="interface_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="164" parent="15" name="parameter_type">
+    <column id="181" parent="17" name="parameter_type">
       <Position>3</Position>
       <DataType>VARCHAR(64)|0s</DataType>
     </column>
-    <column id="165" parent="15" name="parameter_name">
+    <column id="182" parent="17" name="parameter_name">
       <Position>4</Position>
       <DataType>VARCHAR(64)|0s</DataType>
     </column>
-    <column id="166" parent="15" name="necessary">
+    <column id="183" parent="17" name="necessary">
       <Position>5</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="167" parent="15" name="type">
+    <column id="184" parent="17" name="type">
       <Position>6</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="168" parent="15" name="status">
+    <column id="185" parent="17" name="status">
       <Position>7</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="169" parent="15" name="default">
+    <column id="186" parent="17" name="default">
       <Position>8</Position>
       <DataType>VARCHAR(63)|0s</DataType>
     </column>
-    <column id="170" parent="15" name="desc">
+    <column id="187" parent="17" name="desc">
       <Position>9</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="171" parent="15" name="user_id">
+    <column id="188" parent="17" name="user_id">
       <Position>10</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <key id="172" parent="15">
+    <key id="189" parent="17">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="173" parent="15">
+    <foreign-key id="190" parent="17">
       <ColNames>interface_id</ColNames>
       <RefTableName>interfaces</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="174" parent="15">
+    <foreign-key id="191" parent="17">
       <ColNames>user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <check id="175" parent="15">
+    <check id="192" parent="17">
       <Predicate>necessary IN ( 0 , 1 )</Predicate>
     </check>
-    <check id="176" parent="15">
+    <check id="193" parent="17">
       <Predicate>status IN ( 0 , 1 )</Predicate>
     </check>
-    <column id="177" parent="16" name="id">
+    <column id="194" parent="18" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="178" parent="16" name="project_user_id">
+    <column id="195" parent="18" name="project_user_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="179" parent="16" name="project_name">
+    <column id="196" parent="18" name="project_name">
       <Position>3</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="180" parent="16" name="status">
+    <column id="197" parent="18" name="status">
       <Position>4</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <key id="181" parent="16">
+    <key id="198" parent="18">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="182" parent="16">
+    <foreign-key id="199" parent="18">
       <ColNames>project_user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="183" parent="16">
+    <foreign-key id="200" parent="18">
       <ColNames>project_user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="184" parent="17" name="id">
+    <column id="201" parent="19" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="185" parent="17" name="rose">
+    <column id="202" parent="19" name="rose">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="186" parent="17" name="project">
+    <column id="203" parent="19" name="project">
       <Position>3</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <key id="187" parent="17">
+    <key id="204" parent="19">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="188" parent="17">
+    <foreign-key id="205" parent="19">
       <ColNames>rose</ColNames>
       <RefTableName>roles</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="189" parent="17">
+    <foreign-key id="206" parent="19">
       <ColNames>project</ColNames>
       <RefTableName>projects</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="190" parent="18" name="user_id">
+    <column id="207" parent="20" name="user_id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="191" parent="18" name="quanxians_id">
+    <column id="208" parent="20" name="quanxians_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <foreign-key id="192" parent="18">
+    <foreign-key id="209" parent="20">
       <ColNames>user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="193" parent="18">
+    <foreign-key id="210" parent="20">
       <ColNames>quanxians_id</ColNames>
       <RefTableName>quanxians</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="194" parent="19" name="task_id">
+    <column id="211" parent="21" name="task_id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="195" parent="19" name="interfacetests_id">
+    <column id="212" parent="21" name="interfacetests_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <foreign-key id="196" parent="19">
+    <foreign-key id="213" parent="21">
       <ColNames>task_id</ColNames>
       <RefTableName>tasks</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="197" parent="19">
+    <foreign-key id="214" parent="21">
       <ColNames>interfacetests_id</ColNames>
       <RefTableName>interfacetests</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="198" parent="20" name="id">
+    <column id="215" parent="22" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="199" parent="20" name="name">
+    <column id="216" parent="22" name="name">
       <Position>2</Position>
       <DataType>VARCHAR|0s</DataType>
     </column>
-    <column id="200" parent="20" name="default">
+    <column id="217" parent="22" name="default">
       <Position>3</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="201" parent="20" name="permissions">
+    <column id="218" parent="22" name="permissions">
       <Position>4</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <index id="202" parent="20" name="sqlite_autoindex_roles_1">
+    <index id="219" parent="22" name="sqlite_autoindex_roles_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>name</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="203" parent="20">
+    <key id="220" parent="22">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="204" parent="20">
+    <key id="221" parent="22">
       <ColNames>name</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_roles_1</UnderlyingIndexName>
     </key>
-    <check id="205" parent="20">
+    <check id="222" parent="22">
       <Predicate>&quot;default&quot; IN (0, 1)</Predicate>
     </check>
-    <column id="206" parent="21" name="type">
+    <column id="223" parent="23" name="type">
       <Position>1</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="207" parent="21" name="name">
+    <column id="224" parent="23" name="name">
       <Position>2</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="208" parent="21" name="tbl_name">
+    <column id="225" parent="23" name="tbl_name">
       <Position>3</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="209" parent="21" name="rootpage">
+    <column id="226" parent="23" name="rootpage">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
     </column>
-    <column id="210" parent="21" name="sql">
+    <column id="227" parent="23" name="sql">
       <Position>5</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="211" parent="22" name="id">
+    <column id="228" parent="24" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="212" parent="22" name="makeuser">
+    <column id="229" parent="24" name="makeuser">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="213" parent="22" name="taskname">
+    <column id="230" parent="24" name="taskname">
       <Position>3</Position>
       <DataType>VARCHAR(52)|0s</DataType>
     </column>
-    <column id="214" parent="22" name="taskdesc">
+    <column id="231" parent="24" name="taskdesc">
       <Position>4</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="215" parent="22" name="taskstart">
+    <column id="232" parent="24" name="taskstart">
       <Position>5</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="216" parent="22" name="taskmakedate">
+    <column id="233" parent="24" name="taskmakedate">
       <Position>6</Position>
       <DataType>DATETIME|0s</DataType>
     </column>
-    <column id="217" parent="22" name="taskrepor_to">
+    <column id="234" parent="24" name="taskrepor_to">
       <Position>7</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="218" parent="22" name="taskrepor_cao">
+    <column id="235" parent="24" name="taskrepor_cao">
       <Position>8</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="219" parent="22" name="task_make_email">
+    <column id="236" parent="24" name="task_make_email">
       <Position>9</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="220" parent="22" name="status">
+    <column id="237" parent="24" name="status">
       <Position>10</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="221" parent="22" name="yunxing_status">
+    <column id="238" parent="24" name="yunxing_status">
       <Position>11</Position>
       <DataType>VARCHAR|0s</DataType>
     </column>
-    <column id="222" parent="22" name="prject">
+    <column id="239" parent="24" name="prject">
       <Position>12</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="223" parent="22" name="testevent">
+    <column id="240" parent="24" name="testevent">
       <Position>13</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <key id="224" parent="22">
+    <key id="241" parent="24">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="225" parent="22">
+    <foreign-key id="242" parent="24">
       <ColNames>makeuser</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <check id="226" parent="22">
+    <check id="243" parent="24">
       <Predicate>status IN ( 0 , 1 )</Predicate>
     </check>
-    <column id="227" parent="23" name="id">
+    <column id="244" parent="25" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="228" parent="23" name="case_id">
+    <column id="245" parent="25" name="case_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="229" parent="23" name="result">
+    <column id="246" parent="25" name="result">
       <Position>3</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="230" parent="23" name="date">
+    <column id="247" parent="25" name="date">
       <Position>4</Position>
       <DataType>DATETIME|0s</DataType>
     </column>
-    <column id="231" parent="23" name="testevir">
+    <column id="248" parent="25" name="testevir">
       <Position>5</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <key id="232" parent="23">
+    <key id="249" parent="25">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="233" parent="23">
+    <foreign-key id="250" parent="25">
       <ColNames>case_id</ColNames>
       <RefTableName>interfacetests</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="234" parent="23">
+    <foreign-key id="251" parent="25">
       <ColNames>testevir</ColNames>
       <RefTableName>ceshihuanjing</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="235" parent="24" name="id">
+    <column id="252" parent="26" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="236" parent="24" name="Test_user_id">
+    <column id="253" parent="26" name="Test_user_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="237" parent="24" name="test_num">
+    <column id="254" parent="26" name="test_num">
       <Position>3</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="238" parent="24" name="pass_num">
+    <column id="255" parent="26" name="pass_num">
       <Position>4</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="239" parent="24" name="fail_num">
+    <column id="256" parent="26" name="fail_num">
       <Position>5</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="240" parent="24" name="test_time">
+    <column id="257" parent="26" name="test_time">
       <Position>6</Position>
       <DataType>DATETIME|0s</DataType>
     </column>
-    <column id="241" parent="24" name="hour_time">
+    <column id="258" parent="26" name="hour_time">
       <Position>7</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="242" parent="24" name="test_log">
+    <column id="259" parent="26" name="test_log">
       <Position>8</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="243" parent="24" name="test_rep">
+    <column id="260" parent="26" name="test_rep">
       <Position>9</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="244" parent="24" name="projects_id">
+    <column id="261" parent="26" name="projects_id">
       <Position>10</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="245" parent="24" name="status">
+    <column id="262" parent="26" name="status">
       <Position>11</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <column id="246" parent="24" name="Exception_num">
+    <column id="263" parent="26" name="Exception_num">
       <Position>12</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="247" parent="24" name="can_num">
+    <column id="264" parent="26" name="can_num">
       <Position>13</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="248" parent="24" name="wei_num">
+    <column id="265" parent="26" name="wei_num">
       <Position>14</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <key id="249" parent="24">
+    <key id="266" parent="26">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="250" parent="24">
+    <foreign-key id="267" parent="26">
       <ColNames>Test_user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="251" parent="25" name="id">
+    <column id="268" parent="27" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="252" parent="25" name="username">
+    <column id="269" parent="27" name="username">
       <Position>2</Position>
       <DataType>VARCHAR(63)|0s</DataType>
     </column>
-    <column id="253" parent="25" name="password">
+    <column id="270" parent="27" name="password">
       <Position>3</Position>
       <DataType>VARCHAR(252)|0s</DataType>
     </column>
-    <column id="254" parent="25" name="user_email">
+    <column id="271" parent="27" name="user_email">
       <Position>4</Position>
       <DataType>VARCHAR(64)|0s</DataType>
     </column>
-    <column id="255" parent="25" name="status">
+    <column id="272" parent="27" name="status">
       <Position>5</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="256" parent="25" name="work_id">
+    <column id="273" parent="27" name="work_id">
       <Position>6</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="257" parent="25" name="is_sper">
+    <column id="274" parent="27" name="is_sper">
       <Position>7</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="258" parent="25" name="is_login">
+    <column id="275" parent="27" name="is_login">
       <Position>8</Position>
       <DataType>BOOLEAN|0s</DataType>
     </column>
-    <index id="259" parent="25" name="sqlite_autoindex_users_2">
+    <index id="276" parent="27" name="sqlite_autoindex_users_2">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>username</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <index id="260" parent="25" name="sqlite_autoindex_users_1">
+    <index id="277" parent="27" name="sqlite_autoindex_users_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_email</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="261" parent="25">
+    <key id="278" parent="27">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="262" parent="25">
+    <key id="279" parent="27">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_users_2</UnderlyingIndexName>
     </key>
-    <key id="263" parent="25">
+    <key id="280" parent="27">
       <ColNames>user_email</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_users_1</UnderlyingIndexName>
     </key>
-    <column id="264" parent="26" name="id">
+    <column id="281" parent="28" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="265" parent="26" name="name">
+    <column id="282" parent="28" name="name">
       <Position>2</Position>
       <DataType>VARCHAR|0s</DataType>
     </column>
-    <index id="266" parent="26" name="sqlite_autoindex_works_1">
+    <index id="283" parent="28" name="sqlite_autoindex_works_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>name</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="267" parent="26">
+    <key id="284" parent="28">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="268" parent="26">
+    <key id="285" parent="28">
       <ColNames>name</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_works_1</UnderlyingIndexName>
     </key>
-    <column id="269" parent="27" name="case_id">
+    <column id="286" parent="29" name="case_id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="270" parent="27" name="cases_id">
+    <column id="287" parent="29" name="cases_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="271" parent="27" name="attred">
+    <column id="288" parent="29" name="attred">
       <Position>3</Position>
       <DataType>VARCHAR|0s</DataType>
     </column>
-    <foreign-key id="272" parent="27">
+    <foreign-key id="289" parent="29">
       <ColNames>case_id</ColNames>
       <RefTableName>interfacetests</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="273" parent="27">
+    <foreign-key id="290" parent="29">
       <ColNames>cases_id</ColNames>
       <RefTableName>interfacetests</RefTableName>
       <RefColNames>id</RefColNames>
