@@ -12,7 +12,9 @@ def comp_dict(dict1,dict2):
                     return False
     except:
         return False
-'''断言封装'''
+'''
+断言封装,断言切割根据&切割
+'''
 def assert_in(asserqiwang,fanhuijson):
     if len(asserqiwang.split('=')) > 1:
         try:

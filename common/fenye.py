@@ -3,8 +3,10 @@
 @file: padkdk.py 
 @time: 2018/1/29 13:22 
 """
-"""部分页面的分页使用，
-注：这里来源于百度搜索结果"""
+"""
+部分页面的分页使用，
+注：这里来源于百度搜索结果
+"""
 from urllib.parse import urlencode
 class Pagination(object):
     """

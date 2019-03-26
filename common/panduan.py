@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017-08-02 21:54:08
 # @Author  : lileilei
-'''判断'''
+'''
+判断
+'''
+from  common.fengzhuang_dict import getdictvalue
 def assert_in(asserqiwang,fanhuijson):
     if len(asserqiwang.split('=')) > 1:
         data = asserqiwang.split('&')
         result = dict([(item.split('=')) for item in data])
         try:
-            value1=[(str(fanhuijson[key])) for key in result.keys()]
+            value1=[(str(getdictvalue(fanhuijson,key)[0])) for key in result.keys()]
             value2=[(str(value)) for value in result.values()]
             if value1==value2:
                 return  'pass'

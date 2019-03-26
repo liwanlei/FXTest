@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="36179f86-b57f-4d53-b365-ba7a289fd945" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flaskapi.conf" beforeDir="false" afterPath="$PROJECT_DIR$/flaskapi.conf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+=======
+    <list default="true" id="10abf1c6-45ad-4a3c-95e5-0264c50efd6b" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f29841f7-eccf-4641-94ce-699b8af8370d.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/case/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/case/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/task/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/task/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/data.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/alembic.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/env.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/script.py.mako" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/versions/858c1138572e_.py" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< HEAD
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
@@ -55,24 +76,132 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="228">
               <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+=======
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/FXTest$111.coverage" NAME="111 Coverage Results" MODIFIED="1550652366800" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FXTest$11.coverage" NAME="11 Coverage Results" MODIFIED="1550568641375" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="data" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="data" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="data" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="main: schema" type="90513b60:SqliteImplModel$Schema" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="316">
+              <caret line="329" column="9" selection-start-line="329" selection-start-column="4" selection-end-line="329" selection-end-column="9" />
+              <folding>
+                <element signature="e#94#114#0" expanded="true" />
+                <element signature="e#8692#9440#0" />
+                <element signature="e#9473#10296#0" />
+                <element signature="e#10341#10817#0" />
+                <element signature="e#10851#11416#0" />
+                <element signature="e#11457#12328#0" />
+                <element signature="e#12371#13219#0" />
+                <element signature="e#13252#14220#0" />
+                <element signature="e#14255#14635#0" />
+                <element signature="e#14679#15078#0" />
+                <element signature="e#15113#15756#0" />
+              </folding>
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/config.py">
           <provider selected="true" editor-type-id="text-editor" />
+=======
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/case/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3746">
+              <caret line="658" column="46" selection-start-line="658" selection-start-column="46" selection-end-line="658" selection-end-column="46" />
+              <folding>
+                <element signature="e#67#199#0" expanded="true" />
+                <element signature="e#1638#8299#0" />
+                <element signature="e#6717#12039#0" />
+                <element signature="e#12077#14291#0" />
+                <element signature="e#14323#18278#0" />
+                <element signature="e#18310#25157#0" />
+                <element signature="e#35128#37846#0" />
+                <element signature="e#38194#39218#0" />
+                <element signature="e#39256#40388#0" />
+              </folding>
+            </state>
+          </provider>
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
         </entry>
       </file>
     </leaf>
   </component>
+<<<<<<< HEAD
+=======
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>李园园</find>
+      <find>mockforcase</find>
+      <find>UserParmeter</find>
+    </findStrings>
+  </component>
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/flaskapi.conf" />
+=======
+        <option value="$PROJECT_DIR$/app/views.py" />
+        <option value="$PROJECT_DIR$/app/url.py" />
+        <option value="$PROJECT_DIR$/11.py" />
+        <option value="$PROJECT_DIR$/app/task/views.py" />
+        <option value="$PROJECT_DIR$/app/models.py" />
+        <option value="$PROJECT_DIR$/migrations/versions/e8068c4943a4_.py" />
+        <option value="$PROJECT_DIR$/app/case/views.py" />
+        <option value="$PROJECT_DIR$/111.py" />
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
       </list>
     </option>
   </component>
@@ -82,6 +211,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+<<<<<<< HEAD
   <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="98" />
     <option name="y" value="-23" />
@@ -89,6 +219,17 @@
     <option name="height" value="788" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+=======
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="210" />
+    <option name="y" value="81" />
+    <option name="width" value="1651" />
+    <option name="height" value="926" />
+  </component>
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -102,6 +243,20 @@
               <item name="FXTest" type="b2602c69:ProjectViewProjectNode" />
               <item name="FXTest" type="462c0819:PsiDirectoryNode" />
             </path>
+<<<<<<< HEAD
+=======
+            <path>
+              <item name="FXTest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FXTest" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FXTest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FXTest" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
+              <item name="versions" type="462c0819:PsiDirectoryNode" />
+            </path>
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
           </expand>
           <select />
         </subPane>
@@ -110,10 +265,22 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+<<<<<<< HEAD
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+=======
+    <property name="database.console.LAST_STATE" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\xuesheng\FXTest" />
+    </key>
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -127,7 +294,49 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="RunManager">
+=======
+  <component name="RunManager" selected="Python.111">
+    <configuration name="11" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="FXTest" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/11.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="111" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="FXTest" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/111.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
     <configuration name="FXTest" type="Python.FlaskServer" factoryName="Flask server">
       <module name="FXTest" />
       <option name="target" value="$PROJECT_DIR$/app/__init__.py" />
@@ -141,23 +350,47 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="launchJavascriptDebuger" value="false" />
+<<<<<<< HEAD
       <method v="2" />
     </configuration>
+=======
+    </configuration>
+    <list>
+      <item itemvalue="Flask server.FXTest" />
+      <item itemvalue="Python.11" />
+      <item itemvalue="Python.111" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.111" />
+        <item itemvalue="Python.11" />
+      </list>
+    </recent_temporary>
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+<<<<<<< HEAD
       <changelist id="36179f86-b57f-4d53-b365-ba7a289fd945" name="Default Changelist" comment="" />
       <created>1539345199334</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1539345199334</updated>
+=======
+      <changelist id="10abf1c6-45ad-4a3c-95e5-0264c50efd6b" name="Default" comment="" />
+      <created>1537407671123</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1537407671123</updated>
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
     </task>
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
@@ -182,6 +415,33 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info anchor="right" id="Database" order="4" />
+=======
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32900432" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.42857143" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32900432" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1359275" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="right" id="Database" order="3" weight="0.19936034" />
+      <window_info anchor="right" id="SciView" order="3" weight="0.32995737" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Database Console" order="7" weight="0.32900432" />
+      <window_info anchor="bottom" id="Find" order="1" />
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,6 +450,7 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+<<<<<<< HEAD
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/flaskapi.conf">
       <provider selected="true" editor-type-id="text-editor">
@@ -201,5 +462,298 @@
     <entry file="file://$PROJECT_DIR$/config.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+=======
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="2" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3725">
+          <caret line="149" column="8" selection-start-line="149" selection-start-column="4" selection-end-line="149" selection-end-column="8" />
+          <folding>
+            <element signature="e#94#114#0" expanded="true" />
+            <element signature="e#8692#9440#0" />
+            <element signature="e#9473#10296#0" />
+            <element signature="e#10341#10817#0" />
+            <element signature="e#10851#11416#0" />
+            <element signature="e#11457#12328#0" />
+            <element signature="e#12371#13219#0" />
+            <element signature="e#13252#14220#0" />
+            <element signature="e#14255#14635#0" />
+            <element signature="e#14679#15078#0" />
+            <element signature="e#15113#15756#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2325">
+          <caret line="93" column="18" selection-start-line="93" selection-start-column="6" selection-end-line="93" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/case/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5600">
+          <caret line="224" column="44" selection-start-line="224" selection-start-column="44" selection-end-line="224" selection-end-column="44" />
+          <folding>
+            <element signature="e#67#199#0" expanded="true" />
+            <element signature="e#1638#8299#0" />
+            <element signature="e#6717#12039#0" />
+            <element signature="e#12077#14291#0" />
+            <element signature="e#14323#18278#0" />
+            <element signature="e#18310#25157#0" />
+            <element signature="e#35128#37846#0" />
+            <element signature="e#38194#39218#0" />
+            <element signature="e#39256#40388#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/url.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="3" column="9" lean-forward="true" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/11.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="15" column="20" lean-forward="true" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://1035fa93-f804-4ddc-9819-4f7a23ad72f3/schema/main/table/mockserver">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/url.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="3" column="9" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2325">
+          <caret line="93" column="18" selection-start-line="93" selection-start-column="6" selection-end-line="93" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/11.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Interface/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7118">
+          <folding>
+            <element signature="e#68#206#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/home/urls.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/home/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="628" selection-start-line="628" selection-end-line="628" />
+          <folding>
+            <element signature="e#96#139#0" expanded="true" />
+            <element signature="e#935#3322#0" />
+            <element signature="e#3356#4313#0" />
+            <element signature="e#4346#4473#0" />
+            <element signature="e#4511#6615#0" />
+            <element signature="e#6650#7517#0" />
+            <element signature="e#7555#10110#0" />
+            <element signature="e#10146#11290#0" />
+            <element signature="e#11326#14142#0" />
+            <element signature="e#14176#17341#0" />
+            <element signature="e#17379#21591#0" />
+            <element signature="e#21625#23876#0" />
+            <element signature="e#23916#24802#0" />
+            <element signature="e#24844#26099#0" />
+            <element signature="e#26136#26628#0" />
+            <element signature="e#26663#26976#0" />
+            <element signature="e#27014#27407#0" />
+            <element signature="e#27449#27501#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/task/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5473">
+          <caret line="87" column="73" selection-start-line="87" selection-start-column="73" selection-end-line="87" selection-end-column="73" />
+          <folding>
+            <element signature="e#97#133#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/mock/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#97#125#0" expanded="true" />
+            <element signature="e#559#2456#0" />
+            <element signature="e#2509#2850#0" />
+            <element signature="e#2897#3486#0" />
+            <element signature="e#3533#4108#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/test_feng.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/send_email.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/requ_case.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/pyredis.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/py_html.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/pares_excel_inter.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/panduan.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/pagin_fen.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/mysqldatabasecur.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/mockservermeth.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1729">
+          <folding>
+            <element signature="e#189#244#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/fengzhuang_dict.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/excet_excel.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/dubbo_feng.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/dict_com.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/decorators.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/CollectionJenkins.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/migrations/alembic.ini">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/migrations/versions/e8068c4943a4_.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/form.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="473">
+          <caret line="52" column="17" selection-start-line="52" selection-start-column="4" selection-end-line="52" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="329" column="9" selection-start-line="329" selection-start-column="4" selection-end-line="329" selection-end-column="9" />
+          <folding>
+            <element signature="e#94#114#0" expanded="true" />
+            <element signature="e#8692#9440#0" />
+            <element signature="e#9473#10296#0" />
+            <element signature="e#10341#10817#0" />
+            <element signature="e#10851#11416#0" />
+            <element signature="e#11457#12328#0" />
+            <element signature="e#12371#13219#0" />
+            <element signature="e#13252#14220#0" />
+            <element signature="e#14255#14635#0" />
+            <element signature="e#14679#15078#0" />
+            <element signature="e#15113#15756#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/requests/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="100" column="29" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/111.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="28" column="1" lean-forward="true" selection-end-line="35" />
+          <folding>
+            <element signature="e#63#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/case/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3746">
+          <caret line="658" column="46" selection-start-line="658" selection-start-column="46" selection-end-line="658" selection-end-column="46" />
+          <folding>
+            <element signature="e#67#199#0" expanded="true" />
+            <element signature="e#1638#8299#0" />
+            <element signature="e#6717#12039#0" />
+            <element signature="e#12077#14291#0" />
+            <element signature="e#14323#18278#0" />
+            <element signature="e#18310#25157#0" />
+            <element signature="e#35128#37846#0" />
+            <element signature="e#38194#39218#0" />
+            <element signature="e#39256#40388#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+>>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
   </component>
 </project>

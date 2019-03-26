@@ -14,6 +14,9 @@ jenkins_password='123456'#jenkins的密码
 xitong_request_toke='Fetext_token_system'#系统内部依赖接口请求的时候需要加个token来区分
 Try_Num_Case=5#重试的次数
 Interface_Time_Out=5000#超时时间
+redis_password='123456'
+max_connec_redis=10
+test_fail_try_num=3
 jobstores = {
     'redis': RedisJobStore(),
 }
@@ -25,6 +28,10 @@ PageShow=25#这里配置的就是每个页显示多少条数据
 Dingtalk_access_token=''#在这里配置您的接受通知的钉钉群自定义机器人webhook，
 OneAdminCount=10 #设置项目管理员的数量
 Config_daoru_xianzhi=50#配置可以导入限制
+save_duration=24*60*60#配置redis存储的时长
+redis_host='localhost'
+redis_port=6379
+redis_save_result_db=2
 class dev(object):#研发环境配置
 	SECRET_KEY = 'BaSeQuie'
 	basedir=os.path.abspath(os.path.dirname(__file__))
@@ -46,7 +53,6 @@ class test(object):#测试环境的配置
 	CSRF_ENABLED = True
 	UPLOAD_FOLDER = '/upload'
 	DEBUG = True
-
 	@staticmethod
 	def init_app(app):
 		pass
@@ -58,8 +64,7 @@ class produce(object):#线上环境的配置
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
 	CSRF_ENABLED = True
 	UPLOAD_FOLDER = '/upload'
-	DEBUG = True
-
+	DEBUG = False
 	@staticmethod
 	def init_app(app):
 		pass

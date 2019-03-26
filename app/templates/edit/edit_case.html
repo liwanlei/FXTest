@@ -111,6 +111,16 @@
                     <input type="text" name="yilaicanshu" placeholder="请输入要依赖接口测试结果中的数据" value="{{edit.getattr_p  }}">
                     <span style="color: rebeccapurple"> *这里的接口如果没有依赖请不要选择添加</span>
                 </div>
+             <div class="form-group">
+                        <strong>请选择依赖mock：</strong>
+                        <select name="mock">
+                            <option>选择依赖mock</option>
+                            {% for mock in mock_yilai %}
+                                <option>{{ mock.path }}</option>
+                            {% endfor %}
+                        </select>
+                        <strong>依赖mock的参数：</strong><input type="text" placeholder="请输入依赖mock的参数" name="mockdata">
+                    </div>
                 <div class="form-group">
                     <strong>是否校验数据库:</strong>
                     <input type="radio" name="database" id="database" onclick="qidong()">
