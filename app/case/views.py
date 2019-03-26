@@ -19,7 +19,6 @@ from flask.views import View,MethodView
 from flask_login import current_user,login_required
 from common.Dingtalk import send_ding
 from common.mysqldatabasecur import *
-from common.dubbo_feng import DubboInterface
 from config import  Config_daoru_xianzhi,redis_host,\
     redis_port,redis_save_result_db,save_duration
 from common.excet_excel import create_interface_case

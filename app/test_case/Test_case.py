@@ -6,7 +6,6 @@ from common.requ_case import Api
 from common.panduan import assert_in
 from common.panduan import pare_result_mysql
 from common.log import log_t
-from app.models import InterfaceTest, TestcaseResult,Interfacehuan,mockforcase,Mockserver
 from common.mysqldatabasecur import *
 from config import  redis_host,redis_port,redis_save_result_db,save_duration,xitong_request_toke
 from app import db

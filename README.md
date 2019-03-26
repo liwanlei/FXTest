@@ -7,7 +7,7 @@
 # 敬告各位：本处代码开源后，版权归属本人所有，禁止利用本项目作为出去面试，后果自负。
 ----------------
 
-# 体验服地址：http://47.104.199.225 各位体验服数据请勿完全删除。
+# 体验服地址：http://47.104.199.225 ,各位体验服数据请勿完全删除，暂时停服。
 
 ### flask +gevent+nginx+Gunicorn+supervisor部署flask应用请用flaskapi_su.conf，用gunicorn部署应用，因为在使用uwsgi部署会影响定时任务的执行
 ### supervisor配置可见super.conf文件。
@@ -16,7 +16,7 @@
 ### 定时任务现在依赖与redis做持久化，如果有报redis错误，请安装redis服务。
 
  ----------------
- # 3.4版本更新。分支 rebulidcode
+#  3.4版本更新。分支 rebulidcode
 ### 1.增加个人参数配置(没有增加配置入口)
 ### 2.钉钉群发送从用户配置先取，没有的话默认取系统的(实现)
 ### 3.对接口超时增加定义(采用系统定义时间)
@@ -24,7 +24,6 @@
 ### 5.重构mock接口模块，适应接口测试的依赖。(实现)
 ### 6.测试用例依赖mock服务(实现)
 ### 7.测试用例执行后，测试结果保存在redis里面。(实现，存24小时)
- 
 ## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md)
 # 有问题可以联系我：QQ:952943386 email:leileili126@163.com  qq群：194704520  python测试开发群：683894834
 #   flask部署相关文章：http://www.cnblogs.com/leiziv5/p/7137277.html

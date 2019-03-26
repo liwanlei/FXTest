@@ -15,6 +15,7 @@ from app import loginManager, sched
 from config import PageShow
 from common.pagin_fen import fenye_list
 from common.fenye import Pagination
+from error_message import *
 from common.CollectionJenkins import Conlenct_jenkins
 def get_pro_mo():
     projects = Project.query.filter_by(status=False).all()
@@ -79,25 +80,24 @@ class LoginView(MethodView):
     def get(self):
         form = LoginFrom()
         return render_template('home/login.html', form=form)
-
     def post(self):
         data = request.get_json()
         username = data['username']
         password = data['password']
         if username is None:
-            return jsonify({'msg': u'用户名没有输入', 'code': 33, 'data': ''})
+            return jsonify({'msg': login_username_not_message, 'code': 33, 'data': ''})
         if password is None:
-            return jsonify({'msg': u'密码没有输入', 'code': 34, 'data': ''})
+            return jsonify({'msg': login_password_not_message, 'code': 34, 'data': ''})
         user = User.query.filter_by(username=username).first()
         if user:
-            if user.status is False:
-                return jsonify({'msg': u'用户冻结！', 'code': 35, 'data': ''})
+            if user.status is True:
+                return jsonify({'msg': login_user_free_message, 'code': 35, 'data': ''})
             if user.check_password(password):
                 login_user(user)
                 session['username'] = username
-                return jsonify({'msg': u'登录成功！', 'code': 200, 'data': ''})
-            return jsonify({'msg': u'密码错误', 'code': 36, 'data': ''})
-        return jsonify({'msg': u'用户不存在', 'code': 37, 'data': ''})
+                return jsonify({'msg': login_user_sucess_message, 'code': 200, 'data': ''})
+            return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
+        return jsonify({'msg': login_user_not_exict_message, 'code': 37, 'data': ''})
 class LogtView(MethodView):
     @login_required
     def get(self):
@@ -137,11 +137,10 @@ class InterfaceView(MethodView):
                                       interfacetype=xieyi)
             db.session.add(new_interface)
             db.session.commit()
-            return jsonify({'data': u'添加成功', 'code': 2})
+            return jsonify({'data': interface_add_success, 'code': 2})
         except Exception as e:
             db.session.rollback()
-            return jsonify({'data': u'添加接口失败，原因:%s' % e, 'code': 3})
-
+            return jsonify({'data': interface_add_erroe, 'code': 3})
     @login_required
     def delete(self):
         data = request.data.decode('utf-8')
@@ -629,24 +628,28 @@ class GettProtestreport(MethodView):
 class JenkinsFirst(MethodView):
     @login_required
     def get(self):
-        # tasks=Task.query.filter_by(makeuser=current_user.id,status=False).all()
-        jobs = Conlenct_jenkins().get_all_job()
-        jenkis_task = []
-        for job in jobs:
-            # for task in tasks:
-            #   if job['name']==task.taskname:
-            jenkis_task.append({'name': job['name'], 'url': job['url'],
-                                'color': job['color']})
-        return render_template('home/jenkins.html', jobs=jenkis_task)
+        try:
+            # tasks=Task.query.filter_by(makeuser=current_user.id,status=False).all()
+            jobs = Conlenct_jenkins().get_all_job()
+            jenkis_task = []
+            for job in jobs:
+                # for task in tasks:
+                #   if job['name']==task.taskname:
+                jenkis_task.append({'name': job['name'], 'url': job['url'],
+                                    'color': job['color']})
+            return render_template('home/jenkins.html', jobs=jenkis_task)
+        except Exception as e:
+            flash("无法连接jenkins服务器",category="error")
+            return redirect(url_for('home.index'))
 class JenkinsGou(MethodView):
     @login_required
     def get(self, jobname=''):
         goujian = Conlenct_jenkins().build_job(jobname)
         if goujian == True:
-            flash('构建成功！')
+            flash('构建成功！',category="message")
             return redirect(url_for('home.jenkinsfirst'))
         else:
-            flash('构建失败')
+            flash('构建失败',category="message")
             return redirect(url_for('home.jenkinsfirst'))
 class GetJenLogview(MethodView):
     @login_required

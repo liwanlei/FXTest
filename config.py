@@ -56,7 +56,8 @@ class test(object):#测试环境的配置
 	@staticmethod
 	def init_app(app):
 		pass
-class produce(object):#线上环境的配置
+class produce(object):
+    #线上环境的配置
 	SECRET_KEY = 'ProduceFXTest'
 	basedir = os.path.abspath(os.path.dirname(__file__))
 	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "produce.sqlite")
