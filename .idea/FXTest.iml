@@ -17,11 +17,7 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-<<<<<<< HEAD
-    <orderEntry type="jdk" jdkName="Python 2.7" jdkType="Python SDK" />
-=======
     <orderEntry type="inheritedJdk" />
->>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
@@ -33,11 +29,7 @@
     </option>
   </component>
   <component name="TestRunnerService">
-<<<<<<< HEAD
-    <option name="PROJECT_TEST_RUNNER" value="Unittests" />
-=======
     <option name="projectConfiguration" value="Twisted Trial" />
     <option name="PROJECT_TEST_RUNNER" value="Twisted Trial" />
->>>>>>> 6ab0816108782fa711275b44a3fa9bd1ce8f27bc
   </component>
 </module>

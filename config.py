@@ -35,7 +35,7 @@ redis_save_result_db=2
 class dev(object):#研发环境配置
 	SECRET_KEY = 'BaSeQuie'
 	basedir=os.path.abspath(os.path.dirname(__file__))
-	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "data.sqlite")
+	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "data.sqlite")#mysql 配置mysql+pymysql://root:liwanlei@localhost:3306/test
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 	SQLALCHEMY_TRACK_MODIFICATIONS=False
 	CSRF_ENABLED = True
@@ -57,7 +57,7 @@ class test(object):#测试环境的配置
 	def init_app(app):
 		pass
 class produce(object):
-    #线上环境的配置
+	#线上环境的配置
 	SECRET_KEY = 'ProduceFXTest'
 	basedir = os.path.abspath(os.path.dirname(__file__))
 	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "produce.sqlite")
