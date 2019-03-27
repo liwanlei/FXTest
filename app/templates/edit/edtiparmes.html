@@ -1,5 +1,5 @@
-{%extends 'back.html'%}
-{%block hello%}
+{% extends 'back.html' %}
+{% block hello %}
     <div class="tpl-content-wrapper" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
@@ -25,11 +25,11 @@
                 {% endif %}
             </ul>
             {% endwith %}
-            <form action="{{ url_for('interface.editeprame',id=pasrm.id,inte_id=interface_one.id) }}" method="POST" >
+            <form action="{{ url_for('interface.editeprame',id=pasrm.id,inte_id=interface_one.id) }}" method="POST">
                 <div>
                     <div class="form-group">
                         <strong>参数名:</strong>
-                        <input type="text"  placeholder="请输入参数名" name="name" value="{{ pasrm.parameter_name }}">
+                        <input type="text" placeholder="请输入参数名" name="name" value="{{ pasrm.parameter_name }}">
                     </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
@@ -61,8 +61,9 @@
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>参数示例:</strong>
-                        <input  class="uneditable-textarea "  name="shili" placeholder="请输入示例的参数请求"  value="{{ pasrm.default }}">
-                         
+                        <input class="uneditable-textarea " name="shili" placeholder="请输入示例的参数请求"
+                               value="{{ pasrm.default }}">
+
                         </textarea>
                     </div>
                     <span>&nbsp;</span>

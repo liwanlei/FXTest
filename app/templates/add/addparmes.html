@@ -1,5 +1,5 @@
-{%extends 'back.html'%}
-{%block hello%}
+{% extends 'back.html' %}
+{% block hello %}
     <div class="tpl-content-wrapper" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
@@ -25,11 +25,11 @@
                 {% endif %}
             </ul>
             {% endwith %}
-            <form action="{{ url_for('interface.addprame',id=interface.id) }}" method="POST" >
+            <form action="{{ url_for('interface.addprame',id=interface.id) }}" method="POST">
                 <div>
                     <div class="form-group">
                         <strong>参数名:</strong>
-                        <input type="text"  placeholder="请输入参数名" name="name">
+                        <input type="text" placeholder="请输入参数名" name="name">
                     </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
@@ -61,7 +61,7 @@
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>参数示例:</strong>
-                        <input type=""  name="shili" placeholder="请输入示例的参数请求">
+                        <input type="" name="shili" placeholder="请输入示例的参数请求">
                     </div>
                     <span>&nbsp;</span>
                     <input type="submit" class="am-btn am-btn-primary" style="margin-left: 26%;" value="添加">

@@ -1,10 +1,10 @@
 {% extends "back.html" %}
 {% block hello %}
     {% import "fenye.html" as macros %}
-    <div class="tpl-content-wrapper"  style="margin-top: -7px;">
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
-        <div class="tpl-portlet-components" >
+        <div class="tpl-portlet-components">
             <div class="portlet-title">
                 <div class="caption font-green bold">
                     <span class="am-icon-code"></span> 测试报告
@@ -21,7 +21,7 @@
                         {% endfor %}
                 {% endif %}
             {% endwith %}
-            <div  >
+            <div>
                 <strong>选择项目:</strong>
                 <select id="project" onclick="jiazai()">
                     {% for project in projects %}
@@ -31,7 +31,7 @@
             </div>
             <div id="main" style="width: 800px;height:400px;margin-left: 12%;margin-top: 10px">
             </div>
-            <table class="am-table am-table-striped am-table-hover table-main" >
+            <table class="am-table am-table-striped am-table-hover table-main">
                 <caption>
                     <strong>
                     </strong>
@@ -50,59 +50,64 @@
                     <th>测试用户</th>
                     <th>报告下载</th>
                     <th>日志下载</th>
-                    {%if current_user.role_id !=1 and current_user.role_id !=None  %}
+                    {% if current_user.role_id !=1 and current_user.role_id !=None %}
                         <th>操作</th>
-                    {%endif%}
+                    {% endif %}
                 </tr>
                 </thead>
-                <tbody id="testyonglis" >
+                <tbody id="testyonglis">
                 </tbody>
             </table>
             <div style="text-align: center;">
                 <ul class="pagination">
-                    <li  >
-                        <a  href="{{url_for('home.test_rep') }}">首页</a>
+                    <li>
+                        <a href="{{ url_for('home.test_rep') }}">首页</a>
                     </li>
-                    {%for page in pages%}
+                    {% for page in pages %}
                         <li>
-                            <a id='{{page}}' onclick="h=window.location.href.split('/'),m=document.getElementById({{page}}),m.setAttribute('href','/'+h[3]+'/'+{{page}})" >{{page}}</a>
+                            <a id='{{ page }}'
+                               onclick="h=window.location.href.split('/'),m=document.getElementById({{ page }}),m.setAttribute('href','/'+h[3]+'/'+{{ page }})">{{ page }}</a>
                         </li>
-                    {%endfor%}
+                    {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        window.onload=jiazai();
+        window.onload = jiazai();
+
         function jiazai() {
             project();
             baidu();
         }
+
         function project() {
             var obj = document.getElementById('project');
-            var index=obj.selectedIndex;
+            var index = obj.selectedIndex;
             var value = obj.options[index].value;
             $.ajax({
-                url:'{{ url_for('home.get_pro_test_report') }}',
-                type:'POST',
-                data:value,
+                url: '{{ url_for('home.get_pro_test_report') }}',
+                type: 'POST',
+                data: value,
                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(data){
-                    if (data['code']==200 ){
-                        var mdata =data['data'];
-                        var insertss=$('#testyonglis');
+                processData: false,
+                success: function (data) {
+                    if (data['code'] == 200) {
+                        var mdata = data['data'];
+                        var insertss = $('#testyonglis');
                         insertss.empty();
-                        for(var i=0;i<mdata.length;i++){
-                            insertss.append("<tr ><td id='test_num' class='test_num' >"+ mdata[i]['test_num'] +"</td><td id='pass_num' class='pass_num'><label class='label-success' style='color:black'>"+ mdata[i]['pass_num']+"</label></td><td id='fail_num' class='fail_num'>"+ mdata[i]['fail_num']+"</td><td >"+  mdata[i]['Exception_num']+"</td><td>"+ mdata[i]['can_num']+"</td><td>" + mdata[i]['wei_num']+"</td><td class='test_date'>"+ mdata[i]['test_time']+"</td><td>"+ mdata[i]['hour_time']+"</td><td class='proce'>"+ (mdata[i]['fenshu']+"</td><td>"+ mdata[i]['Test_user_id']+"</td><td><a href='/load/"+mdata[i]["test_rep"]+"'>报告下载</a></td><td><a href='/load/"+ mdata[i]['test_log']+"'>日志下载</a></td><th><a onclick='deleteproject("+( mdata[i]["id"])+")'><input type='button' value='删除' class='btn btn-danger'></a></th></tr>"));
-                        };
+                        for (var i = 0; i < mdata.length; i++) {
+                            insertss.append("<tr ><td id='test_num' class='test_num' >" + mdata[i]['test_num'] + "</td><td id='pass_num' class='pass_num'><label class='label-success' style='color:black'>" + mdata[i]['pass_num'] + "</label></td><td id='fail_num' class='fail_num'>" + mdata[i]['fail_num'] + "</td><td >" + mdata[i]['Exception_num'] + "</td><td>" + mdata[i]['can_num'] + "</td><td>" + mdata[i]['wei_num'] + "</td><td class='test_date'>" + mdata[i]['test_time'] + "</td><td>" + mdata[i]['hour_time'] + "</td><td class='proce'>" + (mdata[i]['fenshu'] + "</td><td>" + mdata[i]['Test_user_id'] + "</td><td><a href='/load/" + mdata[i]["test_rep"] + "'>报告下载</a></td><td><a href='/load/" + mdata[i]['test_log'] + "'>日志下载</a></td><th><a onclick='deleteproject(" + (mdata[i]["id"]) + ")'><input type='button' value='删除' class='btn btn-danger'></a></th></tr>"));
+                        }
+                        ;
                     }
-                },error:function (res) {
+                }, error: function (res) {
                     alert('异步请求失败，请联系管理员！！！')
                     window.location.reload();
                 }
             });
         }
+
         function baidu() {
             var dom = document.getElementById("main");
             var myChart = echarts.init(dom);
@@ -122,9 +127,9 @@
                     }
                 },
                 legend: {
-                    data:['通过率', '失败率']
+                    data: ['通过率', '失败率']
                 },
-                color:['green', 'red'],
+                color: ['green', 'red'],
                 grid: {
                     left: '3%',
                     right: '4%',
@@ -148,11 +153,11 @@
                     {
                         type: 'category',
                         boundaryGap: true,
-                        data: (function (){
+                        data: (function () {
                             var now = document.getElementsByClassName('test_date');
                             var res = [];
-                            for (var i=0;i<now.length;i++)  {
-                                res.push((now[i].innerHTML).substring(0,18) );
+                            for (var i = 0; i < now.length; i++) {
+                                res.push((now[i].innerHTML).substring(0, 18));
                             }
                             return res;
                         })()
@@ -160,11 +165,11 @@
                     {
                         type: 'category',
                         boundaryGap: true,
-                        data: (function (){
+                        data: (function () {
                             var now = document.getElementsByClassName('test_date');
                             var res = [];
-                            for (var i=0;i<now.length;i++)  {
-                                res.push((now[i].innerHTML).substring(0,18) );
+                            for (var i = 0; i < now.length; i++) {
+                                res.push((now[i].innerHTML).substring(0, 18));
                             }
                             return res;
                         })()
@@ -190,28 +195,28 @@
                 ],
                 series: [
                     {
-                        name:'通过率',
-                        type:'bar',
+                        name: '通过率',
+                        type: 'bar',
                         xAxisIndex: 1,
                         yAxisIndex: 1,
-                        data:(function (){
+                        data: (function () {
                             var res = [];
                             var data = document.getElementsByClassName('proce');
-                            for (var i=0;i<data.length;i++)  {
-                                res.push((data[i].innerHTML)*100);
+                            for (var i = 0; i < data.length; i++) {
+                                res.push((data[i].innerHTML) * 100);
                             }
                             return res;
                         })()
                     },
                     {
-                        name:'失败率',
-                        type:'line',
-                        data:(function (){
+                        name: '失败率',
+                        type: 'line',
+                        data: (function () {
                             var res = [];
                             var data = document.getElementsByClassName('label-success');
-                            var test_num=document.getElementsByClassName('test_num');
-                            for (var i=0;i<data.length;i++)  {
-                                res.push(parseFloat((test_num[i].innerHTML-data[i].innerHTML)/(test_num[i].innerHTML))*100);
+                            var test_num = document.getElementsByClassName('test_num');
+                            for (var i = 0; i < data.length; i++) {
+                                res.push(parseFloat((test_num[i].innerHTML - data[i].innerHTML) / (test_num[i].innerHTML)) * 100);
                             }
                             return res;
                         })()
@@ -222,17 +227,18 @@
                 myChart.setOption(option, true);
             }
         }
+
         function deleteproject(id) {
             $.ajax({
-                url:'{{url_for( 'home.test_rep') }}',
-                type:'DELETE',
-                data:id,
+                url: '{{url_for( 'home.test_rep') }}',
+                type: 'DELETE',
+                data: id,
                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(data){
-                    if(data['code']!=2){
+                processData: false,
+                success: function (data) {
+                    if (data['code'] != 2) {
                         alert(data['data'])
-                    }else{
+                    } else {
                         alert(data['data']);
                         location.reload();
                     }

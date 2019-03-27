@@ -3,7 +3,7 @@
     <div class="tpl-content-wrapper" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
-        <div class="tpl-portlet-components" >
+        <div class="tpl-portlet-components">
             <div class="portlet-title">
                 <div class="caption font-green bold">
                     <span class="am-icon-code"></span> 导入测试用例
@@ -26,17 +26,18 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <p> 没有模板？<a href="{{url_for('down_case')}}">点击链接</a>下载接口用例模板：
+            <p> 没有模板？<a href="{{ url_for('down_case') }}">点击链接</a>下载接口用例模板：
                 <strong>
-                <a href="{{url_for('down_case')}}">测试用例模板</a>
+                    <a href="{{ url_for('down_case') }}">测试用例模板</a>
                 </strong>
             </p>
-            <form method="POST" action="{{url_for('case.daoru_case')}}"  enctype=multipart/form-data>
+            <form method="POST" action="{{ url_for('case.daoru_case') }}" enctype=multipart/form-data>
                 <span>&nbsp;</span>
                 <input type="file" name="myfile">
                 <button type='submit' class="am-btn am-btn-primary">
-                    导入测试用例</button>
+                    导入测试用例
+                </button>
             </form>
         </div>
     </div>
-{%endblock%}
+{% endblock %}

@@ -6,6 +6,7 @@ from flask import Blueprint, jsonify, flash
 import json
 from common.hebinglist import hebinglist
 from flask import redirect, request, render_template, url_for, session
+
 home = Blueprint('home', __name__)
 from app.models import *
 from app.form import *
@@ -17,22 +18,28 @@ from common.pagin_fen import fenye_list
 from common.fenye import Pagination
 from error_message import *
 from common.CollectionJenkins import Conlenct_jenkins
+
+
 def get_pro_mo():
     projects = Project.query.filter_by(status=False).all()
     model = Model.query.filter_by(status=False).all()
     return projects, model
+
+
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
 class Indexview(MethodView):
     @login_required
     def get(self):
         interface_cont = Interface.query.filter_by(status=False).all()
-        interface_result=TestcaseResult.query.all()
-        result_list_case=[]
+        interface_result = TestcaseResult.query.all()
+        result_list_case = []
         for result in interface_result:
             result_list_case.append(result.case_id)
-        all_run_case_count=len(set(result_list_case))
+        all_run_case_count = len(set(result_list_case))
         interface_list = []
         for interface in range(len(interface_cont) + 1):
             try:
@@ -75,11 +82,14 @@ class Indexview(MethodView):
         return render_template('home/index.html', yongli=len(case_list),
                                jiekou=len(interface_list),
                                report=len(reslut_list), project_cout=project_cout,
-                               model_cout=model_cout, my_tasl=My_task,all_run_case_count=all_run_case_count)
+                               model_cout=model_cout, my_tasl=My_task, all_run_case_count=all_run_case_count)
+
+
 class LoginView(MethodView):
     def get(self):
         form = LoginFrom()
         return render_template('home/login.html', form=form)
+
     def post(self):
         data = request.get_json()
         username = data['username']
@@ -98,12 +108,16 @@ class LoginView(MethodView):
                 return jsonify({'msg': login_user_sucess_message, 'code': 200, 'data': ''})
             return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
         return jsonify({'msg': login_user_not_exict_message, 'code': 37, 'data': ''})
+
+
 class LogtView(MethodView):
     @login_required
     def get(self):
         session.clear()
         logout_user()
         return redirect(url_for('home.login'))
+
+
 class InterfaceView(MethodView):
     @login_required
     def get(self):
@@ -115,6 +129,7 @@ class InterfaceView(MethodView):
             for pros in current_user.quanxians:
                 projects.append(pros.projects)
         return render_template('home/interface.html', projects=projects, models=models)
+
     @login_required
     def post(self):
         data = request.get_json()
@@ -141,6 +156,7 @@ class InterfaceView(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({'data': interface_add_erroe, 'code': 3})
+
     @login_required
     def delete(self):
         data = request.data.decode('utf-8')
@@ -154,6 +170,8 @@ class InterfaceView(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({"data": '删除接口失败，原因：%s' % e, 'code': 3})
+
+
 class YongliView(MethodView):
     @login_required
     def get(self, page=1):
@@ -178,6 +196,8 @@ class YongliView(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({"data": '删除用例失败，原因：%s' % e, 'code': 3})
+
+
 class AdminuserView(MethodView):
     @login_required
     def get(self):
@@ -238,6 +258,8 @@ class AdminuserView(MethodView):
             except Exception as e:
                 db.session.rollback()
                 return jsonify({'data': '添加失败，原因：%s' % e, 'code': 1})
+
+
 class TestrepView(MethodView):
     @login_required
     def get(self, page=1):
@@ -268,6 +290,8 @@ class TestrepView(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({"data": '删除测试报告失败！', 'code': 2})
+
+
 class ProjectView(MethodView):
     @login_required
     def get(self, page=1):
@@ -341,6 +365,8 @@ class ProjectView(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({"data": '删除失败', 'code': 3})
+
+
 class ModelView(MethodView):
     @login_required
     def get(self, page=1):
@@ -353,12 +379,8 @@ class ModelView(MethodView):
         models = Model.query.filter_by(status=False).all()
         projects_lsit = fenye_list(Ob_list=models, split=PageShow)
         pages = range(1, len(projects_lsit) + 1)
-        try:
-            pyth_post1 = projects_lsit[int(page) - 1]
-            return render_template('home/model.html', projects=pyth_post1, pages=pages, project_list=project_list)
-        except:
-            return redirect(url_for('home.model'))
-
+        pyth_post1 = projects_lsit[int(page) - 1]
+        return render_template('home/model.html', projects=pyth_post1, pages=pages, project_list=project_list)
     @login_required
     def delete(self):
         data = request.data.decode('utf-8')
@@ -372,6 +394,7 @@ class ModelView(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({"data": '删除失败', 'code': 4})
+
 
     @login_required
     def post(self):
@@ -393,7 +416,6 @@ class ModelView(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({'code': 3, 'data': u'添加失败，原因：%s' % e})
-
     @login_required
     def put(self):
         data = request.data.decode('utf-8')
@@ -422,6 +444,7 @@ class ModelView(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({'data': '编辑模块出现问题！原因：%s' % e, 'code': 308})
+
 class TesteventVies(MethodView):
     @login_required
     def get(self, page=1):
@@ -526,6 +549,8 @@ class TesteventVies(MethodView):
         except Exception as e:
             db.session.rollback()
             return jsonify({'data': '编辑失败！原因是:%s' % e, 'code': 321})
+
+
 class MockViews(MethodView):
     @login_required
     def get(self, page=1):
@@ -583,6 +608,8 @@ class MockViews(MethodView):
             db.session.commit()
             return jsonify({'data': '删除成功', 'code': 2})
         return jsonify({'data': '删除失败，找不到mocksever', 'code': 3})
+
+
 class TimingtasksView(MethodView):
     @login_required
     def get(self, page=1):
@@ -604,6 +631,8 @@ class TimingtasksView(MethodView):
             return render_template('home/timingtask.html', inte=pyth_post1, pages=pages)
         except:
             return redirect(url_for('home.timingtask'))
+
+
 class GettProtestreport(MethodView):
     @login_required
     def post(self):
@@ -625,6 +654,8 @@ class GettProtestreport(MethodView):
                                    'Test_user_id': test.users.username, 'id': test.id,
                                    'fenshu': test.pass_num / test.test_num})
         return jsonify(({'msg': u'成功', 'code': 200, 'data': (testreportlist)}))
+
+
 class JenkinsFirst(MethodView):
     @login_required
     def get(self):
@@ -639,18 +670,22 @@ class JenkinsFirst(MethodView):
                                     'color': job['color']})
             return render_template('home/jenkins.html', jobs=jenkis_task)
         except Exception as e:
-            flash("无法连接jenkins服务器",category="error")
+            flash("无法连接jenkins服务器", category="error")
             return redirect(url_for('home.index'))
+
+
 class JenkinsGou(MethodView):
     @login_required
     def get(self, jobname=''):
         goujian = Conlenct_jenkins().build_job(jobname)
         if goujian == True:
-            flash('构建成功！',category="message")
+            flash('构建成功！', category="message")
             return redirect(url_for('home.jenkinsfirst'))
         else:
-            flash('构建失败',category="message")
+            flash('构建失败', category="message")
             return redirect(url_for('home.jenkinsfirst'))
+
+
 class GetJenLogview(MethodView):
     @login_required
     def post(self):
@@ -662,6 +697,8 @@ class GetJenLogview(MethodView):
             return jsonify({"code": 200, 'data': str(log)})
         except Exception as e:
             return jsonify({'code': 701, 'data': str(e)})
+
+
 class DeleteJenkinstask(MethodView):
     @login_required
     def post(self, id):

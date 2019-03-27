@@ -4,7 +4,7 @@
     <div class="tpl-content-wrapper" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
-        <div class="tpl-portlet-components" >
+        <div class="tpl-portlet-components">
             <div class="portlet-title">
                 <div class="caption font-green bold">
                     <span class="am-icon-code"></span> 接口
@@ -20,7 +20,7 @@
             </ul>
             {% endwith %}
             <strong>选择项目：</strong>
-            <select id="projectinter" onclick="getprointer()" >
+            <select id="projectinter" onclick="getprointer()">
                 {% for project in projects %}
                     <option>{{ project.project_name }}</option>
                 {% endfor %}
@@ -34,17 +34,17 @@
                 <a onclick="addinter()">
                     <input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success">
                 </a>
-                <a href="{{url_for('interface.daoru_inter')}}">
-                    <input type="button" name=""  value="批量导入" class="am-btn am-btn-default am-btn-success">
+                <a href="{{ url_for('interface.daoru_inter') }}">
+                    <input type="button" name="" value="批量导入" class="am-btn am-btn-default am-btn-success">
                 </a>
                 <button class="btn-default am-btn-default am-btn" onclick="shezhiguanliyuan()">导出接口</button>
             </div>
             <table class="am-table am-table-hover table-main" style="width:100%;table-layout:fixed;">
                 <thead>
-                <tr  id="interfacete">
+                <tr id="interfacete">
                 </tr>
                 </thead>
-                <tbody id="testyonglis" >
+                <tbody id="testyonglis">
                 </tbody>
             </table>
             <nav aria-label="Page navigation" class="pull-right">
@@ -55,195 +55,206 @@
 
         </div>
     </div>
-    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="ceshiyongli">
-    <form method="POST" action="{{url_for('interface.daochuinterface')}}">
-        <div style="height: 5px;">请选择导出接口项目：</div>
-        <div style="background-color: whitesmoke;margin-top: 24px" >
-        选择导出的项目:
-            <select name="interface_type"  >
-                {% for project in projects %}
-                    <option name="project">{{ project.project_name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div style="margin-top: 50%;margin-bottom: auto">
-            <input value="导出" type="submit" class="btn-default shezhiguanliyuan" >
-            <input value="取消" type="button" class=" btn-default"  onclick="guanbi()" >
-        </div>
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+         id="ceshiyongli">
+        <form method="POST" action="{{ url_for('interface.daochuinterface') }}">
+            <div style="height: 5px;">请选择导出接口项目：</div>
+            <div style="background-color: whitesmoke;margin-top: 24px">
+                选择导出的项目:
+                <select name="interface_type">
+                    {% for project in projects %}
+                        <option name="project">{{ project.project_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="margin-top: 50%;margin-bottom: auto">
+                <input value="导出" type="submit" class="btn-default shezhiguanliyuan">
+                <input value="取消" type="button" class=" btn-default" onclick="guanbi()">
+            </div>
         </form>
     </div>
-    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="addinterface">
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+         id="addinterface">
         <div style="height: 5px;">添加接口</div>
-        <div style="background-color: whitesmoke;margin-top: 24px" >
-            <p >
+        <div style="background-color: whitesmoke;margin-top: 24px">
+            <p>
                 项目：<select id="project">
                 {% for project in projects %}
-                <option>{{ project.project_name }}</option>
+                    <option>{{ project.project_name }}</option>
                 {% endfor %}
             </select>
             </p>
-        <p >
+            <p>
                 模块：<select id="model">
                 {% for model in models %}
-                <option>{{ model.model_name }}</option>
+                    <option>{{ model.model_name }}</option>
                 {% endfor %}
             </select>
             </p>
-            <p >
+            <p>
                 接口名字：<input id="name" placeholder="请输入接口的名称">
             </p>
-        <p >
+            <p>
                 接口url：<input id="url" placeholder="请输入接口的url">
             </p>
-        <p>协议类型：
-            <select id="xieyi">
-                <option>http</option>
-                <option>dubbo</option>
-            </select>
-        </p>
-        <p >
+            <p>协议类型：
+                <select id="xieyi">
+                    <option>http</option>
+                    <option>dubbo</option>
+                </select>
+            </p>
+            <p>
                 接口header：<input id="headers" placeholder="请输入接口的headers"> <span style="color: #8D99A8">
                         dubbo接口这里需要填写入参对象
                     </span>
             </p>
-        <p>
-            请求方法
-            <input id="meth" placeholder="请输入接口的请求方法">
-        </p>
+            <p>
+                请求方法
+                <input id="meth" placeholder="请输入接口的请求方法">
+            </p>
         </div>
         <div style="margin-top: 1%;margin-bottom: auto">
-            <input value="添加" type="button" class="btn-default"  onclick="add_interface()" >
-            <input value="取消" type="button" class=" btn-default"  onclick="guan()" >
+            <input value="添加" type="button" class="btn-default" onclick="add_interface()">
+            <input value="取消" type="button" class=" btn-default" onclick="guan()">
         </div>
     </div>
 {% endblock %}
 {% block js %}
-     <script type="text/javascript">
-        window.onload=getprointer();
+    <script type="text/javascript">
+        window.onload = getprointer();
+
         function getprointer() {
             var obj = document.getElementById('projectinter');
-            var index=obj.selectedIndex;
+            var index = obj.selectedIndex;
             var value = obj.options[index].value;
             var interfacetest = document.getElementById('interfacetype');
-            var inde=interfacetest.selectedIndex;
+            var inde = interfacetest.selectedIndex;
             var valu = interfacetest.options[inde].value;
-            var data={};
-            data['project']=value;
-            data['interfacetype']=valu;
+            var data = {};
+            data['project'] = value;
+            data['interfacetype'] = valu;
             $.ajax({
-                url:'{{ url_for('interface.ser_inter') }}',
-                type:'POST',
-                data:JSON.stringify(data),
+                url: '{{ url_for('interface.ser_inter') }}',
+                type: 'POST',
+                data: JSON.stringify(data),
                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(data){
-                    if (data['code']==200 ){
-                        var mdata =data['data'];
-                        var insertss=$('#testyonglis');
-                        var inte=$('#interfacete');
+                processData: false,
+                success: function (data) {
+                    if (data['code'] == 200) {
+                        var mdata = data['data'];
+                        var insertss = $('#testyonglis');
+                        var inte = $('#interfacete');
                         insertss.empty();
-                        if (data['typeinter']=='http'){
+                        if (data['typeinter'] == 'http') {
                             inte.empty();
                             inte.append("<th>接口id</th><th>项目名称</th><th>所属模块</th><th>接口名称</th><th style='overflow:hidden;'>接口地址</th><th>接口headers</th><th>接口请求方法</th><th>操作</th>")
-                        }else if(data['typeinter']=='dubbo'){
+                        } else if (data['typeinter'] == 'dubbo') {
                             inte.empty();
                             inte.append("<th>id</th><th>项目名称</th><th>模块</th><th>接口名称</th><th style='overflow:hidden;'>url地址</th><th>接口名称</th><th>接口请求方法</th><th>操作</th>")
                         }
-                        if (mdata.length<1){
-                            insertss.append("<tr id='"+mdata[i].id+"'><td><h5><strong style='color:red'>没有找到接口</strong></h5><td></tr>")
+                        if (mdata.length < 1) {
+                            insertss.append("<tr id='" + mdata[i].id + "'><td><h5><strong style='color:red'>没有找到接口</strong></h5><td></tr>")
                         }
-                        else for(var i=0;i<mdata.length;i++){
-                            insertss.append("<tr id='"+mdata[i].id+"'><td>"+mdata[i].id+"</td><td><label class='label-important'>"+mdata[i].projects_id+"</label></td><td>"+mdata[i].model_id+"</td><td>"+mdata[i].Interface_name+"</td><td>"+mdata[i].Interface_url+"</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"+mdata[i].Interface_headers+"</td><td>"+mdata[i].Interface_meth+"</td><td><a href='/interfac_edit/"+mdata[i].id+"'><input type='button' value='编辑' class='btn btn-primary'></a><a onclick='deleteinterface("+mdata[i].id+")'><input type='button' value='删除' class='btn btn-danger'></a><a href='/interface_one/"+mdata[i].id+"'' ><input type='button' class='btn btn-primary' value='详情' ></a></td></tr>")};
+                        else for (var i = 0; i < mdata.length; i++) {
+                            insertss.append("<tr id='" + mdata[i].id + "'><td>" + mdata[i].id + "</td><td><label class='label-important'>" + mdata[i].projects_id + "</label></td><td>" + mdata[i].model_id + "</td><td>" + mdata[i].Interface_name + "</td><td>" + mdata[i].Interface_url + "</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>" + mdata[i].Interface_headers + "</td><td>" + mdata[i].Interface_meth + "</td><td><a href='/interfac_edit/" + mdata[i].id + "'><input type='button' value='编辑' class='btn btn-primary'></a><a onclick='deleteinterface(" + mdata[i].id + ")'><input type='button' value='删除' class='btn btn-danger'></a><a href='/interface_one/" + mdata[i].id + "'' ><input type='button' class='btn btn-primary' value='详情' ></a></td></tr>")
+                        }
+                        ;
                     }
-                },error:function (res) {
+                }, error: function (res) {
                     alert('异步请求失败，请联系管理员！！！');
                     window.location.reload();
                 }
             })
         }
-        function  shezhiguanliyuan() {
-            var  divshow=document.getElementById('ceshiyongli');
-                divshow.style.display='block';
-        }
-        function guanbi() {
-            var  divshow=document.getElementById('ceshiyongli');
-            divshow.style.display='none';
-        }
-        function addinter() {
-           var m=document.getElementById('addinterface');
-            m.style.display='';
-        }
-        function  guan() {
-            var m=document.getElementById('addinterface');
-            m.style.display='none';
-        }
-        function add_interface() {
-            var projects=document.getElementById('project');
-            var  index=projects.selectedIndex;
-            var project=projects.options[index].value;
-            var models=document.getElementById('model');
-            var  inde=models.selectedIndex;
-            var model=models.options[inde].value;
-            var name=document.getElementById('name').value;
-            var url=document.getElementById('url').value;
-            var headers=document.getElementById('headers').value;
-            var xieyis=document.getElementById('xieyi');
-            var ind=xieyis.selectedIndex;
-            var xieyi=xieyis.options[ind].value;
-            var meth=document.getElementById('meth').value;
-            var data={};
-            data['project']=project;
-            data['model']=model;
-            data['name']=name;
-            data['url']=url;
-            data['headers']=headers;
-            data['xieyi']=xieyi;
-            data['meth']=meth;
-            if (name.length<1){
-                alert('接口名称不能为空')
-            }else {
-                if(url.length<1){
-                    alert('接口地址不能为空')
-                }else {
-                    if(meth.length<1){
-                        alert('接口方式不能为空')
-                    }else {
 
-            $.ajax({
-                url: '{{url_for( 'home.interface') }}',
-                type: 'POST',
-                data: JSON.stringify(data),
-                contentType: 'application/json; charset=UTF-8',
-                processData: false,
-                success: function (result) {
-                    if(result['code']==2){
-                        alert(result['data']);
-                        location.reload()
-                    }
-                    else{
-                        alert(result['data']);
-                    }
-                }
-            }
-            )
+        function shezhiguanliyuan() {
+            var divshow = document.getElementById('ceshiyongli');
+            divshow.style.display = 'block';
+        }
+
+        function guanbi() {
+            var divshow = document.getElementById('ceshiyongli');
+            divshow.style.display = 'none';
+        }
+
+        function addinter() {
+            var m = document.getElementById('addinterface');
+            m.style.display = '';
+        }
+
+        function guan() {
+            var m = document.getElementById('addinterface');
+            m.style.display = 'none';
+        }
+
+        function add_interface() {
+            var projects = document.getElementById('project');
+            var index = projects.selectedIndex;
+            var project = projects.options[index].value;
+            var models = document.getElementById('model');
+            var inde = models.selectedIndex;
+            var model = models.options[inde].value;
+            var name = document.getElementById('name').value;
+            var url = document.getElementById('url').value;
+            var headers = document.getElementById('headers').value;
+            var xieyis = document.getElementById('xieyi');
+            var ind = xieyis.selectedIndex;
+            var xieyi = xieyis.options[ind].value;
+            var meth = document.getElementById('meth').value;
+            var data = {};
+            data['project'] = project;
+            data['model'] = model;
+            data['name'] = name;
+            data['url'] = url;
+            data['headers'] = headers;
+            data['xieyi'] = xieyi;
+            data['meth'] = meth;
+            if (name.length < 1) {
+                alert('接口名称不能为空')
+            } else {
+                if (url.length < 1) {
+                    alert('接口地址不能为空')
+                } else {
+                    if (meth.length < 1) {
+                        alert('接口方式不能为空')
+                    } else {
+
+                        $.ajax({
+                                url: '{{url_for( 'home.interface') }}',
+                                type: 'POST',
+                                data: JSON.stringify(data),
+                                contentType: 'application/json; charset=UTF-8',
+                                processData: false,
+                                success: function (result) {
+                                    if (result['code'] == 2) {
+                                        alert(result['data']);
+                                        location.reload()
+                                    }
+                                    else {
+                                        alert(result['data']);
+                                    }
+                                }
+                            }
+                        )
                     }
                 }
             }
         }
+
         function deleteinterface(id) {
             $.ajax({
-                url:'{{url_for( 'home.interface') }}',
-                type:'DELETE',
-                data:id,
+                url: '{{url_for( 'home.interface') }}',
+                type: 'DELETE',
+                data: id,
                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(data){
-                    if(data['code']!=2){
+                processData: false,
+                success: function (data) {
+                    if (data['code'] != 2) {
                         alert(data['data'])
-                    }else{
+                    } else {
                         alert(data['data']);
-                        caseid=document.getElementById(id);
-                        caseid.hidden=true;
+                        caseid = document.getElementById(id);
+                        caseid.hidden = true;
                     }
                 }
             })

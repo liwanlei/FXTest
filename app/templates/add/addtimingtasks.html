@@ -1,5 +1,5 @@
-{%extends 'back.html' %}
-{%block hello%}
+{% extends 'back.html' %}
+{% block hello %}
     <div class="tpl-content-wrapper" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
@@ -17,13 +17,13 @@
             </div>
             <div style="text-align: center ;color: red" id="messgae">
             </div>
-            <form   style="width: 40%;margin-left: 30%;">
+            <form style="width: 40%;margin-left: 30%;">
                 <div class="form-group">
-                    <p style="margin-top: 20px"><strong >任务名称:</strong>
-                        <input type="text" id="taskname"  placeholder="请输入任务名！">
+                    <p style="margin-top: 20px"><strong>任务名称:</strong>
+                        <input type="text" id="taskname" placeholder="请输入任务名！">
                     </p>
                     <p style="margin-top: 20px">
-                        <strong >所属项目:</strong>
+                        <strong>所属项目:</strong>
                         <select id="project" onclick="cheangeevnt()">
                             {% for pro in projects %}
                                 <option>
@@ -33,13 +33,13 @@
                         </select>
                     </p>
                     <p style="margin-top: 20px">
-                        <strong >所属项目测试环境:</strong>
+                        <strong>所属项目测试环境:</strong>
                         <select id="urlproee" name="testevent">
                         </select>
                     </p>
                     <p style="margin-top: 20px">
                         <strong>测试时间cron表达式:</strong>
-                    <strong>周：</strong>
+                        <strong>周：</strong>
                         <select id="week" name="week">
                             <option>mon-tue</option>
                             <option>mon-wed</option>
@@ -50,30 +50,32 @@
                         </select>
                         <strong>时钟:</strong>
                         <select id="hours" name="hours">
-                           {% for j in range(25) %}
-                            <option>{{ j }}</option>
+                            {% for j in range(25) %}
+                                <option>{{ j }}</option>
                             {% endfor %}
                         </select>
                         <strong>分钟:</strong>
                         <select id="minute" name="minute">
                             {% for i in range(61) %}
-                            <option>{{ i }}</option>
+                                <option>{{ i }}</option>
                             {% endfor %}
                         </select>
                     </p>
                     <p style="margin-top: 20px">
                         <strong>邮件主送:</strong>
-                        <textarea type="text" id="to_email"  placeholder="测试报告发送谁给，逗号分隔多个！" style="width: 200px;height: 100px;">
+                        <textarea type="text" id="to_email" placeholder="测试报告发送谁给，逗号分隔多个！"
+                                  style="width: 200px;height: 100px;">
                         </textarea>
                     </p>
                     <p style="margin-top: 20px">
                         <strong>邮件抄送:</strong>
-                        <textarea type="text" id="cao_email"  placeholder="测试报告抄送的人，用逗号分隔！" style="width: 200px;height: 100px;">
+                        <textarea type="text" id="cao_email" placeholder="测试报告抄送的人，用逗号分隔！"
+                                  style="width: 200px;height: 100px;">
                         </textarea>
                     </p>
                     <p style="margin-top: 20px">
                         <strong>支持人邮件:</strong>
-                        <input type="text" id="weihu"  placeholder="维护改测试计划的人！">
+                        <input type="text" id="weihu" placeholder="维护改测试计划的人！">
                     </p>
                 </div>
                 <button type="button" class="am-btn am-btn-primary " onclick="addtimingtasks()">添加</button>
@@ -81,10 +83,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        window.onload=cheangeevnt();
+        window.onload = cheangeevnt();
+
         function cheangeevnt() {
             var obj = document.getElementById('project');
-            var index=obj.selectedIndex;
+            var index = obj.selectedIndex;
             var value = obj.options[index].value;
             $.ajax({
                 url: '{{ url_for('task.getpro') }}',
@@ -94,84 +97,85 @@
                 processData: false,
                 success: function (result) {
                     if (result['code'] == 200) {
-                        var urlproject=$('#urlproee');
+                        var urlproject = $('#urlproee');
                         urlproject.empty();
-                        var data_result=result['data'];
-                        for (var m=0;m<data_result.length;m++){
-                            urlproject.append("<option>"+data_result[m].url+"</option>")
+                        var data_result = result['data'];
+                        for (var m = 0; m < data_result.length; m++) {
+                            urlproject.append("<option>" + data_result[m].url + "</option>")
                         }
                     }
                     else {
-                        message.innerHTML=(result['msg']);
+                        message.innerHTML = (result['msg']);
                     }
                 }
             })
         }
+
         function addtimingtasks() {
-            var message=document.getElementById('messgae');
-            var taskname=document.getElementById('taskname');
-            var to_email=document.getElementById('to_email');
-            var cao_email=document.getElementById('cao_email');
-            var weihu=document.getElementById('weihu');
-            var me=document.getElementById("project");
-            var project=document.getElementById("project").selectedIndex;
-            var projects=me.options[project];
-            var test=document.getElementById("urlproee");
-            var index=document.getElementById("urlproee").selectedIndex;
-            var proj_test=test.options[index];
-            var week=document.getElementById("week");
-            var ind=document.getElementById("week").selectedIndex;
-            var week_test=week.options[ind];
-            var hours=document.getElementById("hours");
-            var ins=document.getElementById("hours").selectedIndex;
-            var hours_test=hours.options[ins];
-            var minute=document.getElementById("minute");
-            var minute_index=document.getElementById("minute").selectedIndex;
-            var minute_test=minute.options[minute_index];
-            if (taskname.value.length<1){
-                message.innerHTML='任务名称不能为空';
-            }else {
-                if (weihu.value.length<1){
-                    message.innerHTML='任务的维护人不能为空';
+            var message = document.getElementById('messgae');
+            var taskname = document.getElementById('taskname');
+            var to_email = document.getElementById('to_email');
+            var cao_email = document.getElementById('cao_email');
+            var weihu = document.getElementById('weihu');
+            var me = document.getElementById("project");
+            var project = document.getElementById("project").selectedIndex;
+            var projects = me.options[project];
+            var test = document.getElementById("urlproee");
+            var index = document.getElementById("urlproee").selectedIndex;
+            var proj_test = test.options[index];
+            var week = document.getElementById("week");
+            var ind = document.getElementById("week").selectedIndex;
+            var week_test = week.options[ind];
+            var hours = document.getElementById("hours");
+            var ins = document.getElementById("hours").selectedIndex;
+            var hours_test = hours.options[ins];
+            var minute = document.getElementById("minute");
+            var minute_index = document.getElementById("minute").selectedIndex;
+            var minute_test = minute.options[minute_index];
+            if (taskname.value.length < 1) {
+                message.innerHTML = '任务名称不能为空';
+            } else {
+                if (weihu.value.length < 1) {
+                    message.innerHTML = '任务的维护人不能为空';
                 }
                 else {
 
-                        if (projects.text.length<1){
-                            message.innerHTML='项目为必须选择';
-                        }else{
-                            if (proj_test.value.length<1){
-                                message.innerHTML='项目测试环境必须选择';
-                            }else {
-                                var data={};
-                                data['taskname']=taskname.value;
-                                data['to_email']=to_email.value;
-                                data['cao_email']=cao_email.value;
-                                data['weihu']=weihu.value;
-                                data['projects']=projects.value;
-                                data['testevent']=proj_test.value;
-                                data['week']=week_test.value;
-                                data['hour']=hours_test.value;
-                                data['minx']=minute_test.value;
-                                $.ajax({
-                                    url: '{{ url_for('task.addtimingtasks') }}',
-                                    type: 'POST',
-                                    data: JSON.stringify(data),
-                                    contentType: 'application/json; charset=UTF-8',
-                                    processData: false,
-                                    success: function (result) {
-                                        if (result['code'] == 200) {
-                                            location.href='{{ url_for('home.timingtask') }}';
-                                        }
-                                        else {
-                                            message.innerHTML=(result['msg']);
-                                        }
+                    if (projects.text.length < 1) {
+                        message.innerHTML = '项目为必须选择';
+                    } else {
+                        if (proj_test.value.length < 1) {
+                            message.innerHTML = '项目测试环境必须选择';
+                        } else {
+                            var data = {};
+                            data['taskname'] = taskname.value;
+                            data['to_email'] = to_email.value;
+                            data['cao_email'] = cao_email.value;
+                            data['weihu'] = weihu.value;
+                            data['projects'] = projects.value;
+                            data['testevent'] = proj_test.value;
+                            data['week'] = week_test.value;
+                            data['hour'] = hours_test.value;
+                            data['minx'] = minute_test.value;
+                            $.ajax({
+                                url: '{{ url_for('task.addtimingtasks') }}',
+                                type: 'POST',
+                                data: JSON.stringify(data),
+                                contentType: 'application/json; charset=UTF-8',
+                                processData: false,
+                                success: function (result) {
+                                    if (result['code'] == 200) {
+                                        location.href = '{{ url_for('home.timingtask') }}';
                                     }
-                                });
-                            }
+                                    else {
+                                        message.innerHTML = (result['msg']);
+                                    }
+                                }
+                            });
                         }
                     }
                 }
+            }
 
         }
     </script>
-{%endblock%}
+{% endblock %}

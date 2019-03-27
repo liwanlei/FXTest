@@ -41,66 +41,67 @@
                 </thead>
                 <tbody>
 
-                    {% for inter in inte %}
-                        <tr>
-                            <td>{{ inter.taskname }}</td>
-                            <td>{{ inter.taskstart }}</td>
-                            <td>{{ inter.projects }}</td>
-                            <td style="width: 5px">{{ inter.task_make_email }}</td>
-                            {% if inter.yunxing_status=='创建'or inter.yunxing_status=='关闭' %}
-                                <td>
-                                    <a href="{{ url_for('task.starttask',id=inter.id) }}">
-                                        <input type="button" class="btn btn-default" value="启动">
-                                    </a>
-                                </td>
-                            {% elif inter.yunxing_status=='启动' %}
-                                <td>
-                                    <a href="{{ url_for('task.zantingtask',id=inter.id) }}">
-                                        <input type="button" class="btn btn-success" value="暂停">
-                                    </a>
-                                    <a href="{{ url_for('task.yichutask',id=inter.id) }}">
-                                        <input type="button" class="btn btn-danger" value="移除">
-                                    </a>
-                                </td>
-                            {% elif inter.yunxing_status=='暂停' %}
-                                <td>
-                                    <a href="{{ url_for('task.huifutask',id=inter.id) }}">
-                                        <input type="button" class="btn btn-success" value="恢复">
-                                    </a>
-                                    <a href="{{ url_for('task.yichutask',id=inter.id) }}">
-                                        <input type="button" class="btn btn-danger" value="移除">
-                                    </a>
-                                </td>
-                            {% endif %}
-                            <td>{{ inter.taskmakedate }}</td>
-                            <td>{{ inter.users }}</td>
+                {% for inter in inte %}
+                    <tr>
+                        <td>{{ inter.taskname }}</td>
+                        <td>{{ inter.taskstart }}</td>
+                        <td>{{ inter.projects }}</td>
+                        <td style="width: 5px">{{ inter.task_make_email }}</td>
+                        {% if inter.yunxing_status=='创建'or inter.yunxing_status=='关闭' %}
                             <td>
-                                <a href="{{ url_for('task.editmingtask',id = inter.id )}}">
-                                    <input type="button" value="编辑" class="btn btn-primary">
-                                </a>
-                                <a  href="{{ url_for('task.deltettask',id=inter.id) }}">
-                                    <input type="button" value="删除" class="btn btn-danger">
-                                </a>
-                                <a  href="{{ url_for('task.testfortask',id=inter.id) }}">
-                                    <input type="button" value="用例" class="btn btn-default">
+                                <a href="{{ url_for('task.starttask',id=inter.id) }}">
+                                    <input type="button" class="btn btn-default" value="启动">
                                 </a>
                             </td>
-                        </tr>
+                        {% elif inter.yunxing_status=='启动' %}
+                            <td>
+                                <a href="{{ url_for('task.zantingtask',id=inter.id) }}">
+                                    <input type="button" class="btn btn-success" value="暂停">
+                                </a>
+                                <a href="{{ url_for('task.yichutask',id=inter.id) }}">
+                                    <input type="button" class="btn btn-danger" value="移除">
+                                </a>
+                            </td>
+                        {% elif inter.yunxing_status=='暂停' %}
+                            <td>
+                                <a href="{{ url_for('task.huifutask',id=inter.id) }}">
+                                    <input type="button" class="btn btn-success" value="恢复">
+                                </a>
+                                <a href="{{ url_for('task.yichutask',id=inter.id) }}">
+                                    <input type="button" class="btn btn-danger" value="移除">
+                                </a>
+                            </td>
+                        {% endif %}
+                        <td>{{ inter.taskmakedate }}</td>
+                        <td>{{ inter.users }}</td>
+                        <td>
+                            <a href="{{ url_for('task.editmingtask',id = inter.id ) }}">
+                                <input type="button" value="编辑" class="btn btn-primary">
+                            </a>
+                            <a href="{{ url_for('task.deltettask',id=inter.id) }}">
+                                <input type="button" value="删除" class="btn btn-danger">
+                            </a>
+                            <a href="{{ url_for('task.testfortask',id=inter.id) }}">
+                                <input type="button" value="用例" class="btn btn-default">
+                            </a>
+                        </td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
-        <div style="text-align: center;">
-                    <ul class="pagination">
-                        <li  >
-                            <a  href="{{url_for('home.timingtask') }}">首页</a>
+            <div style="text-align: center;">
+                <ul class="pagination">
+                    <li>
+                        <a href="{{ url_for('home.timingtask') }}">首页</a>
+                    </li>
+                    {% for page in pages %}
+                        <li>
+                            <a id='{{ page }}'
+                               onclick="h=window.location.href.split('/'),m=document.getElementById({{ page }}),m.setAttribute('href','/'+h[3]+'/'+{{ page }})">{{ page }}</a>
                         </li>
-                        {%for page in pages%}
-                            <li>
-                                <a id='{{page}}' onclick="h=window.location.href.split('/'),m=document.getElementById({{page}}),m.setAttribute('href','/'+h[3]+'/'+{{page}})" >{{page}}</a>
-                            </li>
-                        {%endfor%}
-                    </ul>
-                </div>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 {% endblock %}

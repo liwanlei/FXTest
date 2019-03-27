@@ -1,5 +1,5 @@
-{%extends 'back.html' %}
-{%block hello%}
+{% extends 'back.html' %}
+{% block hello %}
     <div class="tpl-content-wrapper" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
@@ -15,11 +15,11 @@
                     </div>
                 </div>
             </div>
-            {% with messages = get_flashed_messages()%}
-                {% if messages%}
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
                     <ul class='flashes'>
                         {% for message in messages %}
-                            <li >{{ message }}</li>
+                            <li>{{ message }}</li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -31,7 +31,7 @@
                         {% for yongli in task_one.interface.all() %}
                             {% if yongli.status== 1 %}
                             {% else %}
-                                <input type="reset" value="{{ yongli}}">
+                                <input type="reset" value="{{ yongli }}">
                             {% endif %}
                         {% endfor %}
                     </p>
@@ -41,7 +41,7 @@
                     <select id="project" name="project">
                         <option>-----------------</option>
                         {% for porject in procjets %}
-                            <option  >
+                            <option>
                                 {{ porject.project_name }}
                             </option>
                         {% endfor %}
@@ -49,36 +49,37 @@
                 </p>
                 <p>
                     <strong>选择测试用例：</strong>
-                </p >
+                </p>
                 <p id="ceshiyongli"></p>
                 <input type="submit" value="提交" class="btn btn-default">
             </form>
         </div>
     </div>
-{%endblock%}
+{% endblock %}
 {% block js %}
     <script>
         $('select#project').change(function ajaxtestyongli() {
-            var  project=document.getElementById('project').value;
+            var project = document.getElementById('project').value;
             $.ajax({
-                url:'{{ url_for('gettest') }}',
-                type:'POST',
-                data:project,
+                url: '{{ url_for('gettest') }}',
+                type: 'POST',
+                data: project,
                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(testyong){
+                processData: false,
+                success: function (testyong) {
                     var message = (testyong['data']);
                     var city = $("#ceshiyongli");
                     city.empty();
-                    if(message.length) {
+                    if (message.length) {
                         var len = message.length;
-                        for(var i = 0; i < len; i ++) {
+                        for (var i = 0; i < len; i++) {
                             var obj = message[i];
-                            city.append("<input  type='checkbox' class='checkbox-inline' name='testyongli' value='" + obj.id + "'>"+ obj.name );
-                        };
+                            city.append("<input  type='checkbox' class='checkbox-inline' name='testyongli' value='" + obj.id + "'>" + obj.name);
+                        }
+                        ;
                     }
                 },
-                error:function (res) {
+                error: function (res) {
                     console.log(res);
                 }
             })

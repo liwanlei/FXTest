@@ -171,6 +171,7 @@
                 }
             }
         }
+
         function shezhi(id) {
             var me = document.getElementById("xuanzehuanjing");
             var index = document.getElementById("xuanzehuanjing").selectedIndex;
@@ -203,24 +204,28 @@
             })
 
         }
+
         function guanbi() {
             var divshow = document.getElementById('ceshiyongli');
             divshow.style.display = 'none';
         }
+
         function adduser() {
             m = document.getElementById('adduser');
             m.style.display = ''
         }
+
         function guanbiadd() {
             m = document.getElementById('adduser');
             m.style.display = 'none'
         }
+
         function add_user() {
             var name = document.getElementById('name').value;
             var password = document.getElementById('password').value;
             var queren = document.getElementById('password1').value;
             var zhiwei = document.getElementById('zhiwei');
-            var email=document.getElementById('email').value;
+            var email = document.getElementById('email').value;
             var index = zhiwei.selectedIndex;
             var work = zhiwei.options[index].value;
             var proobj = document.getElementById("project");
@@ -230,32 +235,32 @@
                     selectedValues.push(proobj[i].text);
                 }
             }
-            var data={};
-            data['name']=name;
-            data['password']=password;
-            data['work']=work;
-            data['project']=selectedValues;
-            data['email']=email;
-            if (password != queren){
+            var data = {};
+            data['name'] = name;
+            data['password'] = password;
+            data['work'] = work;
+            data['project'] = selectedValues;
+            data['email'] = email;
+            if (password != queren) {
                 alert('请确认两个密码是否一致')
-            }else {
-              $.ajax({
-                    url: '{{url_for( 'home.adminuser') }}',
-                    type: 'POST',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json; charset=UTF-8',
-                    processData: false,
-                    success: function (result) {
-                        if(result['code']==2){
-                            alert(result['data']);
-                            location.reload()
-                        }
-                        else{
-                            alert(result['data']);
+            } else {
+                $.ajax({
+                        url: '{{url_for( 'home.adminuser') }}',
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=UTF-8',
+                        processData: false,
+                        success: function (result) {
+                            if (result['code'] == 2) {
+                                alert(result['data']);
+                                location.reload()
+                            }
+                            else {
+                                alert(result['data']);
+                            }
                         }
                     }
-                }
-            )
+                )
             }
         }
     </script>

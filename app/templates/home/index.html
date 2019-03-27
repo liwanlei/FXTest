@@ -17,10 +17,10 @@
                         <i class="am-icon-comments-o"></i>
                     </div>
                     <div class="details">
-                        <div class="number"> {{project_cout}} </div>
-                        <div class="desc"> 项目 </div>
+                        <div class="number"> {{ project_cout }} </div>
+                        <div class="desc"> 项目</div>
                     </div>
-                    <a class="more" href="{{url_for('home.project')}}"> 查看项目
+                    <a class="more" href="{{ url_for('home.project') }}"> 查看项目
                         <i class="m-icon-swapright m-icon-white"></i>
                     </a>
                 </div>
@@ -31,12 +31,12 @@
                         <i class="am-icon-bar-chart-o"></i>
                     </div>
                     <div class="details">
-                        <div class="number"> {{model_cout}}
+                        <div class="number"> {{ model_cout }}
                         </div>
                         <div class="desc"> 模块
                         </div>
                     </div>
-                    <a class="more" href="{{url_for('home.model')}}"> 查看更多
+                    <a class="more" href="{{ url_for('home.model') }}"> 查看更多
                         <i class="m-icon-swapright m-icon-white">
                         </i>
                     </a>
@@ -49,11 +49,11 @@
                     </div>
                     <div class="details">
                         <div class="number">
-                            {{jiekou}}
+                            {{ jiekou }}
                         </div>
-                        <div class="desc"> 接口 </div>
+                        <div class="desc"> 接口</div>
                     </div>
-                    <a class="more" href="{{url_for('home.interface')}}"> 查看更多
+                    <a class="more" href="{{ url_for('home.interface') }}"> 查看更多
                         <i class="m-icon-swapright m-icon-white"></i>
                     </a>
                 </div>
@@ -64,10 +64,10 @@
                         <i class="am-icon-android"></i>
                     </div>
                     <div class="details">
-                        <div class="number"> {{yongli}} 执行：{{all_run_case_count}}</div>
-                        <div class="desc"> 测试用例 </div>
+                        <div class="number"> {{ yongli }} 执行：{{ all_run_case_count }}</div>
+                        <div class="desc"> 测试用例</div>
                     </div>
-                    <a class="more" href="{{url_for('home.yongli')}}"> 查看更多
+                    <a class="more" href="{{ url_for('home.yongli') }}"> 查看更多
                         <i class="m-icon-swapright m-icon-white"></i>
                     </a>
                 </div>
@@ -80,10 +80,10 @@
                         <i class="am-icon-comments-o"></i>
                     </div>
                     <div class="details">
-                        <div class="number"> {{report}} </div>
-                        <div class="desc"> 测试报告 </div>
+                        <div class="number"> {{ report }} </div>
+                        <div class="desc"> 测试报告</div>
                     </div>
-                    <a class="more" href="{{url_for('home.test_rep')}}"> 更多
+                    <a class="more" href="{{ url_for('home.test_rep') }}"> 更多
                         <i class="m-icon-swapright m-icon-white"></i>
                     </a>
                 </div>
@@ -97,38 +97,38 @@
                 <tr>
                     <th>定时任务名称</th>
                     <th>下次执行时间</th>
-                     <th>任务运行状态</th>
+                    <th>任务运行状态</th>
                 </tr>
                 </thead>
                 {% for task in my_tasl %}
                     <tr>
                         <td>{{ task.taskname }}</td>
-                        <td>{{ task.next_run}}</td>
-                    {% if task.run_status=='创建'or task.run_status=='关闭' %}
-                                <td>
-                                    <a href="{{ url_for('task.starttask',id=task.id) }}">
-                                        <input type="button" class="btn btn-default" value="启动">
-                                    </a>
-                                </td>
-                            {% elif task.run_status=='启动' %}
-                                <td>
-                                    <a href="{{ url_for('task.zantingtask',id=task.id) }}">
-                                        <input type="button" class="btn btn-success" value="暂停">
-                                    </a>
-                                    <a href="{{ url_for('task.yichutask',id=task.id) }}">
-                                        <input type="button" class="btn btn-danger" value="移除">
-                                    </a>
-                                </td>
-                            {% elif task.run_status=='暂停' %}
-                                <td>
-                                    <a href="{{ url_for('task.huifutask',id=task.id) }}">
-                                        <input type="button" class="btn btn-success" value="恢复">
-                                    </a>
-                                    <a href="{{ url_for('task.yichutask',id=task.id) }}">
-                                        <input type="button" class="btn btn-danger" value="移除">
-                                    </a>
-                                </td>
-                            {% endif %}
+                        <td>{{ task.next_run }}</td>
+                        {% if task.run_status=='创建'or task.run_status=='关闭' %}
+                            <td>
+                                <a href="{{ url_for('task.starttask',id=task.id) }}">
+                                    <input type="button" class="btn btn-default" value="启动">
+                                </a>
+                            </td>
+                        {% elif task.run_status=='启动' %}
+                            <td>
+                                <a href="{{ url_for('task.zantingtask',id=task.id) }}">
+                                    <input type="button" class="btn btn-success" value="暂停">
+                                </a>
+                                <a href="{{ url_for('task.yichutask',id=task.id) }}">
+                                    <input type="button" class="btn btn-danger" value="移除">
+                                </a>
+                            </td>
+                        {% elif task.run_status=='暂停' %}
+                            <td>
+                                <a href="{{ url_for('task.huifutask',id=task.id) }}">
+                                    <input type="button" class="btn btn-success" value="恢复">
+                                </a>
+                                <a href="{{ url_for('task.yichutask',id=task.id) }}">
+                                    <input type="button" class="btn btn-danger" value="移除">
+                                </a>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>

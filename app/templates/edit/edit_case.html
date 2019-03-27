@@ -1,5 +1,5 @@
 {% extends "back.html" %}
-{%block hello%}
+{% block hello %}
     <div class="tpl-content-wrapper" onload="yilai();" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
@@ -24,14 +24,16 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <form  action="{{ url_for('case.edit_case',id=edit.id) }}" method="POST" >
+            <form action="{{ url_for('case.edit_case',id=edit.id) }}" method="POST">
                 <div class="form-group">
                     <strong>项目:</strong>
                     {% for project in  projects %}
-                        {% if project.project_name==edit.projects.project_name%}
-                            <input type='radio' value="{{project.project_name}}" name="project" class="projects"  checked='checked' >{{ project.project_name }}
+                        {% if project.project_name==edit.projects.project_name %}
+                            <input type='radio' value="{{ project.project_name }}" name="project" class="projects"
+                                   checked='checked'>{{ project.project_name }}
                         {% else %}
-                            <input type='radio' value="{{project.project_name}}" name="project" class="projects" >{{ project.project_name }}
+                            <input type='radio' value="{{ project.project_name }}" name="project" class="projects">
+                            {{ project.project_name }}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -41,9 +43,10 @@
                     <span>
                         {% for model in  models %}
                             {% if model.model_name==edit.models.model_name %}
-                                <input type='radio' value="{{  model.model_name }}" checked="checked" name="model">{{ model.model_name }}
+                                <input type='radio' value="{{ model.model_name }}" checked="checked" name="model">
+                                {{ model.model_name }}
                             {% else %}
-                                <input type='radio' value="{{  model.model_name }}" name="model">{{ model.model_name }}
+                                <input type='radio' value="{{ model.model_name }}" name="model">{{ model.model_name }}
                             {% endif %}
                         {% endfor %}
                     </span>
@@ -54,9 +57,9 @@
                     <select name="inerfa">
                         {% for  terf in inerfacelist %}
                             {% if terf.Interface_name == edit.interface_id.Interface_name %}
-                        <option selected>{{ terf.Interface_name }}</option>
+                                <option selected>{{ terf.Interface_name }}</option>
                             {% else %}
-                             <option >{{ terf.Interface_name }}</option>
+                                <option>{{ terf.Interface_name }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -72,12 +75,12 @@
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口编号:</strong>
-                    <input type="text" name="url" value="{{edit.bian_num}}" placeholder="接口用例编号">
+                    <input type="text" name="url" value="{{ edit.bian_num }}" placeholder="接口用例编号">
                 </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>接口headers:</strong>
-                    <input type="text" name="headers" value="{{edit.Interface_headers}}">
+                    <input type="text" name="headers" value="{{ edit.Interface_headers }}">
                     <span style="color: red">
                         **dubbo接口这里需要填写入参对象
                     </span>
@@ -85,17 +88,17 @@
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>请求方式:</strong>
-                    <input type="text" name="meth" value="{{edit.Interface_meth}}">
+                    <input type="text" name="meth" value="{{ edit.Interface_meth }}">
                 </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>请求参数:</strong>
-                    <input type="text" name="parme" value="{{edit.Interface_pase}}">
+                    <input type="text" name="parme" value="{{ edit.Interface_pase }}">
                 </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
                     <strong>请求预期:</strong>
-                    <input type="text" name="reque" value="{{edit.Interface_assert}}">
+                    <input type="text" name="reque" value="{{ edit.Interface_assert }}">
                 </div>
                 <span>&nbsp;</span>
                 <div class="form-group">
@@ -103,24 +106,24 @@
                     <input type="checkbox" name="save" value="是">
                 </div>
                 <div class="form-group">
-                    <p><strong >请选择依赖接口:</strong>
+                    <p><strong>请选择依赖接口:</strong>
                         <select id="jiekou" name="jiekou">
-                            <option id='ceshiurls' > {{ edit.pid }}</option>
+                            <option id='ceshiurls'> {{ edit.pid }}</option>
                         </select></p>
                     <strong>从依赖接口中获取参数：</strong>
-                    <input type="text" name="yilaicanshu" placeholder="请输入要依赖接口测试结果中的数据" value="{{edit.getattr_p  }}">
+                    <input type="text" name="yilaicanshu" placeholder="请输入要依赖接口测试结果中的数据" value="{{ edit.getattr_p }}">
                     <span style="color: rebeccapurple"> *这里的接口如果没有依赖请不要选择添加</span>
                 </div>
-             <div class="form-group">
-                        <strong>请选择依赖mock：</strong>
-                        <select name="mock">
-                            <option>选择依赖mock</option>
-                            {% for mock in mock_yilai %}
-                                <option>{{ mock.path }}</option>
-                            {% endfor %}
-                        </select>
-                        <strong>依赖mock的参数：</strong><input type="text" placeholder="请输入依赖mock的参数" name="mockdata">
-                    </div>
+                <div class="form-group">
+                    <strong>请选择依赖mock：</strong>
+                    <select name="mock">
+                        <option>选择依赖mock</option>
+                        {% for mock in mock_yilai %}
+                            <option>{{ mock.path }}</option>
+                        {% endfor %}
+                    </select>
+                    <strong>依赖mock的参数：</strong><input type="text" placeholder="请输入依赖mock的参数" name="mockdata">
+                </div>
                 <div class="form-group">
                     <strong>是否校验数据库:</strong>
                     <input type="radio" name="database" id="database" onclick="qidong()">
@@ -136,41 +139,44 @@
             </form>
         </div>
     </div>
-{%endblock%}
+{% endblock %}
 {% block js %}
     <script language="JavaScript">
         $(function yilai() {
-            var pddd=$("input[name='project']:checked").val();
-            if (pddd==undefined){
+            var pddd = $("input[name='project']:checked").val();
+            if (pddd == undefined) {
                 return;
-            };
+            }
+            ;
             $.ajax({
-                url:'{{ url_for('getyongli') }}',
-                type:'POST',
-                data:pddd,
+                url: '{{ url_for('getyongli') }}',
+                type: 'POST',
+                data: pddd,
                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(testyong){
-                    if(testyong['code']==200){
-                        xuanze=testyong['data']
-                        var xuanz=$('#jiekou');
-                        for (var i=0;i<xuanze.length;i++){
-                            var url=xuanze[i];
-                            xuanz.append("<option id='ceshiurls'>  " + url+"</option>");
-                        };
-                    }else {
+                processData: false,
+                success: function (testyong) {
+                    if (testyong['code'] == 200) {
+                        xuanze = testyong['data']
+                        var xuanz = $('#jiekou');
+                        for (var i = 0; i < xuanze.length; i++) {
+                            var url = xuanze[i];
+                            xuanz.append("<option id='ceshiurls'>  " + url + "</option>");
+                        }
+                        ;
+                    } else {
                         alert(testyong['msg'])
                     }
                 }
             })
         });
+
         function qidong() {
-            var d=document.getElementById('database');
-            var database=document.getElementById('shujuku');
-            if (d.checked==true){
-                database.style.display='';
-            }else {
-                database.style.display='none';
+            var d = document.getElementById('database');
+            var database = document.getElementById('shujuku');
+            if (d.checked == true) {
+                database.style.display = '';
+            } else {
+                database.style.display = 'none';
             }
         }
     </script>

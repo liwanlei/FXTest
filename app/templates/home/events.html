@@ -7,13 +7,13 @@
                 {% if messages %}
                     <ul class='flashes'>
                         {% for message in messages %}
-                            <li style="color:red" >{{ message }}</li>
+                            <li style="color:red">{{ message }}</li>
                         {% endfor %}
                     </ul>
                 {% endif %}
             {% endwith %}
         </div>
-        <div class="tpl-portlet-components" >
+        <div class="tpl-portlet-components">
             <div class="portlet-title">
                 <div class="caption font-green bold">
                     <span class="am-icon-code"></span><strong>测试环境</strong>
@@ -25,12 +25,12 @@
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
                                 <a onclick="addevent()">
-                                    <input  type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
+                                    <input type="button" class="am-btn am-btn-default am-btn-success" value="增加"> </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <table class="am-table am-table-striped am-table-hover table-main" >
+                <table class="am-table am-table-striped am-table-hover table-main">
                     <caption><strong></strong></caption>
                     <thead>
                     <tr>
@@ -46,11 +46,11 @@
                     </thead>
                     <tbody>
                     {% for enve in events %}
-                        {%for ebent in enve%}
+                        {% for ebent in enve %}
                             <tr id="{{ ebent.id }}">
                                 <td>
                                     <label class="" style="background-color: white">
-                                        <strong>{{ebent.projects}}</strong>
+                                        <strong>{{ ebent.projects }}</strong>
                                     </label>
                                 </td>
                                 <td>
@@ -63,118 +63,134 @@
                                     <label class="label-primary" style="background: white">{{ ebent.database }}</label>
                                 </td>
                                 <td>
-                                    <label class="label-primary" style="background: white">{{ ebent.databaseuser }}</label>
+                                    <label class="label-primary"
+                                           style="background: white">{{ ebent.databaseuser }}</label>
                                 </td>
                                 <td>
-                                    <label class="label-primary" style="background: white">{{ ebent.databasepassword }}</label>
+                                    <label class="label-primary"
+                                           style="background: white">{{ ebent.databasepassword }}</label>
                                 </td>
                                 <td>
                                     <label class="label-primary" style="background: white">{{ ebent.users }}</label>
                                 </td>
                                 <td>
                                     <span>
-                                        <a onclick="editproject({{ebent.id }})">
+                                        <a onclick="editproject({{ ebent.id }})">
                                             <input type="button" value="编辑" class="btn btn-primary"></a></span>
-                                    {%if current_user.role_id !=1 and current_user.role_id !=None  %}
+                                    {% if current_user.role_id !=1 and current_user.role_id !=None %}
                                         <span>
-                                            <button  onclick="deleteevent({{ ebent.id }})" class="btn btn-default">
+                                            <button onclick="deleteevent({{ ebent.id }})" class="btn btn-default">
                                                删除
                                             </button></span>
-                                    {%endif%}
+                                    {% endif %}
                                 </td>
                             </tr>
-                              <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="project-{{ ebent.id }}">
-                            <div style="height: 5px;">编辑测试环境</div>
-                            <div style="background-color: whitesmoke;margin-top: 24px" >
-                                <p>项目
-                    <select id="proje-{{ ebent.id }}">
-                        {% for project in  projects %}
-                            <option>{{  project.project_name }}</option>
+                            <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+                                 id="project-{{ ebent.id }}">
+                                <div style="height: 5px;">编辑测试环境</div>
+                                <div style="background-color: whitesmoke;margin-top: 24px">
+                                    <p>项目
+                                        <select id="proje-{{ ebent.id }}">
+                                            {% for project in  projects %}
+                                                <option>{{ project.project_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </p>
+                                    <p>
+                                        测试环境url：<input type="text" id="url-{{ ebent.id }}" placeholder="请写入你要添加的测试环境url"
+                                                       value="{{ ebent.url }}">
+                                    </p>
+                                    <p>
+                                        测试环境描述：<input type="text" id="desc-{{ ebent.id }}" placeholder="请写入你要添加的测试环境描述"
+                                                      value="{{ ebent.desc }}">
+                                    </p>
+                                    <p>
+                                        测试环境数据库host：<input type="text" id="host-{{ ebent.id }}"
+                                                           placeholder="请写入你要添加的测试环境数据库host" value="{{ ebent.dbhost }}">
+                                    </p>
+                                    <p>
+                                        测试环境数据库port：<input type="text" id="port-{{ ebent.id }}"
+                                                           placeholder="请写入你要添加的测试测试环境数据库port"
+                                                           value="{{ ebent.dbport }}">
+                                    </p>
+                                    <p>
+                                        测试环境数据库：<input type="text" id="name-{{ ebent.id }}"
+                                                       placeholder="请写入你要添加的测试环境数据库" value="{{ ebent.database }}">
+                                    </p>
+                                    <p>
+                                        测试环境数据库登录用户：<input type="text" id="username-{{ ebent.id }}"
+                                                           placeholder="测试环境数据库登录用户" value="{{ ebent.databaseuser }}">
+                                    </p>
+                                    <p>
+                                        测试环境数据库登录密码:：<input type="password" id="password-{{ ebent.id }}"
+                                                            placeholder="请写入测试环境数据库登录密码:"
+                                                            value="{{ ebent.databasepassword }}">
+                                    </p>
+                                </div>
+                                <div style="margin-top: 50%;margin-bottom: auto">
+                                    <input value="编辑" type="button" class="btn-default"
+                                           onclick="eitproject({{ ebent.id }})">
+                                    <input value="取消" type="button" class=" btn-default"
+                                           onclick="guanbiedit({{ ebent.id }})">
+                                </div>
+                            </div>
                         {% endfor %}
-                    </select>
-                </p>
-                <p >
-                    测试环境url：<input type="text" id="url-{{ ebent.id }}" placeholder="请写入你要添加的测试环境url" value="{{ ebent.url }}">
-                </p>
-                <p >
-                    测试环境描述：<input type="text" id="desc-{{ ebent.id }}" placeholder="请写入你要添加的测试环境描述" value="{{ ebent.desc }}">
-                </p>
-                <p >
-                    测试环境数据库host：<input type="text" id="host-{{ ebent.id }}" placeholder="请写入你要添加的测试环境数据库host" value="{{ ebent.dbhost }}">
-                </p>
-                <p>
-                    测试环境数据库port：<input type="text" id="port-{{ ebent.id }}" placeholder="请写入你要添加的测试测试环境数据库port" value="{{ ebent.dbport }}">
-                </p>
-                <p >
-                    测试环境数据库：<input type="text" id="name-{{ ebent.id }}" placeholder="请写入你要添加的测试环境数据库" value="{{  ebent.database }}">
-                </p>
-                <p >
-                    测试环境数据库登录用户：<input type="text" id="username-{{ ebent.id }}" placeholder="测试环境数据库登录用户" value="{{ ebent.databaseuser }}">
-                </p>
-                <p >
-                    测试环境数据库登录密码:：<input type="password" id="password-{{ ebent.id }}" placeholder="请写入测试环境数据库登录密码:" value="{{ ebent.databasepassword }}">
-                </p>
-                            </div>
-                            <div style="margin-top: 50%;margin-bottom: auto">
-                                <input value="编辑" type="button" class="btn-default"  onclick="eitproject({{ ebent.id }})" >
-                                <input value="取消" type="button" class=" btn-default"  onclick="guanbiedit({{ ebent.id }})" >
-                            </div>
-                        </div>
-                        {%endfor%}
 
                     {% endfor %}
                     </tbody>
                 </table>
                 <div style="text-align: center;">
                     <ul class="pagination">
-                        <li  >
-                            <a  href="{{url_for('home.ceshihuanjing') }}">首页</a>
+                        <li>
+                            <a href="{{ url_for('home.ceshihuanjing') }}">首页</a>
                         </li>
-                        {%for page in pages%}
+                        {% for page in pages %}
                             <li>
-                                <a id='{{page}}' onclick="h=window.location.href.split('/'),m=document.getElementById({{page}}),m.setAttribute('href','/'+h[3]+'/'+{{page}})" >{{page}}</a>
+                                <a id='{{ page }}'
+                                   onclick="h=window.location.href.split('/'),m=document.getElementById({{ page }}),m.setAttribute('href','/'+h[3]+'/'+{{ page }})">{{ page }}</a>
                             </li>
-                        {%endfor%}
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-        <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="events">
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+         id="events">
         <div style="height: 5px;">添加测试环境</div>
-            <div style="background-color: whitesmoke;margin-top: 24px" >
-                <p>项目
-                    <select id="project">
-                        {% for project in  projects %}
-                            <option>{{  project.project_name }}</option>
-                        {% endfor %}
-                    </select>
-                </p>
-                <p >
-                    测试环境url：<input type="text" id="url" placeholder="请写入你要添加的测试环境url">
-                </p>
-                <p >
-                    测试环境描述：<input type="text" id="desc" placeholder="请写入你要添加的测试环境描述">
-                </p>
-                <p >
-                    测试环境数据库host：<input type="text" id="host" placeholder="请写入你要添加的测试环境数据库host">
-                </p>
-                <p>
-                    测试环境数据库port：<input type="text" id="port" placeholder="请写入你要添加的测试测试环境数据库port">
-                </p>
-                <p >
-                    测试环境数据库：<input type="text" id="name" placeholder="请写入你要添加的测试环境数据库">
-                </p>
-                <p >
-                    测试环境数据库登录用户：<input type="text" id="username" placeholder="测试环境数据库登录用户">
-                </p>
-                <p >
-                    测试环境数据库登录密码:：<input type="password" id="password" placeholder="请写入测试环境数据库登录密码:">
-                </p>
-            </div>
-            <div style="margin-top: 1%;margin-bottom: auto">
-                <input value="添加" type="button" class="btn-default"  onclick="tianjian()" >
-                <input value="取消" type="button" class=" btn-default"  onclick="guanbi()" >
+        <div style="background-color: whitesmoke;margin-top: 24px">
+            <p>项目
+                <select id="project">
+                    {% for project in  projects %}
+                        <option>{{ project.project_name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                测试环境url：<input type="text" id="url" placeholder="请写入你要添加的测试环境url">
+            </p>
+            <p>
+                测试环境描述：<input type="text" id="desc" placeholder="请写入你要添加的测试环境描述">
+            </p>
+            <p>
+                测试环境数据库host：<input type="text" id="host" placeholder="请写入你要添加的测试环境数据库host">
+            </p>
+            <p>
+                测试环境数据库port：<input type="text" id="port" placeholder="请写入你要添加的测试测试环境数据库port">
+            </p>
+            <p>
+                测试环境数据库：<input type="text" id="name" placeholder="请写入你要添加的测试环境数据库">
+            </p>
+            <p>
+                测试环境数据库登录用户：<input type="text" id="username" placeholder="测试环境数据库登录用户">
+            </p>
+            <p>
+                测试环境数据库登录密码:：<input type="password" id="password" placeholder="请写入测试环境数据库登录密码:">
+            </p>
+        </div>
+        <div style="margin-top: 1%;margin-bottom: auto">
+            <input value="添加" type="button" class="btn-default" onclick="tianjian()">
+            <input value="取消" type="button" class=" btn-default" onclick="guanbi()">
         </div>
     </div>
 {% endblock %}
@@ -182,122 +198,128 @@
     <script type="text/javascript">
         function deleteevent(id) {
             $.ajax({
-                url:'{{url_for( 'home.ceshihuanjing') }}',
-                type:'DELETE',
-                data:id,
+                url: '{{url_for( 'home.ceshihuanjing') }}',
+                type: 'DELETE',
+                data: id,
                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(data){
-                    if(data['code']!=2){
+                processData: false,
+                success: function (data) {
+                    if (data['code'] != 2) {
                         alert(data['data'])
-                    }else{
+                    } else {
                         alert(data['data'])
-                        caseid=document.getElementById(id);
-                        caseid.hidden=true;
+                        caseid = document.getElementById(id);
+                        caseid.hidden = true;
                     }
                 }
             })
         }
-        function  addevent() {
-            m=document.getElementById('events');
-            m.style.display=''
+
+        function addevent() {
+            m = document.getElementById('events');
+            m.style.display = ''
         }
+
         function guanbi() {
-            m=document.getElementById('events');
-            m.style.display='none'
+            m = document.getElementById('events');
+            m.style.display = 'none'
         }
+
         function tianjian() {
-            var obj=document.getElementById('project');
-            var index=obj.selectedIndex;
+            var obj = document.getElementById('project');
+            var index = obj.selectedIndex;
             var project = obj.options[index].value;
-            var url=document.getElementById('url').value;
-            var desc=document.getElementById('desc').value;
-            var name=document.getElementById('name').value;
-            var host=document.getElementById('host').value;
-            var port=document.getElementById('port').value;
-            var username=document.getElementById('username').value;
-            var password=document.getElementById('password').value;
-            if (url.length<=0){
+            var url = document.getElementById('url').value;
+            var desc = document.getElementById('desc').value;
+            var name = document.getElementById('name').value;
+            var host = document.getElementById('host').value;
+            var port = document.getElementById('port').value;
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            if (url.length <= 0) {
                 alert('测试环境地址不能为空')
-            }else {
-            var data={};
-            data['project']=project;
-            data['url']=url;
-            data['desc']=desc;
-            data['name']=name;
-            data['host']=host;
-            data['port']=port;
-            data['username']=username;
-            data['password']=password;
-            $.ajax({
-                    url: '{{url_for( 'home.ceshihuanjing') }}',
-                    type: 'POST',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json; charset=UTF-8',
-                    processData: false,
-                    success: function (result) {
-                        if(result['code']==2){
-                            alert(result['data']);
-                            location.reload()
-                        }
-                        else{
-                            alert(result['data']);
+            } else {
+                var data = {};
+                data['project'] = project;
+                data['url'] = url;
+                data['desc'] = desc;
+                data['name'] = name;
+                data['host'] = host;
+                data['port'] = port;
+                data['username'] = username;
+                data['password'] = password;
+                $.ajax({
+                        url: '{{url_for( 'home.ceshihuanjing') }}',
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=UTF-8',
+                        processData: false,
+                        success: function (result) {
+                            if (result['code'] == 2) {
+                                alert(result['data']);
+                                location.reload()
+                            }
+                            else {
+                                alert(result['data']);
+                            }
                         }
                     }
-                }
-            )
+                )
             }
         }
-        function editproject(id) {
-            m=document.getElementById('project-'+id);
-            m.style.display=''
-        }
-        function  guanbiedit(id) {
-            m=document.getElementById('project-'+id);
-            m.style.display='none'
-        }
-        function eitproject(id) {
-            var obj=document.getElementById('proje-'+id);
-            var index=obj.selectedIndex;
-            var project = obj.options[index].value;
-            var url=document.getElementById('url-'+id).value;
-            var desc=document.getElementById('desc-'+id).value;
-            var name=document.getElementById('name-'+id).value;
-            var host=document.getElementById('host-'+id).value;
-            var port=document.getElementById('port-'+id).value;
-            var username=document.getElementById('username-'+id).value;
-            var password=document.getElementById('password-'+id).value;
-            if (url.length<=0){
-                alert('测试环境地址不能为空')
-            }else {
 
-            var data={};
-            data['id']=id;
-            data['project']=project;
-            data['url']=url;
-            data['desc']=desc;
-            data['name']=name;
-            data['host']=host;
-            data['port']=port;
-            data['username']=username;
-            data['password']=password;
-            $.ajax({
-                    url: '{{url_for( 'home.ceshihuanjing') }}',
-                    type: 'PUT',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json; charset=UTF-8',
-                    processData: false,
-                    success: function (result) {
-                        if(result['code']==2){
-                            alert(result['data']);
-                            location.reload()
-                        }
-                        else{
-                            alert(result['data']);
+        function editproject(id) {
+            m = document.getElementById('project-' + id);
+            m.style.display = ''
+        }
+
+        function guanbiedit(id) {
+            m = document.getElementById('project-' + id);
+            m.style.display = 'none'
+        }
+
+        function eitproject(id) {
+            var obj = document.getElementById('proje-' + id);
+            var index = obj.selectedIndex;
+            var project = obj.options[index].value;
+            var url = document.getElementById('url-' + id).value;
+            var desc = document.getElementById('desc-' + id).value;
+            var name = document.getElementById('name-' + id).value;
+            var host = document.getElementById('host-' + id).value;
+            var port = document.getElementById('port-' + id).value;
+            var username = document.getElementById('username-' + id).value;
+            var password = document.getElementById('password-' + id).value;
+            if (url.length <= 0) {
+                alert('测试环境地址不能为空')
+            } else {
+
+                var data = {};
+                data['id'] = id;
+                data['project'] = project;
+                data['url'] = url;
+                data['desc'] = desc;
+                data['name'] = name;
+                data['host'] = host;
+                data['port'] = port;
+                data['username'] = username;
+                data['password'] = password;
+                $.ajax({
+                        url: '{{url_for( 'home.ceshihuanjing') }}',
+                        type: 'PUT',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=UTF-8',
+                        processData: false,
+                        success: function (result) {
+                            if (result['code'] == 2) {
+                                alert(result['data']);
+                                location.reload()
+                            }
+                            else {
+                                alert(result['data']);
+                            }
                         }
                     }
-                }
-            )
+                )
             }
         }
     </script>

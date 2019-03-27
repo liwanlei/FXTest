@@ -10,11 +10,13 @@ page = pagination.page - 1, **kwargs) }}{% else %}#{% endif %}">
             {% if p %}
                 {% if p == pagination.page %}
                     <li class="active">
-                        <a style='background-color: lightgoldenrodyellow;color: brown;' href="{{ url_for(endpoint, page = p, **kwargs) }}">{{ p }}</a>
+                        <a style='background-color: lightgoldenrodyellow;color: brown;'
+                           href="{{ url_for(endpoint, page = p, **kwargs) }}">{{ p }}</a>
                     </li>
                 {% else %}
                     <li>
-                        <a style='background-color: lightgoldenrodyellow;color: brown;' href="{{ url_for(endpoint, page = p, **kwargs) }}">{{ p }}</a>
+                        <a style='background-color: lightgoldenrodyellow;color: brown;'
+                           href="{{ url_for(endpoint, page = p, **kwargs) }}">{{ p }}</a>
                     </li>
                 {% endif %}
             {% else %}
@@ -24,7 +26,8 @@ page = pagination.page - 1, **kwargs) }}{% else %}#{% endif %}">
             {% endif %}
         {% endfor %}
         <li{% if not pagination.has_next %} class="disabled"{% endif %}>
-            <a  style='background-color: lightgoldenrodyellow;color: brown;' href="{% if pagination.has_next %}{{ url_for(endpoint,page = pagination.page + 1, **kwargs) }}{% else %}#{% endif %}">
+            <a style='background-color: lightgoldenrodyellow;color: brown;' href="
+                    {% if pagination.has_next %}{{ url_for(endpoint,page = pagination.page + 1, **kwargs) }}{% else %}#{% endif %}">
                 »
             </a>
         </li>

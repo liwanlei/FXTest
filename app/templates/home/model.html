@@ -38,7 +38,6 @@
                     <tr>
                         <th>模块名</th>
                         <th>通用模块</th>
-                        <th>所属项目</th>
                         <th>创建者</th>
                         <th>操作</th>
                     </tr>
@@ -54,8 +53,6 @@
                             {% endif %}
                             {% if project.project == None %}
                                 <td>公共所有</td>
-                            {% else %}
-                                <td>{{ project.projects.project_name }}</td>
                             {% endif %}
                             <td>{{ project.users }}</td>
                             <td>
@@ -87,11 +84,7 @@
                     <select id="projetc-{{ project.id }}">
                 <option>请选择</option>
                         {% for pro in project_list %}
-                            {% if project.projects.project_name==pro.project_name %}
-                                <option selected>{{ pro.project_name }}</option>
-                            {% else %}
                                 <option>{{ pro.project_name }}</option>
-                            {% endif %}
                         {% endfor %}
             </select>
             </span>

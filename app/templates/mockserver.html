@@ -2,21 +2,21 @@
 <head>
     <meta charset="UTF-8">
     <title>API自动化平台-mockserver</title>
-    <link href="{{url_for('static',filename='css/amazeui.min.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/admin.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/app.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}"  rel="stylesheet">
-    <link rel="icon" href="{{url_for('static',filename='img/logo.png')}}" type="image/x-icon">
-    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
-    <script src="{{url_for('static',filename='js/echarts.common.min.js')}}"></script>
-    <script src="{{url_for('static',filename='js/app.js')}}"></script>
+    <link href="{{ url_for('static',filename='css/amazeui.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/admin.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/app.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static',filename='img/logo.png') }}" type="image/x-icon">
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/echarts.common.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/app.js') }}"></script>
     <script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
 </head>
-<body style="background-color: #f5f5f5" >
+<body style="background-color: #f5f5f5">
 <header class="am-topbar am-topbar-inverse admin-header">
     <div class="am-topbar-brand">
-        <a href="{{ url_for('home.index') }}"class="tpl-logo">
-            <img src="{{url_for('static',filename='img/logo.png')}}" alt=""  >
+        <a href="{{ url_for('home.index') }}" class="tpl-logo">
+            <img src="{{ url_for('static',filename='img/logo.png') }}" alt="">
         </a>
     </div>
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
@@ -24,30 +24,31 @@
             <li class="am-hide-sm-only"></li>
             <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                 <a class="am-dropdown-toggle tpl-header-list-link" onclick="changepassword()">
-                    <span class="tpl-header-list-user-nick" >
-                        {{session.username}}
+                    <span class="tpl-header-list-user-nick">
+                        {{ session.username }}
                     </span>
                     <span class="tpl-header-list-user-ico">
                     </span>
                 </a>
             </li>
             <li>
-                <a href="{{url_for('home.logt')}}" class="tpl-header-list-link">
+                <a href="{{ url_for('home.logt') }}" class="tpl-header-list-link">
                     <strong>退出</strong>
                 </a>
             </li>
         </ul>
     </div>
-    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="changepassword">
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+         id="changepassword">
         <div style="height: 5px;">修改密码</div>
-            <div style="background-color: whitesmoke;margin-top: 24px" >
-                新设密码：<input type="password" id="newpassword">
-                <p></p>确认密码：<input type="password" id="new_password">
-            </div>
-            <div style="margin-top: 50%;margin-bottom: auto">
-                <input value="保存" type="submit" class="btn-default" onclick="change()">
-                <input value="取消" type="button" class=" btn-default" onclick="quxiao()" >
-            </div>
+        <div style="background-color: whitesmoke;margin-top: 24px">
+            新设密码：<input type="password" id="newpassword">
+            <p></p>确认密码：<input type="password" id="new_password">
+        </div>
+        <div style="margin-top: 50%;margin-bottom: auto">
+            <input value="保存" type="submit" class="btn-default" onclick="change()">
+            <input value="取消" type="button" class=" btn-default" onclick="quxiao()">
+        </div>
     </div>
 </header>
 {% block bodys %}
@@ -56,41 +57,43 @@
 </div>
 <div style='text-align: center;margin-bottom: auto'>
     <h3>版权雷子所有，联系qq：952943386 qq交流群：194704520</h3></div>
-<script  type='text/javascript'>
+<script type='text/javascript'>
     function changepassword() {
-        var d=document.getElementById('changepassword');
-        d.style.display=''
+        var d = document.getElementById('changepassword');
+        d.style.display = ''
     }
+
     function quxiao() {
-        var d=document.getElementById('changepassword');
-        d.style.display='none'
+        var d = document.getElementById('changepassword');
+        d.style.display = 'none'
     }
+
     function change() {
-        var password=document.getElementById('newpassword').value;
-        var querenpassword=document.getElementById('new_password').value;
-        if (password!=querenpassword){
+        var password = document.getElementById('newpassword').value;
+        var querenpassword = document.getElementById('new_password').value;
+        if (password != querenpassword) {
             alert('请确认输入密码是否一致')
         }
         else {
-            if(password.length>20 ||  password.length<6){
+            if (password.length > 20 || password.length < 6) {
                 alert('密码长度应该是6-20个字符串长度')
-        }else {
+            } else {
                 $.ajax({
-                url:"{{ url_for('user.changepassword')}}",
-                data:password,
-                type:'POST',
-                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(data){
-                    if(data['code']=='1'){
-                        alert('修改密码成功');
-                         window.location.href=('{{ url_for("home.login") }}')
-                    }else {
-                        alert('修改密码失败')
-                    }
-                },
+                    url: "{{ url_for('user.changepassword')}}",
+                    data: password,
+                    type: 'POST',
+                    contentType: 'application/json; charset=UTF-8',
+                    processData: false,
+                    success: function (data) {
+                        if (data['code'] == '1') {
+                            alert('修改密码成功');
+                            window.location.href = ('{{ url_for("home.login") }}')
+                        } else {
+                            alert('修改密码失败')
+                        }
+                    },
 
-            })
+                })
             }
 
         }

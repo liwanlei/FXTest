@@ -7,7 +7,7 @@
             {% if messages %}
                 <ul class='flashes'>
                     {% for message in messages %}
-                        <li style="color:red" >{{ message }}</li>
+                        <li style="color:red">{{ message }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <table class="am-table  table-main" >
+        <table class="am-table  table-main">
             <caption><strong>
             </strong></caption>
             <thead>
@@ -43,155 +43,165 @@
             </tr>
             </thead>
             <tbody>
-            {%for project in projects%}
+            {% for project in projects %}
                 <tr id="{{ project.id }}">
                     <td>
                         <label class="" style="background-color: white">
-                            <strong>{{project.project_name}}</strong>
+                            <strong>{{ project.project_name }}</strong>
                         </label>
                     </td>
                     {% if project.desc==None %}
-                    <td></td>
-                {% else %}
-                    <td>{{ project.desc }}</td>
-                {% endif %}
+                        <td></td>
+                    {% else %}
+                        <td>{{ project.desc }}</td>
+                    {% endif %}
                     <td>
                         <label class="label-primary" style="background: white">{{ project.users }}
                         </label>
                     </td>
                     <td>
                         <span>
-                            <button onclick="editproject({{ project.id }})"  class="btn btn-default ">
+                            <button onclick="editproject({{ project.id }})" class="btn btn-default ">
                                 编辑
                             </button>
                         </span>
-                        {%if current_user.role_id !=1 and current_user.role_id !=None  %}
+                        {% if current_user.role_id !=1 and current_user.role_id !=None %}
                             <span>
-                                <button  onclick="deleteproject({{ project.id }})" class="btn btn-default">
+                                <button onclick="deleteproject({{ project.id }})" class="btn btn-default">
                                     删除
                                 </button>
                             </span>
-                        {%endif%}
+                        {% endif %}
                     </td>
-                </tr >
-                <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="project-{{ project.id }}">
+                </tr>
+                <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+                     id="project-{{ project.id }}">
                     <div style="height: 5px;">编辑项目</div>
-                    <div style="background-color: whitesmoke;margin-top: 24px" >
+                    <div style="background-color: whitesmoke;margin-top: 24px">
                         <span style="text-align: center">
-                            项目：<input type="text" id="name-{{ project.id }}" placeholder="请写入你要编辑项目的名称" value="{{ project.project_name }}">
+                            项目：<input type="text" id="name-{{ project.id }}" placeholder="请写入你要编辑项目的名称"
+                                      value="{{ project.project_name }}">
                         </span>
 
                     </div>
                     <div style="margin-top: 50%;margin-bottom: auto">
-                        <input value="编辑" type="button" class="btn-default"  onclick="eitproject({{ project.id }})" >
-                        <input value="取消" type="button" class=" btn-default"  onclick="guanbiedit({{ project.id }})" >
+                        <input value="编辑" type="button" class="btn-default" onclick="eitproject({{ project.id }})">
+                        <input value="取消" type="button" class=" btn-default" onclick="guanbiedit({{ project.id }})">
                     </div>
                 </div>
-            {%endfor%}
+            {% endfor %}
             </tbody>
         </table>
         <div style="text-align: center;">
             <ul class="pagination">
-                <li  >
-                    <a  href="{{url_for('home.project') }}">首页</a>
+                <li>
+                    <a href="{{ url_for('home.project') }}">首页</a>
                 </li>
-                {%for page in pages%}
+                {% for page in pages %}
                     <li>
-                        <a id='{{page}}' onclick="h=window.location.href.split('/'),m=document.getElementById({{page}}),m.setAttribute('href','/'+h[3]+'/'+{{page}})" >{{page}}</a>
+                        <a id='{{ page }}'
+                           onclick="h=window.location.href.split('/'),m=document.getElementById({{ page }}),m.setAttribute('href','/'+h[3]+'/'+{{ page }})">{{ page }}</a>
                     </li>
-                {%endfor%}
+                {% endfor %}
             </ul>
         </div>
     </div>
-    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="project">
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+         id="project">
         <div style="height: 5px;">添加项目</div>
-        <div style="background-color: whitesmoke;margin-top: 24px" >
+        <div style="background-color: whitesmoke;margin-top: 24px">
             <span style="text-align: center">
                 项目：<input type="text" id="name" placeholder="请写入你要添加的项目的名称">
             </span>
 
         </div>
         <div style="margin-top: 5%;margin-bottom: auto">
-            <input value="添加" type="button" class="btn-default"  onclick="tianjian()" >
-            <input value="取消" type="button" class=" btn-default"  onclick="guanbi()" >
+            <input value="添加" type="button" class="btn-default" onclick="tianjian()">
+            <input value="取消" type="button" class=" btn-default" onclick="guanbi()">
         </div>
     </div>
 {% endblock %}
 {% block js %}
     <script type="text/javascript" language="JavaScript">
         function addproject() {
-            m=document.getElementById('project');
-            m.style.display=''
+            m = document.getElementById('project');
+            m.style.display = ''
         }
-        function  guanbi() {
-            m=document.getElementById('project');
-            m.style.display='none'
+
+        function guanbi() {
+            m = document.getElementById('project');
+            m.style.display = 'none'
         }
-        function  tianjian() {
-            var project=document.getElementById('name').value;
+
+        function tianjian() {
+            var project = document.getElementById('name').value;
             $.ajax({
-                url: '{{url_for( 'home.project') }}',
-                type: 'POST',
-                data: project,
-                contentType: 'application/json; charset=UTF-8',
-                processData: false,
-                success: function (result) {
-                    if(result['code']==2){
-                        alert(result['data']);
-                        location.reload()
-                    }
-                    else{
-                        alert(result['data']);
+                    url: '{{url_for( 'home.project') }}',
+                    type: 'POST',
+                    data: project,
+                    contentType: 'application/json; charset=UTF-8',
+                    processData: false,
+                    success: function (result) {
+                        if (result['code'] == 2) {
+                            alert(result['data']);
+                            location.reload()
+                        }
+                        else {
+                            alert(result['data']);
+                        }
                     }
                 }
-            }
             )
         }
+
         function editproject(id) {
-            m=document.getElementById('project-'+id);
-            m.style.display=''
+            m = document.getElementById('project-' + id);
+            m.style.display = ''
         }
-        function  guanbiedit(id) {
-            m=document.getElementById('project-'+id);
-            m.style.display='none'
+
+        function guanbiedit(id) {
+            m = document.getElementById('project-' + id);
+            m.style.display = 'none'
         }
+
         function eitproject(id) {
-            var project=document.getElementById('name-'+id).value;
-            var data={};
-            data['id']=id;
-            data['name']=project;
+            var project = document.getElementById('name-' + id).value;
+            var data = {};
+            data['id'] = id;
+            data['name'] = project;
             $.ajax({
-                url: '{{url_for( 'home.project') }}',
-                type: 'PUT',
-                data: JSON.stringify(data),
-                contentType: 'application/json; charset=UTF-8',
-                processData: false,
-                success: function (result) {
-                    if(result['code']==2){
-                        alert(result['data']);
-                        location.reload()
-                    }
-                    else{
-                        alert(result['data']);
+                    url: '{{url_for( 'home.project') }}',
+                    type: 'PUT',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json; charset=UTF-8',
+                    processData: false,
+                    success: function (result) {
+                        if (result['code'] == 2) {
+                            alert(result['data']);
+                            location.reload()
+                        }
+                        else {
+                            alert(result['data']);
+                        }
                     }
                 }
-            }
             )
         }
+
         function deleteproject(id) {
             $.ajax({
-                url:'{{url_for( 'home.project') }}',
-                type:'DELETE',
-                data:id,
+                url: '{{url_for( 'home.project') }}',
+                type: 'DELETE',
+                data: id,
                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(data){
-                    if(data['code']!=2){
+                processData: false,
+                success: function (data) {
+                    if (data['code'] != 2) {
                         alert(data['data'])
-                    }else{
+                    } else {
                         alert(data['data'])
-                        caseid=document.getElementById(id);
-                        caseid.hidden=true;
+                        caseid = document.getElementById(id);
+                        caseid.hidden = true;
                     }
                 }
             })

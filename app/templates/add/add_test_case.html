@@ -1,5 +1,5 @@
-{%extends 'back.html' %}
-{%block hello%}
+{% extends 'back.html' %}
+{% block hello %}
     <div class="tpl-content-wrapper" style="margin-top: -7px;">
         <div class="tpl-content-page-title">
         </div>
@@ -15,8 +15,8 @@
                     </div>
                 </div>
             </div>
-            {% with messages = get_flashed_messages()%}
-                {% if messages%}
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
                     <ul class='flashes'>
                         {% for message in messages %}
                             <li style="color:red">{{ message }}</li>
@@ -24,14 +24,15 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <form method="POST" action="{{url_for('case.addtestcase')}}">
-                {{form.hidden_tag()}}
-                {{form.csrf_token}}
+            <form method="POST" action="{{ url_for('case.addtestcase') }}">
+                {{ form.hidden_tag() }}
+                {{ form.csrf_token }}
                 <div>
                     <div class="form-group">
                         <strong>项目名字:</strong>
                         {% for project in  projects %}
-                            <input type='radio' value="{{  project.project_name }}" name="project" class="projects" onclick="yilai()">
+                            <input type='radio' value="{{ project.project_name }}" name="project" class="projects"
+                                   onclick="yilai()">
                             {{ project.project_name }}
                         {% endfor %}
                     </div>
@@ -39,18 +40,18 @@
                     <div class="form-group">
                         <strong>模块名字:</strong>
                         <select name="mode">
-                        {% for model in  models %}
-                            <option>{{  model.model_name }}</option> 
-                        {% endfor %}
+                            {% for model in  models %}
+                                <option>{{ model.model_name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>接口:</strong>
                         <select name="interface_name">
-                            {%for interfact in inrterface_list%}
-                            <option>{{interfact.Interface_name}}</option>
-                            {%endfor%}
+                            {% for interfact in inrterface_list %}
+                                <option>{{ interfact.Interface_name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <span>&nbsp;</span>
@@ -69,7 +70,7 @@
                     <span>&nbsp;</span>
                     <div class="form-group">
                         <strong>接口headers:</strong>
-                        {{ form.interface_headers (id='interfheader')}}
+                        {{ form.interface_headers (id='interfheader') }}
                         <span style="color: #8D99A8">
                             **dubbo接口这里需要填写入参对象
                         </span>
@@ -80,12 +81,12 @@
                         {{ form.interface_meth(id='interfacemeth') }}
                     </div>
                     <span>&nbsp;</span>
-                    <div class="form-group" >
+                    <div class="form-group">
                         <strong>请求参数:</strong>
-                        {{ form.interface_can (id='interfacedata')}}
+                        {{ form.interface_can (id='interfacedata') }}
                     </div>
                     <span>&nbsp;</span>
-                    <div class="form-group" >
+                    <div class="form-group">
                         <strong>请求预期:</strong>
                         {{ form.interface_rest(id='interfaceyuqi') }}
                     </div>
@@ -126,47 +127,50 @@
                             <strong>比较字段：</strong><input type="text" name="databijiao" placeholder="请输入和数据库比对！">
                         </div>
                     </div>
-                    <button type="submit" class="am-btn am-btn-primary" >添加</button>
+                    <button type="submit" class="am-btn am-btn-primary">添加</button>
                 </div>
             </form>
-        </div></div>
-{%endblock%}
+        </div>
+    </div>
+{% endblock %}
 {% block js %}
     <script language="JavaScript">
         function yilai() {
-            var pddd=$("input[name='project']:checked").val();
-            if (pddd==undefined){
+            var pddd = $("input[name='project']:checked").val();
+            if (pddd == undefined) {
                 return;
-            };
+            }
+            ;
             $.ajax({
-                url:'{{ url_for('getyongli') }}',
-                type:'POST',
-                data:pddd,
+                url: '{{ url_for('getyongli') }}',
+                type: 'POST',
+                data: pddd,
                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(testyong){
-                    if(testyong['code']==200){
-                        xuanze=testyong['data'];
-                        var xuanz=$('#jiekou');
+                processData: false,
+                success: function (testyong) {
+                    if (testyong['code'] == 200) {
+                        xuanze = testyong['data'];
+                        var xuanz = $('#jiekou');
                         xuanz.empty();
                         xuanz.append("<option id='ceshiurls' > 请选择依赖接口</option>")
-                        for (var i=0;i<xuanze.length;i++){
-                            var url=xuanze[i];
-                            xuanz.append("<option id='ceshiurls'>  " + url+"</option>");
+                        for (var i = 0; i < xuanze.length; i++) {
+                            var url = xuanze[i];
+                            xuanz.append("<option id='ceshiurls'>  " + url + "</option>");
                         }
-                    }else {
+                    } else {
                         alert(testyong['msg'])
                     }
                 }
             })
         }
+
         function qidong() {
-            var d=document.getElementById('database');
-            var database=document.getElementById('shujuku');
-            if (d.checked==true){
-                database.style.display='';
-            }else {
-                database.style.display='none';
+            var d = document.getElementById('database');
+            var database = document.getElementById('shujuku');
+            if (d.checked == true) {
+                database.style.display = '';
+            } else {
+                database.style.display = 'none';
             }
         }
     </script>
