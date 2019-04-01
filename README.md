@@ -7,7 +7,6 @@
 # 敬告各位：本处代码开源后，版权归属本人所有，禁止利用本项目作为出去面试，后果自负。
 ----------------
 
-# 体验服地址：http://47.104.199.225 ,各位体验服数据请勿完全删除，暂时停服。
 
 ### flask +gevent+nginx+Gunicorn+supervisor部署flask应用请用flaskapi_su.conf，用gunicorn部署应用，因为在使用uwsgi部署会影响定时任务的执行
 ### supervisor配置可见super.conf文件。
