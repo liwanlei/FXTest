@@ -155,6 +155,7 @@ class InterfaceTest(db.Model):#测试用例表
     databaseziduan=db.Column(db.String(252),nullable=True)
     testcaseresult = db.relationship('TestcaseResult',
                                      backref='interfacetests', lazy='dynamic')
+    is_ci=db.Column(db.Boolean(),default=False)
     status = db.Column(db.Boolean(), default=False)
     def __repr__(self):
         return  self.Interface_name
