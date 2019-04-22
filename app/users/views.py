@@ -15,8 +15,7 @@ from config import OneAdminCount
 from error_message import *
 
 class SetadView(View):  # 设置管理员
-    methods = ['GET', 'POST']
-
+    methods = ['GET']
     @login_required
     def dispatch_request(self):
         if chckuserpermisson() == False:
@@ -58,7 +57,7 @@ class SetadView(View):  # 设置管理员
 
 
 class DeladView(View):  # 取消管理员
-    methods = ['GET', 'POST']
+    methods = ['GET']
 
     @login_required
     def dispatch_request(self, id):
@@ -76,7 +75,7 @@ class DeladView(View):  # 取消管理员
 
 
 class FreadView(View):  # 冻结
-    methods = ['GET', 'POST']
+    methods = ['GET']
 
     @login_required
     def dispatch_request(self, id):

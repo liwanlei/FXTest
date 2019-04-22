@@ -15,6 +15,7 @@
             <div class="left" style="text-align: center">
                 <h1>注册</h1>
             </div>
+           <div style="text-align: center;color: red">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <ul class=flashes>
@@ -24,6 +25,7 @@
                     </ul>
                 {% endif %}
             {% endwith %}
+           </div>
             {% block body %}{% endblock %}
             <form class="form-auth-small" action="{{ url_for('reg') }}" method="POST" style="width: 40%;
     margin-left: 30%;">
@@ -64,12 +66,22 @@
                     {% endif %}
                     {{ form.email(class='form-control') }}
                 </div>
+            <div class="form-group">
+                    {% if form.jobnum.errors %}
+                        {% for e in form.jobnum.errors %}
+                            <p class="help-block">{{ e }}</p>
+                        {% endfor %}
+                    {% endif %}
+                    {{ form.jobnum.label }}
+                    {{ form.jobnum(class='form-control') }}
+                </div>
 
                 <button type="submit" class="btn btn-primary btn-lg btn-block">注册</button>
-
+ <a href="{{ url_for('home.login') }}">去登录</a>
             </form>
 
         </div>
+
     </div>
 
     <div class="clearfix"></div>

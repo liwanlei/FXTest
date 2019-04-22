@@ -1,0 +1,124 @@
+{% extends "back.html" %}
+{% block hello %}
+    {% import "fenye.html" as macros %}
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 通用配置中心
+                </div>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color: red">{{ message }}</li>
+                            </ul>
+                        {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div style="margin-top: 10px">
+                <a href="#">
+                    <input type="button" name="" value="添加" class="am-btn am-btn-default am-btn-success">
+                </a>
+            </div>
+            <table class="am-table am-table-hover table-main" style="width:100%">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>类型</th>
+                    <th>值</th>
+                    <th>token参数</th>
+                    <th>token地址</th>
+                    <th>token请求方式</th>
+                    <th>sqlurl</th>
+                    <th>http请求地址</th>
+                    <th>http请求方式</th>
+                    <th>http请求参数</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for inter in inte %}
+                    <tr>
+                        <td>{{ inter.name }}</td>
+                        {% if inter.style==0 %}
+                            <td>key-value</td>
+                        {% elif inter.style==1 %}
+                            <td>token</td>
+                        {% elif inter.style==2 %}
+                            <td>sql</td>
+                        {% elif inter.style==3 %}
+                            <th>http请求</th>
+                        {% endif %}
+                        <td>{{ inter.key }}</td>
+                        {% if  inter.token_parame == None %}
+                            <td></td>
+                        {% else %}
+                            <td style="width: 5px">{{ inter.token_parame }}</td>
+                        {% endif %}
+                        {% if  inter.token_url == None %}
+                            <td></td>
+                        {% else %}
+                            <td>{{ inter.token_url }}</td>
+                        {% endif %}
+                        {% if  inter.token_method == None %}
+                            <td></td>
+                        {% else %}
+                            <td>{{ inter.token_method }}</td>
+                        {% endif %}
+
+                        {% if  inter.sqlurl == None %}
+                            <td></td>
+                        {% else %}
+                            <td>{{ inter.sqlurl }}</td>
+                        {% endif %}
+                        {% if  inter.request_url == None %}
+                            <td></td>
+                        {% else %}
+                            <td>{{ inter.request_url }}</td>
+                        {% endif %}
+                        {% if  inter.request_parame == None %}
+                            <td></td>
+                        {% else %}
+                            <td>{{ inter.request_parame }}</td>
+                        {% endif %}
+                        {% if  inter.request_method == None %}
+                            <td></td>
+                        {% else %}
+                            <td>{{ inter.request_method }}</td>
+                        {% endif %}
+                        <td>
+                            <a href="">
+                                <input type="button" value="编辑" class="btn btn-primary">
+                            </a>
+                            <a href="{{ url_for('home.deletegenconfig',id=inter.id) }}">
+                                <input type="button" value="删除" class="btn btn-danger">
+                            </a>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div style="text-align: center;">
+                <ul class="pagination">
+                    <li>
+                        <a href="{{ url_for('home.genconfig') }}">首页</a>
+                    </li>
+                    {% for page in pages %}
+                        <li>
+                            <a id='{{ page }}'
+                               onclick="h=window.location.href.split('/'),m=document.getElementById({{ page }}),m.setAttribute('href','/'+h[3]+'/'+{{ page }})">{{ page }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -8,10 +8,12 @@ from  flask import  request,render_template,\
     make_response,send_from_directory,jsonify,flash,redirect,url_for
 from  app.models import *
 import os
+from  flask_mail import Mail,Message
 from flask.views import MethodView
 from error_message import *
 from app.form import  RegFrom
 from flask_login import login_required,current_user
+from  config import email_type
 def get_pro_mo():
     projects=Project.query.filter_by(status=False).all()
     model=Model.query.filter_by(status=False).all()
@@ -101,6 +103,14 @@ def reg():
         pasword=request.form.get('password')
         setpasswod=request.form.get('se_password')
         email=request.form.get('email')
+        jobnum=request.form.get("jobnum")
+        if(str(email.split("@")[1])!=email_type):
+            flash(email_geshi_error)
+            return render_template('home/reg.html', form=form)
+        job_num=User.query.filter_by(jobnum=jobnum).first()
+        if job_num:
+            flash(jobnum_oblg_reg_one)
+            return render_template('home/reg.html', form=form)
         if pasword !=setpasswod:
             flash(password_not_same)
             return render_template('home/reg.html',form=form)
@@ -112,11 +122,21 @@ def reg():
         if emai:
             flash(email_exict)
             return render_template('home/reg.html', form=form)
-        new_user=User(username=usernmae,user_email=email)
+        new_user=User(username=usernmae,user_email=email,jobnum=job_num)
         new_user.set_password(pasword)
         db.session.add(new_user)
-        db.session.commit()
-        return  redirect(url_for('home.login'))
+        try:
+            db.session.commit()
+            #需要邮箱发送的方法
+            #msg = Message(u"你好", sender='username@163.com', recipients=email)
+            #msg.body = u"欢迎你注册, 你的用户名：%s，你的密码是：%s" % (usernmae, pasword)
+            #msg.html = '<a href="http://127.0.0.1:5000/login">去登录</a>'
+            #Mail.send(msg)
+            return redirect(url_for('home.login'))
+        except Exception as e:
+            db.session.rollback()
+            flash("注册失败")
+            return render_template('home/reg.html', form=form)
     return  render_template('home/reg.html',form=form)
 class GeneraConfig(MethodView):
     '''通用配置添加编辑'''

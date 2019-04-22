@@ -89,9 +89,9 @@ class LoginView(MethodView):
     def get(self):
         form = LoginFrom()
         return render_template('home/login.html', form=form)
-
     def post(self):
         data = request.get_json()
+        ip=request.remote_addr
         username = data['username']
         password = data['password']
         if username is None:
@@ -99,25 +99,61 @@ class LoginView(MethodView):
         if password is None:
             return jsonify({'msg': login_password_not_message, 'code': 34, 'data': ''})
         user = User.query.filter_by(username=username).first()
+        user_err_num=user.err_num
         if user:
             if user.status is True:
                 return jsonify({'msg': login_user_free_message, 'code': 35, 'data': ''})
             if user.check_password(password):
+                if(user.is_login is True):
+                    return  jsonify({"msg":login_user_is_login,"code":35,'data':""})
+                if(user.is_free==True and user.freetime!=None and user.err_num>6 and (datetime.datetime.now()-user.freetime).minute>10 ):
+                    return jsonify({'msg': login_user_fremm, 'code': 200, 'data': ''})
+                user.is_login=True
+                userlog=UserLoginlog(user=user.id,ip=ip,datatime=datetime.datetime.now())
+                db.session.add_all([user,userlog])
+                db.session.commit()
                 login_user(user)
                 session['username'] = username
                 return jsonify({'msg': login_user_sucess_message, 'code': 200, 'data': ''})
-            return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
+            else:
+                if(user.err_num>=5):
+                    if(user.freetime!='None'):
+                        if(datetime.datetime.now()-user.freetime).minute>10:
+                            user.err_num=user_err_num+1
+                            db.session.add(user)
+                            db.session.commit()
+                            return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
+                        else:
+                            user.err_num = 5
+                            user.freetime=datetime.datetime.now()
+                            user.is_free=True
+                            db.session.add(user)
+                            db.session.commit()
+                            return jsonify({'msg': login_user_fremm, 'code': 36, 'data': ''})
+                    else:
+                        user.err_num = user_err_num + 1
+                        db.session.add(user)
+                        db.session.commit()
+                        return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
+                else:
+                    user.err_num = user_err_num + 1
+                    db.session.add(user)
+                    db.session.commit()
+                    return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
         return jsonify({'msg': login_user_not_exict_message, 'code': 37, 'data': ''})
 
 
 class LogtView(MethodView):
     @login_required
     def get(self):
+        username=session.get("username")
         session.clear()
         logout_user()
+        user=User.query.filter_by(username=username).first()
+        user.is_login=False
+        db.session.add(user)
+        db.session.commit()
         return redirect(url_for('home.login'))
-
-
 class InterfaceView(MethodView):
     @login_required
     def get(self):
@@ -703,3 +739,29 @@ class DeleteJenkinstask(MethodView):
     @login_required
     def post(self, id):
         pass
+class GenconfigView(MethodView):
+    @login_required
+    def get(self, page=1):
+        genconfiglist=GeneralConfiguration.query.filter_by(status=False).order_by('-id').all()
+        projects_lsit = fenye_list(Ob_list=genconfiglist, split=PageShow)
+        pages = range(1, len(projects_lsit) + 1)
+        try:
+            pyth_post1 = projects_lsit[int(page) - 1]
+            return render_template('home/genconfig.html', inte=pyth_post1, pages=pages)
+        except:
+            return redirect(url_for('home.genconfig'))
+class DeleteGenconfi(MethodView):
+    @login_required
+    def get(self,id):
+        gencofigilist=GeneralConfiguration.query.filter_by(id=id,status=False).first()
+        if not gencofigilist:
+            flash("配置已经删除或者不存在")
+        gencofigilist.status=True
+        try:
+            db.session.commit()
+            flash('删除配置成功')
+            return redirect(url_for('home.genconfig'))
+        except Exception as e:
+            db.session.rollback()
+            flash('删除配置失败！原因：%s'%e)
+            return redirect(url_for('home.genconfig'))
