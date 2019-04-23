@@ -6,12 +6,15 @@
 """
 login_username_not_message=u"用户名没有输入"
 login_password_not_message=u'密码没有输入'
+login_user_inactivatesd=u'用户未激活,请联系管理员激活'
 login_user_free_message=u'用户冻结！'
 login_user_is_login=u'用户已经登录'
 login_user_sucess_message=u'登录成功！'
 login_user_fremm=u"密码错误超过5次，请十分钟后登录"
 login_password_error_message=u'密码错误'
 login_user_not_exict_message=u'用户不存在'
+activi_user_jobnum=u'用户工号唯一'
+activi_user_jobnum_is=u'用户工号已经激活'
 interface_add_success=u'添加成功'
 interface_add_erroe=u'添加接口失败,请从新添加'
 request_null_message=u'没有发送数据'
@@ -39,6 +42,7 @@ user_reset_error=u'重置密码失败'
 reset_success_message=u'已经重置！密码：111111'
 permiss_is_ness=u'权限不足'
 user_is_not_free=u'用户没有处于冻结状态'
+activ_is_int=u"工号为数字"
 user_is_un_free=u'解冻成功'
 ower_not_free_me=u'自己不能解冻自己'
 user_is_unfree_success=u'解冻失败'

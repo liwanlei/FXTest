@@ -81,7 +81,7 @@ class Getyongli(MethodView):#获取用例
         project=id.decode('utf-8')
         if not project:
             return jsonify({'msg':request_null_message,'code':8,'data':''})
-        peoject = Project.query.filter_by(project_name=project,status=False).first()
+        peoject = Project.query.filter_by(id=project,status=False).first()
         if not  peoject:
             return jsonify({'msg': project_not_exict, 'code': 9,'data':''})
         tesatcaelist=InterfaceTest.query.filter_by(projects_id=peoject.id,status=False).all()

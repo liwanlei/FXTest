@@ -168,6 +168,7 @@ class Action(db.Model):
     style=db.Column(db.Integer(),default=0)#动作的类型，0是睡眠，1是sql，2.执行测试用例。3执行请求
     sleepnum=db.Column(db.Integer())
     sql=db.Column(db.String(252))
+    sqlfiled=db.Column(db.String(252))
     testevent = db.Column(db.Integer(), db.ForeignKey("ceshihuanjing.id"),nullable=True)
     caseid=db.Column(db.Integer())
     requestsurl=db.Column(db.String(252))

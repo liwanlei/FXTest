@@ -29,10 +29,10 @@
                     <strong>项目:</strong>
                     {% for project in  projects %}
                         {% if project.project_name==edit.projects.project_name %}
-                            <input type='radio' value="{{ project.project_name }}" name="project" class="projects"
+                            <input type='radio' value="{{ project.id }}" name="project" class="projects"
                                    checked='checked'>{{ project.project_name }}
                         {% else %}
-                            <input type='radio' value="{{ project.project_name }}" name="project" class="projects">
+                            <input type='radio' value="{{ project.id }}" name="project" class="projects">
                             {{ project.project_name }}
                         {% endif %}
                     {% endfor %}
@@ -104,6 +104,11 @@
                 <div class="form-group">
                     <strong>是否保存测试结果:</strong>
                     <input type="checkbox" name="save" value="是">
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>是否ci:</strong>
+                    <input type="checkbox" name="ci" value="是">
                 </div>
                 <div class="form-group">
                     <p><strong>请选择依赖接口:</strong>

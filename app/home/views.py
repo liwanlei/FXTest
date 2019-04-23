@@ -101,6 +101,8 @@ class LoginView(MethodView):
             return jsonify({'msg': login_password_not_message, 'code': 34, 'data': ''})
         user = User.query.filter_by(username=username).first()
         user_err_num = user.err_num
+        if(user.jobnum=="None" or user.jobnum is None):
+            return jsonify({'msg': login_user_inactivatesd, 'code': 34, 'data': ''})
         if user:
             if user.status is True:
                 return jsonify({'msg': login_user_free_message, 'code': 35, 'data': ''})
@@ -146,7 +148,7 @@ class LoginView(MethodView):
 
 
 class LoginViewRedis(MethodView):
-    '''redis注册'''
+    '''redis'''
     def __init__(self):
         self.conris=ConRedisOper(redis_host,redis_port,3)
     def get(self):

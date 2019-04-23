@@ -15,7 +15,7 @@ from config import OneAdminCount
 from error_message import *
 
 class SetadView(View):  # 设置管理员
-    methods = ['GET']
+    methods = ['GET',"POST"]
     @login_required
     def dispatch_request(self):
         if chckuserpermisson() == False:
@@ -57,7 +57,7 @@ class SetadView(View):  # 设置管理员
 
 
 class DeladView(View):  # 取消管理员
-    methods = ['GET']
+    methods = ['GET',"POST"]
 
     @login_required
     def dispatch_request(self, id):
@@ -75,7 +75,7 @@ class DeladView(View):  # 取消管理员
 
 
 class FreadView(View):  # 冻结
-    methods = ['GET']
+    methods = ['GET',"POST"]
 
     @login_required
     def dispatch_request(self, id):
@@ -105,7 +105,7 @@ class FreadView(View):  # 冻结
 
 
 class FrereView(View):  # 解冻
-    methods = ['GET']
+    methods = ['GET',"POST"]
 
     @login_required
     def dispatch_request(self, id):
@@ -129,11 +129,36 @@ class FrereView(View):  # 解冻
                 return redirect(url_for('home.adminuser'))
         flash(ower_not_free_me)
         return redirect(url_for('home.adminuser'))
+class Acivauserview(View):
+    methods = ['GET', "POST"]
 
-
+    @login_required
+    def dispatch_request(self):
+        if chckuserpermisson() == False:
+            return jsonify({'code': 13, 'msg': permiss_is_ness, 'data': ''})
+        userjobnum = request.get_json()
+        try:
+            id=int(userjobnum['id'])
+            job_num=int(userjobnum['jobnum'])
+        except Exception as e:
+            return jsonify({'code': 13, 'msg':activ_is_int})
+        user=User.query.filter_by(id=id,status=False).first()
+        if not user:
+            return  jsonify({'code':13,'msg':login_user_not_exict_message})
+        try:
+            user_job=User.query.filter_by(jobnum=job_num).first()
+            if user_job:
+                return jsonify({'code':13,'msg':activi_user_jobnum})
+        except Exception as e:
+            pass
+        if (user.jobnum==None or  user.jobnum=="None"):
+            user.jobnum=job_num
+            db.session.add(user)
+            db.session.commit()
+            return jsonify({'code': 20, 'msg': '激活成功', 'data': ''})
+        return jsonify({'code': 13, 'msg': '激活失败', 'data': activi_user_jobnum_is})
 class RedpassView(View):  # 重置密码
-    methods = ['GET']
-
+    methods = ['GET',"POST"]
     @login_required
     def dispatch_request(self, id):
         if chckuserpermisson() is False:

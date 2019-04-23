@@ -87,6 +87,11 @@
                                 <input type="button" value="重置密码" class="btn btn-warning">
                             </a>
                         </span>
+                            <span>
+                           {% if user.jobnum=='None'  or user.jobnum== None %}
+                               <button class="btn btn-default" onclick="ativitauserbton(id=this.id)" id="{{ user.id }}">激活</button>
+                           {% endif %}
+                        </span>
                         </td>
                     </tr>
                 {% endfor %}
@@ -146,9 +151,18 @@
                 </select>
             </p>
         </div>
+    </div>
+    <div style="display:none;position:fixed;z-index: 210;width: 400px;top: 100px;left: 30%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+         id="activauser">
+        <div style="height: 5px;">激活用户</div>
+        <div style="background-color: whitesmoke;margin-top: 24px">
+            <p>
+                工号：<input type="text" id="jobnum" placeholder="请输入用户工号">
+            </p>
+        </div>
         <div style="margin-top: 5%;margin-bottom: auto">
-            <input value="添加" type="button" class="btn-default" onclick="add_user()">
-            <input value="取消" type="button" class=" btn-default" onclick="guanbiadd()">
+            <input value="激活" type="button" class="btn-default activituser" onclick="activity(id=this.id)">
+            <input value="取消" type="button" class=" btn-default" onclick="guanbid()">
         </div>
     </div>
 {% endblock %}
@@ -170,6 +184,45 @@
                     xuanz.append("<option >" + url.innerText + "</option>");
                 }
             }
+        }
+
+        function activity(id) {
+            var jonmub = document.getElementById("jobnum").value;
+            if (jonmub == '') {
+                alert('jobnum必须填写')
+            }
+            var data = {};
+            data['jobnum'] = jonmub;
+            data['id'] = id;
+            $.ajax({
+                url: '{{ url_for('user.activi') }}',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=UTF-8',
+                processData: false,
+                success: function (result) {
+                    if (result['code'] == 200) {
+                        window.location.reload();
+                        alert(result['msg'])
+                    }
+                    else {
+                         window.location.reload();
+                        alert(result['msg'])
+                    }
+                }
+            })
+        }
+
+        function ativitauserbton(id) {
+            m = document.getElementById('activauser');
+            m.style.display = ''
+            var divproject = document.getElementsByClassName("activituser");
+            divproject[0].setAttribute("id",id);
+        }
+
+        function guanbid() {
+            var divshow = document.getElementById('activauser');
+            divshow.style.display = 'none';
         }
 
         function shezhi(id) {
