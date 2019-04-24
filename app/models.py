@@ -356,3 +356,21 @@ class CaseAction(db.Model):
     filed = db.Column(db.String(252))
     def __repr__(self):
         return str(self.id)
+class Scenes(db.Model):
+    __tablename__ = 'sceness'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    name=db.Column(db.String(252),unique=True)
+    order=db.Column(db.Integer(),default=0)
+    parame=db.Column(db.String(252))
+    assertparame=db.Column(db.String(252))
+    center=db.Column(db.String(128))
+    createtime=db.Column(db.DateTime(),default=datetime.datetime.now())
+    desc=db.Column(db.String(128))
+    def __repr__(self):
+        return self.name
+class TestGroup(db.Model):
+    __tablename__ = 'testgroup'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    name = db.Column(db.String(252), unique=True)
+    def __repr__(self):
+        return self.name
