@@ -35,9 +35,10 @@
 #   flask部署相关文章：http://www.cnblogs.com/leiziv5/p/7137277.html
 #                     http://www.cnblogs.com/leiziv5/p/8807135.html
 # 友情推荐本人其他开源代码：
-#      1.python app自动化测试平台版本：https://github.com/liwanlei/UFATestPlan
-#      2.python+flask 做后台，实现微信小程序：https://github.com/liwanlei/webchat_app
-#      3.python接口测试非平台版本：https://github.com/liwanlei/FXTest
+##      1.python app自动化测试平台版本：https://github.com/liwanlei/UFATestPlan
+##      2.python+flask 做后台，实现微信小程序：https://github.com/liwanlei/webchat_app
+##      3.python接口测试非平台版本：https://github.com/liwanlei/FXTest
+##      4.java开发自动化测试平台：https://github.com/liwanlei/plan 
 # 微信打赏
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/weixin.png)
  ----------------
