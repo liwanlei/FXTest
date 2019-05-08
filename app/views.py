@@ -140,44 +140,47 @@ def reg():
     return  render_template('home/reg.html',form=form)
 class GeneraConfig(MethodView):
     '''通用配置添加编辑'''
-    @login_required
     def post(self):
-        data = request.get_json()
-        config=GeneralConfiguration.query.filter_by(name=data['name']).first()
-        if config:
-            return jsonify({'code': 11, 'msg':common_is_same, 'data': ''})
-        if data['type']=="key-value":
-            newconfig=GeneralConfiguration(user=current_user,style=0,
-                                           key=data["key"],name=data['name'])
-            db.session.add(newconfig)
-            db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success})
-        elif data['type']=='token':
-            newconfig=GeneralConfiguration(user=current_user,style=1,
-                                           name=data['name'],token_method=data['method'],
-                                           token_parame=data['parame'],token_url=data['url'])
-            db.session.add(newconfig)
-            db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success})
-        elif data['type']=='sql':
-            testevnet=Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
-            if not  testevnet:
-                return jsonify({'code': 11, 'msg': testeveirment_not_exict})
-            newconfig = GeneralConfiguration(user=current_user, style=1,
-                                             name=data['name'], testevent=testevnet,
-                                             sqlurl=data['sql'])
-            db.session.add(newconfig)
-            db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success})
-        elif data['type']=='http请求':
-            newconfig = GeneralConfiguration(user=current_user, style=1,
-                                             name=data['name'],request_method=data['method'],
-                                             request_parame=data['parame'],request_url=data['url'])
-            db.session.add(newconfig)
-            db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success})
-        else:
-            return jsonify({'code': 11, 'msg': common_gene_not_support, 'data': ''})
+        try:
+            data = request.get_json()
+            config=GeneralConfiguration.query.filter_by(name=data['name']).first()
+            if config:
+                return jsonify({'code': 11, 'msg':common_is_same, 'data': ''})
+            if data['type']=="key-value":
+                newconfig=GeneralConfiguration(user=current_user,style=0,
+                                               key=data["key"],name=data['name'])
+                db.session.add(newconfig)
+                db.session.commit()
+                return jsonify({'code': 200, 'msg': request_success})
+            elif data['type']=='token':
+                newconfig=GeneralConfiguration(user=current_user,style=1,
+                                               name=data['name'],token_method=data['method'],
+                                               token_parame=data['parame'],token_url=data['url'])
+                db.session.add(newconfig)
+                db.session.commit()
+                return jsonify({'code': 200, 'msg': request_success})
+            elif data['type']=='sql':
+                testevnet=Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
+                if not  testevnet:
+                    return jsonify({'code': 11, 'msg': testeveirment_not_exict})
+                newconfig = GeneralConfiguration(user=current_user, style=1,
+                                                 name=data['name'], testevent=testevnet,
+                                                 sqlurl=data['sql'])
+                db.session.add(newconfig)
+                db.session.commit()
+                return jsonify({'code': 200, 'msg': request_success})
+            elif data['type']=='http请求':
+                newconfig = GeneralConfiguration(user=current_user, style=1,
+                                                 name=data['name'],request_method=data['method'],
+                                                 request_parame=data['parame'],request_url=data['url'])
+                db.session.add(newconfig)
+                db.session.commit()
+                return jsonify({'code': 200, 'msg': request_success})
+            else:
+                return jsonify({'code': 11, 'msg': common_gene_not_support, 'data': ''})
+
+        except Exception as e:
+            return jsonify({'code': 12,  'data': "参数缺少"})
     @login_required
     def put(self):
         data = request.get_json()

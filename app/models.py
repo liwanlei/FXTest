@@ -269,7 +269,7 @@ class Interfacehuan(db.Model):#测试环境
     task = db.relationship('Task', backref='ceshihuanjing',
                            lazy='dynamic')
     def __repr__(self):
-        return self.url
+        return str(self.id)
 class Mockserver(db.Model):#mocksever
     __tablename__='mockserver'
     id = db.Column(db.Integer, primary_key=True)

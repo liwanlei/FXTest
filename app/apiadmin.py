@@ -20,7 +20,7 @@ class Useradmin(ModelView):
     )
 
 
-# admin.add_view(Useradmin(User, db.session, name=u'用户',endpoint='adminuser'))
+admin.add_view(Useradmin(User, db.session, name=u'用户',endpoint='adminuser'))
 admin.add_view(ModelView(Task, db.session, name='定时任务', endpoint='tingtask'))
 admin.add_view(ModelView(InterfaceTest, db.session, name='测试用例', endpoint='testcase'))
 admin.add_view(ModelView(Interface, db.session, name='接口', endpoint='jiekou'))
