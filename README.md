@@ -31,7 +31,7 @@
 ###  12.考虑增加版本区分，后续对覆盖率统计增量代码(设计)。
 ###  13. 基于jenkins运行定时任务，尝试获取jenkins的任务进度条展示（设计）
 ## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md)
-# 有问题可以联系我，可增加定制开发：QQ或者微信:952943386 java版本基于springboot开发，和基于微服务开发已经完毕，需要私聊
+# 有问题可以联系我，可增加定制开发：QQ或者微信:952943386 [java版本基于springboot开发](https://github.com/liwanlei/plan)，和基于微服务开发已经完毕，需要源码私聊
 # Email:leileili126@163.com  qq群：194704520  python测试开发群：683894834
 #   flask部署相关文章：http://www.cnblogs.com/leiziv5/p/7137277.html
 #                     http://www.cnblogs.com/leiziv5/p/8807135.html
