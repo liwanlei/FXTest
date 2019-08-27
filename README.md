@@ -1,11 +1,11 @@
 # FXTest测试平台
-### flask + Python3  实现的API自动化测试平台。
+### flask + Python3.6  实现的API自动化测试平台。
 ###  下面有介绍python flask部署相关的文章链接。为自己部署的记录文章
 ### 前后端开始进行分离，通过接口进行交互
 
 ----------------
 # 敬告各位：本处代码开源后，版权归属本人所有，禁止利用本项目作为出去面试，后果自负。
-
+## 后续会基于python3.6+版本去维护平台。
 ----------------
 
 
@@ -30,6 +30,7 @@
 ###  11.记录用户登录信息（ip+登录时间）,密码输入5次锁定10分钟 (redis存储)
 ###  12.考虑增加版本区分，后续对覆盖率统计增量代码(设计)。
 ###  13. 基于jenkins运行定时任务，尝试获取jenkins的任务进度条展示（设计）
+###  14.使用mitmpoxy一键录制测试case
 ## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md)
 # 有问题可以联系我，可增加定制开发：QQ或者微信:952943386 [java版本基于springboot开发](https://github.com/liwanlei/plan)，和基于微服务开发已经完毕，需要源码私聊
 # Email:leileili126@163.com  qq群：194704520  python测试开发群：683894834
