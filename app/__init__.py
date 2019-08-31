@@ -2,8 +2,7 @@
 """
 @author: lileilei
 @site: 
-@software: PyCharm
-@file: __init__.py.py
+@file: __init__.py
 @time: 2017/7/13 16:38
 """
 from flask import Flask

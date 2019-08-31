@@ -107,8 +107,6 @@ class LoginView(MethodView):
             if user.status is True:
                 return jsonify({'msg': login_user_free_message, 'code': 35, 'data': ''})
             if user.check_password(password):
-                if (user.is_login is True):
-                    return jsonify({"msg": login_user_is_login, "code": 35, 'data': ""})
                 if (user.is_free == True and user.freetime != None and user.err_num > 6 and (
                         datetime.datetime.now() - user.freetime).minute > 10):
                     return jsonify({'msg': login_user_fremm, 'code': 200, 'data': ''})
@@ -168,8 +166,6 @@ class LoginViewRedis(MethodView):
             if user.status is True:
                 return jsonify({'msg': login_user_free_message, 'code': 35, 'data': ''})
             if user.check_password(password):
-                if (user.is_login is True):
-                    return jsonify({"msg": login_user_is_login, "code": 35, 'data': ""})
                 user.is_login = True
                 userlog = UserLoginlog(user=user.id, ip=ip, datatime=datetime.datetime.now())
                 db.session.add_all([user, userlog])

@@ -104,8 +104,15 @@ def reg():
         setpasswod=request.form.get('se_password')
         email=request.form.get('email')
         jobnum=request.form.get("jobnum")
-        if(str(email.split("@")[1])!=email_type):
-            flash(email_geshi_error)
+        if email=="" or email is None:
+            flash('邮箱不能为空')   
+            return render_template('home/reg.html', form=form) 
+        try:
+            if(str(email.split("@")[1])!=email_type):
+                flash(email_geshi_error)
+                return render_template('home/reg.html', form=form)
+        except Exception as e:
+            flash("邮箱格式错误")
             return render_template('home/reg.html', form=form)
         job_num=User.query.filter_by(jobnum=jobnum).first()
         if job_num:
@@ -128,7 +135,7 @@ def reg():
         try:
             db.session.commit()
             #需要邮箱发送的方法
-            #msg = Message(u"你好", sender='username@163.com', recipients=email)
+            #msg = Message(u"你好", sender=email, recipients=email)
             #msg.body = u"欢迎你注册, 你的用户名：%s，你的密码是：%s" % (usernmae, pasword)
             #msg.html = '<a href="http://127.0.0.1:5000/login">去登录</a>'
             #Mail.send(msg)
