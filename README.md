@@ -29,7 +29,7 @@
 ###  10.注册后邮件通知注册成功，将密码等附上(可不选择，将代码注释掉,开发完毕)
 ###  11.记录用户登录信息（ip+登录时间）,密码输入5次锁定10分钟 (redis存储，开发完毕)
 ###  12. 基于jenkins运行定时任务，尝试获取jenkins的任务进度条展示（设计）
-###  13.使用mitmpoxy一键录制测试case
+###  13.使用mitmpoxy一键录制测试case(需要开启 mitmpoxy进行录制。对mitmpoxy进行部分的二开)
 ## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md)
 # 有问题可以联系我，可增加定制开发：QQ或者微信:952943386 [java版本基于springboot开发](https://github.com/liwanlei/plan)，和基于微服务开发已经完毕，需要源码私聊
 # Email:leileili126@163.com  qq群：194704520  python测试开发群：683894834

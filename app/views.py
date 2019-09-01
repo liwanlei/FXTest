@@ -95,6 +95,61 @@ def page_not_found(e):
 @app.errorhandler(500)
 def page_not_found(e):
     return render_template('500.html')
+
+class IndexFirstview(MethodView):
+    @login_required
+    def get(self):
+        interface_cont = Interface.query.filter_by(status=False).all()
+        interface_result = TestcaseResult.query.all()
+        result_list_case = []
+        for result in interface_result:
+            result_list_case.append(result.case_id)
+        all_run_case_count = len(set(result_list_case))
+        interface_list = []
+        for interface in range(len(interface_cont) + 1):
+            try:
+                if interface_cont[interface].projects.status == False:
+                    interface_list.append(interface_cont[interface])
+                else:
+                    interface += 1
+            except:
+                interface += 1
+        interfaceTest_cunt = InterfaceTest.query.filter_by(status=False).all()
+        case_list = []
+        for case in range(len(interfaceTest_cunt)):
+            try:
+                if interfaceTest_cunt[case].projects.status == False:
+                    case_list.append(interfaceTest_cunt[case])
+                else:
+                    case += 1
+            except:
+                case += 1
+        resu_cout = TestResult.query.filter_by(status=False).all()
+        reslut_list = []
+        for result in range(len(resu_cout)):
+            try:
+                if resu_cout[result].projects.status == False:
+                    reslut_list.append(resu_cout[result])
+                else:
+                    result += 1
+            except:
+                result += 1
+        My_task = []
+        for job in sched.get_jobs():
+            job_task = Task.query.filter_by(id=job.id, status=False).first()
+            if job_task.makeuser == current_user.id:
+                My_task.append({'taskname': job_task.taskname,
+                                'next_run': job.next_run_time.strftime('%Y-%m-%d %H:%M:%S '),
+                                'run_status': job_task.yunxing_status, 'id': job_task.id
+                                })
+        project_cout = Project.query.filter_by(status=False).count()
+        model_cout = Model.query.filter_by(status=False).count()
+        return render_template('home/index.html', yongli=len(case_list),
+                               jiekou=len(interface_list),
+                               report=len(reslut_list), project_cout=project_cout,
+                               model_cout=model_cout, my_tasl=My_task, all_run_case_count=all_run_case_count)
+
+
 @app.route('/reg',methods=['GET','POST'])
 def reg():
     form=RegFrom()

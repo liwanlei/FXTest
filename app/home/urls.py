@@ -4,7 +4,7 @@
 # @Time    : 2017/12/7 9:27
 from .views import *
 from .views import home
-home.add_url_rule('/',view_func=Indexview.as_view('indexs'))
+
 home.add_url_rule('/index',view_func=Indexview.as_view('index'))
 home.add_url_rule('/login',view_func=LoginView.as_view('login'))
 home.add_url_rule('/logt',view_func=LogtView.as_view('logt'))
