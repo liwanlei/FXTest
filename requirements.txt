@@ -21,7 +21,6 @@ Flask-WTF==0.14.2
 gevent==1.4.0
 Jinja2==2.9.6
 Logbook==1.1.0
-lxml==3.7.3
 mitmproxy==4.0.4
 PyMySQL==0.9.3
 pyOpenSSL==18.0.0
@@ -39,4 +38,3 @@ xlrd==1.0.0
 XlsxWriter==0.9.6
 xlutils==2.0.0
 xlwt==1.2.0
-xmltodict==0.11.0

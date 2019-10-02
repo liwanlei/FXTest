@@ -201,6 +201,8 @@ def reg():
             return render_template('home/reg.html', form=form)
     return  render_template('home/reg.html',form=form)
 class GeneraConfig(MethodView):
+    def get(self):
+        return render_template("add/addconfg.html")
     '''通用配置添加编辑'''
     def post(self):
         try:
