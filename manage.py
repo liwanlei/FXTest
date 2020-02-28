@@ -19,7 +19,7 @@ from app.Interface import interfac
 from gevent.pywsgi import WSGIServer
 from gevent import  monkey
 monkey.patch_all()
-app.register_blueprint(home)
+app.register_blueprint(home,url_prefix='/home')
 app.register_blueprint(mock)
 app.register_blueprint(task)
 app.register_blueprint(user)

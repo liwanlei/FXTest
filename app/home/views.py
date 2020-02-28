@@ -31,7 +31,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class Indexview(MethodView):
+class index(MethodView):
     @login_required
     def get(self):
         interface_cont = Interface.query.filter_by(status=False).all()
@@ -185,7 +185,7 @@ class LoginViewRedis(MethodView):
                     self.conris.sethase(username, 1, 1000 * 60 * 10)
                     return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
         return jsonify({'msg': login_user_not_exict_message, 'code': 37, 'data': ''})
-class LogtView(MethodView):
+class logt(MethodView):
     @login_required
     def get(self):
         username = session.get("username")
@@ -195,7 +195,7 @@ class LogtView(MethodView):
         user.is_login = False
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('home.login'))
+        return redirect(url_for('home.login',next=request.url))
 
 
 class InterfaceView(MethodView):

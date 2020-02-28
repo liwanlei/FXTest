@@ -702,55 +702,55 @@ class MakeonlyoneCase(MethodView):
                     case.Interface_tiaoshi_shifou = True
                     save_reslut(key=case.id + "&" + url, value=str(result))
                     return jsonify({'code': 60, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(e)})
-            elif case.interface_type == 'dubbo':
-                try:
-                    data = eval(case.Interface_pase)
-                except Exception as e:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    new_testre = TestcaseResult(case_id=case)
-                    new_testre.result = str("转换参数失败")
-                    new_testre.testevir = url
-                    new_testre.by = False
-                    db.session.commit()
-                    return jsonify({'code': 61, 'msg': '转化请求参数失败，原因：%s' % e})
-                dubboapi = DubboInterface(url=case.Interface_url, interface=case.Interface_pase,
-                                          method=case.Interface_meth,
-                                          param=case.Interface_headers, **(data))
-                dubboapireslu = dubboapi.getresult()
-                if case.saveresult is True:
-                    new_testre = TestcaseResult(case_id=case.id)
-                    new_testre.result = str(dubboapireslu)
-                    db.session.add(new_testre)
-                    db.session.commit()
-                if dubboapireslu['code'] == 0:
-                    assert_re = assert_in(asserqiwang=case.Interface_assert,
-                                          fanhuijson=json.loads(dubboapireslu))
-                    if assert_re == 'pass':
-                        case.Interface_is_tiaoshi = True
-                        case.Interface_tiaoshi_shifou = False
-                        db.session.commit()
-                        return jsonify({'code': 200, 'msg': '测试用例调试通过！'})
-                    elif assert_re == 'fail':
-                        case.Interface_is_tiaoshi = True
-                        case.Interface_tiaoshi_shifou = True
-                        db.session.commit()
-                        return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
-                    else:
-                        case.Interface_is_tiaoshi = True
-                        case.Interface_tiaoshi_shifou = True
-                        db.session.commit()
-                        return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
-                elif dubboapireslu['code'] == 1:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 63, 'msg': '接口测试出错了！原因:%s' % dubboapireslu['result']})
-                else:
-                    case.Interface_is_tiaoshi = True
-                    case.Interface_tiaoshi_shifou = True
-                    db.session.commit()
-                    return jsonify({'code': 630, 'msg': 'dubbo接口测试返回异常，请检查dubbo测试接口'})
+            # elif case.interface_type == 'dubbo':
+            #     try:
+            #         data = eval(case.Interface_pase)
+            #     except Exception as e:
+            #         case.Interface_is_tiaoshi = True
+            #         case.Interface_tiaoshi_shifou = True
+            #         new_testre = TestcaseResult(case_id=case)
+            #         new_testre.result = str("转换参数失败")
+            #         new_testre.testevir = url
+            #         new_testre.by = False
+            #         db.session.commit()
+            #         return jsonify({'code': 61, 'msg': '转化请求参数失败，原因：%s' % e})
+            #     dubboapi = DubboInterface(url=case.Interface_url, interface=case.Interface_pase,
+            #                               method=case.Interface_meth,
+            #                               param=case.Interface_headers, **(data))
+            #     dubboapireslu = dubboapi.getresult()
+            #     if case.saveresult is True:
+            #         new_testre = TestcaseResult(case_id=case.id)
+            #         new_testre.result = str(dubboapireslu)
+            #         db.session.add(new_testre)
+            #         db.session.commit()
+            #     if dubboapireslu['code'] == 0:
+            #         assert_re = assert_in(asserqiwang=case.Interface_assert,
+            #                               fanhuijson=json.loads(dubboapireslu))
+            #         if assert_re == 'pass':
+            #             case.Interface_is_tiaoshi = True
+            #             case.Interface_tiaoshi_shifou = False
+            #             db.session.commit()
+            #             return jsonify({'code': 200, 'msg': '测试用例调试通过！'})
+            #         elif assert_re == 'fail':
+            #             case.Interface_is_tiaoshi = True
+            #             case.Interface_tiaoshi_shifou = True
+            #             db.session.commit()
+            #             return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
+            #         else:
+            #             case.Interface_is_tiaoshi = True
+            #             case.Interface_tiaoshi_shifou = True
+            #             db.session.commit()
+            #             return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
+            #     elif dubboapireslu['code'] == 1:
+            #         case.Interface_is_tiaoshi = True
+            #         case.Interface_tiaoshi_shifou = True
+            #         db.session.commit()
+            #         return jsonify({'code': 63, 'msg': '接口测试出错了！原因:%s' % dubboapireslu['result']})
+            #     else:
+            #         case.Interface_is_tiaoshi = True
+            #         case.Interface_tiaoshi_shifou = True
+            #         db.session.commit()
+            #         return jsonify({'code': 630, 'msg': 'dubbo接口测试返回异常，请检查dubbo测试接口'})
             else:
                 return jsonify({'code': 62, 'msg': '目前还不支持你所选择的类型的协议！'})
         except Exception as e:

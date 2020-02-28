@@ -1,12 +1,13 @@
 # FXTest测试平台
-### flask + Python3.6  实现的API自动化测试平台。
+### flask + Python3.6 +bootstarp+apscheduler+sqlite+redis 实现的API自动化测试平台。
 ###  下面有介绍python flask部署相关的文章链接。为自己部署的记录文章
-### 前后端开始进行分离，通过接口进行交互
+### 前后端部分页面开始进行分离，通过接口进行交互
 
 ----------------
 # 敬告各位：本处代码开源后，版权归属本人所有，禁止利用本项目作为出去面试，后果自负。
 ## 后续会基于python3.6+版本去维护平台。
 ----------------
+##  本地调试 安装依赖包后， python manage.py run即可
 
 
 ### flask +gevent+nginx+Gunicorn+supervisor部署flask应用请用flaskapi_su.conf，用gunicorn部署应用，因为在使用uwsgi部署会影响定时任务的执行
@@ -20,8 +21,10 @@
 ###  1.开发注册入口(config可配置检验邮箱的格式后缀，对工号进行校验，一个工号只能注册一次,旧用户管理员管理用户处激活，开发完毕)
 ###  2.注册后邮件通知注册成功，将密码等附上(可不选择，将代码注释掉,开发完毕)
 ###  3.记录用户登录信息（ip+登录时间）,密码输入5次锁定10分钟 (redis存储，开发完毕)
+###  4.修复已知bug
+###  5.修复定时任务重复执行的bug
 ## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md)
-# 有问题可以联系我，可增加定制开发：QQ或者微信:952943386 [java版本基于springboot开发](https://github.com/liwanlei/)，和基于微服务开发已经完毕，无开源计划。
+# 有问题可以联系我，可增加定制开发：微信:952943386 [java版本基于springboot开发](https://github.com/liwanlei/)，和基于微服务开发已经完毕，无开源计划。
 # Email:leileili126@163.com  qq群：194704520  python测试开发群：683894834
 
 # 个人公众号

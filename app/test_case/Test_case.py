@@ -9,7 +9,9 @@ from common.log import log_t
 from common.mysqldatabasecur import *
 from config import  redis_host,redis_port,redis_save_result_db,save_duration,xitong_request_toke
 from app import db
+from  app.models import *
 from common.pyredis import ConRedisOper
+
 def save_reslut(key,value):
     m = ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
     m.sethase(key,value,save_duration)
@@ -174,7 +176,7 @@ class ApiTestCase():
             else:
                 try:
                     if testcase.rely_mock == True:
-                        m_case = mockforcase.query.filter_by(case=testcase.id).first()
+                        m_case = Mockserver.query.filter_by(case=testcase.id).first()
                         if not m_case:
                             testcase.Interface_is_tiaoshi = True
                             testcase.Interface_tiaoshi_shifou = True

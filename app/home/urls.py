@@ -5,9 +5,9 @@
 from .views import *
 from .views import home
 
-home.add_url_rule('/index',view_func=Indexview.as_view('index'))
+home.add_url_rule('/index',view_func=index.as_view('index'))
 home.add_url_rule('/login',view_func=LoginView.as_view('login'))
-home.add_url_rule('/logt',view_func=LogtView.as_view('logt'))
+home.add_url_rule('/logt',view_func=logt.as_view('logt'))
 home.add_url_rule('/interface',view_func=InterfaceView.as_view('interface'))
 home.add_url_rule('/interface/<int:page>',view_func=InterfaceView.as_view('interfaspa'))
 home.add_url_rule('/yongli',view_func=YongliView.as_view('yongli'))

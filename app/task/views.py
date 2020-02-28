@@ -13,85 +13,96 @@ from common.py_html import createHtml
 from app.test_case.Test_case import ApiTestCase
 from  common.hebinglist import listmax
 from common.Dingtalk import send_ding
-from config import Dingtalk_access_token
+from config import Dingtalk_access_token,task_redis_db,redis_host,redis_port
+from  common.pyredis import ConRedisOper
 task = Blueprint('task', __name__)
 def addtask(id):#定时任务执行的时候所用的函数
     in_id=int(id)
-    task=Task.query.filter_by(id=in_id,status=False).first()
-    starttime = datetime.datetime.now()
-    star = time.time()
-    day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
-    pad = os.getcwd()
-    file_dir = pad + '/app/upload'
-    file = os.path.join(file_dir, (day + '.log'))
-    if os.path.exists(file) is False:
-        os.system('touch %s' % file)
-    filepath = os.path.join(file_dir, (day + '.html'))
-    if os.path.exists(filepath) is False:
-        os.system(r'touch %s' % filepath)
-    projecct_list = []
-    model_list = []
-    Interface_name_list = []
-    Interface_url_list = []
-    Interface_meth_list = []
-    Interface_pase_list = []
-    Interface_assert_list = []
-    Interface_headers_list = []
-    Interface_pid_list = []
-    Interface_yilai_list = []
-    Interface_save_list = []
-    Interface_is_data_list = []
-    Interface_mysql_list = []
-    Interface_msyql_ziduan_list = []
-    id_list = []
-    for task_yongli in task.interface.all():
-        id_list.append(task_yongli.id)
-        projecct_list.append(task_yongli.projects)
-        model_list.append(task_yongli.models)
-        Interface_is_data_list.append(task_yongli.is_database)
-        Interface_mysql_list.append(task_yongli.chaxunshujuku)
-        Interface_msyql_ziduan_list.append(task_yongli.databaseziduan)
-        Interface_url_list.append(task_yongli.Interface_url)
-        Interface_name_list.append(task_yongli.Interface_name)
-        Interface_meth_list.append(task_yongli.Interface_meth)
-        Interface_pase_list.append(task_yongli.Interface_pase)
-        Interface_assert_list.append(task_yongli.Interface_assert)
-        Interface_headers_list.append(task_yongli.Interface_headers)
-        Interface_pid_list.append(task_yongli.pid)
-        Interface_yilai_list.append(task_yongli.getattr_p)
-        Interface_save_list.append(task_yongli.saveresult)
-    testevent=task.testevent
-    apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list,
-                          inteface_parm=Interface_pase_list,inteface_assert=Interface_assert_list,
-                          file=file, headers=Interface_headers_list,pid=Interface_pid_list,
-                          is_database=Interface_is_data_list,data_mysql=Interface_mysql_list,
-                          data_ziduan=Interface_msyql_ziduan_list,urltest=testevent,
-                          yilaidata=Interface_yilai_list, saveresult=Interface_save_list, id_list=id_list)
-    result_toal, result_pass, result_fail, relusts,bask_list, result_cashu, result_wei,result_except,spendlist = apitest.testapi()
-    large,small,pingjun=listmax(spendlist)
-    endtime = datetime.datetime.now()
-    end = time.time()
-    createHtml(titles=u'定时任务接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
-               passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
-               headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
-               meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
-               excepts=result_except, yuqis=result_cashu, weizhi=result_wei,maxs=large,mins=small,pingluns=pingjun)
-    hour = end - star
-    new_reust = TestResult(Test_user_id=1, test_num=result_toal, pass_num=result_pass,
-                           fail_num=result_fail, test_time=starttime, hour_time=hour,
-                           test_rep=(day + '.html'), test_log=(day + '.log'), Exception_num=result_except,
-                           can_num=result_cashu, wei_num=result_wei,projects_id=projecct_list[0].id)
-    db.session.add(new_reust)
-    db.session.commit()
-    try:
-        send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
-                             Dingtalk_access_token=Dingtalk_access_token)
-        if send is True:
-            flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
-            return redirect(url_for('home.yongli'))
-        flash(u'测试报告发送钉钉讨论群失败！请检查相关配置！')
-    except Exception as e:
-        flash('定时任务的钉钉消息发送失败！原因:%s'%e)
+    task = Task.query.filter_by(id=in_id, status=False).first()
+    key=str(Task.prject.id)+"_"+str(id)
+    connect=ConRedisOper(host=redis_host,port=redis_port,db=task_redis_db)
+    result=connect.getset(key)
+    if result is None:
+        connect.sethase(key,'1')
+    elif result.decode("utf-8")=='1':
+        pass
+    else:
+        connect.sethase(key, '1')
+        starttime = datetime.datetime.now()
+        star = time.time()
+        day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
+        pad = os.getcwd()
+        file_dir = pad + '/app/upload'
+        file = os.path.join(file_dir, (day + '.log'))
+        if os.path.exists(file) is False:
+            os.system('touch %s' % file)
+        filepath = os.path.join(file_dir, (day + '.html'))
+        if os.path.exists(filepath) is False:
+            os.system(r'touch %s' % filepath)
+        projecct_list = []
+        model_list = []
+        Interface_name_list = []
+        Interface_url_list = []
+        Interface_meth_list = []
+        Interface_pase_list = []
+        Interface_assert_list = []
+        Interface_headers_list = []
+        Interface_pid_list = []
+        Interface_yilai_list = []
+        Interface_save_list = []
+        Interface_is_data_list = []
+        Interface_mysql_list = []
+        Interface_msyql_ziduan_list = []
+        id_list = []
+        for task_yongli in task.interface.all():
+            id_list.append(task_yongli.id)
+            projecct_list.append(task_yongli.projects)
+            model_list.append(task_yongli.models)
+            Interface_is_data_list.append(task_yongli.is_database)
+            Interface_mysql_list.append(task_yongli.chaxunshujuku)
+            Interface_msyql_ziduan_list.append(task_yongli.databaseziduan)
+            Interface_url_list.append(task_yongli.Interface_url)
+            Interface_name_list.append(task_yongli.Interface_name)
+            Interface_meth_list.append(task_yongli.Interface_meth)
+            Interface_pase_list.append(task_yongli.Interface_pase)
+            Interface_assert_list.append(task_yongli.Interface_assert)
+            Interface_headers_list.append(task_yongli.Interface_headers)
+            Interface_pid_list.append(task_yongli.pid)
+            Interface_yilai_list.append(task_yongli.getattr_p)
+            Interface_save_list.append(task_yongli.saveresult)
+        testevent=task.testevent
+        apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list,
+                              inteface_parm=Interface_pase_list,inteface_assert=Interface_assert_list,
+                              file=file, headers=Interface_headers_list,pid=Interface_pid_list,
+                              is_database=Interface_is_data_list,data_mysql=Interface_mysql_list,
+                              data_ziduan=Interface_msyql_ziduan_list,urltest=testevent,
+                              yilaidata=Interface_yilai_list, saveresult=Interface_save_list, id_list=id_list)
+        result_toal, result_pass, result_fail, relusts,bask_list, result_cashu, result_wei,result_except,spendlist = apitest.testapi()
+        large,small,pingjun=listmax(spendlist)
+        endtime = datetime.datetime.now()
+        end = time.time()
+        createHtml(titles=u'定时任务接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
+                   passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
+                   headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
+                   meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
+                   excepts=result_except, yuqis=result_cashu, weizhi=result_wei,maxs=large,mins=small,pingluns=pingjun)
+        hour = end - star
+        new_reust = TestResult(Test_user_id=1, test_num=result_toal, pass_num=result_pass,
+                               fail_num=result_fail, test_time=starttime, hour_time=hour,
+                               test_rep=(day + '.html'), test_log=(day + '.log'), Exception_num=result_except,
+                               can_num=result_cashu, wei_num=result_wei,projects_id=projecct_list[0].id)
+        db.session.add(new_reust)
+        db.session.commit()
+        connect.sethase(key=key,value='0')
+        try:
+            send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
+                                 Dingtalk_access_token=Dingtalk_access_token)
+            if send is True:
+                flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
+                return redirect(url_for('home.yongli'))
+            flash(u'测试报告发送钉钉讨论群失败！请检查相关配置！')
+        except Exception as e:
+            flash('定时任务的钉钉消息发送失败！原因:%s'%e)
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

@@ -14,7 +14,7 @@ jenkins_password='123456'#jenkins的密码
 xitong_request_toke='Fetext_token_system'#系统内部依赖接口请求的时候需要加个token来区分
 Try_Num_Case=5#重试的次数
 Interface_Time_Out=5000#超时时间
-redis_password='123456'
+redis_password=''
 max_connec_redis=10
 test_fail_try_num=3
 jobstores = {
@@ -31,6 +31,7 @@ Config_daoru_xianzhi=50#配置可以导入限制
 save_duration=24*60*60#配置redis存储的时长
 redis_host='localhost'
 redis_port=6379
+task_redis_db=3
 redis_save_result_db=2
 email_type="online.com"
 class dev(object):#研发环境配置

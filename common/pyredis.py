@@ -6,7 +6,7 @@
 import redis
 from config import  redis_password,max_connec_redis
 class ConRedisOper(object):
-    def __init__(self,host,port,db):
+    def __init__(self,host:int,port:int,db:int):
         self.host=host
         self.port=port
         self.db=db
