@@ -120,7 +120,7 @@ class LoginView(MethodView):
                 session['username'] = username
                 return jsonify({'msg': login_user_sucess_message, 'code': 200, 'data': ''})
             else:
-                if (user.err_num >= 5):
+                if (user.err_num!= None and user.err_num >= 5  ):
                     if (user.freetime != 'None'):
                         if (datetime.datetime.now() - user.freetime).minute > 10:
                             user.err_num = user_err_num + 1
@@ -135,12 +135,17 @@ class LoginView(MethodView):
                             db.session.commit()
                             return jsonify({'msg': login_user_fremm, 'code': 36, 'data': ''})
                     else:
-                        user.err_num = user_err_num + 1
+                        if user.err_num==None:
+                            user.err_num=0
+                        else:user.err_num = user_err_num + 1
                         db.session.add(user)
                         db.session.commit()
                         return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
                 else:
-                    user.err_num = user_err_num + 1
+                    if user.err_num == None:
+                        user.err_num = 0
+                    else:
+                        user.err_num = user_err_num + 1
                     db.session.add(user)
                     db.session.commit()
                     return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
