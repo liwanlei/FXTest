@@ -9,21 +9,21 @@ from app.models import *
 from app.form import *
 from config import Dingtalk_access_token
 import os, time, datetime, json
-from common.pares_excel_inter import paser_interface_case
-from common.py_html import createHtml
+from common.parsingexcel import paser_interface_case
+from common.htmltestreport import createHtml
 from common.requ_case import Api
-from common.panduan import assert_in, pare_result_mysql
+from common.judgment import assert_in, pare_result_mysql
 from app.test_case.Test_case import ApiTestCase
 from common.send_email import send_emails
 from flask.views import View, MethodView
 from flask_login import current_user, login_required
 from common.Dingtalk import send_ding
-from common.mysqldatabasecur import *
+from common.oparmysqldatabase import *
 from config import Config_daoru_xianzhi, redis_host, \
     redis_port, redis_save_result_db, save_duration
-from common.excet_excel import create_interface_case
-from common.hebinglist import listmax
-from common.pyredis import ConRedisOper
+from common.opearexcel import create_interface_case
+from common.mergelist import listmax
+from common.packageredis import ConRedisOper
 
 case = Blueprint('case', __name__)
 
@@ -126,7 +126,7 @@ class AddtestcaseView(View):
                                         is_database=is_database, chaxunshujuku=databasesql,
                                         databaseziduan=databijiao,
                                         Interface_name=interface_name, Interface_url=interface_url,
-                                        interface_type=interface_type,is_ci=is_ci)
+                                        interface_type=interface_type, is_ci=is_ci)
                 db.session.add(newcase)
                 db.session.commit()
                 try:

@@ -4,7 +4,7 @@
 # @Time    : 2017/12/7 9:23
 from flask import Blueprint, jsonify, flash
 import json
-from common.hebinglist import hebinglist
+from common.mergelist import hebinglist
 from flask import redirect, request, render_template, url_for, session
 
 home = Blueprint('home', __name__)
@@ -14,12 +14,14 @@ from flask.views import MethodView
 from flask_login import login_required, login_user, logout_user, current_user
 from app import loginManager, sched
 from config import PageShow
-from common.pagin_fen import fenye_list
-from common.fenye import Pagination
+from common.Pagination import fenye_list
+from common.pageination import Pagination
 from error_message import *
 from common.CollectionJenkins import Conlenct_jenkins
-from common.pyredis import  ConRedisOper
+from common.packageredis import ConRedisOper
 from config import *
+
+
 def get_pro_mo():
     projects = Project.query.filter_by(status=False).all()
     model = Model.query.filter_by(status=False).all()
@@ -101,7 +103,7 @@ class LoginView(MethodView):
             return jsonify({'msg': login_password_not_message, 'code': 34, 'data': ''})
         user = User.query.filter_by(username=username).first()
         user_err_num = user.err_num
-        if(user.jobnum=="None" or user.jobnum is None):
+        if (user.jobnum == "None" or user.jobnum is None):
             return jsonify({'msg': login_user_inactivatesd, 'code': 34, 'data': ''})
         if user:
             if user.status is True:
@@ -147,11 +149,14 @@ class LoginView(MethodView):
 
 class LoginViewRedis(MethodView):
     '''redis'''
+
     def __init__(self):
-        self.conris=ConRedisOper(redis_host,redis_port,3)
+        self.conris = ConRedisOper(redis_host, redis_port, 3)
+
     def get(self):
         form = LoginFrom()
         return render_template('home/login.html', form=form)
+
     def post(self):
         data = request.get_json()
         ip = request.remote_addr
@@ -175,16 +180,18 @@ class LoginViewRedis(MethodView):
                 return jsonify({'msg': login_user_sucess_message, 'code': 200, 'data': ''})
             else:
                 try:
-                    num=int(self.conris.getset(user.username))
+                    num = int(self.conris.getset(user.username))
                     if (user.is_free == True and num > 5):
                         return jsonify({'msg': login_user_fremm, 'code': 200, 'data': ''})
                     else:
-                        self.conris.sethase(username,num+1,1000*60*10)
+                        self.conris.sethase(username, num + 1, 1000 * 60 * 10)
                         return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
                 except Exception as  e:
                     self.conris.sethase(username, 1, 1000 * 60 * 10)
                     return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
         return jsonify({'msg': login_user_not_exict_message, 'code': 37, 'data': ''})
+
+
 class logt(MethodView):
     @login_required
     def get(self):
@@ -195,7 +202,7 @@ class logt(MethodView):
         user.is_login = False
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('home.login',next=request.url))
+        return redirect(url_for('home.login', next=request.url))
 
 
 class InterfaceView(MethodView):

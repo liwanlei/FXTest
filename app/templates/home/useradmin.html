@@ -204,9 +204,8 @@
                     if (result['code'] == 200) {
                         window.location.reload();
                         alert(result['msg'])
-                    }
-                    else {
-                         window.location.reload();
+                    } else {
+                        window.location.reload();
                         alert(result['msg'])
                     }
                 }
@@ -217,7 +216,7 @@
             m = document.getElementById('activauser');
             m.style.display = ''
             var divproject = document.getElementsByClassName("activituser");
-            divproject[0].setAttribute("id",id);
+            divproject[0].setAttribute("id", id);
         }
 
         function guanbid() {
@@ -232,8 +231,7 @@
             var data = {};
             if (ur == undefined) {
                 ursl = '';
-            }
-            else {
+            } else {
                 ursl = ur.text;
             }
             data['username'] = id;
@@ -248,8 +246,7 @@
                     if (result['code'] == 200) {
                         window.location.reload();
                         alert(result['msg'])
-                    }
-                    else {
+                    } else {
                         window.location.reload();
                         alert(result['msg'])
                     }
@@ -307,8 +304,7 @@
                             if (result['code'] == 2) {
                                 alert(result['data']);
                                 location.reload()
-                            }
-                            else {
+                            } else {
                                 alert(result['data']);
                             }
                         }

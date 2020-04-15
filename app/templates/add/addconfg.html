@@ -76,14 +76,14 @@
             </form>
         </div>
     </div>
-<script type="text/javascript">
+    <script type="text/javascript">
         window.onload = cheangeevnt();
 
         function cheangeevnt() {
             var obj = document.getElementById('project');
             var index = obj.selectedIndex;
             var value = obj.options[index].value;
-           $.ajax({
+            $.ajax({
                 url: '{{ url_for('task.getpro') }}',
                 type: 'POST',
                 data: value,
@@ -97,14 +97,14 @@
                         for (var m = 0; m < data_result.length; m++) {
                             urlproject.append("<option>" + data_result[m].url + "</option>")
                         }
-                    }
-                    else {
+                    } else {
                         message.innerHTML = (result['msg']);
                     }
                 }
             })
         }
- function addtimingtasks() {
+
+        function addtimingtasks() {
             var message = document.getElementById('messgae');
             var taskname = document.getElementById('taskname');
             var to_email = document.getElementById('to_email');
@@ -130,8 +130,7 @@
             } else {
                 if (weihu.value.length < 1) {
                     message.innerHTML = '任务的维护人不能为空';
-                }
-                else {
+                } else {
 
                     if (projects.text.length < 1) {
                         message.innerHTML = '项目为必须选择';
@@ -146,7 +145,7 @@
                             data['weihu'] = weihu.value;
                             data['projects'] = projects.value;
                             data['testevent'] = proj_test.value;
-                           data['week'] = week_test.value;
+                            data['week'] = week_test.value;
                             data['hour'] = hours_test.value;
                             data['minx'] = minute_test.value;
                             $.ajax({
@@ -158,15 +157,14 @@
                                 success: function (result) {
                                     if (result['code'] == 200) {
                                         location.href = '{{ url_for('home.timingtask') }}';
-                                    }
-                                   else {#}
+                                    } else {#}
                                         message.innerHTML = (result['msg']);
-                                   }
+                                    }
                                 }
                             });
                         }
                     }
-    
-     
-   </script>
+
+
+    </script>
 {% endblock %}

@@ -4,7 +4,7 @@
 '''
 判断
 '''
-from  common.fengzhuang_dict import getdictvalue
+from  common.packeagedictry import getdictvalue
 def assert_in(asserqiwang,fanhuijson):
     if len(asserqiwang.split('=')) > 1:
         data = asserqiwang.split('&')

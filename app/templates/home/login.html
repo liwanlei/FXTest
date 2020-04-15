@@ -52,9 +52,9 @@
                 </form>
             </div>
             <h3 style="text-align: center;color: red">管理员：liwanlei 密码:liwanlei </h3>
-         <h3 style="text-align: center;color: red">版权归属雷子所有，如果您要进行定制开发 可以联系我：952943386 </h3>
+            <h3 style="text-align: center;color: red">版权归属雷子所有，如果您要进行定制开发 可以联系我：952943386 </h3>
             <h4 style="text-align: center;color: red ">
-                <strong><a href="{{url_for('reg')}}">注册</a></strong>
+                <strong><a href="{{ url_for('reg') }}">注册</a></strong>
             </h4>
         </div>
     </div>
@@ -82,8 +82,7 @@
                     success: function (result) {
                         if (result['code'] == 200) {
                             location.href = '{{ url_for('home.index') }}';
-                        }
-                        else {
+                        } else {
                             message.innerHTML = (result['msg']);
                         }
                     }

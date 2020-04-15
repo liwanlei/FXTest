@@ -103,8 +103,7 @@
                         for (var m = 0; m < data_result.length; m++) {
                             urlproject.append("<option>" + data_result[m].url + "</option>")
                         }
-                    }
-                    else {
+                    } else {
                         message.innerHTML = (result['msg']);
                     }
                 }
@@ -137,8 +136,7 @@
             } else {
                 if (weihu.value.length < 1) {
                     message.innerHTML = '任务的维护人不能为空';
-                }
-                else {
+                } else {
 
                     if (projects.text.length < 1) {
                         message.innerHTML = '项目为必须选择';
@@ -165,8 +163,7 @@
                                 success: function (result) {
                                     if (result['code'] == 200) {
                                         location.href = '{{ url_for('home.timingtask') }}';
-                                    }
-                                    else {
+                                    } else {
                                         message.innerHTML = (result['msg']);
                                     }
                                 }

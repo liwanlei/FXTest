@@ -6,7 +6,7 @@
 调用类，传入url，请求方法，参数，请求headers，就可以进行请求，
 目前只支持dict格式的参数，和请求headers。
 '''
-from common.test_feng import reques
+from common.PackageRequest import reques
 class Api():
 	def __init__(self,url,fangshi,params,headers):
 		self.url=url

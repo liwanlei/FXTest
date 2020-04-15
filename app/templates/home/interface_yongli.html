@@ -30,7 +30,7 @@
                 <option>http</option>
                 <option>dubbo</option>
             </select>
-            <button  class="btn-success">转换Charles用例</button>
+            <button class="btn-success">转换Charles用例</button>
             <form method="POST" action="{{ url_for('case.duoyongli') }}">
                 <div style="margin-top: 10px">
                     <a href="{{ url_for('case.addtestcase') }}">
@@ -150,8 +150,7 @@
                             var url = xuanze[i];
                             xuanz.append("<option id='ceshiurls'>  " + url + "</option>");
                         }
-                    }
-                    else {
+                    } else {
                         window.location.reload();
                         alert(testyong['msg'])
                     }
@@ -176,8 +175,7 @@
             var data = {};
             if (url == undefined) {
                 url = '';
-            }
-            else {
+            } else {
                 url = url.text;
             }
             data['caseid'] = case_id.name;
@@ -192,8 +190,7 @@
                     if (result['code'] == 200) {
                         window.location.reload();
                         alert('测试用例在环境' + url + '中测试通过！！！');
-                    }
-                    else {
+                    } else {
                         alert(result['msg'])
                         window.location.reload();
                     }
@@ -238,13 +235,10 @@
                         ;
                         if (mdata.length < 1) {
                             insertss.append("<tr><td><h5><strong style='color:red'>没有找到接口用例</strong></h5><td></tr>")
-                        }
-
-                        else for (var i = 0; i < mdata.length; i++) {
+                        } else for (var i = 0; i < mdata.length; i++) {
                             if (mdata[i].Interface_is_tiaoshi == 0) {
                                 insertss.append("<tr id='" + mdata[i].id + "'><td><input type='checkbox' name='yongli' value='" + mdata[i].id + "'></td><td>" + mdata[i].bianhao + "</td><td>" + mdata[i].project + "</td><td>" + mdata[i].model + "</td><td>" + mdata[i].interface + "</td><td >" + mdata[i].Interface_headers + "</td><td>" + mdata[i].Interface_meth + "</td><td>" + mdata[i].Interface_pase + "</td><td>" + mdata[i].Interface_assert + "</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/" + mdata[i].id + "'><input type='button' value='编辑' class='btn btn-primary'></a> <a onclick='deletcase(" + mdata[i].id + ")'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-default' id='" + mdata[i].id + "' onclick='testcase(this.id)'><input type='button' value='日志' class='btn btn-default' id='" + mdata[i].id + "' onclick='caseshowone(this.id)'></div></div></td></tr>")
-                            }
-                            else if (mdata[i].Interface_is_tiaoshi == 1 && mdata[i].Interface_tiaoshi_shifou == 1) {
+                            } else if (mdata[i].Interface_is_tiaoshi == 1 && mdata[i].Interface_tiaoshi_shifou == 1) {
                                 insertss.append("<tr  id='" + mdata[i].id + "'><td><input type='checkbox' name='yongli' value='" + mdata[i].id + "'></td><td>" + mdata[i].bianhao + "</td><td>" + mdata[i].project + "</td><td>" + mdata[i].model + "</td><td>" + mdata[i].interface + "</td><td >" + mdata[i].Interface_headers + "</td><td>" + mdata[i].Interface_meth + "</td><td>" + mdata[i].Interface_pase + "</td><td>" + mdata[i].Interface_assert + "</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/" + mdata[i].id + "'><input type='button' value='编辑' class='btn btn-primary'></a> <a onclick='deletcase(" + mdata[i].id + ")'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-danger' id='" + mdata[i].id + "' onclick='testcase(this.id)'><input type='button' value='日志' class='btn btn-default' id='" + mdata[i].id + "' onclick='caseshowone(this.id)'></div></div></td></tr>")
                             } else if (mdata[i].Interface_is_tiaoshi == 1 && mdata[i].Interface_tiaoshi_shifou == 0) {
                                 insertss.append("<tr  id='" + mdata[i].id + "'><td><input type='checkbox' name='yongli' value='" + mdata[i].id + "'></td><td>" + mdata[i].bianhao + "</td><td>" + mdata[i].project + "</td><td>" + mdata[i].model + "</td><td>" + mdata[i].interface + "</td><td >" + mdata[i].Interface_headers + "</td><td>" + mdata[i].Interface_meth + "</td><td>" + mdata[i].Interface_pase + "</td><td>" + mdata[i].Interface_assert + "</td><td><div class='am-btn-toolbar'><div class='am-btn-group am-btn-group-xs'><a href='/edit_case/" + mdata[i].id + "'><input type='button' value='编辑' class='btn btn-primary'></a> <a onclick='deletcase(" + mdata[i].id + ")'><input type='button' value='删除'class='btn btn-danger'></a><input type='button' value='调试' class='btn btn-success' id='" + mdata[i].id + "' onclick='testcase(this.id)'><input type='button' value='日志' class='btn btn-default' id='" + mdata[i].id + "' onclick='caseshowone(this.id)'></div></div></td></tr>")
@@ -292,8 +286,7 @@
                         for (var i = 0; i < data['data'].length; i++) {
                             inte.append("<tr><td>" + data['data'][i]['result'] + "</td><td>" + data['data'][i]['date'] + "</td><td>" + data['data'][i]['event'] + "</td><td>" + data['data'][i]['spend'] + "</td></tr>")
                         }
-                    }
-                    else {
+                    } else {
                         inte.empty();
                         inte.append("<h1>" + data['messgage'] + "</h1>")
                     }

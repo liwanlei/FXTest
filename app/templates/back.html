@@ -2,22 +2,22 @@
 <head>
     <meta charset="UTF-8">
     <title>API自动化平台</title>
-    <link href="{{url_for('static',filename='css/amazeui.min.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/admin.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/app.css')}}"  rel="stylesheet">
-    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}"  rel="stylesheet">
-    <link rel="icon" href="{{url_for('static',filename='img/logo.png')}}" type="image/x-icon"> 
-    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
-    <script src="{{url_for('static',filename='js/echarts.common.min.js')}}"></script>
-    <script src="{{url_for('static',filename='js/app.js')}}"></script>
-    <script src="{{url_for('static',filename='js/jquery.min.js')}}"></script>
+    <link href="{{ url_for('static',filename='css/amazeui.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/admin.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/app.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static',filename='img/logo.png') }}" type="image/x-icon">
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/echarts.common.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
     <script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
 </head>
-<body style="background-color:ghostwhite" >
+<body style="background-color:ghostwhite">
 <header class="am-topbar am-topbar-inverse admin-header">
     <div class="am-topbar-brand" style="height: 65px;">
         <a href="javascript:;" class="tpl-logo">
-            <img src="{{url_for('static',filename='img/logo.png')}}"  height="80px" alt="" >
+            <img src="{{ url_for('static',filename='img/logo.png') }}" height="80px" alt="">
         </a>
     </div>
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
@@ -26,31 +26,31 @@
             </li>
             <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                 <a class="am-dropdown-toggle tpl-header-list-link" onclick="changepassword()">
-                    <span class="tpl-header-list-user-nick" >
-                        {{session.username}}
+                    <span class="tpl-header-list-user-nick">
+                        {{ session.username }}
                     </span>
                 </a>
             </li>
             <li>
-                <a href="{{url_for('home.logt')}}" class="tpl-header-list-link">
+                <a href="{{ url_for('home.logt') }}" class="tpl-header-list-link">
                     <strong>退出</strong>
                 </a>
             </li>
         </ul>
     </div>
 </header>
-<div class="tpl-page-container tpl-page-header-fixed" >
-    <div class="tpl-left-nav tpl-left-nav-hover"  >
+<div class="tpl-page-container tpl-page-header-fixed">
+    <div class="tpl-left-nav tpl-left-nav-hover">
         <div class="tpl-left-nav-list">
             <ul class="tpl-left-nav-menu ">
                 <li class="tpl-left-nav-item">
-                    <a href="{{url_for('home.index')}}" class="nav-link ">
+                    <a href="{{ url_for('home.index') }}" class="nav-link ">
                         <i class="am-icon-home"></i>
                         <span>首页</span>
                     </a>
                 </li>
                 <li class="tpl-left-nav-item">
-                    <a href="{{url_for('home.project')}}" class="nav-link tpl-left-nav-link-list">
+                    <a href="{{ url_for('home.project') }}" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-bar-chart"></i>
                         <span>项目</span>
                     </a>
@@ -62,25 +62,25 @@
                     </a>
                 </li>
                 <li class="tpl-left-nav-item">
-                    <a href="{{url_for('home.model')}}" class="nav-link tpl-left-nav-link-list">
+                    <a href="{{ url_for('home.model') }}" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-battery-0"></i>
                         <span>模块</span>
                     </a>
                 </li>
-            <li class="tpl-left-nav-item">
+                <li class="tpl-left-nav-item">
                     <a href="{{ url_for('home.genconfig') }}" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-adn"></i>
                         <span>通用配置</span>
                     </a>
                 </li>
                 <li class="tpl-left-nav-item">
-                    <a href="{{url_for('home.interface')}}" class="nav-link tpl-left-nav-link-list">
+                    <a href="{{ url_for('home.interface') }}" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-internet-explorer"></i>
                         <span>接口</span>
                     </a>
                 </li>
                 <li class="tpl-left-nav-item">
-                    <a href="{{url_for('home.yongli')}}" class="nav-link tpl-left-nav-link-list">
+                    <a href="{{ url_for('home.yongli') }}" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-key"></i>
                         <span>测试用例</span>
                     </a>
@@ -91,7 +91,7 @@
                         <span>定时任务</span>
                     </a>
                 </li>
-            <!--  <li class="tpl-left-nav-item">
+                <!--  <li class="tpl-left-nav-item">
                         <a href="{{url_for('home.jenkinsfirst')}}" class="nav-link tpl-left-nav-link-list">
                             <span class="am-icon-tasks"></span>
                             <span>jenkins集成任务</span>
@@ -104,46 +104,47 @@
                     </a>
                 </li>
                 <li class="tpl-left-nav-item">
-                    <a href="{{url_for('home.test_rep')}}" class="nav-link tpl-left-nav-link-list">
+                    <a href="{{ url_for('home.test_rep') }}" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-file"></i>
                         <span>测试报告</span>
                     </a>
                 </li>
                 {% if current_user.is_sper== 1 %}
                     <li class="tpl-left-nav-item">
-                        <a href="{{url_for('home.adminuser')}}" class="nav-link tpl-left-nav-link-list">
+                        <a href="{{ url_for('home.adminuser') }}" class="nav-link tpl-left-nav-link-list">
                             <span class=" am-icon-user"></span>
                             <span>用户管理</span>
                         </a>
                     </li>
-                    <li class="tpl-left-nav-item">
-                        <a href="{{url_for('admin.index')}}" class="nav-link tpl-left-nav-link-list">
-                            <span class=" am-icon-user-md"></span>
-                            <span>后台管理</span>
-                        </a>
-                    </li>
+{#                    <li class="tpl-left-nav-item">#}
+{#                        <a href="{{ url_for('admin.index') }}" class="nav-link tpl-left-nav-link-list">#}
+{#                            <span class=" am-icon-user-md"></span>#}
+{#                            <span>后台管理</span>#}
+{#                        </a>#}
+{#                    </li>#}
 
                 {% else %}
                 {% endif %}
             </ul>
         </div>
     </div>
- <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"  id="changepassword">
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+         id="changepassword">
         <div style="height: 5px;">修改密码</div>
-            <div style="background-color: whitesmoke;margin-top: 24px" >
-                新设密码：<input type="password" id="newpassword">
-                <p></p>确认密码：<input type="password" id="new_password">
-            </div>
-            <div style="margin-top: 50%;margin-bottom: auto">
-                <input value="保存" type="submit" class="btn-default" onclick="change()">
-                <input value="取消" type="button" class=" btn-default" onclick="quxiao()" >
-            </div>
+        <div style="background-color: whitesmoke;margin-top: 24px">
+            新设密码：<input type="password" id="newpassword">
+            <p></p>确认密码：<input type="password" id="new_password">
+        </div>
+        <div style="margin-top: 50%;margin-bottom: auto">
+            <input value="保存" type="submit" class="btn-default" onclick="change()">
+            <input value="取消" type="button" class=" btn-default" onclick="quxiao()">
+        </div>
     </div>
-    {%block hello%}
-    {%endblock%}
+    {% block hello %}
+    {% endblock %}
 </div>
-{%block fen%}
-{%endblock%}
+{% block fen %}
+{% endblock %}
 <div style='text-align: center;margin-bottom: auto;
     min-height: 15px;
     height: 30px;
@@ -152,48 +153,50 @@
     <h3 style="color: red"><strong>版权雷子所有，联系qq：952943386 qq交流群：194704520,如果定制开发可联系我</strong></h3>
 </div>
 {% block js %}
-{%endblock%}
+{% endblock %}
 <script type='text/javascript'>
-    $(document).ready(function(){
-        $('.tpl-left-nav-menu li a').each(function(){
-            if($($(this))[0].pathname==String(window.location['pathname']))
+    $(document).ready(function () {
+        $('.tpl-left-nav-menu li a').each(function () {
+            if ($($(this))[0].pathname == String(window.location['pathname']))
                 $(this).addClass('active');
         });
     })
-    function changepassword() {
-        var d=document.getElementById('changepassword');
-        d.style.display=''
-    }
-    function quxiao() {
-        var d=document.getElementById('changepassword');
-        d.style.display='none'
-    }
-    function change() {
-        var password=document.getElementById('newpassword').value;
-        var querenpassword=document.getElementById('new_password').value;
-        if (password!=querenpassword){
-            alert('请确认输入密码是否一致')
-        }
-        else {
-            if(password.length>20 ||  password.length<6){
-                alert('密码长度应该是6-20个字符串长度')
-        }else {
-                $.ajax({
-                url:"{{ url_for('user.changepassword')}}",
-                data:password,
-                type:'POST',
-                 contentType: 'application/json; charset=UTF-8',
-                processData:false,
-                success:function(data){
-                    if(data['code']=='1'){
-                        alert('修改密码成功');
-                         window.location.href=('{{ url_for("home.login") }}')
-                    }else {
-                        alert('修改密码失败')
-                    }
-                },
 
-            })
+    function changepassword() {
+        var d = document.getElementById('changepassword');
+        d.style.display = ''
+    }
+
+    function quxiao() {
+        var d = document.getElementById('changepassword');
+        d.style.display = 'none'
+    }
+
+    function change() {
+        var password = document.getElementById('newpassword').value;
+        var querenpassword = document.getElementById('new_password').value;
+        if (password != querenpassword) {
+            alert('请确认输入密码是否一致')
+        } else {
+            if (password.length > 20 || password.length < 6) {
+                alert('密码长度应该是6-20个字符串长度')
+            } else {
+                $.ajax({
+                    url: "{{ url_for('user.changepassword')}}",
+                    data: password,
+                    type: 'POST',
+                    contentType: 'application/json; charset=UTF-8',
+                    processData: false,
+                    success: function (data) {
+                        if (data['code'] == '1') {
+                            alert('修改密码成功');
+                            window.location.href = ('{{ url_for("home.login") }}')
+                        } else {
+                            alert('修改密码失败')
+                        }
+                    },
+
+                })
             }
 
         }
