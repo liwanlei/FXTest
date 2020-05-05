@@ -182,6 +182,9 @@ class InterfaceTest(db.Model):  # 测试用例表
     testcaseresult = db.relationship('TestcaseResult',
                                      backref='interfacetests', lazy='dynamic')
     is_ci = db.Column(db.Boolean(), default=False)
+    is_smoke = db.Column(db.Integer(), default=0)  # 0 否 1是
+    is_reback = db.Column(db.Integer(), default=0)  # 0 否 1是
+    is_monitor = db.Column(db.Integer(), default=0)  # 1 监控用例
     status = db.Column(db.Boolean(), default=False)
 
     def __repr__(self):
@@ -189,6 +192,7 @@ class InterfaceTest(db.Model):  # 测试用例表
 
 
 class Action(db.Model):
+    '''动作'''
     __tablename__ = 'actions'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     user = db.Column(db.Integer(), db.ForeignKey("users.id"))
@@ -210,6 +214,7 @@ class Action(db.Model):
 
 
 class GeneralConfiguration(db.Model):
+    '''通用配置'''
     __tablename__ = "generalconfigurations"
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     user = db.Column(db.Integer(), db.ForeignKey("users.id"))
@@ -405,6 +410,7 @@ class Parameter(db.Model):  # 参数
 
 
 class CaseGeneral(db.Model):
+    '''测试用例和通用参数关系'''
     __tablename__ = 'casegenerals'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     case = db.Column(db.Integer(), db.ForeignKey("interfacetests.id"))
@@ -416,6 +422,7 @@ class CaseGeneral(db.Model):
 
 
 class CaseAction(db.Model):
+    '''测试用例和前后动作关系表'''
     __tablename__ = 'caseactions'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     case = db.Column(db.Integer(), db.ForeignKey("interfacetests.id"))
@@ -428,6 +435,7 @@ class CaseAction(db.Model):
 
 
 class Scenes(db.Model):
+    '''测试场景'''
     __tablename__ = 'sceness'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column(db.String(252), unique=True)
@@ -443,9 +451,63 @@ class Scenes(db.Model):
 
 
 class TestGroup(db.Model):
+    '''测试组'''
     __tablename__ = 'testgroup'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column(db.String(252), unique=True)
+    projectid = db.Column(db.Integer())
+    status = db.Column(db.Integer(), default=0)  # 状态，0正常，1删除
+    adduser = db.Column(db.Integer(), default=0)
+    addtime = db.Column(db.Date())
+    updateuser = db.Column(db.Integer(), default=adduser)
+    updatetime = db.Column(db.Date(), default=datetime.datetime.now())
 
     def __repr__(self):
         return self.name
+
+
+class GroupInterface(db.Model):
+    '''名单接口'''
+    __tablename__ = 'groupinterface'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    testgroupid = db.Column(db.Integer())
+    testinterface = db.Column(db.Integer())
+    addtime = db.Column(db.Date())
+    adduser = db.Column(db.Integer())
+
+    def __repr__(self):
+        return str(self.id)
+
+
+class TestJmx(db.Model):
+    "存储测试用例转化的脚本"
+    __tablename__ = 'testjmx'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    intefaceid = db.Column(db.Integer())
+    runcounttest = db.Column(db.String(252))
+    loopcount = db.Column(db.String(252))
+    jmxpath = db.Column(db.String(252))
+    serverid = db.Column(db.Integer())
+    status = db.Column(db.Integer(), default=0)  # 0是创建，1执行中
+
+    def __repr__(self):
+        return str(self.id)
+
+
+class Testerver(db.Model):
+    '''测试服务器'''
+    __tablename__ = 'testservers'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    ip = db.Column(db.String(252))
+    port = db.Column(db.Integer(), default=22)
+    loginuser = db.Column(db.String(64), default="root")
+    loginpassword = db.Column(db.String(64), default="123456")
+    name = db.Column(db.String(64))
+    status = db.Column(db.Integer(), default=0)  # 0正常，1删除
+    createuser = db.Column(db.Integer(), default=0)
+    creatdate = db.Column(db.Date(), default=datetime.datetime.now())
+    updateuser = db.Column(db.Integer(), default=createuser)
+    updatetime = db.Column(db.Date(), default=datetime.datetime.now())
+
+    def __repr__(self):
+        return str(self.name)

@@ -119,7 +119,7 @@ class LoginView(MethodView):
                 session['username'] = username
                 return jsonify({'msg': login_user_sucess_message, 'code': 200, 'data': ''})
             else:
-                if (user.err_num!= None and user.err_num >= 5  ):
+                if (user.err_num != None and user.err_num >= 5):
                     if (user.freetime != 'None'):
                         if (datetime.datetime.now() - user.freetime).minute > 10:
                             user.err_num = user_err_num + 1
@@ -134,9 +134,10 @@ class LoginView(MethodView):
                             db.session.commit()
                             return jsonify({'msg': login_user_fremm, 'code': 36, 'data': ''})
                     else:
-                        if user.err_num==None:
-                            user.err_num=0
-                        else:user.err_num = user_err_num + 1
+                        if user.err_num == None:
+                            user.err_num = 0
+                        else:
+                            user.err_num = user_err_num + 1
                         db.session.add(user)
                         db.session.commit()
                         return jsonify({'msg': login_password_error_message, 'code': 36, 'data': ''})
@@ -415,8 +416,12 @@ class ProjectView(MethodView):
         if projec:
             return jsonify({'code': 5, 'data': '项目不能重复！'})
         new_moel = Project(project_name=name, project_user_id=current_user.id)
-        db.session.add(new_moel)
         try:
+            db.session.add(new_moel)
+            testgroup = TestGroup(adduser=current_user.id, addtime=datetime.datetime.now(),
+                                  updatetime=datetime.datetime.now(), updateuser=current_user.id,
+                                  name='黑名单', projectid=new_moel.id)
+            db.session.add(testgroup)
             db.session.commit()
             return jsonify({'code': 2, 'data': '添加成功！', '': ''})
         except Exception as e:

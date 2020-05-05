@@ -8,7 +8,6 @@ from common.judgment import pare_result_mysql
 from common.log import log_t
 from common.oparmysqldatabase import *
 from config import redis_host, redis_port, redis_save_result_db, save_duration, xitong_request_toke
-from app import db
 from app.models import *
 from common.packageredis import ConRedisOper
 

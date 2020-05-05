@@ -336,3 +336,25 @@ class EditParmsView(MethodView):
         except Exception as e:
             flash('编辑出错，原因：%s' % e)
             return render_template('edit/edtiparmes.html', pasrm=pasrm, interface_one=interface_one)
+
+
+class AddGroupInterface(MethodView):
+    # 黑名单添加接口
+    @login_required
+    def get(self, interfaceid):
+        interface_one = Interface.query.filter_by(id=interfaceid, status=False).first()
+        if not interface_one:
+            return jsonify({"data": '接口不存在', 'code': 2})
+
+        return jsonify({"data": '添加成功', 'code': 0})
+
+class GetGroupInterface(MethodView):
+    '''获取黑名单接口'''
+    @login_required
+    def get(self, interfaceid):
+        interface_one = Interface.query.filter_by(id=interfaceid, status=False).first()
+        if not interface_one:
+            return jsonify({"data": '接口不存在', 'code': 2})
+
+        return jsonify({"data": '获取成功', 'code': 0})
+
