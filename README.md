@@ -4,11 +4,11 @@
 ### 前后端部分页面开始进行分离，通过接口进行交互
 
 ----------------
-# 敬告各位：本处代码开源后，版权归属本人所有，禁止利用本项目作为出去面试，后果自负。
-##  后续会基于python3.6+版本去维护平台。
+##  友情提示各位：开源项目，长期不定时的维护，仅供大家参考学习使用。谢绝作为面试、毕业作品等源码。
+##  后续会基于python3.6+版本去维护平台。平台所有文章都位于doc目录，或者本文章有介绍，暂无其他资料。
 
 ----------------
-# 本地调试 安装依赖包后， python manage.py run即可  成功可以访问http://127.0.0.1:5000/home/index项目使用的数据库是sqlite，配置文件都在config.py，可以根据自己的实际情况进行修改
+## 本地调试 安装依赖包后， python manage.py run即可  成功可以访问http://127.0.0.1:5000/home/index项目使用的数据库是sqlite，配置文件都在config.py，可以根据自己的实际情况进行修改
 
 
 ### flask +gevent+nginx+Gunicorn+supervisor部署flask应用请用flaskapi_su.conf，用gunicorn部署应用，因为在使用uwsgi部署会影响定时任务的执行
@@ -18,25 +18,36 @@
 ### 定时任务现在依赖与redis做持久化，如果有报redis错误，请安装redis服务。
 
  ----------------
+ 
+## 待开发功能
+### 1.集成到jenkins
+### 2.测试用例代码抽离
+### 3.一键将接口测试用例转化为压测脚本，进行压测
+### 4.测试用例可以依赖通用参数配置。
+### 5.数据库进行调整优化，适配新功能落地。
+### 6.增加黑名单功能
+### 7.监控测试用例，冒烟测试用例，回归测试用例标记
+### 8.性能压测数据收集，测试结果的统一处理
 ## 4.1.1版本
 ### 1.优化代码，对代码格式进行统一处理
 ### 2.对部分文件命名进行修改
 ### 3.对于部分数据进行处理，对部分代码进行容错
 ### 4.修复部分已知bug
 ## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md)
-# 有问题可以联系我，可增加定制开发：微信:952943386 [java版本基于springboot开发](https://github.com/liwanlei/)，和基于微服务开发已经完毕，无开源计划。
-# Email:leileili126@163.com  qq群：194704520  python测试开发群：683894834
+# 有问题可以联系我，增加定制开发。微信:952943386  java 版本的平台暂无开源计划。
+# Email:leileili126@163.com  qq群：194704520  python接口测试：651392041 请入群人员正确回答问题。
 
-# 个人公众号
+# 个人公众号，持续更新系列文章。欢迎你关注
 ![Alt text](https://github.com/liwanlei/jiekou-python3/blob/master/img/weixin.png) 
 #   flask部署相关文章：http://www.cnblogs.com/leiziv5/p/7137277.html
 #                     http://www.cnblogs.com/leiziv5/p/8807135.html
 # 友情推荐本人其他开源代码：
 ##      1.python app自动化测试平台版本：https://github.com/liwanlei/UFATestPlan
-##      2.python+flask 做后台，实现微信小程序：https://github.com/liwanlei/webchat_app
-##      3.python接口测试非平台版本：https://github.com/liwanlei/FXTest
-##      4.java开发自动化测试平台：https://github.com/liwanlei/plan 
-# 微信打赏
+##      2.python+adb app性能获取小工具：https://github.com/liwanlei/python_tk_adb
+##      3.python接口测试非平台版本：https://github.com/liwanlei/jiekou-python3
+##      4.java开发自动化测试平台：https://github.com/liwanlei/plan
+##      5.python +appium实现 UI自动化：https://github.com/liwanlei/appium-python3 已经适配stf jenkins等。 
+##  开源不易，如果感觉平台对你有帮助，可以进行微信打赏
 ![Alt text](https://github.com/liwanlei/FXTest/blob/master/image/weixin.png)
  ----------------
 ##    效果图如下：

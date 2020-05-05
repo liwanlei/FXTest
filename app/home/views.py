@@ -13,7 +13,6 @@ from app.form import *
 from flask.views import MethodView
 from flask_login import login_required, login_user, logout_user, current_user
 from app import loginManager, sched
-from config import PageShow
 from common.Pagination import fenye_list
 from common.pageination import Pagination
 from error_message import *
