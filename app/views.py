@@ -6,6 +6,7 @@
 from app import app
 from flask import request, render_template, \
     make_response, send_from_directory, jsonify, flash, redirect, url_for
+from  flask_mail import Mail,Message
 from app.models import *
 import os
 from flask.views import MethodView
@@ -160,10 +161,10 @@ def reg():
         try:
             db.session.commit()
             # 需要邮箱发送的方法
-            # msg = Message(u"你好", sender=email, recipients=email)
-            # msg.body = u"欢迎你注册, 你的用户名：%s，你的密码是：%s" % (usernmae, pasword)
-            # msg.html = '<a href="http://127.0.0.1:5000/login">去登录</a>'
-            # Mail.send(msg)
+            msg = Message(u"你好", sender=email, recipients=email)
+            msg.body = u"欢迎你注册, 你的用户名：%s，你的密码是：%s" % (usernmae, pasword)
+            msg.html = '<a href="http://127.0.0.1:5000/login">去登录</a>'
+            Mail.send(msg)
             return redirect(url_for('home.login'))
         except Exception as e:
             db.session.rollback()

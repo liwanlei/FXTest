@@ -24,6 +24,7 @@ from config import Config_daoru_xianzhi, redis_host, \
 from common.opearexcel import create_interface_case
 from common.mergelist import listmax
 from common.packageredis import ConRedisOper
+from common.CreateJxmUntil import make
 
 case = Blueprint('case', __name__)
 
@@ -808,3 +809,60 @@ class OnecaseDetial(MethodView):
                                'event': ceshihuanjing,
                                'spend': spend_ed})
         return jsonify({'code': 200, 'messgage': '请求成功', 'data': result_all})
+
+
+class CaseToJmx(MethodView):
+    def post(self):
+        try:
+            projec =eval(request.get_data().decode('utf-8'))
+        except Exception as e:
+            return jsonify({'code': 99, 'messgage': '格式不正确', 'data': ''})
+        interfaceid = projec["interfaceid"]
+        testid = projec["testid"]
+        runcount = projec["runcount"]
+        loopcount = projec["loopcount"]
+        dbname = projec["dbname"]
+        testserverid = projec["testserverid"]
+        case_one = InterfaceTest.query.filter_by(id=int(interfaceid)).first()
+        if not case_one:
+            return jsonify({'code': 99, 'messgage': '没有测试用例', 'data': ''})
+        testvents = Interfacehuan.query.filter_by(id=int(testid)).first()
+        if not case_one:
+            return jsonify({'code': 99, 'messgage': '测试环境不存在', 'data': ''})
+        tetserver = Testerver.query.filter_by(id=int(testserverid), status=0).first()
+        if not tetserver:
+            return jsonify({'code': 99, 'messgage': '测试服务器不存在', 'data': ''})
+        all = str(testvents.url).split("://")[1].split(":")
+        if len(all) == 1:
+            port = 80
+        else:
+            port = int(all[1])
+        if not testvents:
+            return jsonify({'code': 99, 'messgage': '测试环境不存在', 'data': ''})
+        parame=""
+        if case_one.Interface_pase is not  None:
+            try:
+                data=eval(case_one.Interface_pase)
+                for  key ,value in data.items():
+                    parame+='''' <elementProp name="password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">%s</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">%s</stringProp>
+              </elementProp>'''%(value,key)
+            except Exception as e:
+                pass
+        all = make(runcount, loopcount, all[0], port, case_one.interfaces.Interface_url,
+                   case_one.Interface_meth, dbname, case_one.projects.project_name,parame)
+        path = os.getcwd()
+        filepath = path + "/jxmpath/"
+        name = str(testvents.id) + str(case_one.id) + ".jmx"
+        filepathname = filepath + name
+        with open(filepathname, 'wb') as f:
+            f.write(all.encode())
+        testjmx = TestJmx(intefaceid=case_one.interfaces.id, runcounttest=runcount, loopcount=loopcount,
+                          jmxpath=filepathname, serverid=tetserver.id)
+        db.session.add(testjmx)
+        db.session.commit()
+        return jsonify({'code': 0, 'messgage': '转化接口压测环境成功', 'data': ''})

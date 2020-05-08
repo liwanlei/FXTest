@@ -418,6 +418,7 @@ class ProjectView(MethodView):
         new_moel = Project(project_name=name, project_user_id=current_user.id)
         try:
             db.session.add(new_moel)
+            db.session.commit()
             testgroup = TestGroup(adduser=current_user.id, addtime=datetime.datetime.now(),
                                   updatetime=datetime.datetime.now(), updateuser=current_user.id,
                                   name='黑名单', projectid=new_moel.id)

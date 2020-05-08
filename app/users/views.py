@@ -13,7 +13,7 @@ from common.decorators import chckuserpermisson
 from flask_login import login_required
 from config import OneAdminCount
 from error_message import *
-
+from flask_mail import Message,Mail
 
 class SetadView(View):  # 设置管理员
     methods = ['GET', "POST"]
@@ -178,6 +178,10 @@ class RedpassView(View):  # 重置密码
                 new_ad.set_password('111111')
                 try:
                     db.session.commit()
+                    msg = Message(u"密码修改通知", sender=user.email, recipients=user.email)
+                    msg.body = u"密码修改成功, 你的用户名：%s，你的密码是：%s" % (user.username, "111111")
+                    msg.html = '<a href="http://127.0.0.1:5000/login">去登录</a>'
+                    Mail.send(msg)
                     flash(reset_success_message)
                     return redirect(url_for('home.adminuser'))
                 except Exception as e:
