@@ -8,6 +8,7 @@
 import  os
 from apscheduler.jobstores.redis import RedisJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
+
 jenkins_url='http://localhost:8080'#jenkins的地址
 jenkins_user='liwanlei'#jenkins的用户名
 jenkins_password='123456'#jenkins的密码

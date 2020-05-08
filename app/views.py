@@ -6,7 +6,7 @@
 from app import app
 from flask import request, render_template, \
     make_response, send_from_directory, jsonify, flash, redirect, url_for
-from  flask_mail import Mail,Message
+from flask_mail import Mail, Message
 from app.models import *
 import os
 from flask.views import MethodView

@@ -4,10 +4,13 @@
 @file: htmltestreport.py
 @time: 2017/6/5 17:04
 """
-import  os
-titles='接口测试'
+import os
+
+titles = '接口测试'
+
+
 def title(titles):
-    title='''<!DOCTYPE html>
+    title = '''<!DOCTYPE html>
 <html>
 <head>
 	<title>%s</title>
@@ -28,13 +31,17 @@ def title(titles):
     </style>
 </head>
 <body>
-	'''%(titles)
+	''' % (titles)
     return title
-connent='''
+
+
+connent = '''
 <div  class='col-md-5 col-md-offset-5' style="margin-left: 2%;margin-top: -16px;">
 <h1>FXTest测试平台接口测试的结果</h1>'''
-def time(starttime,endtime,passge,fail,excepts,yuqi,weizhi,maxs,mins,pingluns):
-    beijing='''
+
+
+def time(starttime, endtime, passge, fail, excepts, yuqi, weizhi, maxs, mins, pingluns):
+    beijing = '''
     <table  class="table table-hover table-condensed">
             <tbody>
                 <tr>
@@ -64,9 +71,12 @@ def time(starttime,endtime,passge,fail,excepts,yuqi,weizhi,maxs,mins,pingluns):
 			   </td>
 			   </tr> 
 			   </tbody></table>
-			   </div> '''%(starttime,endtime,(endtime-starttime),passge,fail,excepts,yuqi,weizhi,maxs,mins,pingluns)
+			   </div> ''' % (
+    starttime, endtime, (endtime - starttime), passge, fail, excepts, yuqi, weizhi, maxs, mins, pingluns)
     return beijing
-shanghai='''<div class="row " style="margin:35px">
+
+
+shanghai = '''<div class="row " style="margin:35px">
         <div style='    margin-top: 18%;' >
         <div class="btn-group" role="group" aria-label="...">
             <button type="button" id="check-all" class="btn btn-primary">所有用例</button>
@@ -90,6 +100,8 @@ shanghai='''<div class="row " style="margin:35px">
             <td><strong>结果</strong></td>
         </tr>
     '''
+
+
 def passfail(tend):
     if tend == 'pass':
         htl = ' <td bgcolor="green">pass</td>'
@@ -106,8 +118,10 @@ def passfail(tend):
     else:
         htl = '<td bgcolor="#8b0000">查看日志</td>'
     return htl
-def ceshixiangqing(res_id,id,name,coneent,url,meth,yuqi,json,relust,headers):
-    xiangqing='''
+
+
+def ceshixiangqing(res_id, id, name, coneent, url, meth, yuqi, json, relust, headers):
+    xiangqing = '''
         <tr class="case-tr %s">
             <td>%s</td>
             <td>%s</td>
@@ -119,9 +133,11 @@ def ceshixiangqing(res_id,id,name,coneent,url,meth,yuqi,json,relust,headers):
             <td>%s</td>
             %s
         </tr>
-    '''%(res_id,id,name,coneent,url,meth,headers,yuqi,json,(passfail(relust)))
+    ''' % (res_id, id, name, coneent, url, meth, headers, yuqi, json, (passfail(relust)))
     return xiangqing
-weibu='''</div></div></table><script src="https://code.jquery.com/jquery.js"></script>
+
+
+weibu = '''</div></div></table><script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$("#check-danger").click(function(e){
@@ -154,9 +170,12 @@ weibu='''</div></div></table><script src="https://code.jquery.com/jquery.js"></s
 </script>
 </body>
 </html>'''
-def relust(titles,starttime,endtime,passge,fail,id:list,name:list,headers:list,coneent:list,url:list,meth:list,yuqi:list,json:list,relust:list,excepts,yuqis,weizhi,maxs,mins,pingluns):
+
+
+def relust(titles, starttime, endtime, passge, fail, id: list, name: list, headers: list, coneent: list, url: list,
+           meth: list, yuqi: list, json: list, relust: list, excepts, yuqis, weizhi, maxs, mins, pingluns):
     if type(name) is list:
-        relus=' '
+        relus = ' '
         for i in range(len(name)):
             if relust[i] == "pass":
                 clazz = "success"
@@ -166,13 +185,25 @@ def relust(titles,starttime,endtime,passge,fail,id:list,name:list,headers:list,c
                 clazz = "danger"
             else:
                 clazz = 'error'
-            relus+=(ceshixiangqing(clazz,id[i],name[i],coneent=coneent[i],url=url[i],headers=headers[i],meth=meth[i],yuqi=yuqi[i],json=json[i],relust=relust[i]))
-        text=title(titles)+connent+time(starttime,endtime,passge,fail,excepts,yuqis,weizhi,maxs,mins,pingluns)+shanghai+relus+weibu
+            relus += (
+                ceshixiangqing(clazz, id[i], name[i], coneent=coneent[i], url=url[i], headers=headers[i], meth=meth[i],
+                               yuqi=yuqi[i], json=json[i], relust=relust[i]))
+        text = title(titles) + connent + time(starttime, endtime, passge, fail, excepts, yuqis, weizhi, maxs, mins,
+                                              pingluns) + shanghai + relus + weibu
     else:
-        text=title(titles)+connent+time(starttime,endtime,passge,fail,excepts,yuqis,weizhi,maxs,mins,pingluns)+shanghai+ceshixiangqing(id=id,name=name,headers=headers,coneent=coneent,url=url,meth=meth,yuqi=int(yuqi),json=json,relust=relust)+weibu
+        text = title(titles) + connent + time(starttime, endtime, passge, fail, excepts, yuqis, weizhi, maxs, mins,
+                                              pingluns) + shanghai + ceshixiangqing(id=id, name=name, headers=headers,
+                                                                                    coneent=coneent, url=url, meth=meth,
+                                                                                    yuqi=int(yuqi), json=json,
+                                                                                    relust=relust) + weibu
     return text
-def createHtml(filepath,titles,starttime,endtime,passge,fail,id,name,headers,coneent,url,meth,yuqi,json,relusts,excepts,yuqis,weizhi,maxs,mins,pingluns):
-    texts=relust(titles=titles,starttime=starttime,endtime=endtime,passge=passge,fail=fail,id=id,name=name,headers=headers,coneent=coneent,
-                 url=url,meth=meth,yuqi=yuqi,json=json,relust=relusts,excepts=excepts,yuqis=yuqis,weizhi=weizhi,maxs=maxs,mins=mins,pingluns=pingluns)
-    with open(filepath,'wb') as f:
+
+
+def createHtml(filepath, titles, starttime, endtime, passge, fail, id, name, headers, coneent, url, meth, yuqi, json,
+               relusts, excepts, yuqis, weizhi, maxs, mins, pingluns):
+    texts = relust(titles=titles, starttime=starttime, endtime=endtime, passge=passge, fail=fail, id=id, name=name,
+                   headers=headers, coneent=coneent,
+                   url=url, meth=meth, yuqi=yuqi, json=json, relust=relusts, excepts=excepts, yuqis=yuqis,
+                   weizhi=weizhi, maxs=maxs, mins=mins, pingluns=pingluns)
+    with open(filepath, 'wb') as f:
         f.write(texts.encode())

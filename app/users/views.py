@@ -13,7 +13,8 @@ from common.decorators import chckuserpermisson
 from flask_login import login_required
 from config import OneAdminCount
 from error_message import *
-from flask_mail import Message,Mail
+from flask_mail import Message, Mail
+
 
 class SetadView(View):  # 设置管理员
     methods = ['GET', "POST"]

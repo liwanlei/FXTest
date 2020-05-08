@@ -22,6 +22,7 @@ gevent==1.4.0
 Jinja2==2.9.6
 Logbook==1.1.0
 mitmproxy==4.0.4
+paramiko==2.7.1
 PyMySQL==0.9.3
 pyOpenSSL==18.0.0
 python-jenkins==1.1.0

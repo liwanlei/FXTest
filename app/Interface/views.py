@@ -348,8 +348,10 @@ class AddGroupInterface(MethodView):
 
         return jsonify({"data": '添加成功', 'code': 0})
 
+
 class GetGroupInterface(MethodView):
     '''获取黑名单接口'''
+
     @login_required
     def get(self, interfaceid):
         interface_one = Interface.query.filter_by(id=interfaceid, status=False).first()
@@ -357,4 +359,3 @@ class GetGroupInterface(MethodView):
             return jsonify({"data": '接口不存在', 'code': 2})
 
         return jsonify({"data": '获取成功', 'code': 0})
-

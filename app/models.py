@@ -488,6 +488,7 @@ class TestJmx(db.Model):
     loopcount = db.Column(db.String(252))
     jmxpath = db.Column(db.String(252))
     serverid = db.Column(db.Integer())
+    name = db.Column(db.String(252))
     status = db.Column(db.Integer(), default=0)  # 0是创建，1执行中
 
     def __repr__(self):

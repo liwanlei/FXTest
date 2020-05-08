@@ -25,6 +25,7 @@ from common.opearexcel import create_interface_case
 from common.mergelist import listmax
 from common.packageredis import ConRedisOper
 from common.CreateJxmUntil import make
+from common.SshTools import Sshtool
 
 case = Blueprint('case', __name__)
 
@@ -814,7 +815,7 @@ class OnecaseDetial(MethodView):
 class CaseToJmx(MethodView):
     def post(self):
         try:
-            projec =eval(request.get_data().decode('utf-8'))
+            projec = eval(request.get_data().decode('utf-8'))
         except Exception as e:
             return jsonify({'code': 99, 'messgage': '格式不正确', 'data': ''})
         interfaceid = projec["interfaceid"]
@@ -839,22 +840,22 @@ class CaseToJmx(MethodView):
             port = int(all[1])
         if not testvents:
             return jsonify({'code': 99, 'messgage': '测试环境不存在', 'data': ''})
-        parame=""
-        if case_one.Interface_pase is not  None:
+        parame = ""
+        if case_one.Interface_pase is not None:
             try:
-                data=eval(case_one.Interface_pase)
-                for  key ,value in data.items():
-                    parame+='''' <elementProp name="password" elementType="HTTPArgument">
+                data = eval(case_one.Interface_pase)
+                for key, value in data.items():
+                    parame += '''' <elementProp name="password" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">%s</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">%s</stringProp>
-              </elementProp>'''%(value,key)
+              </elementProp>''' % (value, key)
             except Exception as e:
                 pass
         all = make(runcount, loopcount, all[0], port, case_one.interfaces.Interface_url,
-                   case_one.Interface_meth, dbname, case_one.projects.project_name,parame)
+                   case_one.Interface_meth, dbname, case_one.projects.project_name, parame)
         path = os.getcwd()
         filepath = path + "/jxmpath/"
         name = str(testvents.id) + str(case_one.id) + ".jmx"
@@ -862,7 +863,25 @@ class CaseToJmx(MethodView):
         with open(filepathname, 'wb') as f:
             f.write(all.encode())
         testjmx = TestJmx(intefaceid=case_one.interfaces.id, runcounttest=runcount, loopcount=loopcount,
-                          jmxpath=filepathname, serverid=tetserver.id)
+                          jmxpath=filepathname, serverid=tetserver.id, name=name)
         db.session.add(testjmx)
         db.session.commit()
-        return jsonify({'code': 0, 'messgage': '转化接口压测环境成功', 'data': ''})
+        return jsonify({'code': 0, 'messgage': '转化接口压测环境成功', 'data': testjmx.id})
+
+
+class JmxToServer(MethodView):
+    def get(self, id):
+        testjmx = TestJmx.query.filter_by(id=int(id)).first()
+        if not testjmx:
+            return jsonify({'code': 99, 'messgage': '测试脚本不存在', 'data': ''})
+        if testjmx.serverid is None:
+            return jsonify({'code': 99, 'messgage': '测试脚本没有选择服务器', 'data': ''})
+        testserver = Testerver.query.filter_by(id=int(testjmx.id), status=0).first()
+        if not testserver:
+            return jsonify({'code': 99, 'messgage': '测试服务器不存在或者已经删除', 'data': ''})
+        cmd = "sshpass -p " + testserver.loginpassword + " scp -P " + testserver.port + "  " + testjmx.jmxpath + " " + testserver.loginuser + "@" + testserver.ip + ":/home"
+        os.system(cmd)
+        commentc = Sshtool(testserver.ip, testserver.port, testserver.loginuser, testserver.loginpassword)
+        cmd = "./jmeter -n -t /home/" + testjmx.name + '  -l name.htl'
+        commentc.command(cmd)
+        return jsonify({'code': 0, 'messgage': '压测已经在远程服务器运行', 'data': testjmx.id})

@@ -6,7 +6,7 @@
 
 
 def make(runcountone, runallcount, baseurl, baseport, intefacepath,
-         interfacemethod, dbname, apptimename,parame):
+         interfacemethod, dbname, apptimename, parame):
     conect = '''<?xml version='1.0' encoding='UTF-8'?><jmeterTestPlan version='1.2' properties='5.0' jmeter='5.2.1'>
          <hashTree>
          <TestPlan guiclass='TestPlanGui' testclass='TestPlan' testname='Test Plan' enabled='true'>
@@ -124,5 +124,6 @@ def make(runcountone, runallcount, baseurl, baseport, intefacepath,
       </hashTree>
     </hashTree>
   </hashTree>
-</jmeterTestPlan>''' % (runallcount,runcountone, parame,baseurl, baseport, intefacepath, interfacemethod, dbname, apptimename)
+</jmeterTestPlan>''' % (
+    runallcount, runcountone, parame, baseurl, baseport, intefacepath, interfacemethod, dbname, apptimename)
     return conect
