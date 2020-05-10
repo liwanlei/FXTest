@@ -38,8 +38,8 @@
 # 有问题可以联系我，增加定制开发。微信:952943386  java 版本的平台暂无开源计划。
 # Email:leileili126@163.com  qq群：194704520  python接口测试：651392041 请入群人员正确回答问题。
 
-# 个人公众号，持续更新系列文章。欢迎你关注
-![Alt text](https://github.com/liwanlei/jiekou-python3/blob/master/img/weixin.png) 
+# 个人公众号，持续更新系列文章。欢迎你关注。
+![Alt text](https://github.com/liwanlei/jiekou-python3/blob/master/img/%E5%85%AC%E4%BC%97%E5%8F%B7%E6%B5%B7%E6%8A%A5.jpeg) 
 #   flask部署相关文章：http://www.cnblogs.com/leiziv5/p/7137277.html
 #                     http://www.cnblogs.com/leiziv5/p/8807135.html
 # 友情推荐本人其他开源代码：
