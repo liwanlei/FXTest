@@ -22,6 +22,7 @@ Flask-WTF==0.14.2
 
 gevent==1.4.0
 Jinja2==2.9.6
+jenkins==1.0.2
 redis==3.5.3
 Logbook==1.1.0
 mitmproxy==4.0.4
