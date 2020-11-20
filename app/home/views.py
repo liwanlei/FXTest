@@ -197,7 +197,7 @@ class LoginViewRedis(MethodView):
         return jsonify({'msg': login_user_not_exict_message, 'code': 37, 'data': ''})
 
 
-class logt(MethodView):
+class Logout(MethodView):
     @login_required
     def get(self):
         username = session.get("username")
@@ -296,7 +296,7 @@ class AdminuserView(MethodView):
         wrok = Work.query.all()
         projects = Project.query.filter_by(status=False).all()
         if current_user.is_sper == True:
-            pagination = (User.query.order_by('-id').all())
+            pagination = (User.query.order_by(User.id.desc()).all())
         else:
             pagination = []
             id = []
@@ -388,7 +388,7 @@ class ProjectView(MethodView):
     @login_required
     def get(self, page=1):
         if current_user.is_sper == True:
-            projects = Project.query.filter_by(status=False).order_by('-id').all()
+            projects = Project.query.filter_by(status=False).all()
         else:
             projects = []
             id = []
@@ -549,19 +549,19 @@ class TesteventVies(MethodView):
     def get(self, page=1):
         if current_user.is_sper == True:
             events = []
-            events.append(Interfacehuan.query.filter_by(status=False).order_by('-id').all())
+            events.append(Interfacehuan.query.filter_by(status=False).order_by(Interfacehuan.id.desc()).all())
         else:
             events = []
             id = []
             for project in current_user.quanxians:
                 if (project.projects.id in id) == False:
                     events.append(
-                        Interfacehuan.query.filter_by(project=project.projects.id, status=False).order_by('-id').all())
+                        Interfacehuan.query.filter_by(project=project.projects.id, status=False).order_by(Project.id.desc()).all())
                     id.append(project.projects.id)
         projects_lsit = fenye_list(Ob_list=events, split=PageShow)
         pages = range(1, len(projects_lsit) + 1)
         if current_user.is_sper == True:
-            projects = Project.query.filter_by(status=False).order_by('-id').all()
+            projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
             for i in current_user.quanxians:
@@ -653,7 +653,7 @@ class TesteventVies(MethodView):
 class MockViews(MethodView):
     @login_required
     def get(self, page=1):
-        mock = Mockserver.query.filter_by(delete=False).order_by('-id').paginate(page,
+        mock = Mockserver.query.filter_by(delete=False).order_by(Mockserver.id.desc()).paginate(page,
                                                                                  per_page=int(PageShow),
                                                                                  error_out=False)
         inter = mock.items
@@ -714,7 +714,7 @@ class TimingtasksView(MethodView):
     def get(self, page=1):
         if current_user.is_sper == True:
             task = []
-            task.append(Task.query.filter_by(status=False).order_by('-id').all())
+            task.append(Task.query.filter_by(status=False).order_by(Task.id.desc()).all())
         else:
             task = []
             id = []
@@ -742,7 +742,7 @@ class GettProtestreport(MethodView):
         project_is = Project.query.filter_by(project_name=project).first()
         if not project_is:
             return jsonify(({'msg': u'成功', 'code': 200, 'data': []}))
-        testreport = TestResult.query.filter_by(projects_id=project_is.id, status=False).order_by('-id').all()
+        testreport = TestResult.query.filter_by(projects_id=project_is.id, status=False).order_by(TestResult.id.desc()).all()
         testreportlist = []
         for test in testreport:
             testreportlist.append({'test_num': test.test_num, 'pass_num': test.pass_num,
@@ -807,7 +807,7 @@ class DeleteJenkinstask(MethodView):
 class GenconfigView(MethodView):
     @login_required
     def get(self, page=1):
-        genconfiglist = GeneralConfiguration.query.filter_by(status=False).order_by('-id').all()
+        genconfiglist = GeneralConfiguration.query.filter_by(status=False).order_by(GeneralConfiguration.id.desc()).all()
         projects_lsit = fenye_list(Ob_list=genconfiglist, split=PageShow)
         pages = range(1, len(projects_lsit) + 1)
         try:

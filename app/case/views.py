@@ -57,7 +57,7 @@ class AddtestcaseView(View):
         inrterface_list = Interface.query.filter_by(status=False).all()
         mock_yilai = Mockserver.query.filter_by(delete=False).all()
         if current_user.is_sper == True:
-            projects = Project.query.filter_by(status=False).order_by('-id').all()
+            projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
             id = []
@@ -180,7 +180,7 @@ class EditcaseView(View):
         inrterface_list = Interface.query.filter_by(status=False).all()
         mock_yilai = Mockserver.query.filter_by(delete=False).all()
         if current_user.is_sper == True:
-            projects = Project.query.filter_by(status=False).order_by('-id').all()
+            projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
             id = []
@@ -340,7 +340,7 @@ class SeryongliView(MethodView):
         if project_is.status is True:
             return jsonify({'msg': '项目已经删除', 'code': 40})
         intertestcases = InterfaceTest.query.filter_by(projects_id=project_is.id, status=False,
-                                                       interface_type=str(interfatype)).order_by('-id').all()
+                                                       interface_type=str(interfatype)).order_by(InterfaceTest.id.desc()).all()
         interfacelist = []
         testeventlist = []
         for testeven in testevent:

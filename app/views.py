@@ -115,10 +115,9 @@ def page_not_found(e):
     return render_template('500.html')
 
 
-@app.route("/")
 class IndexFirstview(MethodView):
     def get(self):
-        return redirect(url_for("index"))
+        return redirect(url_for("home.index"))
 
 
 @app.route('/reg', methods=['GET', 'POST'])

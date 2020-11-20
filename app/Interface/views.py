@@ -32,7 +32,7 @@ class EditInterfaceView(MethodView):
             flash(u'要编辑的测试用例不存在')
             return redirect(url_for('home.interface'))
         if current_user.is_sper == True:
-            projects = Project.query.filter_by(status=False).order_by('-id').all()
+            projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
             id = []
@@ -52,7 +52,7 @@ class EditInterfaceView(MethodView):
             return redirect(url_for('home.interface'))
         project, models = get_pro_mo()
         if current_user.is_sper == True:
-            projects = Project.query.filter_by(status=False).order_by('-id').all()
+            projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
             id = []
