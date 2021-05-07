@@ -8,9 +8,10 @@
 ##  后续会基于python3.6+版本去维护平台。平台所有文章都位于doc目录，或者本文章有介绍，暂无其他资料。
 
 ----------------
-## 本地调试 安装依赖包后， python manage.py run即可  成功可以访问http://127.0.0.1:5000/index项目使用的数据库是sqlite
+# 本地调试 安装依赖包后， python manage.py run即可  成功可以访问http://127.0.0.1:5000/index
+#项目使用的数据库是sqlite
 ## 配置文件都在config.py，可以根据自己的实际情况进行修改
-
+# 在启动的过程中，可能会因为没有jenkis服务，jenkins的相关的代码已经注销。如果需要jenkins代码可以在app/home/views.py,app/home/urls.py,app/templates/back.html恢复即可。
 ### flask +gevent+nginx+Gunicorn+supervisor部署flask应用请用flaskapi_su.conf，用gunicorn部署应用。
 ### supervisor配置可见super.conf文件。
 ### 多用例定时任务完成的通知通过的钉钉群机器人通知，没有配置会获取config.py默认的

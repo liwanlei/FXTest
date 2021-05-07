@@ -6,7 +6,7 @@
 '''
 jenkins的链接
 '''
-import jenkins, requests
+import jenkins,  requests
 from config import jenkins_password, jenkins_user, jenkins_url
 
 

@@ -16,7 +16,7 @@ from app import loginManager, sched
 from common.Pagination import fenye_list
 from common.pageination import Pagination
 from error_message import *
-from common.CollectionJenkins import Conlenct_jenkins
+#from common.CollectionJenkins import Conlenct_jenkins
 from common.packageredis import ConRedisOper
 from config import *
 
@@ -755,53 +755,53 @@ class GettProtestreport(MethodView):
         return jsonify(({'msg': u'成功', 'code': 200, 'data': (testreportlist)}))
 
 
-class JenkinsFirst(MethodView):
-    @login_required
-    def get(self):
-        try:
-            # tasks=Task.query.filter_by(makeuser=current_user.id,status=False).all()
-            jobs = Conlenct_jenkins().get_all_job()
-            jenkis_task = []
-            for job in jobs:
-                # for task in tasks:
-                #   if job['name']==task.taskname:
-                jenkis_task.append({'name': job['name'], 'url': job['url'],
-                                    'color': job['color']})
-            return render_template('home/jenkins.html', jobs=jenkis_task)
-        except Exception as e:
-            flash("无法连接jenkins服务器", category="error")
-            return redirect(url_for('home.index'))
+# class JenkinsFirst(MethodView):
+#     @login_required
+#     def get(self):
+#         try:
+#             # tasks=Task.query.filter_by(makeuser=current_user.id,status=False).all()
+#             jobs = Conlenct_jenkins().get_all_job()
+#             jenkis_task = []
+#             for job in jobs:
+#                 # for task in tasks:
+#                 #   if job['name']==task.taskname:
+#                 jenkis_task.append({'name': job['name'], 'url': job['url'],
+#                                     'color': job['color']})
+#             return render_template('home/jenkins.html', jobs=jenkis_task)
+#         except Exception as e:
+#             flash("无法连接jenkins服务器", category="error")
+#             return redirect(url_for('home.index'))
 
 
-class JenkinsGou(MethodView):
-    @login_required
-    def get(self, jobname=''):
-        goujian = Conlenct_jenkins().build_job(jobname)
-        if goujian == True:
-            flash('构建成功！', category="message")
-            return redirect(url_for('home.jenkinsfirst'))
-        else:
-            flash('构建失败', category="message")
-            return redirect(url_for('home.jenkinsfirst'))
+# class JenkinsGou(MethodView):
+#     @login_required
+#     def get(self, jobname=''):
+#         goujian = Conlenct_jenkins().build_job(jobname)
+#         if goujian == True:
+#             flash('构建成功！', category="message")
+#             return redirect(url_for('home.jenkinsfirst'))
+#         else:
+#             flash('构建失败', category="message")
+#             return redirect(url_for('home.jenkinsfirst'))
 
 
-class GetJenLogview(MethodView):
-    @login_required
-    def post(self):
-        url = (request.get_data().decode('utf-8'))
-        url_base = (url.split('&')[0])
-        jobname = url.split('&')[1]
-        try:
-            log = Conlenct_jenkins().job_bulid_log(url_base, jobname)
-            return jsonify({"code": 200, 'data': str(log)})
-        except Exception as e:
-            return jsonify({'code': 701, 'data': str(e)})
-
-
-class DeleteJenkinstask(MethodView):
-    @login_required
-    def post(self, id):
-        pass
+# class GetJenLogview(MethodView):
+#     @login_required
+#     def post(self):
+#         url = (request.get_data().decode('utf-8'))
+#         url_base = (url.split('&')[0])
+#         jobname = url.split('&')[1]
+#         try:
+#             log = Conlenct_jenkins().job_bulid_log(url_base, jobname)
+#             return jsonify({"code": 200, 'data': str(log)})
+#         except Exception as e:
+#             return jsonify({'code': 701, 'data': str(e)})
+#
+#
+# class DeleteJenkinstask(MethodView):
+#     @login_required
+#     def post(self, id):
+#         pass
 
 
 class GenconfigView(MethodView):
