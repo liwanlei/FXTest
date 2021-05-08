@@ -29,9 +29,15 @@ class reques():
     def post(self, url, params, headers):  # post消息
         data = json.dumps(params)
         try:
-            self.r = requests.post(url, params=data, headers=headers, timeout=Interface_Time_Out)
-            json_response = json.loads(self.r.text)
-            spend = self.r.elapsed.total_seconds()
+            r = requests.post(url,
+                                   data=data,
+                                   timeout=Interface_Time_Out)
+
+            if r.status_code !=200:
+                return {'post请求出错': "状态码返回不是200"}
+            json_response = json.loads(r.text)
+
+            spend = r.elapsed.total_seconds()
             return json_response, spend
         except exceptions.Timeout:
             return {'post请求出错': "请求超时"}

@@ -598,13 +598,16 @@ class MakeonlyoneCase(MethodView):
                             db.session.commit()
                             return jsonify({'code': 46, 'msg': '测试参数应该是字典格式！'})
                 else:
-                    try:
-                        pasrms = eval(case.Interface_pase)
-                    except:
-                        case.Interface_is_tiaoshi = True
-                        case.Interface_tiaoshi_shifou = True
-                        db.session.commit()
-                        return jsonify({'code': 47, 'msg': '测试参数应该是字典格式！'})
+                    if case.Interface_pase is None or case.Interface_pase=="null":
+                        pasrms={}
+                    else:
+                        try:
+                            pasrms = json.loads(case.Interface_pase)
+                        except Exception as e:
+                            case.Interface_is_tiaoshi = True
+                            case.Interface_tiaoshi_shifou = True
+                            db.session.commit()
+                            return jsonify({'code': 47, 'msg': '测试参数应该是字典格式！'})
                 new_headers = case.Interface_headers
                 if new_headers == 'None':
                     ne = {'host': url}
@@ -669,20 +672,28 @@ class MakeonlyoneCase(MethodView):
                 else:
                     mysql_result = []
                 try:
-                    data = eval(pasrms)
+                    data = json.dumps(pasrms)
                 except Exception as e:
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
                     db.session.commit()
                     return jsonify({'code': 57, 'msg': '转化请求参数失败，原因：%s' % e})
 
-                me = Api(url=case.interface_id.Interface_url, fangshi=case.Interface_meth,
+                response = Api(url=testevent.url+case.Interface_url, fangshi=case.Interface_meth,
                          params=data, headers=ne)
-                result = me.getJson()
-                spend = me.spend()
-                return_mysql = pare_result_mysql(mysqlresult=mysql_result,
-                                                 return_result=result, paseziduan=case.databaseziduan)
+
+                result = response.getJson()
+
+
+                if result=="请求出错了":
+                    # save_reslut(key=str(case.id) + "&" + str(url), value=str(result))
+                    return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
+                spend = response.spend()
+                if case.databaseziduan is not  None:
+                    return_mysql = pare_result_mysql(mysqlresult=mysql_result,
+                                                     return_result=result, paseziduan=case.databaseziduan)
                 retur_re = assert_in(case.Interface_assert, result)
+
                 try:
                     if retur_re == 'pass' and return_mysql['result'] == 'pass':
                         case.Interface_is_tiaoshi = True
@@ -756,6 +767,7 @@ class MakeonlyoneCase(MethodView):
             else:
                 return jsonify({'code': 62, 'msg': '目前还不支持你所选择的类型的协议！'})
         except Exception as e:
+            print(e)
             case.Interface_is_tiaoshi = True
             case.Interface_tiaoshi_shifou = True
             db.session.commit()
