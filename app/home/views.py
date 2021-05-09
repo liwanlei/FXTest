@@ -16,7 +16,6 @@ from app import loginManager, sched
 from common.Pagination import fenye_list
 from common.pageination import Pagination
 from error_message import *
-#from common.CollectionJenkins import Conlenct_jenkins
 from common.packageredis import ConRedisOper
 from config import *
 
@@ -44,7 +43,7 @@ class index(MethodView):
         interface_list = []
         for interface in range(len(interface_cont) + 1):
             try:
-                if interface_cont[interface].projects.status == False:
+                if interface_cont[interface].projects.status is  False:
                     interface_list.append(interface_cont[interface])
                 else:
                     interface += 1
@@ -54,7 +53,7 @@ class index(MethodView):
         case_list = []
         for case in range(len(interfaceTest_cunt)):
             try:
-                if interfaceTest_cunt[case].projects.status == False:
+                if interfaceTest_cunt[case].projects.status is False:
                     case_list.append(interfaceTest_cunt[case])
                 else:
                     case += 1
@@ -64,7 +63,7 @@ class index(MethodView):
         reslut_list = []
         for result in range(len(resu_cout)):
             try:
-                if resu_cout[result].projects.status == False:
+                if resu_cout[result].projects.status is False:
                     reslut_list.append(resu_cout[result])
                 else:
                     result += 1
@@ -82,8 +81,10 @@ class index(MethodView):
         model_cout = Model.query.filter_by(status=False).count()
         return render_template('home/index.html', yongli=len(case_list),
                                jiekou=len(interface_list),
-                               report=len(reslut_list), project_cout=project_cout,
-                               model_cout=model_cout, my_tasl=My_task, all_run_case_count=all_run_case_count)
+                               report=len(reslut_list),
+                               project_cout=project_cout,
+                               model_cout=model_cout, my_tasl=My_task,
+                               all_run_case_count=all_run_case_count)
 
 
 class LoginView(MethodView):
@@ -216,13 +217,14 @@ class InterfaceView(MethodView):
     @login_required
     def get(self):
         models = Model.query.filter_by(status=False).all()
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).all()
         else:
             projects = []
             for pros in current_user.quanxians:
                 projects.append(pros.projects)
-        return render_template('home/interface.html', projects=projects, models=models)
+        return render_template('home/interface.html', projects=projects,
+                               models=models)
 
     @login_required
     def post(self):
@@ -237,7 +239,8 @@ class InterfaceView(MethodView):
         project_id = Project.query.filter_by(project_name=project).first().id
         models_id = Model.query.filter_by(model_name=model).first().id
         try:
-            new_interface = Interface(model_id=models_id, projects_id=project_id,
+            new_interface = Interface(model_id=models_id,
+                                      projects_id=project_id,
                                       Interface_name=name,
                                       Interface_url=url,
                                       Interface_meth=meth,
@@ -269,7 +272,7 @@ class InterfaceView(MethodView):
 class YongliView(MethodView):
     @login_required
     def get(self, page=1):
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).all()
         else:
             projects = []
@@ -297,7 +300,7 @@ class AdminuserView(MethodView):
     def get(self):
         wrok = Work.query.all()
         projects = Project.query.filter_by(status=False).all()
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             pagination = (User.query.order_by(User.id.desc()).all())
         else:
             pagination = []
@@ -307,11 +310,13 @@ class AdminuserView(MethodView):
                     pagination.append(projec.user.all())
                     id.append(projec.user.all())
             pagination = (hebinglist(pagination))
-        pager_obj = Pagination(request.args.get("page", 1), len(pagination), request.path, request.args,
+        pager_obj = Pagination(request.args.get("page", 1),
+                               len(pagination), request.path, request.args,
                                per_page_count=PageShow)
         index_list = pagination[pager_obj.start:pager_obj.end]
         html = pager_obj.page_html()
-        return render_template('home/useradmin.html', users=index_list, html=html, wroks=wrok, projects=projects)
+        return render_template('home/useradmin.html', users=index_list,
+                               html=html, wroks=wrok, projects=projects)
 
     @login_required
     def post(self):
@@ -357,7 +362,7 @@ class AdminuserView(MethodView):
 class TestrepView(MethodView):
     @login_required
     def get(self, page=1):
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             project = Project.query.filter_by(status=False).all()
         else:
             project = []
@@ -389,7 +394,7 @@ class TestrepView(MethodView):
 class ProjectView(MethodView):
     @login_required
     def get(self, page=1):
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).all()
         else:
             projects = []
@@ -421,8 +426,10 @@ class ProjectView(MethodView):
         try:
             db.session.add(new_moel)
             db.session.commit()
-            testgroup = TestGroup(adduser=current_user.id, addtime=datetime.datetime.now(),
-                                  updatetime=datetime.datetime.now(), updateuser=current_user.id,
+            testgroup = TestGroup(adduser=current_user.id,
+                                  addtime=datetime.datetime.now(),
+                                  updatetime=datetime.datetime.now(),
+                                  updateuser=current_user.id,
                                   name='黑名单', projectid=new_moel.id)
             db.session.add(testgroup)
             db.session.commit()
@@ -469,7 +476,7 @@ class ProjectView(MethodView):
 class ModelView(MethodView):
     @login_required
     def get(self, page=1):
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             project_list = Project.query.filter_by(status=False).all()
         else:
             project_list = []
@@ -602,8 +609,10 @@ class TesteventVies(MethodView):
         if url_old:
             return jsonify({"msg": u'测试环境必须是相互独立的', "code": 209, 'data': ''})
         prkcyt = Project.query.filter_by(project_name=project).first()
-        testevent = Interfacehuan(url=url, desc=desc, project=prkcyt.id, database=name,
-                            databaseuser=usernmae, databasepassword=password, dbhost=host,
+        testevent = Interfacehuan(url=url, desc=desc, project=prkcyt.id,
+                                  database=name,
+                            databaseuser=usernmae, databasepassword=password,
+                                  dbhost=host,
                             dbport=port, make_user=current_user.id)
         db.session.add(testevent)
         try:
@@ -629,8 +638,11 @@ class TesteventVies(MethodView):
         project = Project.query.filter_by(project_name=project).first()
         event = Interfacehuan.query.filter_by(id=id).first()
         if not event:
-            newevent = Interfacehuan(url=url, desc=desc, project=project.id, database=name,
-                                databaseuser=usernmae, databasepassword=password, dbhost=host,
+            newevent = Interfacehuan(url=url, desc=desc, project=project.id,
+                                     database=name,
+                                databaseuser=usernmae,
+                                     databasepassword=password, dbhost=host,
+
                                 dbport=port, make_user=current_user.id)
             db.session.add(newevent)
             db.session.commit()
@@ -714,14 +726,14 @@ class MockViews(MethodView):
 class TimingtasksView(MethodView):
     @login_required
     def get(self, page=1):
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             task = []
             task.append(Task.query.filter_by(status=False).order_by(Task.id.desc()).all())
         else:
             task = []
             id = []
             for project in current_user.quanxians:
-                if (project.projects.id in id) == False:
+                if (project.projects.id in id) is False:
                     task.append(Task.query.filter_by(prject=project.projects.id, status=False).all())
                     id.append(project.projects.id)
         old_yask = hebinglist(task)

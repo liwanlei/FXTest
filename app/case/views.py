@@ -55,14 +55,14 @@ class AddtestcaseView(View):
         project, models = get_pro_mo()
         inrterface_list = Interface.query.filter_by(status=False).all()
         mock_yilai = Mockserver.query.filter_by(delete=False).all()
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
             id = []
             for i in current_user.quanxians:
-                if (i.projects in id) == False:
-                    if i.projects.status == False:
+                if (i.projects in id) is False:
+                    if i.projects.status is False:
                         projects.append(i.projects)
                         id.append(i.projects)
         if request.method == 'POST' and form.validate_on_submit:
@@ -827,7 +827,7 @@ class OnecaseDetial(MethodView):
                 spend_ed = 0
             else:
                 spend_ed = rest_one.spend
-            if rest_one.ceshihuanjing == None:
+            if rest_one.ceshihuanjing is None:
                 ceshihuanjing = ''
             else:
                 ceshihuanjing = rest_one.ceshihuanjing

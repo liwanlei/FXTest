@@ -31,14 +31,14 @@ class EditInterfaceView(MethodView):
         if interface is None:
             flash(u'要编辑的测试用例不存在')
             return redirect(url_for('home.interface'))
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
             id = []
             for i in current_user.quanxians:
-                if (i.projects in id) == False:
-                    if i.projects.status == False:
+                if (i.projects in id) is False:
+                    if i.projects.status is False:
                         projects.append(i.projects)
                         id.append(i.projects)
         project, models = get_pro_mo()

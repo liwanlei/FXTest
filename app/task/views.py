@@ -13,8 +13,7 @@ from common.htmltestreport import createHtml
 from app.test_case.Test_case import ApiTestCase
 from common.mergelist import listmax
 from common.Dingtalk import send_ding
-from config import Dingtalk_access_token, task_redis_db, redis_host, redis_port
-from common.packageredis import ConRedisOper
+from config import Dingtalk_access_token
 
 task = Blueprint('task', __name__)
 
@@ -65,7 +64,7 @@ def addtask(id):  # 定时任务执行的时候所用的函数
         Interface_yilai_list.append(task_yongli.getattr_p)
         Interface_save_list.append(task_yongli.saveresult)
     testevent = task.testevent
-    intest=Interfacehuan.query.filter_by(id=testevent, status=False).first()
+    intest = Interfacehuan.query.filter_by(id=testevent, status=False).first()
     apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list,
                           inteface_parm=Interface_pase_list, inteface_assert=Interface_assert_list,
                           file=file, headers=Interface_headers_list, pid=Interface_pid_list,
@@ -73,28 +72,37 @@ def addtask(id):  # 定时任务执行的时候所用的函数
                           data_ziduan=Interface_msyql_ziduan_list,
                           urltest=intest.url,
                           yilaidata=Interface_yilai_list, saveresult=Interface_save_list, id_list=id_list)
-    result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, result_wei, result_except, spendlist = apitest.testapi()
+    result_toal, result_pass, result_fail, relusts, \
+    bask_list, result_cashu, result_wei, result_except, \
+    spendlist = apitest.testapi()
     large, small, pingjun = listmax(spendlist)
     endtime = datetime.datetime.now()
     end = time.time()
-    createHtml(titles=u'定时任务接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
-               passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
-               headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
-               meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
-               excepts=result_except, yuqis=result_cashu, weizhi=result_wei, maxs=large, mins=small,
+    createHtml(titles=u'定时任务接口测试报告', filepath=filepath,
+               starttime=starttime, endtime=endtime,
+               passge=result_pass, fail=result_fail, id=id_list,
+               name=projecct_list,
+               headers=Interface_headers_list, coneent=Interface_url_list,
+               url=Interface_meth_list,
+               meth=Interface_pase_list, yuqi=Interface_assert_list,
+               json=bask_list, relusts=relusts,
+               excepts=result_except, yuqis=result_cashu,
+               weizhi=result_wei, maxs=large, mins=small,
                pingluns=pingjun)
     hour = end - star
-    new_reust = TestResult(Test_user_id=1, test_num=result_toal, pass_num=result_pass,
-                           fail_num=result_fail, test_time=starttime, hour_time=hour,
-                           test_rep=(day + '.html'), test_log=(day + '.log'), Exception_num=result_except,
-                           can_num=result_cashu, wei_num=result_wei, projects_id=projecct_list[0].id)
+    new_reust = TestResult(Test_user_id=1, test_num=result_toal,
+                           pass_num=result_pass,
+                           fail_num=result_fail, test_time=starttime,
+                           hour_time=hour,
+                           test_rep=(day + '.html'), test_log=(day + '.log'),
+                           Exception_num=result_except,
+                           can_num=result_cashu, wei_num=result_wei,
+                           projects_id=projecct_list[0].id)
     db.session.add(new_reust)
     db.session.commit()
-
     try:
-        send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
-                         Dingtalk_access_token=Dingtalk_access_token)
-
+        send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
+                  Dingtalk_access_token=Dingtalk_access_token)
     except Exception as e:
         print(e)
         # flash('定时任务的钉钉消息发送失败！原因:%s' % e)
@@ -106,36 +114,38 @@ def load_user(user_id):
 
 
 class TestforTaskView(MethodView):  # 为测试任务添加测试用例
+
     @login_required
     def get(self, id):
         if current_user.is_sper == True:
             projects = Project.query.filter_by(status=False).all()
         else:
             projects = []
-            id = []
+            ids = []
             for i in current_user.quanxians:
-                if (i.projects in id) == False:
-                    if i.projects.status == False:
+                if (i.projects in ids) is False:
+                    if i.projects.status is False:
                         projects.append(i.projects)
-                        id.append(i.projects)
+                        ids.append(i.projects)
         task_one = Task.query.filter_by(id=id).first()
-        return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=projects)
+        return render_template('add/addtestyongfortask.html',
+                               task_one=task_one, procjets=projects)
 
     @login_required
     def post(self, id):
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).all()
         else:
             projects = []
             id = []
             for i in current_user.quanxians:
-                if (i.projects in id) == False:
-                    if i.projects.status == False:
+                if (i.projects in id) is False:
+                    if i.projects.status is False:
                         projects.append(i.projects)
                         id.append(i.projects)
         task_one = Task.query.filter_by(id=id).first()
-        proc_test = request.form.get('project')
-        if proc_test == '':
+        procject_test = request.form.get('project')
+        if procject_test == '':
             flash(u'不能不添加测试项目！')
             return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=projects)
         test_yongli = request.form.getlist('testyongli')
@@ -150,7 +160,7 @@ class TestforTaskView(MethodView):  # 为测试任务添加测试用例
                 continue
             else:
                 task_one.interface.append(task_yong)
-        task_one.prject = proc_test
+        task_one.prject = procject_test
         db.session.add(task_one)
         try:
             db.session.commit()
@@ -276,14 +286,14 @@ class AddtimingtaskView(MethodView):
 class Editmingtaskview(MethodView):
     @login_required
     def get(self, id):
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).all()
         else:
             projects = []
             id = []
             for i in current_user.quanxians:
-                if (i.projects in id) == False:
-                    if i.projects.status == False:
+                if (i.projects in id) is False:
+                    if i.projects.status is False:
                         projects.append(i.projects)
                         id.append(i.projects)
         task_one = Task.query.filter_by(id=id).first()

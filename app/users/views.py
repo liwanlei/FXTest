@@ -21,7 +21,7 @@ class SetadView(View):  # 设置管理员
 
     @login_required
     def dispatch_request(self):
-        if chckuserpermisson() == False:
+        if chckuserpermisson() is False:
             return jsonify({'code': 13, 'msg': permiss_is_ness, 'data': ''})
         projec = request.get_json()
         try:
@@ -82,7 +82,7 @@ class FreadView(View):  # 冻结
 
     @login_required
     def dispatch_request(self, id):
-        if chckuserpermisson() == False:
+        if chckuserpermisson() is False:
             flash(permiss_is_ness)
             return redirect(request.headers.get('Referer'))
         user = User.query.filter_by(username=session.get('username')).first()
@@ -90,7 +90,7 @@ class FreadView(View):  # 冻结
             flash(permiss_is_ness)
             return redirect(request.headers.get('Referer'))
         new_ad = User.query.filter_by(id=id).first()
-        if new_ad.status == True:
+        if new_ad.status is True:
             flash(free_is_again)
             return redirect(url_for('home.adminuser'))
         if new_ad == user:
@@ -117,7 +117,7 @@ class FrereView(View):  # 解冻
             return redirect(request.headers.get('Referer'))
         user = User.query.filter_by(username=session.get('username')).first()
         new_ad = User.query.filter_by(id=id).first()
-        if new_ad.status == False:
+        if new_ad.status is False:
             flash(user_is_not_free)
             return redirect(url_for('home.adminuser'))
         if new_ad != user:
@@ -127,6 +127,7 @@ class FrereView(View):  # 解冻
                 flash(user_is_un_free)
                 return redirect(url_for('home.adminuser'))
             except Exception as e:
+                print(e)
                 db.session.rollback()
                 flash(user_is_unfree_success)
                 return redirect(url_for('home.adminuser'))
@@ -139,7 +140,7 @@ class Acivauserview(View):
 
     @login_required
     def dispatch_request(self):
-        if chckuserpermisson() == False:
+        if chckuserpermisson() is False:
             return jsonify({'code': 13, 'msg': permiss_is_ness, 'data': ''})
         userjobnum = request.get_json()
         try:
@@ -155,8 +156,9 @@ class Acivauserview(View):
             if user_job:
                 return jsonify({'code': 13, 'msg': activi_user_jobnum})
         except Exception as e:
+            print(e)
             pass
-        if (user.jobnum == None or user.jobnum == "None"):
+        if (user.jobnum is None or user.jobnum == "None"):
             user.jobnum = job_num
             db.session.add(user)
             db.session.commit()

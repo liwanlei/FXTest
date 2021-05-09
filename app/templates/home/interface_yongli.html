@@ -30,7 +30,9 @@
                 <option>http</option>
                 <option>dubbo</option>
             </select>
-            <button class="btn-success">转换Charles用例</button>
+            <button class="btn-primary" id="changecharles">转换Charles导出case</button>
+         <button class="btn-primary" id="changeper">转换压测脚本</button>
+          <button class="btn-primary" id="recordcase">录制case</button>
             <form method="POST" action="{{ url_for('case.duoyongli') }}">
                 <div style="margin-top: 10px">
                     <a href="{{ url_for('case.addtestcase') }}">
