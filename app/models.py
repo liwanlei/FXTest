@@ -186,6 +186,7 @@ class InterfaceTest(db.Model):  # 测试用例表
     is_reback = db.Column(db.Integer(), default=0)  # 0 否 1是
     is_monitor = db.Column(db.Integer(), default=0)  # 1 监控用例
     status = db.Column(db.Boolean(), default=False)
+    # rely_mock=db.Column(db.Boolean(),default=False) #是否依赖
 
     def __repr__(self):
         return self.Interface_name
@@ -282,6 +283,7 @@ class Model(db.Model):  # 模块，有的接口是根据模块来划分的
     Interfacetest = db.relationship('InterfaceTest', backref='models', lazy='dynamic')
     Interface = db.relationship('Interface', backref='models', lazy='dynamic')
     status = db.Column(db.Boolean(), default=False)
+    project = db.Column(db.Integer(), db.ForeignKey('projects.id'))
 
     def __repr__(self):
         return self.model_name
@@ -454,7 +456,7 @@ class TestGroup(db.Model):
     '''测试组'''
     __tablename__ = 'testgroup'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    name = db.Column(db.String(252), unique=True)
+    name = db.Column(db.String(252))
     projectid = db.Column(db.Integer())
     status = db.Column(db.Integer(), default=0)  # 状态，0正常，1删除
     adduser = db.Column(db.Integer(), default=0)

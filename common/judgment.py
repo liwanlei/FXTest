@@ -16,6 +16,7 @@ def assert_in(asserqiwang, fanhuijson):
             value1 = [(str(getdictvalue(fanhuijson, key)[0])) for key in result.keys()]
             value2 = [(str(value)) for value in result.values()]
             if value1 == value2:
+
                 return 'pass'
             else:
                 return 'fail'

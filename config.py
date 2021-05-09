@@ -18,23 +18,29 @@ Interface_Time_Out=5000#超时时间
 redis_password=''  #reids的密码
 max_connec_redis=10 #最大链接池
 test_fail_try_num=3#测试用例测试重试次数
-jobstores = {
-    'redis': RedisJobStore(),
-}
-executors = {
-    'default': ThreadPoolExecutor(10),
-    'processpool': ProcessPoolExecutor(3)
-}
 PageShow=25#这里配置的就是每个页显示多少条数据
 Dingtalk_access_token=''#在这里配置您的接受通知的钉钉群自定义机器人webhook，
 OneAdminCount=10 #设置项目管理员的数量
 Config_daoru_xianzhi=50#配置可以导入限制
-save_duration=24*60*60#配置redis存储的时长
-redis_host='localhost' #redis地址
+save_duration=24*60#配置redis存储的时长
+redis_host='127.0.0.1' #redis地址
 redis_port=6379
 task_redis_db=3
 redis_save_result_db=2
 email_type="online.com"#用于校验邮箱
+
+REDIS = {
+    'host': redis_host,
+    'port': redis_port,
+    'db': task_redis_db
+}
+jobstores = {
+    'redis': RedisJobStore(**REDIS),
+}
+executors = {
+    'default': ThreadPoolExecutor(10),
+    'processpool': ProcessPoolExecutor(5)
+}
 class dev(object):#研发环境配置
 	SECRET_KEY = 'BaSeQuie'
 	basedir=os.path.abspath(os.path.dirname(__file__))

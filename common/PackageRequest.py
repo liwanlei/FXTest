@@ -27,17 +27,18 @@ class reques():
             return {'get请求出错': "错误原因:%s" % e}
 
     def post(self, url, params, headers):  # post消息
+
         data = json.dumps(params)
         try:
-            r = requests.post(url,
+            reponse = requests.post(url,
                                    data=data,
                                    timeout=Interface_Time_Out)
 
-            if r.status_code !=200:
+            if reponse.status_code !=200:
                 return {'post请求出错': "状态码返回不是200"}
-            json_response = json.loads(r.text)
+            json_response = json.loads(reponse.text)
 
-            spend = r.elapsed.total_seconds()
+            spend = reponse.elapsed.total_seconds()
             return json_response, spend
         except exceptions.Timeout:
             return {'post请求出错': "请求超时"}

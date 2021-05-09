@@ -31,13 +31,12 @@ case = Blueprint('case', __name__)
 
 
 def save_reslut(key, value):
-    m = ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
-    m.sethase(key, value, save_duration)
-
+    redis = ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
+    redis.sethase(str(key), str(value), save_duration)
 
 def get_reslut(key):
-    m = ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
-    reslit = m.getset(key)
+    redis= ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
+    reslit = redis.getset(key)
     return reslit
 
 
@@ -109,7 +108,7 @@ class AddtestcaseView(View):
                                        inrterface_list=inrterface_list, mock_yilai=mock_yilai)
             project_id = Project.query.filter_by(project_name=yongli_nam).first().id
             models_id = Model.query.filter_by(model_name=mode).first().id
-            interface = Interface.query.filter_by(Interface_name=interface_name).first().id
+            interface = Interface.query.filter_by(Interface_name=interface_name).first()
             if save == 1 or save == '1':
                 saves = False
             elif save == 2 or save == '2':
@@ -120,14 +119,14 @@ class AddtestcaseView(View):
                                        models=models, inrterface_list=inrterface_list)
 
             try:
-                newcase = InterfaceTest(projects_id=project_id, model_id=models_id, interface_id=interface,
+                newcase = InterfaceTest(projects_id=project_id, model_id=models_id, interface_id=interface.id,
                                         Interface_headers=interface_header, bian_num=interface_url,
                                         Interface_meth=interface_meth, Interface_pase=interface_can,
                                         Interface_assert=interface_re, Interface_user_id=current_user.id,
                                         saveresult=saves, pid=(yilai_tes), getattr_p=yilai_dat,
                                         is_database=is_database, chaxunshujuku=databasesql,
                                         databaseziduan=databijiao,
-                                        Interface_name=interface_name, Interface_url=interface_url,
+                                        Interface_name=interface_name, Interface_url=interface.Interface_url,
                                         interface_type=interface_type, is_ci=is_ci)
                 db.session.add(newcase)
                 db.session.commit()
@@ -503,7 +502,7 @@ class DuoyongliView(View):
                                       yilaidata=Interface_yilai_list, saveresult=Interface_save_list,
                                       id_list=id_list, is_database=Interface_is_data_list,
                                       data_mysql=Interface_mysql_list,
-                                      data_ziduan=Interface_msyql_ziduan_list, urltest=testevent)
+                                      data_ziduan=Interface_msyql_ziduan_list, urltest=testevent.url)
                 result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, \
                 result_wei, result_except, spend_list = apitest.testapi()
                 large, minx, pinglun = listmax(list2=spend_list)
@@ -623,6 +622,7 @@ class MakeonlyoneCase(MethodView):
                         db.session.commit()
                         return jsonify({'code': 48, 'msg': '测试的请求头应该是字典格式的！'})
                 if case.is_database is True:
+
                     if case.chaxunshujuku is None or case.databaseziduan is None:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
@@ -653,6 +653,8 @@ class MakeonlyoneCase(MethodView):
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
                         return jsonify({'code': 54, 'msg': '测试环境数据库登录密码配置不存在'})
+                    if case.databaseziduan =="" or case.chaxunshujuku=="":
+                        return jsonify({'code': 55, 'msg': '依赖数据库必须有字段'})
                     conncts = cursemsql(host=testevent.dbhost, port=testevent.dbport,
                                         user=testevent.databaseuser, password=testevent.databasepassword,
                                         database=testevent.database)
@@ -684,7 +686,6 @@ class MakeonlyoneCase(MethodView):
 
                 result = response.getJson()
 
-
                 if result=="请求出错了":
                     # save_reslut(key=str(case.id) + "&" + str(url), value=str(result))
                     return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
@@ -693,27 +694,40 @@ class MakeonlyoneCase(MethodView):
                     return_mysql = pare_result_mysql(mysqlresult=mysql_result,
                                                      return_result=result, paseziduan=case.databaseziduan)
                 retur_re = assert_in(case.Interface_assert, result)
-
                 try:
-                    if retur_re == 'pass' and return_mysql['result'] == 'pass':
+                    if case.is_database is True:
+                        if retur_re == 'pass' and return_mysql['result'] == 'pass':
+                            case.Interface_is_tiaoshi = True
+                            case.Interface_tiaoshi_shifou = False
+                            save_reslut(key=str(case.id) + "&" + url, value=str(result))
+                            return jsonify({'code': 200, 'msg': '测试用例调试通过！'})
+                        elif retur_re == 'fail' or return_mysql['result'] == 'fail':
+                            case.Interface_is_tiaoshi = True
+                            case.Interface_tiaoshi_shifou = True
+                            save_reslut(key=str(case.id) + "&" + url, value=str(result))
+                            return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
+                        else:
+                            case.Interface_is_tiaoshi = True
+                            case.Interface_tiaoshi_shifou = True
+                            save_reslut(key=str(case.id)+ "&" + url, value=str(result))
+                            return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
+
+                    if retur_re == 'pass':
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = False
-                        save_reslut(key=case.id + "&" + url, value=str(result))
+                        save_reslut(key=str(case.id) + "&" + url, value=str(result))
                         return jsonify({'code': 200, 'msg': '测试用例调试通过！'})
-                    elif retur_re == 'fail' or return_mysql['result'] == 'fail':
-                        case.Interface_is_tiaoshi = True
-                        case.Interface_tiaoshi_shifou = True
-                        save_reslut(key=case.id + "&" + url, value=str(result))
-                        return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
                     else:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
-                        save_reslut(key=case.id + "&" + url, value=str(result))
-                        return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
+                        key=str(case.id) + "&" + url
+
+                        save_reslut(key=key, value=str(result))
+                        return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
                 except Exception as e:
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
-                    save_reslut(key=case.id + "&" + url, value=str(result))
+                    save_reslut(key=str(case.id) + "&" + url, value=str(result))
                     return jsonify({'code': 60, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(e)})
             # elif case.interface_type == 'dubbo':
             #     try:
@@ -767,7 +781,7 @@ class MakeonlyoneCase(MethodView):
             else:
                 return jsonify({'code': 62, 'msg': '目前还不支持你所选择的类型的协议！'})
         except Exception as e:
-            print(e)
+
             case.Interface_is_tiaoshi = True
             case.Interface_tiaoshi_shifou = True
             db.session.commit()

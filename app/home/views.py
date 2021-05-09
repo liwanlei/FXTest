@@ -93,11 +93,13 @@ class LoginView(MethodView):
 
     def post(self):
         data = request.get_json()
+        if data is None:
+            return jsonify({'msg': login_username_not_message, 'code': 33, 'data': ''})
         ip = request.remote_addr
         username = data['username']
         password = data['password']
         if username is None:
-            return jsonify({'msg': login_username_not_message, 'code': 33, 'data': ''})
+                return jsonify({'msg': login_username_not_message, 'code': 33, 'data': ''})
         if password is None:
             return jsonify({'msg': login_password_not_message, 'code': 34, 'data': ''})
         user = User.query.filter_by(username=username).first()
@@ -498,14 +500,15 @@ class ModelView(MethodView):
         data = request.get_json()
         models = Model.query.filter_by(model_name=data['name']).first()
         if data['project'] == '请选择':
-            common = True
+            # common = True
             project_one = None
         else:
             project_one = Project.query.filter_by(project_name=data['project']).first().id
-            common = False
+            # common = False
         if models:
             return jsonify({'code': 1, 'data': u'模块不能重复存在'})
-        new_moel = Model(model_name=data['name'], model_user_id=current_user.id, common=common, project=project_one)
+
+        new_moel = Model(model_name=data['name'], model_user_id=current_user.id,  project=project_one)
         db.session.add(new_moel)
         try:
             db.session.commit()
@@ -523,18 +526,15 @@ class ModelView(MethodView):
         projec = json_data['project']
         edit_mode = Model.query.filter_by(id=id, status=False).first()
         if projec == '请选择':
-            common = True
             project_one = None
         else:
-            common = False
             project_one = Project.query.filter_by(status=False, project_name=projec).first().id
         if not edit_mode:
-            mew = Model(model_name=name, model_user_id=current_user.id, common=common, project=project_one)
+            mew = Model(model_name=name, model_user_id=current_user.id)
             db.session.add(mew)
             db.session.commit()
             return jsonify({'data': '编辑成功', 'code': 2})
         edit_mode.model_name = name
-        edit_mode.common = common
         edit_mode.project = project_one
         try:
             db.session.commit()
@@ -547,29 +547,31 @@ class ModelView(MethodView):
 class TesteventVies(MethodView):
     @login_required
     def get(self, page=1):
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             events = []
             events.append(Interfacehuan.query.filter_by(status=False).order_by(Interfacehuan.id.desc()).all())
         else:
             events = []
             id = []
             for project in current_user.quanxians:
-                if (project.projects.id in id) == False:
+                if (project.projects.id in id) is False :
                     events.append(
-                        Interfacehuan.query.filter_by(project=project.projects.id, status=False).order_by(Project.id.desc()).all())
+                        Interfacehuan.query.filter_by(project=project.projects.id, status=False).order_by(Interfacehuan.id.desc()).all())
                     id.append(project.projects.id)
         projects_lsit = fenye_list(Ob_list=events, split=PageShow)
         pages = range(1, len(projects_lsit) + 1)
-        if current_user.is_sper == True:
+        if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
             for i in current_user.quanxians:
-                if (i.projects in i) == False:
+                if (i.projects in i) is False:
                     projects.append(i.projects)
         try:
-            pyth_post1 = projects_lsit[int(page) - 1]
-            return render_template('home/events.html', events=pyth_post1, pages=pages, projects=projects)
+            teststcentpage = projects_lsit[int(page) - 1]
+            return render_template('home/events.html', events=teststcentpage,
+                                   pages=pages,
+                                   projects=projects)
         except:
             return redirect(url_for('home.ceshihuanjing'))
 
@@ -600,10 +602,10 @@ class TesteventVies(MethodView):
         if url_old:
             return jsonify({"msg": u'测试环境必须是相互独立的', "code": 209, 'data': ''})
         prkcyt = Project.query.filter_by(project_name=project).first()
-        end = Interfacehuan(url=url, desc=desc, project=prkcyt.id, database=name,
+        testevent = Interfacehuan(url=url, desc=desc, project=prkcyt.id, database=name,
                             databaseuser=usernmae, databasepassword=password, dbhost=host,
                             dbport=port, make_user=current_user.id)
-        db.session.add(end)
+        db.session.add(testevent)
         try:
             db.session.commit()
             return jsonify({"data": u'添加测试环境成功!', "code": 2})
@@ -627,10 +629,10 @@ class TesteventVies(MethodView):
         project = Project.query.filter_by(project_name=project).first()
         event = Interfacehuan.query.filter_by(id=id).first()
         if not event:
-            end = Interfacehuan(url=url, desc=desc, project=project.id, database=name,
+            newevent = Interfacehuan(url=url, desc=desc, project=project.id, database=name,
                                 databaseuser=usernmae, databasepassword=password, dbhost=host,
                                 dbport=port, make_user=current_user.id)
-            db.session.add(end)
+            db.session.add(newevent)
             db.session.commit()
             return jsonify({'data': '编辑成功', 'code': 2})
         event.url = url
