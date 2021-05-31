@@ -185,7 +185,7 @@ class InterfaceTest(db.Model):  # 测试用例表
     is_smoke = db.Column(db.Integer(), default=0)  # 0 否 1是
     is_reback = db.Column(db.Integer(), default=0)  # 0 否 1是
     is_monitor = db.Column(db.Integer(), default=0)  # 1 监控用例
-    status = db.Column(db.Boolean(), default=False)
+    status = db.Column(db.Boolean(), default=False)#是否删除
     # rely_mock=db.Column(db.Boolean(),default=False) #是否依赖
 
     def __repr__(self):
@@ -511,6 +511,7 @@ class Testerver(db.Model):
     creatdate = db.Column(db.Date(), default=datetime.datetime.now())
     updateuser = db.Column(db.Integer(), default=createuser)
     updatetime = db.Column(db.Date(), default=datetime.datetime.now())
+    is_run=db.Column(db.Integer(),default=0)#默认是没有执行
 
     def __repr__(self):
         return str(self.name)

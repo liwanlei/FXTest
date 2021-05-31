@@ -20,12 +20,13 @@ from flask_login import current_user, login_required
 from common.Dingtalk import send_ding
 from common.oparmysqldatabase import *
 from config import Config_daoru_xianzhi, redis_host, \
-    redis_port, redis_save_result_db, save_duration
+    redis_port, redis_save_result_db, save_duration,jmeter_data_db
 from common.opearexcel import create_interface_case
 from common.mergelist import listmax
 from common.packageredis import ConRedisOper
 from common.CreateJxmUntil import make
 from common.SshTools import Sshtool
+
 
 case = Blueprint('case', __name__)
 
@@ -841,20 +842,20 @@ class OnecaseDetial(MethodView):
 class CaseToJmx(MethodView):
     def post(self):
         try:
-            projec = eval(request.get_data().decode('utf-8'))
+            data_jmx = eval(request.get_data().decode('utf-8'))
         except Exception as e:
             return jsonify({'code': 99, 'messgage': '格式不正确', 'data': ''})
-        interfaceid = projec["interfaceid"]
-        testid = projec["testid"]
-        runcount = projec["runcount"]
-        loopcount = projec["loopcount"]
-        dbname = projec["dbname"]
-        testserverid = projec["testserverid"]
-        case_one = InterfaceTest.query.filter_by(id=int(interfaceid)).first()
+        interfacecaseid = data_jmx["interfaceid"]
+        testid = data_jmx["testeventid"]
+        runcount = data_jmx["runcount"]
+        loopcount = data_jmx["loopcount"]
+        dbname =jmeter_data_db
+        testserverid = data_jmx["testserverid"]
+        case_one = InterfaceTest.query.filter_by(id=int(interfacecaseid)).first()
         if not case_one:
             return jsonify({'code': 99, 'messgage': '没有测试用例', 'data': ''})
         testvents = Interfacehuan.query.filter_by(id=int(testid)).first()
-        if not case_one:
+        if not testvents:
             return jsonify({'code': 99, 'messgage': '测试环境不存在', 'data': ''})
         tetserver = Testerver.query.filter_by(id=int(testserverid), status=0).first()
         if not tetserver:
@@ -864,8 +865,7 @@ class CaseToJmx(MethodView):
             port = 80
         else:
             port = int(all[1])
-        if not testvents:
-            return jsonify({'code': 99, 'messgage': '测试环境不存在', 'data': ''})
+
         parame = ""
         if case_one.Interface_pase is not None:
             try:
@@ -879,12 +879,13 @@ class CaseToJmx(MethodView):
                 <stringProp name="Argument.name">%s</stringProp>
               </elementProp>''' % (value, key)
             except Exception as e:
-                pass
+                print(e)
+                return jsonify({'code': 99, 'messgage':'转换接口压测测试用例失败', 'data': ''})
         all = make(runcount, loopcount, all[0], port, case_one.interfaces.Interface_url,
                    case_one.Interface_meth, dbname, case_one.projects.project_name, parame)
         path = os.getcwd()
         filepath = path + "/jxmpath/"
-        name = str(testvents.id) + str(case_one.id) + ".jmx"
+        name =str(case_one.projects.project_name)+"_"+ str(testvents.id) +"_"+ str(case_one.id) + ".jmx"
         filepathname = filepath + name
         with open(filepathname, 'wb') as f:
             f.write(all.encode())
@@ -892,17 +893,24 @@ class CaseToJmx(MethodView):
                           jmxpath=filepathname, serverid=tetserver.id, name=name)
         db.session.add(testjmx)
         db.session.commit()
-        return jsonify({'code': 0, 'messgage': '转化接口压测环境成功', 'data': testjmx.id})
+        return jsonify({'code': 0, 'messgage': '转化接口压测用例成功', 'data': testjmx.id})
 
 
 class JmxToServer(MethodView):
     def get(self, id):
+        '''
+        todo
+            1.服务器执行压测脚本开始后设置为正在运行
+            2.如何压测执行完毕怎么修改这个服务器的状态
+            3.执行完A压测需求，执行B压测需求，需要有先后，如何加入队列处理
+            4.应该是一个公用的方法，内部也需要调用，这里需要抽离下
+        '''
         testjmx = TestJmx.query.filter_by(id=int(id)).first()
         if not testjmx:
             return jsonify({'code': 99, 'messgage': '测试脚本不存在', 'data': ''})
         if testjmx.serverid is None:
             return jsonify({'code': 99, 'messgage': '测试脚本没有选择服务器', 'data': ''})
-        testserver = Testerver.query.filter_by(id=int(testjmx.id), status=0).first()
+        testserver = Testerver.query.filter_by(id=int(testjmx.serverid), status=0).first()
         if not testserver:
             return jsonify({'code': 99, 'messgage': '测试服务器不存在或者已经删除', 'data': ''})
         cmd = "sshpass -p " + testserver.loginpassword + " scp -P " + testserver.port + "  " + testjmx.jmxpath + " " + testserver.loginuser + "@" + testserver.ip + ":/home"
@@ -910,4 +918,7 @@ class JmxToServer(MethodView):
         commentc = Sshtool(testserver.ip, testserver.port, testserver.loginuser, testserver.loginpassword)
         cmd = "./jmeter -n -t /home/" + testjmx.name + '  -l name.htl'
         commentc.command(cmd)
+        testserver.is_run=1
+        db.session.add(testserver)
+        db.session.commit()
         return jsonify({'code': 0, 'messgage': '压测已经在远程服务器运行', 'data': testjmx.id})

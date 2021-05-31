@@ -27,6 +27,8 @@ redis_host='127.0.0.1' #redis地址
 redis_port=6379
 task_redis_db=3
 redis_save_result_db=2
+jmeter_data_db='test'
+
 email_type="online.com"#用于校验邮箱
 
 REDIS = {

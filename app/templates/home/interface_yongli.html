@@ -31,8 +31,8 @@
                 <option>dubbo</option>
             </select>
             <button class="btn-primary" id="changecharles">转换Charles导出case</button>
-         <button class="btn-primary" id="changeper">转换压测脚本</button>
-          <button class="btn-primary" id="recordcase">录制case</button>
+            <button class="btn-primary" id="changepercase">生成压测脚本</button>
+            <button class="btn-primary" id="recordcase">录制case</button>
             <form method="POST" action="{{ url_for('case.duoyongli') }}">
                 <div style="margin-top: 10px">
                     <a href="{{ url_for('case.addtestcase') }}">
@@ -102,6 +102,32 @@
                 <input value="取消" type="button" class=" btn-default" onclick="closeone()">
             </div>
         </form>
+    </div>
+    <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+         id="casetojmx">
+        <div style="height: 5px;">接口用例转换压测脚本</div>
+        {#        <form method="POST" action="{{ url_for('case.daochucase') }}">#}
+        <div style="background-color: whitesmoke;margin-top: 24px">
+            选择执行测试环境:
+            <select name="testevent">
+                {% for testitem in testeventlist %}
+                    <option name="testevent">{{ testevent }}</option>
+                {% endfor %}
+            </select>
+            <p>并发用户：<input id="runusercount" placeholder="输入并发用户数"></p>
+            <p>执行测试：<input id="runnumcount" placeholder="输入执行次数"></p>
+            选择执行服务器：
+            <select name="interface_type">
+                {% for server in serverlist %}
+                    <option name="serveritem">{{ server }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="margin-top: 50%;margin-bottom: auto">
+            <input value="转换" type="button" class="btn-default">
+            <input value="取消" type="button" class=" btn-default" onclick="closetojmxone()">
+        </div>
+        {#        </form>#}
     </div>
     <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: antiquewhite;"
          id="showonecase">
@@ -259,6 +285,17 @@
         function closeone() {
             var divshow = document.getElementById('daochucase');
             divshow.style.display = 'none';
+        }
+
+        var button_case_to_jmx = document.getElementById("changepercase");
+        button_case_to_jmx.onclick = function () {
+            var divElement = document.getElementById('casetojmx');
+            divElement.style.display = 'block';
+        }
+
+        function closetojmxone() {
+            var divElement = document.getElementById('casetojmx');
+            divElement.style.display = 'none';
         }
 
         function dakai() {
