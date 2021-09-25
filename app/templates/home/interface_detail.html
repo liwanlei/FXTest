@@ -1,0 +1,102 @@
+{% extends "back.html" %}
+{% block hello %}
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components" style="background-color: ghostwhite;">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> {{ id_one.Interface_name }}接口
+                </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                    {% for message in messages %}
+                        <li style="color:red">{{ message }}</li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+            {% endwith %}
+            <table class="am-table am-table-hover table-main">
+                <strong>入参参数</strong>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                <a href="{{ url_for('interface.addprame',id=id_one.id) }}"><input type="button" class="btn btn-default"
+                                                                                  value="添加"></a>
+                <thead>
+                <tr>
+                    <th>参数名</th>
+                    <th>参数类型</th>
+                    <th>参数描述</th>
+                    <th>是否必须</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+
+                {% for ru in rucanlist %}
+                    <tr>
+                        <td>{{ ru.parameter_name }}</td>
+                        <td>{{ ru.parameter_type }}</td>
+                        <td>{{ ru.desc }}</td>
+                        {% if ru.necessary ==Flase %}
+                            <td>不必须</td>
+                        {% else %}
+                            <td>必须</td>
+                        {% endif %}
+                        <td>
+                            <a href='{{ url_for('interface.editeprame',id=ru.id,inte_id=id_one.id) }}'>
+                                <input type='button' value='编辑' class='btn btn-primary'>
+                            </a>
+                            <a href='{{ url_for('interface.deleteprame',id=ru.id) }}'>
+                                <input type='button' value='删除' class='btn btn-danger'>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+            入参示例：
+            <div class="prediv">
+                <pre>{{ rucan_def }}</pre>
+            </div>
+            <table class="am-table am-table-hover table-main">
+                <strong>出参参数</strong>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                <a href="{{ url_for('interface.addprame',id=id_one.id) }}">
+                    <input type="button" class="btn btn-default" value="添加"></a>
+                <thead>
+                <tr>
+                    <th>参数名</th>
+                    <th>参数类型</th>
+                    <th>参数描述</th>
+                    <th>是否必须</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+
+                {% for chucan in chucanlist %}
+                    <tr>
+                        <td>{{ chucan.parameter_name }}</td>
+                        <td>{{ chucan.parameter_type }}</td>
+                        <td>{{ chucan.desc }}</td>
+                        {% if chucan.necessary ==Flase %}
+                            <td>不必须</td>
+                        {% else %}
+                            <td>必须</td>
+                        {% endif %}
+                        <td>
+                            <a href='{{ url_for('interface.editeprame',id=chucan.id,inte_id=id_one.id) }}'>
+                                <input type='button' value='编辑' class='btn btn-primary'></a>
+                            <a href='{{ url_for('interface.deleteprame',id=chucan.id) }}'>
+                                <input type='button' value='删除' class='btn btn-danger'></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            出参示例：
+            <div class="prediv">
+                <pre>{{ chucan_def }}</pre>
+            </div>
+        </div>
+    </div>
+{% endblock %}

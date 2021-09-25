@@ -20,7 +20,7 @@ from flask.views import View, MethodView
 from flask_login import current_user, login_required
 from common.Dingtalk import send_ding
 from common.oparmysqldatabase import *
-from config import Config_daoru_xianzhi, redis_host, \
+from config import Config_import, redis_host, \
     redis_port, redis_save_result_db, save_duration, \
     jmeter_data_db
 from common.opearexcel import create_interface_case
@@ -34,7 +34,7 @@ case = Blueprint('case', __name__)
 
 def save_reslut(key, value):
     redis = ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
-    redis.sethase(str(key), str(value), save_duration)
+    redis.sethash(str(key), str(value), save_duration)
 
 
 def get_reslut(key):
@@ -378,7 +378,7 @@ class ImportCaseView(View):
                 jiekou_bianhao, interface_name, project_nam, model_nam, interface_url, interfac_header, \
                 interface_meth, interface_par, interface_bas, interface_type, is_save_result, yilai_is, \
                 yilai, yilai_ziduan, is_cha_data, data_sql, paser_base = paser_interface_case(filename)
-                if len(yilai) > Config_daoru_xianzhi:
+                if len(yilai) > Config_import:
                     flash(u'一次导入超过了系统的上限')
                     return redirect(url_for('home.import_case'))
                 try:
@@ -497,7 +497,7 @@ class MuliteCaseLiView(View):
                 Interface_save_list.append(case_one.saveresult)
             if (len(set(projecct_list))) > 1:
                 flash('目前单次只能执行一个项目')
-                return redirect(next or url_for('duoyongli'))
+                return redirect(next or url_for('mulitecase'))
             testevent = Interfacehuan.query.filter_by(url=testurl).first()
             try:
                 apitest = ApiTestCase(inteface_url=Interface_url_list,
@@ -535,13 +535,15 @@ class MuliteCaseLiView(View):
                     if email:
                         m = send_emails(sender=email.send_email, receivers=email.to_email,
                                         password=email.send_email_password,
-                                        smtp=email.stmp_email, port=email.port, fujian1=file, fujian2=filepath,
-                                        subject=u'%s用例执行测试报告' % day, url='http://127.0.0.1:5000/test_rep')
+                                        smtp=email.stmp_email, port=email.port, annexone=file,
+                                        annextwo=filepath,
+                                        subject=u'%s用例执行测试报告' % day,
+                                        url='http://127.0.0.1:5000/test_result')
                         if m == False:
                             flash(u'发送邮件失败，请检查您默认的邮件设置是否正确')
-                            return redirect(url_for('home.test_rep'))
+                            return redirect(url_for('home.test_result'))
                         flash(u'测试已经完成，并且给您默认设置发送了测试报告')
-                        return redirect(url_for('home.test_rep'))
+                        return redirect(url_for('home.test_result'))
                     flash(u'无法完成，需要去您的个人设置去设置一个默认的邮件发送')
                     return redirect(url_for('home.case'))
                 if f_dingding == 'dingding':
@@ -553,14 +555,14 @@ class MuliteCaseLiView(View):
                     flash(u'测试报告发送钉钉讨论群失败！请检查相关配置！')
                     return redirect(next or url_for('home.case'))
                 flash(u'测试已经完成，测试报告已经生成')
-                return redirect(url_for('home.test_rep'))
+                return redirect(url_for('home.test_result'))
             except Exception as e:
                 flash(u'测试失败，出错原因:%s' % e)
                 return redirect(next or url_for('home.case'))
         return redirect(url_for('home.case'))
 
 
-class MakeonlyoneCase(MethodView):
+class MakeOnlyOneCaseView(MethodView):
     @login_required
     def post(self):
         projec = request.get_json()
@@ -794,7 +796,7 @@ class MakeonlyoneCase(MethodView):
             return jsonify({'code': 63, 'msg': '接口测试出错了！原因:%s' % e})
 
 
-class DaochuCase(MethodView):
+class ExportCaseView(MethodView):
     @login_required
     def post(self):
         project = request.form.get('interface_type')
@@ -817,7 +819,7 @@ class DaochuCase(MethodView):
         return response
 
 
-class OnecaseDetial(MethodView):
+class OneCaseDetialView(MethodView):
     @login_required
     def post(self):
         case_id = request.get_data().decode('utf-8')
@@ -844,7 +846,7 @@ class OnecaseDetial(MethodView):
         return jsonify({'code': 200, 'messgage': '请求成功', 'data': result_all})
 
 
-class CaseToJmx(MethodView):
+class CaseToJmxView(MethodView):
     def post(self):
         try:
             data_jmx = eval(request.get_data().decode('utf-8'))
@@ -901,7 +903,7 @@ class CaseToJmx(MethodView):
         return jsonify({'code': 0, 'messgage': '转化接口压测用例成功', 'data': testjmx.id})
 
 
-class JmxToServer(MethodView):
+class JmxToServerView(MethodView):
     def get(self, id):
         '''
         todo

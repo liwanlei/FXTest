@@ -131,7 +131,7 @@
                                     <input value="编辑" type="button" class="btn-default"
                                            onclick="eitproject({{ ebent.id }})">
                                     <input value="取消" type="button" class=" btn-default"
-                                           onclick="guanbiedit({{ ebent.id }})">
+                                           onclick="closeedit({{ ebent.id }})">
                                 </div>
                             </div>
                         {% endfor %}
@@ -189,8 +189,8 @@
             </p>
         </div>
         <div style="margin-top: 1%;margin-bottom: auto">
-            <input value="添加" type="button" class="btn-default" onclick="tianjian()">
-            <input value="取消" type="button" class=" btn-default" onclick="guanbi()">
+            <input value="添加" type="button" class="btn-default" onclick="add()">
+            <input value="取消" type="button" class=" btn-default" onclick="colse()">
         </div>
     </div>
 {% endblock %}
@@ -220,12 +220,12 @@
             m.style.display = ''
         }
 
-        function guanbi() {
+        function colse() {
             m = document.getElementById('events');
             m.style.display = 'none'
         }
 
-        function tianjian() {
+        function add() {
             var obj = document.getElementById('project');
             var index = obj.selectedIndex;
             var project = obj.options[index].value;
@@ -272,7 +272,7 @@
             m.style.display = ''
         }
 
-        function guanbiedit(id) {
+        function closeedit(id) {
             m = document.getElementById('project-' + id);
             m.style.display = 'none'
         }

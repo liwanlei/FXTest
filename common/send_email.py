@@ -7,7 +7,8 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 
 
-def send_emails(sender, receivers, password, smtp, port, fujian1, fujian2, subject, url):
+def send_emails(sender, receivers, password, smtp,
+                port, annexone, annextwo, subject, url):
     message = MIMEMultipart()
     mail_msg = """
 		<h1>接口测试报告</h1>
@@ -20,13 +21,13 @@ def send_emails(sender, receivers, password, smtp, port, fujian1, fujian2, subje
     message['To'] = ','.join(receivers)
     message['Subject'] = Header(subject, 'utf-8')
     message.attach(MIMEText(mail_msg, 'html', 'utf-8'))
-    att1 = MIMEText(open(fujian1, 'rb').read(), 'base64', 'utf-8')
+    att1 = MIMEText(open(annexone, 'rb').read(), 'base64', 'utf-8')
     att1["Content-Type"] = 'application/octet-stream'
-    att1["Content-Disposition"] = 'attachment; filename="%s"' % fujian1
+    att1["Content-Disposition"] = 'attachment; filename="%s"' % annexone
     message.attach(att1)
-    att2 = MIMEText(open(fujian2, 'rb').read(), 'base64', 'utf-8')
+    att2 = MIMEText(open(annextwo, 'rb').read(), 'base64', 'utf-8')
     att2["Content-Type"] = 'application/octet-stream'
-    att2["Content-Disposition"] = 'attachment; filename="%s"' % fujian2
+    att2["Content-Disposition"] = 'attachment; filename="%s"' % annextwo
     message.attach(att2)
     try:
         smtpObj = smtplib.SMTP_SSL(smtp, port)

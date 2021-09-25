@@ -65,13 +65,13 @@
                         </td>
                         {% if user.status==0 %}
                             <td>
-                                <a href="{{ url_for('user.fre_ad',id=user.id) }}">
+                                <a href="{{ url_for('user.freezeuser',id=user.id) }}">
                                     <input type="button" value="冻结" class="btn btn-success">
                                 </a>
                             </td>
                         {% elif user.status==1 %}
                             <td>
-                                <a href="{{ url_for('user.fre_re',id=user.id) }}">
+                                <a href="{{ url_for('user.unfreezeuser',id=user.id) }}">
                                     <input type="button" value="解冻" class="btn btn-danger">
                                 </a>
                             </td>
@@ -83,7 +83,7 @@
                             </a>
                         <td>
                         <span>
-                            <a href="{{ url_for('user.red_pass',id=user.id) }}">
+                            <a href="{{ url_for('user.resetpassword',id=user.id) }}">
                                 <input type="button" value="重置密码" class="btn btn-warning">
                             </a>
                         </span>
@@ -197,7 +197,7 @@
             data['jobnum'] = jonmub;
             data['id'] = id;
             $.ajax({
-                url: '{{ url_for('user.activi') }}',
+                url: '{{ url_for('user.activationuser') }}',
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json; charset=UTF-8',
@@ -239,7 +239,7 @@
             data['username'] = id;
             data['url'] = ursl;
             $.ajax({
-                url: '{{ url_for('user.set_ad') }}',
+                url: '{{ url_for('user.setadmin') }}',
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json; charset=UTF-8',

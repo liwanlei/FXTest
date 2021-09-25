@@ -29,7 +29,7 @@
                     <a href="{{ url_for('down_jiekou') }}">接口模板</a>
                 </strong>
             </p>
-            <form method="POST" action="{{ url_for('interface.daoru_inter') }}" enctype=multipart/form-data>
+            <form method="POST" action="{{ url_for('interface.import_inter') }}" enctype=multipart/form-data>
                 <input type="file" name="myfile">
                 <button type='submit' class="am-btn am-btn-primary">导入接口</button>
             </form>

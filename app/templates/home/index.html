@@ -83,7 +83,7 @@
                         <div class="number"> {{ report }} </div>
                         <div class="desc"> 测试报告</div>
                     </div>
-                    <a class="more" href="{{ url_for('home.test_rep') }}"> 更多
+                    <a class="more" href="{{ url_for('home.test_result') }}"> 更多
                         <i class="m-icon-swapright m-icon-white"></i>
                     </a>
                 </div>
@@ -112,19 +112,19 @@
                             </td>
                         {% elif task.run_status=='启动' %}
                             <td>
-                                <a href="{{ url_for('task.zantingtask',id=task.id) }}">
+                                <a href="{{ url_for('task.pusedtask',id=task.id) }}">
                                     <input type="button" class="btn btn-success" value="暂停">
                                 </a>
-                                <a href="{{ url_for('task.yichutask',id=task.id) }}">
+                                <a href="{{ url_for('task.removetask',id=task.id) }}">
                                     <input type="button" class="btn btn-danger" value="移除">
                                 </a>
                             </td>
                         {% elif task.run_status=='暂停' %}
                             <td>
-                                <a href="{{ url_for('task.huifutask',id=task.id) }}">
+                                <a href="{{ url_for('task.recivertask',id=task.id) }}">
                                     <input type="button" class="btn btn-success" value="恢复">
                                 </a>
-                                <a href="{{ url_for('task.yichutask',id=task.id) }}">
+                                <a href="{{ url_for('task.removetask',id=task.id) }}">
                                     <input type="button" class="btn btn-danger" value="移除">
                                 </a>
                             </td>

@@ -134,7 +134,7 @@
 
                     if (projects.text.length < 1) {
                         message.innerHTML = '项目为必须选择';
-                    } else {#}
+                    } else {
                         if (proj_test.value.length < 1) {
                             message.innerHTML = '项目测试环境必须选择';
                         } else {
@@ -157,13 +157,17 @@
                                 success: function (result) {
                                     if (result['code'] == 200) {
                                         location.href = '{{ url_for('home.timingtask') }}';
-                                    } else {#}
+                                    } else {
                                         message.innerHTML = (result['msg']);
                                     }
                                 }
                             });
                         }
                     }
+                }
+            }
+        }
+
 
 
     </script>

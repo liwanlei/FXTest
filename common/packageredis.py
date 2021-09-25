@@ -19,7 +19,7 @@ class ConRedisOper(object):
         coon = redis.Redis(connection_pool=pool)
         return coon
 
-    def sethase(self, key, value, time=None):
+    def sethash(self, key, value, time=None):
         if time:
             res = self.connect().setex(key, time, value)
 

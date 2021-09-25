@@ -61,7 +61,7 @@
             <div style="text-align: center;">
                 <ul class="pagination">
                     <li>
-                        <a href="{{ url_for('home.test_rep') }}">首页</a>
+                        <a href="{{ url_for('home.test_result') }}">首页</a>
                     </li>
                     {% for page in pages %}
                         <li>
@@ -86,7 +86,7 @@
             var index = obj.selectedIndex;
             var value = obj.options[index].value;
             $.ajax({
-                url: '{{ url_for('home.get_pro_test_report') }}',
+                url: '{{ url_for('home.get_project_test_report') }}',
                 type: 'POST',
                 data: value,
                 contentType: 'application/json; charset=UTF-8',
@@ -230,7 +230,7 @@
 
         function deleteproject(id) {
             $.ajax({
-                url: '{{url_for( 'home.test_rep') }}',
+                url: '{{url_for( 'home.test_result') }}',
                 type: 'DELETE',
                 data: id,
                 contentType: 'application/json; charset=UTF-8',

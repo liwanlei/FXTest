@@ -32,7 +32,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class index(MethodView):
+class IndexView(MethodView):
     @login_required
     def get(self):
         interface_cont = Interface.query.filter_by(status=False).all()
@@ -113,7 +113,7 @@ class LoginView(MethodView):
                 return jsonify({'msg': login_user_free_message, 'code': 35, 'data': ''})
             if user.check_password(password):
                 if (user.is_free == True and user.freetime != None and user.err_num > 6 and (
-                        datetime.datetime.now() - user.freetime).minute > 10):
+                        datetime.datetime.now() - user.freetime).min > 10):
                     return jsonify({'msg': login_user_fremm, 'code': 200, 'data': ''})
                 user.is_login = True
                 userlog = UserLoginlog(user=user.id, ip=ip, datatime=datetime.datetime.now())
@@ -125,7 +125,7 @@ class LoginView(MethodView):
             else:
                 if (user.err_num != None and user.err_num >= 5):
                     if (user.freetime != 'None'):
-                        if (datetime.datetime.now() - user.freetime).minute > 10:
+                        if (datetime.datetime.now() - user.freetime).min > 10:
                             user.err_num = user_err_num + 1
                             db.session.add(user)
                             db.session.commit()
@@ -201,7 +201,7 @@ class LoginViewRedis(MethodView):
         return jsonify({'msg': login_user_not_exict_message, 'code': 37, 'data': ''})
 
 
-class Logout(MethodView):
+class LogoutView(MethodView):
     @login_required
     def get(self):
         username = session.get("username")
@@ -296,7 +296,7 @@ class CaseView(MethodView):
             return jsonify({"data": '删除用例失败，原因：%s' % e, 'code': 3})
 
 
-class AdminuserView(MethodView):
+class AdminUserView(MethodView):
     @login_required
     def get(self):
         wrok = Work.query.all()
@@ -360,7 +360,7 @@ class AdminuserView(MethodView):
                 return jsonify({'data': '添加失败，原因：%s' % e, 'code': 1})
 
 
-class TestrepView(MethodView):
+class TestResultView(MethodView):
     @login_required
     def get(self, page=1):
         if current_user.is_sper is True:
@@ -375,7 +375,7 @@ class TestrepView(MethodView):
             pyth_post1 = projects_lsit[int(page) - 1]
             return render_template('home/test_result.html', projects=pyth_post1, pages=pages)
         except:
-            return redirect(url_for('home.test_rep'))
+            return redirect(url_for('home.test_result'))
 
     @login_required
     def delete(self):
@@ -553,7 +553,7 @@ class ModelView(MethodView):
             return jsonify({'data': '编辑模块出现问题！原因：%s' % e, 'code': 308})
 
 
-class TesteventVies(MethodView):
+class TestenvironmentView(MethodView):
     @login_required
     def get(self, page=1):
         if current_user.is_sper is True:
@@ -680,8 +680,8 @@ class MockViews(MethodView):
     @login_required
     def post(self):
         data_post = request.get_json()
-        name_is = Mockserver.query.filter_by(name=data_post['name']).first()
-        if name_is:
+        name_exict = Mockserver.query.filter_by(name=data_post['name']).first()
+        if name_exict:
             return jsonify({"code": 28, 'data': 'mockserver的名称不能重复'})
         if data_post['checkout'] == u'是':
             is_check = True
@@ -750,7 +750,7 @@ class TimingtasksView(MethodView):
             return redirect(url_for('home.timingtask'))
 
 
-class GettProtestreport(MethodView):
+class GetProtestReportView(MethodView):
     @login_required
     def post(self):
         id = request.get_data('id')
@@ -837,7 +837,7 @@ class GenconfigView(MethodView):
             return redirect(url_for('home.genconfig'))
 
 
-class DeleteGenconfi(MethodView):
+class DeleteGenconfigView(MethodView):
     @login_required
     def get(self, id):
         gencofigilist = GeneralConfiguration.query.filter_by(id=id, status=False).first()

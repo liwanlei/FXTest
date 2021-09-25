@@ -24,7 +24,7 @@
                     </p>
                     <p style="margin-top: 20px">
                         <strong>所属项目:</strong>
-                        <select id="project" onclick="cheangeevnt()">
+                        <select id="project" onclick="cheangeevent()">
                             {% for pro in projects %}
                                 <option>
                                     {{ pro.project_name }}
@@ -75,7 +75,7 @@
                     </p>
                     <p style="margin-top: 20px">
                         <strong>支持人邮件:</strong>
-                        <input type="text" id="weihu" placeholder="维护改测试计划的人！">
+                        <input type="text" id="maintenance" placeholder="维护改测试计划的人！">
                     </p>
                 </div>
                 <button type="button" class="am-btn am-btn-primary " onclick="addtimingtasks()">添加</button>
@@ -83,9 +83,9 @@
         </div>
     </div>
     <script type="text/javascript">
-        window.onload = cheangeevnt();
+        window.onload = cheangeevent();
 
-        function cheangeevnt() {
+        function cheangeevent() {
             var obj = document.getElementById('project');
             var index = obj.selectedIndex;
             var value = obj.options[index].value;
@@ -115,7 +115,7 @@
             var taskname = document.getElementById('taskname');
             var to_email = document.getElementById('to_email');
             var cao_email = document.getElementById('cao_email');
-            var weihu = document.getElementById('weihu');
+            var weihu = document.getElementById('maintenance');
             var me = document.getElementById("project");
             var project = document.getElementById("project").selectedIndex;
             var projects = me.options[project];

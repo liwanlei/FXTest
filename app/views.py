@@ -5,7 +5,8 @@
 """
 from app import app
 from flask import request, render_template, \
-    make_response, send_from_directory, jsonify, flash, redirect, url_for
+    make_response, send_from_directory, jsonify, \
+    flash, redirect, url_for
 from flask_mail import Mail, Message
 from app.models import *
 import os
@@ -88,7 +89,7 @@ def getprojects():  # 获取项目
     return jsonify({'data': str(result), 'huanjing': url_list, 'code': 200, 'msg': request_success})
 
 
-class Getyongli(MethodView):  # 获取用例
+class GetCaseView(MethodView):  # 获取用例
     @login_required
     def post(self):
         id = request.get_data('id')
@@ -120,8 +121,8 @@ class IndexFirstview(MethodView):
         return redirect(url_for("home.index"))
 
 
-@app.route('/reg', methods=['GET', 'POST'])
-def reg():
+@app.route('/register', methods=['GET', 'POST'])
+def register():
     form = RegFrom()
     if request.method == 'POST':
         usernmae = request.form.get('username')
@@ -131,29 +132,29 @@ def reg():
         jobnum = request.form.get("jobnum")
         if email == "" or email is None:
             flash('邮箱不能为空')
-            return render_template('home/reg.html', form=form)
+            return render_template('home/register.html', form=form)
         try:
             if (str(email.split("@")[1]) != email_type):
                 flash(email_geshi_error)
-                return render_template('home/reg.html', form=form)
+                return render_template('home/register.html', form=form)
         except Exception as e:
             flash("邮箱格式错误")
-            return render_template('home/reg.html', form=form)
+            return render_template('home/register.html', form=form)
         job_num = User.query.filter_by(jobnum=jobnum).first()
         if job_num:
             flash(jobnum_oblg_reg_one)
-            return render_template('home/reg.html', form=form)
+            return render_template('home/register.html', form=form)
         if pasword != setpasswod:
             flash(password_not_same)
-            return render_template('home/reg.html', form=form)
+            return render_template('home/register.html', form=form)
         user = User.query.filter_by(username=usernmae).first()
         if user:
             flash(user_exict)
-            return render_template('home/reg.html', form=form)
+            return render_template('home/register.html', form=form)
         emai = User.query.filter_by(user_email=email).first()
         if emai:
             flash(email_exict)
-            return render_template('home/reg.html', form=form)
+            return render_template('home/register.html', form=form)
         new_user = User(username=usernmae, user_email=email, jobnum=job_num)
         new_user.set_password(pasword)
         db.session.add(new_user)
@@ -163,13 +164,14 @@ def reg():
             msg = Message(u"你好", sender=email, recipients=email)
             msg.body = u"欢迎你注册, 你的用户名：%s，你的密码是：%s" % (usernmae, pasword)
             msg.html = '<a href="http://127.0.0.1:5000/login">去登录</a>'
-            Mail.send(msg)
+            mail=Mail()
+            mail.send(msg)
             return redirect(url_for('home.login'))
         except Exception as e:
             db.session.rollback()
             flash("注册失败")
-            return render_template('home/reg.html', form=form)
-    return render_template('home/reg.html', form=form)
+            return render_template('home/register.html', form=form)
+    return render_template('home/register.html', form=form)
 
 
 class GeneraConfig(MethodView):

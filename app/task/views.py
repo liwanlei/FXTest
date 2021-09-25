@@ -197,7 +197,7 @@ class StartTaskView(MethodView):  # 开始定时任务
             return redirect(url_for('home.timingtask'))
 
 
-class ZantingtaskView(MethodView):  # 暂停定时任务
+class PausedTaskView(MethodView):  # 暂停定时任务
     @login_required
     def get(self, id):
         next = request.headers.get('Referer')
@@ -215,7 +215,7 @@ class ZantingtaskView(MethodView):  # 暂停定时任务
             return redirect(next or url_for('home.timingtask'))
 
 
-class HuifutaskView(MethodView):  # 回复定时任务
+class RecoverTaskView(MethodView):  # 回复定时任务
     @login_required
     def get(self, id):
         task = Task.query.filter_by(id=id).first()
@@ -233,7 +233,7 @@ class HuifutaskView(MethodView):  # 回复定时任务
             return redirect(next or url_for('home.timingtask'))
 
 
-class YichuTaskView(MethodView):  # 移除定时任务
+class RemoveTaskView(MethodView):  # 移除定时任务
     @login_required
     def get(self, id):
         next = request.headers.get('Referer')
@@ -251,7 +251,7 @@ class YichuTaskView(MethodView):  # 移除定时任务
             return redirect(next or url_for('home.timingtask'))
 
 
-class AddtimingtaskView(MethodView):
+class AddTimingTaskView(MethodView):
     @login_required
     def get(self):
         project = Project.query.filter_by(status=False).all()
@@ -283,7 +283,7 @@ class AddtimingtaskView(MethodView):
             return jsonify({'code': 25, 'msg': '任务添加失败，原因：%s' % e, 'data': ''})
 
 
-class Editmingtaskview(MethodView):
+class EdiTmingTaskView(MethodView):
     @login_required
     def get(self, id):
         if current_user.is_sper is True:
@@ -339,7 +339,7 @@ class Editmingtaskview(MethodView):
             return redirect(url_for('home.timingtask'))
 
 
-class DeteleTaskViee(MethodView):
+class DeteleTaskView(MethodView):
     def get(self, id):
         next = request.headers.get('Referer')
         task_one = Task.query.filter_by(id=id).first()
@@ -360,7 +360,7 @@ class DeteleTaskViee(MethodView):
             return redirect(next or url_for('home.timingtask'))
 
 
-class GettesView(MethodView):
+class GetTestView(MethodView):
     @login_required
     def post(self):
         project = request.get_data('value')

@@ -33,7 +33,7 @@
             <button class="btn-primary" id="changecharles">转换Charles导出case</button>
             <button class="btn-primary" id="changepercase">生成压测脚本</button>
             <button class="btn-primary" id="recordcase">录制case</button>
-            <form method="POST" action="{{ url_for('case.duoyongli') }}">
+            <form method="POST" action="{{ url_for('case.mulitecase') }}">
                 <div style="margin-top: 10px">
                     <a href="{{ url_for('case.addtestcase') }}">
                         <input type="button" name="" class="am-btn am-btn-default am-btn-success" value="添加用例">
@@ -88,7 +88,7 @@
     <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
          id="daochucase">
         <div style="height: 5px;">请选择导出测试用例的项目</div>
-        <form method="POST" action="{{ url_for('case.daochucase') }}">
+        <form method="POST" action="{{ url_for('case.exportcase') }}">
             <div style="background-color: whitesmoke;margin-top: 24px">
                 选择导出的项目:
                 <select name="interface_type">
@@ -106,7 +106,7 @@
     <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
          id="casetojmx">
         <div style="height: 5px;">接口用例转换压测脚本</div>
-        {#        <form method="POST" action="{{ url_for('case.daochucase') }}">#}
+        {#        <form method="POST" action="{{ url_for('case.exportcase') }}">#}
         <div style="background-color: whitesmoke;margin-top: 24px">
             选择执行测试环境:
             <select name="testevent">

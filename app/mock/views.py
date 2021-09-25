@@ -20,7 +20,7 @@ def load_user(user_id):
 mock = Blueprint('mock', __name__)
 
 
-class EditmockserView(MethodView):  # 编辑mack服务
+class EditMockServerView(MethodView):  # 编辑mock服务
     @login_required
     def get(self, id):
         mock = Mockserver.query.filter_by(id=id, status=False).first()
@@ -80,7 +80,7 @@ class EditmockserView(MethodView):  # 编辑mack服务
             return render_template('edit/editmock.html', mock=mock)
 
 
-class MakemockserverView(MethodView):  # 做一个mock服务
+class MakeMockserverView(MethodView):  # 做一个mock服务
     def get(self, path):  # get请求方法
         data = get_token_data(path)
         return data
@@ -98,7 +98,7 @@ class MakemockserverView(MethodView):  # 做一个mock服务
         return data
 
 
-class StartmockView(MethodView):  # 开启mock服务
+class StartMockView(MethodView):  # 开启mock服务
     @login_required
     def get(self, id):
         next = request.headers.get('Referer')
@@ -116,7 +116,7 @@ class StartmockView(MethodView):  # 开启mock服务
         return redirect(next or url_for('mockserver'))
 
 
-class ClosemockView(MethodView):  # 关闭mock服务
+class CloseMockView(MethodView):  # 关闭mock服务
     @login_required
     def get(self, id):
         next = request.headers.get('Referer')

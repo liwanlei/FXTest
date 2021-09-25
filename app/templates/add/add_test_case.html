@@ -32,7 +32,7 @@
                         <strong>项目名字:</strong>
                         {% for project in  projects %}
                             <input type='radio' value="{{ project.project_name }}" name="project" class="projects"
-                                   onclick="yilai()">
+                                   onclick="repy()">
                             {{ project.project_name }}
                         {% endfor %}
                     </div>
@@ -114,7 +114,7 @@
                     <div class="form-group">
                         <p>
                             <strong>请选择依赖接口:</strong>
-                            <select id="jiekou" name="jiekou">
+                            <select id="interface" name="interface">
                             </select>
                         </p>
                         <strong>从依赖接口中获取参数：</strong>
@@ -123,8 +123,8 @@
                     </div>
                     <div class="form-group">
                         <strong>是否校验数据库:</strong>
-                        <input type="radio" name="database" id="database" onclick="qidong()">
-                        <div id="shujuku" style="display: none">
+                        <input type="radio" name="database" id="database" onclick="verify()">
+                        <div id="databasesql" style="display: none">
                             <p>
                                 <strong>数据库语句：</strong>
                                 <input type="text" name="databasesql" placeholder="请输入要查询的数据库语句！">
@@ -140,39 +140,39 @@
 {% endblock %}
 {% block js %}
     <script language="JavaScript">
-        function yilai() {
-            var pddd = $("input[name='project']:checked").val();
-            if (pddd == undefined) {
+        function repy() {
+            var project = $("input[name='project']:checked").val();
+            if (project == undefined) {
                 return;
             }
             ;
             $.ajax({
-                url: '{{ url_for('getyongli') }}',
+                url: '{{ url_for('getcase') }}',
                 type: 'POST',
-                data: pddd,
+                data: project,
                 contentType: 'application/json; charset=UTF-8',
                 processData: false,
-                success: function (testyong) {
-                    if (testyong['code'] == 200) {
-                        xuanze = testyong['data'];
-                        var xuanz = $('#jiekou');
-                        xuanz.empty();
-                        xuanz.append("<option id='ceshiurls' > 请选择依赖接口</option>")
-                        for (var i = 0; i < xuanze.length; i++) {
-                            var url = xuanze[i];
-                            xuanz.append("<option id='ceshiurls'>  " + url + "</option>");
+                success: function (reponse) {
+                    if (reponse['code'] == 200) {
+                        selectdata = reponse['data'];
+                        var interfaceselet = $('#interface');
+                        interfaceselet.empty();
+                        interfaceselet.append("<option id='ceshiurls' > 请选择依赖接口</option>")
+                        for (var i = 0; i < selectdata.length; i++) {
+                            var url = selectdata[i];
+                            interfaceselet.append("<option id='ceshiurls'>  " + url + "</option>");
                         }
                     } else {
-                        alert(testyong['msg'])
+                        alert(reponse['msg'])
                     }
                 }
             })
         }
 
-        function qidong() {
-            var d = document.getElementById('database');
-            var database = document.getElementById('shujuku');
-            if (d.checked == true) {
+        function verify() {
+            var verifydata = document.getElementById('database');
+            var database = document.getElementById('databasesql');
+            if (verifydata.checked == true) {
                 database.style.display = '';
             } else {
                 database.style.display = 'none';

@@ -55,11 +55,11 @@
                 <div class="form-group">
                     <strong>接口:</strong>
                     <select name="inerfa">
-                        {% for  terf in inerfacelist %}
-                            {% if terf.Interface_name == edit.interface_id.Interface_name %}
-                                <option selected>{{ terf.Interface_name }}</option>
+                        {% for  test in inerfacelist %}
+                            {% if test.Interface_name == edit.interface_id.Interface_name %}
+                                <option selected>{{ test.Interface_name }}</option>
                             {% else %}
-                                <option>{{ terf.Interface_name }}</option>
+                                <option>{{ test.Interface_name }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -112,7 +112,7 @@
                 </div>
                 <div class="form-group">
                     <p><strong>请选择依赖接口:</strong>
-                        <select id="jiekou" name="jiekou">
+                        <select id="interface" name="jiekou">
                             <option id='ceshiurls'> {{ edit.pid }}</option>
                         </select></p>
                     <strong>从依赖接口中获取参数：</strong>
@@ -148,28 +148,28 @@
 {% block js %}
     <script language="JavaScript">
         $(function yilai() {
-            var pddd = $("input[name='project']:checked").val();
-            if (pddd == undefined) {
+            var project = $("input[name='project']:checked").val();
+            if (project == undefined) {
                 return;
             }
             ;
             $.ajax({
-                url: '{{ url_for('getyongli') }}',
+                url: '{{ url_for('getcase') }}',
                 type: 'POST',
-                data: pddd,
+                data: project,
                 contentType: 'application/json; charset=UTF-8',
                 processData: false,
-                success: function (testyong) {
-                    if (testyong['code'] == 200) {
-                        xuanze = testyong['data']
-                        var xuanz = $('#jiekou');
-                        for (var i = 0; i < xuanze.length; i++) {
-                            var url = xuanze[i];
-                            xuanz.append("<option id='ceshiurls'>  " + url + "</option>");
+                success: function (reponse) {
+                    if (reponse['code'] == 200) {
+                        selectdata = reponse['data']
+                        var interce = $('#interface');
+                        for (var i = 0; i < selectdata.length; i++) {
+                            var url = selectdata[i];
+                            interce.append("<option id='ceshiurls'>  " + url + "</option>");
                         }
                         ;
                     } else {
-                        alert(testyong['msg'])
+                        alert(reponse['msg'])
                     }
                 }
             })

@@ -16,7 +16,7 @@ from error_message import *
 from flask_mail import Message, Mail
 
 
-class SetadView(View):  # 设置管理员
+class SetAdminView(View):  # 设置管理员
     methods = ['GET', "POST"]
 
     @login_required
@@ -59,7 +59,7 @@ class SetadView(View):  # 设置管理员
             return jsonify({'code': 21, 'msg': '设置过程目前存在异常,原因是：%s' % e, 'data': ''})
 
 
-class DeladView(View):  # 取消管理员
+class CancelAdminView(View):  # 取消管理员
     methods = ['GET', "POST"]
 
     @login_required
@@ -77,7 +77,7 @@ class DeladView(View):  # 取消管理员
         return redirect(url_for('home.adminuser'))
 
 
-class FreadView(View):  # 冻结
+class FreezeUserView(View):  # 冻结
     methods = ['GET', "POST"]
 
     @login_required
@@ -107,7 +107,7 @@ class FreadView(View):  # 冻结
             return redirect(url_for('home.adminuser'))
 
 
-class FrereView(View):  # 解冻
+class UnFreezeUserView(View):  # 解冻
     methods = ['GET', "POST"]
 
     @login_required
@@ -135,7 +135,7 @@ class FrereView(View):  # 解冻
         return redirect(url_for('home.adminuser'))
 
 
-class Acivauserview(View):
+class ActivationUserview(View):
     methods = ['GET', "POST"]
 
     @login_required
@@ -166,7 +166,7 @@ class Acivauserview(View):
         return jsonify({'code': 13, 'msg': '激活失败', 'data': activi_user_jobnum_is})
 
 
-class RedpassView(View):  # 重置密码
+class ResetPasswordView(View):  # 重置密码
     methods = ['GET', "POST"]
 
     @login_required
@@ -184,7 +184,8 @@ class RedpassView(View):  # 重置密码
                     msg = Message(u"密码修改通知", sender=user.email, recipients=user.email)
                     msg.body = u"密码修改成功, 你的用户名：%s，你的密码是：%s" % (user.username, "111111")
                     msg.html = '<a href="http://127.0.0.1:5000/login">去登录</a>'
-                    Mail.send(msg)
+                    mail = Mail()
+                    mail.send(msg)
                     flash(reset_success_message)
                     return redirect(url_for('home.adminuser'))
                 except Exception as e:

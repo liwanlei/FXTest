@@ -55,19 +55,19 @@
                             </td>
                         {% elif inter.yunxing_status=='启动' %}
                             <td>
-                                <a href="{{ url_for('task.zantingtask',id=inter.id) }}">
+                                <a href="{{ url_for('task.pusedtask',id=inter.id) }}">
                                     <input type="button" class="btn btn-success" value="暂停">
                                 </a>
-                                <a href="{{ url_for('task.yichutask',id=inter.id) }}">
+                                <a href="{{ url_for('task.removetask',id=inter.id) }}">
                                     <input type="button" class="btn btn-danger" value="移除">
                                 </a>
                             </td>
                         {% elif inter.yunxing_status=='暂停' %}
                             <td>
-                                <a href="{{ url_for('task.huifutask',id=inter.id) }}">
+                                <a href="{{ url_for('task.recivertask',id=inter.id) }}">
                                     <input type="button" class="btn btn-success" value="恢复">
                                 </a>
-                                <a href="{{ url_for('task.yichutask',id=inter.id) }}">
+                                <a href="{{ url_for('task.removetask',id=inter.id) }}">
                                     <input type="button" class="btn btn-danger" value="移除">
                                 </a>
                             </td>
