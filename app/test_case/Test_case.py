@@ -24,12 +24,12 @@ def get_reslut(key):
 
 
 class ApiTestCase():
-    def __init__(self, inteface_url, inteface_meth,
-                 inteface_parm,
+    def __init__(self, inteface_url, inteface_method,
+                 inteface_parme,
                  inteface_assert, file, headers,
-                 pid, yilaidata, saveresult,
+                 pid, replydata, saveresult,
                  id_list, is_database, data_mysql,
-                 data_ziduan, urltest):
+                 data_field, urltest):
         self.result_pass = 0
         self.result_fail = 0
         self.result_toal = 0
@@ -37,19 +37,19 @@ class ApiTestCase():
         self.result_cashu = 0
         self.result_wei = 0
         self.url = inteface_url
-        self.meth = inteface_meth
-        self.parm = inteface_parm
+        self.inteface_method = inteface_method
+        self.parm = inteface_parme
         self.assert_test = inteface_assert
         self.bask_list = []
         self.result_pf = []
         self.headers = headers
         self.pid = pid
-        self.yilaidata = yilaidata
+        self.repydata = replydata
         self.saveresult = saveresult
         self.id = id_list
         self.is_database = is_database
         self.data_mysql = data_mysql
-        self.data_ziduan = data_ziduan
+        self.data_field = data_field
         self.title = u'测试日志'
         self.log_can = log_t(self.title, filename=file)
         self.urltest = urltest
@@ -58,7 +58,6 @@ class ApiTestCase():
     def testapi(self):
         for case in range(len(self.url)):
             self.log_can.info_log('%s：测试用例开始执行' % self.id[case])
-
             testevent = Interfacehuan.query.filter_by(url=self.urltest, status=False).first()
             if not testevent:
                 self.log_can.error_log('用例：%s执行失败！测试环境不存在' % (self.id[case]))
@@ -82,7 +81,7 @@ class ApiTestCase():
                 save_reslut(key=str(self.id[case]) + '&' + testevent.url, value='转换参数失败')
                 continue
             mysql_result = []
-            if testcase.pid != "None" and testcase.pid!="" and testcase.pid is not None:
+            if testcase.pid != "None" and testcase.pid != "" and testcase.pid is not None:
                 try:
                     testret = TestcaseResult.query.filter_by(case_id=int(testcase.pid)).first()
                     data = testret.result
@@ -161,7 +160,8 @@ class ApiTestCase():
                     self.bask_list.append('数据库登录账户没有找到')
                     self.result_pf.append(u'数据库登录账户没有找到')
                     save_reslut(key=str(self.id[case]) + '&' + testevent.url, value=str(apijson))
-                conncts = cursemsql(host=self.urltest.dbhost, port=self.urltest.dbport,
+                conncts = cursemsql(host=self.urltest.dbhost,
+                                    port=self.urltest.dbport,
                                     user=self.urltest.databaseuser,
                                     password=self.urltest.databasepassword,
                                     database=self.urltest.database)
@@ -214,16 +214,20 @@ class ApiTestCase():
                     #         self.spendlist.append('0')
                     #         self.bask_list.append('None')
                     #         self.result_pf.append(u'请求mock接口，失败原因：%s' % e)
-                    api = Api(url=self.urltest+self.url[case], fangshi=self.meth[case], params=yuanlai,
+                    api = Api(url=self.urltest + self.url[case],
+                              method=self.inteface_method[case],
+                              params=yuanlai,
                               headers=self.headers[case])
 
                     apijson = api.getJson()
                     spend = api.spend()
                     self.log_can.info_log(u'测试的:接口地址：%s,请求头：%s,参数:%s,实际返回:%s,预期:%s' % (
-                        self.url[case], self.headers[case], self.parm[case], apijson, self.assert_test[case]))
+                        self.url[case], self.headers[case], self.parm[case],
+                        apijson, self.assert_test[case]))
                     come = assert_in(self.assert_test[case], apijson)
-                    return_mysql = pare_result_mysql(mysqlresult=mysql_result, return_result=come,
-                                                     paseziduan=self.data_ziduan[case])
+                    return_mysql = pare_result_mysql(mysqlresult=mysql_result,
+                                                     return_result=come,
+                                                     paseziduan=self.data_field[case])
                     if come == 'pass' and return_mysql['result'] == 'pass':
                         self.result_pass += 1
                         self.result_toal += 1
@@ -237,7 +241,8 @@ class ApiTestCase():
                         self.bask_list.append(apijson)
                         self.result_pf.append('fail')
                         self.spendlist.append(spend)
-                        self.save_case_result(result=str(apijson), by=False, caseid=self.id[case], testevir=testevent,
+                        self.save_case_result(result=str(apijson), by=False,
+                                              caseid=self.id[case], testevir=testevent,
                                               spend=spend)
                         save_reslut(key=str(self.id[case]) + '&' + testevent.url, value=str(apijson))
                     elif come == '预期不存在':
@@ -246,7 +251,8 @@ class ApiTestCase():
                         self.spendlist.append(spend)
                         self.bask_list.append(apijson)
                         self.result_pf.append(u'预期不存在')
-                        self.save_case_result(result=str(apijson), by=False, caseid=self.id[case], testevir=testevent,
+                        self.save_case_result(result=str(apijson), by=False,
+                                              caseid=self.id[case], testevir=testevent,
                                               spend=spend)
                         save_reslut(key=str(self.id[case]) + '&' + testevent.url, value=str(apijson))
                     elif '异常' in come or return_mysql['code'] == 1:
@@ -255,7 +261,8 @@ class ApiTestCase():
                         self.result_except += 1
                         self.bask_list.append((apijson, return_mysql['result']))
                         self.result_pf.append('Exception')
-                        self.save_case_result(result=str(apijson), by=False, caseid=self.id[case], testevir=testevent,
+                        self.save_case_result(result=str(apijson), by=False,
+                                              caseid=self.id[case], testevir=testevent,
                                               spend=spend)
                         save_reslut(key=str(self.id[case]) + '&' + testevent.url, value=str(apijson))
                     else:
@@ -264,7 +271,8 @@ class ApiTestCase():
                         self.spendlist.append(spend)
                         self.bask_list.append(apijson)
                         self.result_pf.append(u'未知错误')
-                        self.save_case_result(result=str(apijson), by=False, caseid=self.id[case], testevir=testevent,
+                        self.save_case_result(result=str(apijson), by=False,
+                                              caseid=self.id[case], testevir=testevent,
                                               spend=spend)
                         save_reslut(key=str(self.id[case]) + '&' + testevent.url, value=str(apijson))
                 except Exception as e:
@@ -274,7 +282,8 @@ class ApiTestCase():
                     self.result_except += 1
                     self.bask_list.append(e)
                     self.result_pf.append('Exception')
-                    self.save_case_result(result=str(apijson), by=False, caseid=self.id[case], testevir=testevent,
+                    self.save_case_result(result=str(apijson), by=False,
+                                          caseid=self.id[case], testevir=testevent,
                                           spend=spend)
                     save_reslut(key=str(self.id[case]) + '&' + testevent.url, value=str(apijson))
                     continue
@@ -282,7 +291,9 @@ class ApiTestCase():
                self.result_cashu, self.result_wei, self.result_except, self.spendlist
 
     def save_case_result(self, result, caseid, by, testevir, spend=None):
-        new_case = TestcaseResult(result=str(result), case_id=caseid, by=by, testevir=testevir, spend=spend)
+        new_case = TestcaseResult(result=str(result),
+                                  case_id=caseid,
+                                  by=by, testevir=testevir, spend=spend)
         db.session.add(new_case)
         try:
             db.session.commit()

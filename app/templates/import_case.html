@@ -1,0 +1,43 @@
+{% extends "back.html" %}
+{% block hello %}
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 导入测试用例
+                </div>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                    <div class="portlet-input input-small input-inline">
+                        <div class="input-icon right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                        {% for message in messages %}
+                            <li style="color:red">
+                                {{ message }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <p> 没有模板？<a href="{{ url_for('down_case') }}">点击链接</a>下载接口用例模板：
+                <strong>
+                    <a href="{{ url_for('down_case') }}">测试用例模板</a>
+                </strong>
+            </p>
+            <form method="POST" action="{{ url_for('case.import_case') }}" enctype=multipart/form-data>
+                <span>&nbsp;</span>
+                <input type="file" name="myfile">
+                <button type='submit' class="am-btn am-btn-primary">
+                    导入测试用例
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

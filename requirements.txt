@@ -1,7 +1,7 @@
 APScheduler==3.7.0
 cached-property==1.5.2
 cchardet==2.1.7
-celery==5.0.5
+celery==3.1.25
 celery-with-redis==3.0
 ddt==1.4.2
 Flask==1.1.2
@@ -10,7 +10,7 @@ Flask-APScheduler==1.12.2
 Flask-BabelEx==0.9.4
 Flask-Bootstrap==3.3.7.1
 Flask-Cors==3.0.10
-Flask-Login==0.2.11
+Flask-Login==0.3.0
 Flask-Mail==0.9.1
 Flask-Migrate==2.7.0
 Flask-Moment==0.11.0
@@ -26,6 +26,13 @@ greenlet==1.0.0
 jenkins==1.0.2
 Jinja2==2.11.3
 ldap3==2.9
+flask_admin==1.5.8
+flask_moment==1.0.2
+flask_restplus==0.13.0
+flask_bootstrap==3.3.7.1
+flask_migrate==2.0.1
+flask_script==2.0.6
+gevent==21.8.0
 libusb1==1.9.2
 Logbook==1.5.3
 paramiko==2.7.2

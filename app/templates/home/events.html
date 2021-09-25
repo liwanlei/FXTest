@@ -85,10 +85,10 @@
                                     {% endif %}
                                 </td>
                             </tr>
-                            <div style="display:none;position:fixed;z-index: 210;width: 800px;top: 100px;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
+                            <div style="display:none;position:fixed;z-index: 210;width: 600px;top: 15%;left: 20%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
                                  id="project-{{ ebent.id }}">
                                 <div style="height: 5px;">编辑测试环境</div>
-                                <div style="background-color: whitesmoke;margin-top: 24px">
+                                <div style="background-color: whitesmoke;margin-top:24px">
                                     <p>项目
                                         <select id="proje-{{ ebent.id }}">
                                             {% for project in  projects %}
@@ -127,7 +127,7 @@
                                                             value="{{ ebent.databasepassword }}">
                                     </p>
                                 </div>
-                                <div style="margin-top: 50%;margin-bottom: auto">
+                                <div style="margin-top: 50px;margin-bottom: auto">
                                     <input value="编辑" type="button" class="btn-default"
                                            onclick="eitproject({{ ebent.id }})">
                                     <input value="取消" type="button" class=" btn-default"
@@ -142,7 +142,7 @@
                 <div style="text-align: center;">
                     <ul class="pagination">
                         <li>
-                            <a href="{{ url_for('home.ceshihuanjing') }}">首页</a>
+                            <a href="{{ url_for('home.testenvironment') }}">首页</a>
                         </li>
                         {% for page in pages %}
                             <li>
@@ -198,7 +198,7 @@
     <script type="text/javascript">
         function deleteevent(id) {
             $.ajax({
-                url: '{{url_for( 'home.ceshihuanjing') }}',
+                url: '{{url_for( 'home.testenvironment') }}',
                 type: 'DELETE',
                 data: id,
                 contentType: 'application/json; charset=UTF-8',
@@ -249,7 +249,7 @@
                 data['username'] = username;
                 data['password'] = password;
                 $.ajax({
-                        url: '{{url_for( 'home.ceshihuanjing') }}',
+                        url: '{{url_for( 'home.testenvironment') }}',
                         type: 'POST',
                         data: JSON.stringify(data),
                         contentType: 'application/json; charset=UTF-8',
@@ -303,7 +303,7 @@
                 data['username'] = username;
                 data['password'] = password;
                 $.ajax({
-                        url: '{{url_for( 'home.ceshihuanjing') }}',
+                        url: '{{url_for( 'home.testenvironment') }}',
                         type: 'PUT',
                         data: JSON.stringify(data),
                         contentType: 'application/json; charset=UTF-8',

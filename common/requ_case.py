@@ -10,9 +10,9 @@ from common.PackageRequest import reques
 
 
 class Api():
-    def __init__(self, url, fangshi, params, headers):
+    def __init__(self, url, method, params, headers):
         self.url = url
-        self.fangsh = fangshi
+        self.fangsh = method
         self.param = params
         self.headers = headers
         self.requ = reques()
@@ -25,7 +25,7 @@ class Api():
 
                 response, spend = self.requ.post(url=self.url,
                                                  params=self.param,
-                                             headers=self.headers)
+                                                 headers=self.headers)
 
             elif self.fangsh == 'GET' or self.fangsh == 'get':
                 response, spend = self.requ.get(url=self.url, headers=self.headers, parms=self.param)
@@ -34,13 +34,15 @@ class Api():
             elif self.fangsh == 'DELETE' or self.fangsh == 'delete':
                 response, spend = self.requ.delfile(url=self.url, params=self.param, headers=self.headers)
             else:
-                response=""
-                spend=""
+                response = ""
+                spend = ""
             return response, spend
         except Exception as e:
-            response="请求出错了"
-            spend="错误"
-            return response,spend
+            print(e)
+            response = "请求出错了"
+            spend = "错误"
+            return response, spend
+
     def getJson(self):
         json_data, spend = self.testapi()
         return json_data

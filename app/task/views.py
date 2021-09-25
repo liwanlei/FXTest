@@ -128,7 +128,7 @@ class TestforTaskView(MethodView):  # 为测试任务添加测试用例
                         projects.append(i.projects)
                         ids.append(i.projects)
         task_one = Task.query.filter_by(id=id).first()
-        return render_template('add/addtestyongfortask.html',
+        return render_template('add/addtestcasefortask.html',
                                task_one=task_one, procjets=projects)
 
     @login_required
@@ -147,11 +147,11 @@ class TestforTaskView(MethodView):  # 为测试任务添加测试用例
         procject_test = request.form.get('project')
         if procject_test == '':
             flash(u'不能不添加测试项目！')
-            return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=projects)
+            return render_template('add/addtestcasefortask.html', task_one=task_one, procjets=projects)
         test_yongli = request.form.getlist('testyongli')
         if test_yongli == '':
             flash(u'亲你见过只有测试项目没有测试用例的测试任务吗！')
-            return render_template('add/addtestyongfortask.html', task_one=task_one, procjets=projects)
+            return render_template('add/addtestcasefortask.html', task_one=task_one, procjets=projects)
         for oldtask in task_one.interface.all():
             task_one.interface.remove(oldtask)
         for yongli in test_yongli:

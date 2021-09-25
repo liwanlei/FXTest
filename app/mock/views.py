@@ -9,7 +9,7 @@ from app.models import *
 from flask.views import MethodView
 from flask_login import current_user, login_required
 from app import loginManager
-from common.mockservermeth import get_to_data
+from common.mockservermeth import get_token_data
 
 
 @loginManager.user_loader
@@ -44,7 +44,7 @@ class EditmockserView(MethodView):  # 编辑mack服务
         back = request.form['back']
         is_check = request.form['checkout']
         is_headers = request.form['checkouheaders']
-        kaiqi_is = request.form['kaiqi']
+        run_is = request.form['kaiqi']
         if is_check == u'是':
             is_check = True
         else:
@@ -53,10 +53,10 @@ class EditmockserView(MethodView):  # 编辑mack服务
             is_headers = True
         else:
             is_headers = False
-        if kaiqi_is == u'是':
-            is_kaiqi = True
+        if run_is == u'是':
+            is_start = True
         else:
-            is_kaiqi = False
+            is_start = False
         mock.make_uers = current_user.id
         mock.path = path
         mock.methods = methods
@@ -66,7 +66,7 @@ class EditmockserView(MethodView):  # 编辑mack服务
         mock.name = name
         mock.params = parm
         mock.rebacktype = types
-        mock.status = is_kaiqi
+        mock.status = is_start
         mock.ischeck = is_check
         mock.is_headers = is_headers
         mock.update_time = datetime.datetime.now()
@@ -82,19 +82,19 @@ class EditmockserView(MethodView):  # 编辑mack服务
 
 class MakemockserverView(MethodView):  # 做一个mock服务
     def get(self, path):  # get请求方法
-        data = get_to_data(path)
+        data = get_token_data(path)
         return data
 
     def post(self, path):  # post请求方法
-        data = get_to_data(path)
+        data = get_token_data(path)
         return data
 
     def put(self, path):  # put请求方法
-        data = get_to_data(path)
+        data = get_token_data(path)
         return data
 
     def delete(self, path):  # delete请求方法
-        data = get_to_data(path)
+        data = get_token_data(path)
         return data
 
 

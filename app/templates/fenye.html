@@ -29,6 +29,7 @@ page = pagination.page - 1, **kwargs) }}{% else %}#{% endif %}">
             <a style='background-color: lightgoldenrodyellow;color: brown;' href="
 
 
+
                     {% if pagination.has_next %}{{ url_for(endpoint,page = pagination.page + 1, **kwargs) }}{% else %}#{% endif %}">
                 »
             </a>

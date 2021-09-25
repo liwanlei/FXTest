@@ -1,0 +1,90 @@
+{% extends 'back.html' %}
+{% block hello %}
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components" style="background-color: whitesmoke;">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code">
+                    </span> 编辑接口
+                </div>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                    <div class="portlet-input input-small input-inline">
+                        <div class="input-icon right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form action="" method="POST" style="width: 40%;margin-left: 30%;">
+                <div class="form-group">
+                    <strong>项目名字:</strong>
+                    {% for project in  projects %}
+                        {% if project.project_name==interfac.projects.project_name %}
+                            <input type='radio' checked='checked' value="{{ project.project_name }}" name="project">
+                            {{ project.project_name }}
+                        {% else %}
+                            <input type='radio' value="{{ project.project_name }}" name="project">
+                            {{ project.project_name }}
+                        {% endif %}
+                    {% endfor %}
+                    <div class="form-group">
+                        <strong>模块名字:</strong>
+                        {% for model in  models %}
+                            {% if model.model_name==interfac.models.model_name %}
+                                <input type='radio' value="{{ model.model_name }}" checked="checked" name="model">
+                                {{ model.model_name }}
+                            {% else %}
+                                <input type='radio' value="{{ model.model_name }}" name="model">
+                                {{ model.model_name }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>接口协议类型:</strong>
+                        <select name="interface_type">
+                            <option>http</option>
+                            <option>dubbo</option>
+                        </select>
+                    </div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>接口名字:</strong>
+                        <input type="text" name="inter_name" value="{{ interfac.Interface_name }}">
+                    </div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>接口地址:</strong>
+                        <input type="text" name="url" value="{{ interfac.Interface_url }}">
+                    </div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>接口headers:</strong>
+                        <input type="text" name="headers" value="{{ interfac.Interface_headers }}">
+                        <span style="color: #8D99A8">
+                            dubbo接口这里需要填写入参对象
+                        </span>
+                    </div>
+                    <span>&nbsp;</span>
+                    <div class="form-group">
+                        <strong>请求方式:</strong>
+                        <input type="text" name="meth" value="{{ interfac.Interface_meth }}">
+                    </div>
+                    <span>&nbsp;</span>
+                    <span>&nbsp;</span>
+                    <button type="submit" class="am-btn am-btn-primary ">编辑</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

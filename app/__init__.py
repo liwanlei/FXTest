@@ -10,13 +10,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from config import lod
-from apscheduler.schedulers.background import BackgroundScheduler,BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler, BlockingScheduler
 from config import jobstores, executors
 from flask_admin import Admin
 from flask_moment import Moment
 from flask_restplus import Api, reqparse
 
 from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
+
 pagination_arguments = reqparse.RequestParser()
 pagination_arguments.add_argument('page', type=int, required=False, default=1, help='Page number')
 api = Api(version='1.0', title='系统api',
@@ -34,16 +35,19 @@ db = SQLAlchemy(app)
 moment = Moment(app)
 admin = Admin(app, name=u'FXTest系统管理后台')
 from app import views, models, url, apiadmin
-def my_listerner(event):
+
+
+def listerner(event):
     if event.exception:
         print('任务出错了！')
     else:
         print('任务正常运行中...')
+
+
 sched = BackgroundScheduler(jobstores=jobstores, executors=executors)
-sched.add_listener(my_listerner,EVENT_JOB_ERROR | EVENT_JOB_EXECUTED)
+sched.add_listener(listerner, EVENT_JOB_ERROR | EVENT_JOB_EXECUTED)
 
 try:
     sched.start()
 except Exception as e:
     print(e)
-

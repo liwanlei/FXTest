@@ -4,7 +4,8 @@
 @time: 2018/1/31 13:20 
 """
 from flask import redirect, request, render_template, \
-    session, url_for, flash, jsonify, Blueprint, make_response, send_from_directory
+    session, url_for, flash, jsonify, Blueprint, make_response, \
+    send_from_directory
 from app.models import *
 from app.form import *
 from config import Dingtalk_access_token
@@ -20,13 +21,13 @@ from flask_login import current_user, login_required
 from common.Dingtalk import send_ding
 from common.oparmysqldatabase import *
 from config import Config_daoru_xianzhi, redis_host, \
-    redis_port, redis_save_result_db, save_duration,jmeter_data_db
+    redis_port, redis_save_result_db, save_duration, \
+    jmeter_data_db
 from common.opearexcel import create_interface_case
 from common.mergelist import listmax
 from common.packageredis import ConRedisOper
 from common.CreateJxmUntil import make
 from common.SshTools import Sshtool
-
 
 case = Blueprint('case', __name__)
 
@@ -35,13 +36,14 @@ def save_reslut(key, value):
     redis = ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
     redis.sethase(str(key), str(value), save_duration)
 
+
 def get_reslut(key):
-    redis= ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
+    redis = ConRedisOper(host=redis_host, port=redis_port, db=redis_save_result_db)
     reslit = redis.getset(key)
     return reslit
 
 
-def get_pro_mo():
+def get_project_model():
     projects = Project.query.filter_by(status=False).all()
     model = Model.query.filter_by(status=False).all()
     return projects, model
@@ -52,8 +54,8 @@ class AddtestcaseView(View):
 
     @login_required
     def dispatch_request(self):
-        form = Interface_yong_Form()
-        project, models = get_pro_mo()
+        form = Interface_case_Form()
+        project, models = get_project_model()
         inrterface_list = Interface.query.filter_by(status=False).all()
         mock_yilai = Mockserver.query.filter_by(delete=False).all()
         if current_user.is_sper is True:
@@ -162,11 +164,11 @@ class AddtestcaseView(View):
                     return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
                                            inrterface_list=inrterface_list, mock_yilai=mock_yilai)
                 flash(u'添加用例成功')
-                return redirect(url_for('home.yongli'))
+                return redirect(url_for('home.case'))
             except Exception as e:
                 db.session.rollback()
                 flash(u'添加用例失败，原因是：%s' % e)
-                return redirect(url_for('home.yongli'))
+                return redirect(url_for('home.case'))
         return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
                                inrterface_list=inrterface_list, mock_yilai=mock_yilai)
 
@@ -176,7 +178,7 @@ class EditcaseView(View):
 
     @login_required
     def dispatch_request(self, id):
-        project, models = get_pro_mo()
+        project, models = get_project_model()
         inrterface_list = Interface.query.filter_by(status=False).all()
         mock_yilai = Mockserver.query.filter_by(delete=False).all()
         if current_user.is_sper == True:
@@ -192,7 +194,7 @@ class EditcaseView(View):
         edit_case = InterfaceTest.query.filter_by(id=id, status=False).first()
         if not edit_case:
             flash(u'编辑用例不存在!或者已经删除')
-            return redirect(url_for('home.yongli'))
+            return redirect(url_for('home.case'))
         if request.method == 'POST':
             save = request.form.get('save')
             yongli_nam = request.form.get('project')
@@ -308,7 +310,7 @@ class EditcaseView(View):
 
                 db.session.commit()
                 flash(u'用例：%s编辑成功' % id)
-                return redirect(url_for('home.yongli'))
+                return redirect(url_for('home.case'))
             except Exception as e:
                 print(e)
                 db.session.rollback()
@@ -320,7 +322,7 @@ class EditcaseView(View):
                                models=models, inerfacelist=inrterface_list, mock_yilai=mock_yilai)
 
 
-class SeryongliView(MethodView):
+class SerCaseView(MethodView):
     @login_required
     def post(self):
         id = request.get_data('id')
@@ -340,7 +342,8 @@ class SeryongliView(MethodView):
         if project_is.status is True:
             return jsonify({'msg': '项目已经删除', 'code': 40})
         intertestcases = InterfaceTest.query.filter_by(projects_id=project_is.id, status=False,
-                                                       interface_type=str(interfatype)).order_by(InterfaceTest.id.desc()).all()
+                                                       interface_type=str(interfatype)).order_by(
+            InterfaceTest.id.desc()).all()
         interfacelist = []
         testeventlist = []
         for testeven in testevent:
@@ -362,7 +365,7 @@ class SeryongliView(MethodView):
                          'typeinter': typeinterface}))
 
 
-class DaorucaseView(View):
+class ImportCaseView(View):
     methods = ['GET', 'POST']
 
     @login_required
@@ -377,14 +380,14 @@ class DaorucaseView(View):
                 yilai, yilai_ziduan, is_cha_data, data_sql, paser_base = paser_interface_case(filename)
                 if len(yilai) > Config_daoru_xianzhi:
                     flash(u'一次导入超过了系统的上限')
-                    return redirect(url_for('home.daoru_case'))
+                    return redirect(url_for('home.import_case'))
                 try:
                     for i in range(len(jiekou_bianhao)):
                         projects_id = Project.query.filter_by(project_name=str(project_nam[i])).first()
                         model_id = Model.query.filter_by(model_name=str(model_nam[i])).first()
                         if projects_id is None or model_id is None:
                             flash(u'导入失败,项目或者模块不存在')
-                            return redirect(url_for('home.daoru_case'))
+                            return redirect(url_for('home.import_case'))
                         if is_save_result[i] == '是':
                             save_reslt = True
                         elif is_save_result[i] == '否':
@@ -423,17 +426,17 @@ class DaorucaseView(View):
                         db.session.add(new_interface)
                         db.session.commit()
                     flash(u'导入成功')
-                    return redirect(url_for('home.yongli'))
+                    return redirect(url_for('home.case'))
                 except Exception as e:
                     db.session.rollback()
                     flash(u'导入失败，原因：%s' % e)
-                    return render_template('daoru_case.html')
+                    return render_template('import_case.html')
             flash(u'导入失败')
-            return render_template('daoru_case.html')
-        return render_template('daoru_case.html')
+            return render_template('import_case.html')
+        return render_template('import_case.html')
 
 
-class DuoyongliView(View):
+class MuliteCaseLiView(View):
     methods = ['GET', 'POST']
 
     @login_required
@@ -497,13 +500,15 @@ class DuoyongliView(View):
                 return redirect(next or url_for('duoyongli'))
             testevent = Interfacehuan.query.filter_by(url=testurl).first()
             try:
-                apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list,
-                                      inteface_parm=Interface_pase_list, inteface_assert=Interface_assert_list,
+                apitest = ApiTestCase(inteface_url=Interface_url_list,
+                                      inteface_method=Interface_meth_list,
+                                      inteface_parme=Interface_pase_list, inteface_assert=Interface_assert_list,
                                       file=file, headers=Interface_headers_list, pid=Interface_pid_list,
-                                      yilaidata=Interface_yilai_list, saveresult=Interface_save_list,
+                                      replydata=Interface_yilai_list, saveresult=Interface_save_list,
                                       id_list=id_list, is_database=Interface_is_data_list,
                                       data_mysql=Interface_mysql_list,
-                                      data_ziduan=Interface_msyql_ziduan_list, urltest=testevent.url)
+                                      data_field=Interface_msyql_ziduan_list,
+                                      urltest=testevent.url)
                 result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, \
                 result_wei, result_except, spend_list = apitest.testapi()
                 large, minx, pinglun = listmax(list2=spend_list)
@@ -538,21 +543,21 @@ class DuoyongliView(View):
                         flash(u'测试已经完成，并且给您默认设置发送了测试报告')
                         return redirect(url_for('home.test_rep'))
                     flash(u'无法完成，需要去您的个人设置去设置一个默认的邮件发送')
-                    return redirect(url_for('home.yongli'))
+                    return redirect(url_for('home.case'))
                 if f_dingding == 'dingding':
                     send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
                                      Dingtalk_access_token=Dingtalk_access_token)
                     if send is True:
                         flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
-                        return redirect(url_for('home.yongli'))
+                        return redirect(url_for('home.case'))
                     flash(u'测试报告发送钉钉讨论群失败！请检查相关配置！')
-                    return redirect(next or url_for('home.yongli'))
+                    return redirect(next or url_for('home.case'))
                 flash(u'测试已经完成，测试报告已经生成')
                 return redirect(url_for('home.test_rep'))
             except Exception as e:
                 flash(u'测试失败，出错原因:%s' % e)
-                return redirect(next or url_for('home.yongli'))
-        return redirect(url_for('home.yongli'))
+                return redirect(next or url_for('home.case'))
+        return redirect(url_for('home.case'))
 
 
 class MakeonlyoneCase(MethodView):
@@ -598,8 +603,8 @@ class MakeonlyoneCase(MethodView):
                             db.session.commit()
                             return jsonify({'code': 46, 'msg': '测试参数应该是字典格式！'})
                 else:
-                    if case.Interface_pase is None or case.Interface_pase=="null":
-                        pasrms={}
+                    if case.Interface_pase is None or case.Interface_pase == "null":
+                        pasrms = {}
                     else:
                         try:
                             pasrms = json.loads(case.Interface_pase)
@@ -610,13 +615,13 @@ class MakeonlyoneCase(MethodView):
                             return jsonify({'code': 47, 'msg': '测试参数应该是字典格式！'})
                 new_headers = case.Interface_headers
                 if new_headers == 'None':
-                    ne = {'host': url}
+                    new_header = {'host': url}
                 elif new_headers is None:
-                    ne = {'host': url}
+                    new_header = {'host': url}
                 else:
                     try:
-                        ne = eval(new_headers)
-                        ne['host'] = url
+                        new_header = eval(new_headers)
+                        new_header['host'] = url
                     except:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
@@ -654,7 +659,7 @@ class MakeonlyoneCase(MethodView):
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
                         return jsonify({'code': 54, 'msg': '测试环境数据库登录密码配置不存在'})
-                    if case.databaseziduan =="" or case.chaxunshujuku=="":
+                    if case.databaseziduan == "" or case.chaxunshujuku == "":
                         return jsonify({'code': 55, 'msg': '依赖数据库必须有字段'})
                     conncts = cursemsql(host=testevent.dbhost, port=testevent.dbport,
                                         user=testevent.databaseuser, password=testevent.databasepassword,
@@ -682,18 +687,18 @@ class MakeonlyoneCase(MethodView):
                     db.session.commit()
                     return jsonify({'code': 57, 'msg': '转化请求参数失败，原因：%s' % e})
 
-                response = Api(url=testevent.url+case.Interface_url, fangshi=case.Interface_meth,
-                         params=data, headers=ne)
-
+                response = Api(url=testevent.url + case.Interface_url,
+                               method=case.Interface_meth,
+                               params=data, headers=new_header)
                 result = response.getJson()
-
-                if result=="请求出错了":
+                if result == "请求出错了":
                     # save_reslut(key=str(case.id) + "&" + str(url), value=str(result))
                     return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
                 spend = response.spend()
-                if case.databaseziduan is not  None:
+                if case.databaseziduan is not None:
                     return_mysql = pare_result_mysql(mysqlresult=mysql_result,
                                                      return_result=result, paseziduan=case.databaseziduan)
+
                 retur_re = assert_in(case.Interface_assert, result)
                 try:
                     if case.is_database is True:
@@ -710,7 +715,7 @@ class MakeonlyoneCase(MethodView):
                         else:
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
-                            save_reslut(key=str(case.id)+ "&" + url, value=str(result))
+                            save_reslut(key=str(case.id) + "&" + url, value=str(result))
                             return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
 
                     if retur_re == 'pass':
@@ -721,7 +726,7 @@ class MakeonlyoneCase(MethodView):
                     else:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
-                        key=str(case.id) + "&" + url
+                        key = str(case.id) + "&" + url
 
                         save_reslut(key=key, value=str(result))
                         return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
@@ -807,7 +812,7 @@ class DaochuCase(MethodView):
         result = create_interface_case(filename=file, caselist=interface_list)
         if result['code'] == 1:
             flash('导出接口失败！原因：%s' % result['error'])
-            return redirect(url_for('home.yongli'))
+            return redirect(url_for('home.case'))
         response = make_response(send_from_directory(file_dir, filename=day + '.xls', as_attachment=True))
         return response
 
@@ -849,7 +854,7 @@ class CaseToJmx(MethodView):
         testid = data_jmx["testeventid"]
         runcount = data_jmx["runcount"]
         loopcount = data_jmx["loopcount"]
-        dbname =jmeter_data_db
+        dbname = jmeter_data_db
         testserverid = data_jmx["testserverid"]
         case_one = InterfaceTest.query.filter_by(id=int(interfacecaseid)).first()
         if not case_one:
@@ -880,12 +885,12 @@ class CaseToJmx(MethodView):
               </elementProp>''' % (value, key)
             except Exception as e:
                 print(e)
-                return jsonify({'code': 99, 'messgage':'转换接口压测测试用例失败', 'data': ''})
+                return jsonify({'code': 99, 'messgage': '转换接口压测测试用例失败', 'data': ''})
         all = make(runcount, loopcount, all[0], port, case_one.interfaces.Interface_url,
                    case_one.Interface_meth, dbname, case_one.projects.project_name, parame)
         path = os.getcwd()
         filepath = path + "/jxmpath/"
-        name =str(case_one.projects.project_name)+"_"+ str(testvents.id) +"_"+ str(case_one.id) + ".jmx"
+        name = str(case_one.projects.project_name) + "_" + str(testvents.id) + "_" + str(case_one.id) + ".jmx"
         filepathname = filepath + name
         with open(filepathname, 'wb') as f:
             f.write(all.encode())
@@ -918,7 +923,7 @@ class JmxToServer(MethodView):
         commentc = Sshtool(testserver.ip, testserver.port, testserver.loginuser, testserver.loginpassword)
         cmd = "./jmeter -n -t /home/" + testjmx.name + '  -l name.htl'
         commentc.command(cmd)
-        testserver.is_run=1
+        testserver.is_run = 1
         db.session.add(testserver)
         db.session.commit()
         return jsonify({'code': 0, 'messgage': '压测已经在远程服务器运行', 'data': testjmx.id})

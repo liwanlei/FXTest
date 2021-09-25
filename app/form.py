@@ -5,7 +5,6 @@
 @time: 2017/7/13 16:42
 """
 '''form表单'''
-from config import *
 from flask_wtf import Form
 from wtforms import StringField, validators, PasswordField, SelectField, ValidationError
 from wtforms.validators import Email
@@ -43,13 +42,13 @@ class RegFrom(Form):
                        validators=[validators.DataRequired(message=u"项目名称不能为空")])
 
 
-class XugaiFrom(Form):
+class changepasswordFrom(Form):
     password = PasswordField(u'密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
                              render_kw={'placeholder': u'请输入原密码'})
-    xiu_password = PasswordField(u'密码',
+    changepassword_password = PasswordField(u'密码',
                                  [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
                                  render_kw={'placeholder': u'请输入新密码'})
-    xiu_password_se = PasswordField(u'密码',
+    changepassword_password_agagin = PasswordField(u'密码',
                                     [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
                                     render_kw={'placeholder': u'请再次输入密码'})
 
@@ -66,7 +65,7 @@ class InterForm(Form):  # 接口的表单
     interface_bas = StringField(u'请求返回示例', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口返回示例'})
 
 
-class Interface_yong_Form(Form):  # 测试用例的表单
+class Interface_case_Form(Form):  # 测试用例的表单
     yongli_name = StringField(u'项目', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口项目名称'})
     model_name = StringField(u'模块', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口模块名称'})
     interface_name = StringField(u'接口名字', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口名称'})

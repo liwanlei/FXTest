@@ -21,7 +21,7 @@ class ConRedisOper(object):
 
     def sethase(self, key, value, time=None):
         if time:
-            res = self.connect().setex(key,  time,value)
+            res = self.connect().setex(key, time, value)
 
         else:
 

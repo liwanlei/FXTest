@@ -185,7 +185,8 @@ class InterfaceTest(db.Model):  # 测试用例表
     is_smoke = db.Column(db.Integer(), default=0)  # 0 否 1是
     is_reback = db.Column(db.Integer(), default=0)  # 0 否 1是
     is_monitor = db.Column(db.Integer(), default=0)  # 1 监控用例
-    status = db.Column(db.Boolean(), default=False)#是否删除
+    status = db.Column(db.Boolean(), default=False)  # 是否删除
+
     # rely_mock=db.Column(db.Boolean(),default=False) #是否依赖
 
     def __repr__(self):
@@ -387,6 +388,8 @@ class TestcaseResult(db.Model):  # 测试用例结果
     id = db.Column(db.Integer, primary_key=True)
     case_id = db.Column(db.Integer, db.ForeignKey('interfacetests.id'), nullable=True)
     result = db.Column(db.String(252))
+    by=db.Column(db.Boolean(),default=False)
+    spend=db.Column(db.String(52))
     date = db.Column(db.DateTime(), default=datetime.datetime.now())
     testevir = db.Column(db.Integer, db.ForeignKey('ceshihuanjing.id'), nullable=True)
 
@@ -456,7 +459,7 @@ class TestGroup(db.Model):
     '''测试组'''
     __tablename__ = 'testgroup'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    name = db.Column(db.String(252))
+    name = db.Column(db.String(252), unique=True)
     projectid = db.Column(db.Integer())
     status = db.Column(db.Integer(), default=0)  # 状态，0正常，1删除
     adduser = db.Column(db.Integer(), default=0)
@@ -511,7 +514,7 @@ class Testerver(db.Model):
     creatdate = db.Column(db.Date(), default=datetime.datetime.now())
     updateuser = db.Column(db.Integer(), default=createuser)
     updatetime = db.Column(db.Date(), default=datetime.datetime.now())
-    is_run=db.Column(db.Integer(),default=0)#默认是没有执行
+    is_run = db.Column(db.Integer(), default=0)  # 默认是没有执行
 
     def __repr__(self):
         return str(self.name)

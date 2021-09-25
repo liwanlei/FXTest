@@ -11,7 +11,8 @@ home = Blueprint('home', __name__)
 from app.models import *
 from app.form import *
 from flask.views import MethodView
-from flask_login import login_required, login_user, logout_user, current_user
+from flask_login import login_required, login_user,\
+    logout_user, current_user
 from app import loginManager, sched
 from common.Pagination import fenye_list
 from common.pageination import Pagination
@@ -43,7 +44,7 @@ class index(MethodView):
         interface_list = []
         for interface in range(len(interface_cont) + 1):
             try:
-                if interface_cont[interface].projects.status is  False:
+                if interface_cont[interface].projects.status is False:
                     interface_list.append(interface_cont[interface])
                 else:
                     interface += 1
@@ -100,7 +101,7 @@ class LoginView(MethodView):
         username = data['username']
         password = data['password']
         if username is None:
-                return jsonify({'msg': login_username_not_message, 'code': 33, 'data': ''})
+            return jsonify({'msg': login_username_not_message, 'code': 33, 'data': ''})
         if password is None:
             return jsonify({'msg': login_password_not_message, 'code': 34, 'data': ''})
         user = User.query.filter_by(username=username).first()
@@ -269,7 +270,7 @@ class InterfaceView(MethodView):
             return jsonify({"data": '删除接口失败，原因：%s' % e, 'code': 3})
 
 
-class YongliView(MethodView):
+class CaseView(MethodView):
     @login_required
     def get(self, page=1):
         if current_user.is_sper is True:
@@ -278,7 +279,7 @@ class YongliView(MethodView):
             projects = []
             for i in current_user.quanxians:
                 projects.append(i.projects)
-        return render_template('home/interface_yongli.html', projects=projects)
+        return render_template('home/interface_case.html', projects=projects)
 
     @login_required
     def delete(self):
@@ -419,6 +420,7 @@ class ProjectView(MethodView):
             return jsonify({'code': 3, 'data': '权限不足！'})
         if name == '':
             return jsonify({'code': 4, 'data': '不能为空！'})
+
         projec = Project.query.filter_by(project_name=name, status=False).first()
         if projec:
             return jsonify({'code': 5, 'data': '项目不能重复！'})
@@ -426,12 +428,12 @@ class ProjectView(MethodView):
         try:
             db.session.add(new_moel)
             db.session.commit()
-            testgroup = TestGroup(adduser=current_user.id,
-                                  addtime=datetime.datetime.now(),
-                                  updatetime=datetime.datetime.now(),
-                                  updateuser=current_user.id,
-                                  name='黑名单', projectid=new_moel.id)
-            db.session.add(testgroup)
+            # testgroup = TestGroup(adduser=current_user.id,
+            #                       addtime=datetime.datetime.now(),
+            #                       updatetime=datetime.datetime.now(),
+            #                       updateuser=current_user.id,
+            #                       name='黑名单', projectid=new_moel.id)
+            # db.session.add(testgroup)
             db.session.commit()
             return jsonify({'code': 2, 'data': '添加成功！', '': ''})
         except Exception as e:
@@ -515,7 +517,7 @@ class ModelView(MethodView):
         if models:
             return jsonify({'code': 1, 'data': u'模块不能重复存在'})
 
-        new_moel = Model(model_name=data['name'], model_user_id=current_user.id,  project=project_one)
+        new_moel = Model(model_name=data['name'], model_user_id=current_user.id, project=project_one)
         db.session.add(new_moel)
         try:
             db.session.commit()
@@ -561,9 +563,10 @@ class TesteventVies(MethodView):
             events = []
             id = []
             for project in current_user.quanxians:
-                if (project.projects.id in id) is False :
+                if (project.projects.id in id) is False:
                     events.append(
-                        Interfacehuan.query.filter_by(project=project.projects.id, status=False).order_by(Interfacehuan.id.desc()).all())
+                        Interfacehuan.query.filter_by(project=project.projects.id, status=False).order_by(
+                            Interfacehuan.id.desc()).all())
                     id.append(project.projects.id)
         projects_lsit = fenye_list(Ob_list=events, split=PageShow)
         pages = range(1, len(projects_lsit) + 1)
@@ -579,8 +582,9 @@ class TesteventVies(MethodView):
             return render_template('home/events.html', events=teststcentpage,
                                    pages=pages,
                                    projects=projects)
-        except:
-            return redirect(url_for('home.ceshihuanjing'))
+        except Exception as e:
+            print(e)
+            return redirect(url_for('home.testenvironment'))
 
     @login_required
     def delete(self):
@@ -611,9 +615,9 @@ class TesteventVies(MethodView):
         prkcyt = Project.query.filter_by(project_name=project).first()
         testevent = Interfacehuan(url=url, desc=desc, project=prkcyt.id,
                                   database=name,
-                            databaseuser=usernmae, databasepassword=password,
+                                  databaseuser=usernmae, databasepassword=password,
                                   dbhost=host,
-                            dbport=port, make_user=current_user.id)
+                                  dbport=port, make_user=current_user.id)
         db.session.add(testevent)
         try:
             db.session.commit()
@@ -640,10 +644,10 @@ class TesteventVies(MethodView):
         if not event:
             newevent = Interfacehuan(url=url, desc=desc, project=project.id,
                                      database=name,
-                                databaseuser=usernmae,
+                                     databaseuser=usernmae,
                                      databasepassword=password, dbhost=host,
 
-                                dbport=port, make_user=current_user.id)
+                                     dbport=port, make_user=current_user.id)
             db.session.add(newevent)
             db.session.commit()
             return jsonify({'data': '编辑成功', 'code': 2})
@@ -668,8 +672,8 @@ class MockViews(MethodView):
     @login_required
     def get(self, page=1):
         mock = Mockserver.query.filter_by(delete=False).order_by(Mockserver.id.desc()).paginate(page,
-                                                                                 per_page=int(PageShow),
-                                                                                 error_out=False)
+                                                                                                per_page=int(PageShow),
+                                                                                                error_out=False)
         inter = mock.items
         return render_template('home/mockserver.html', inte=inter, pagination=mock)
 
@@ -756,7 +760,8 @@ class GettProtestreport(MethodView):
         project_is = Project.query.filter_by(project_name=project).first()
         if not project_is:
             return jsonify(({'msg': u'成功', 'code': 200, 'data': []}))
-        testreport = TestResult.query.filter_by(projects_id=project_is.id, status=False).order_by(TestResult.id.desc()).all()
+        testreport = TestResult.query.filter_by(projects_id=project_is.id, status=False).order_by(
+            TestResult.id.desc()).all()
         testreportlist = []
         for test in testreport:
             testreportlist.append({'test_num': test.test_num, 'pass_num': test.pass_num,
@@ -821,7 +826,8 @@ class GettProtestreport(MethodView):
 class GenconfigView(MethodView):
     @login_required
     def get(self, page=1):
-        genconfiglist = GeneralConfiguration.query.filter_by(status=False).order_by(GeneralConfiguration.id.desc()).all()
+        genconfiglist = GeneralConfiguration.query.filter_by(status=False).order_by(
+            GeneralConfiguration.id.desc()).all()
         projects_lsit = fenye_list(Ob_list=genconfiglist, split=PageShow)
         pages = range(1, len(projects_lsit) + 1)
         try:

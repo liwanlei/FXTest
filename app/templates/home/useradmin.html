@@ -150,6 +150,8 @@
                     {% endfor %}
                 </select>
             </p>
+        <button onclick="add_user()">添加</button>
+        <button onclick="cancle_add_user()">取消</button>
         </div>
     </div>
     <div style="display:none;position:fixed;z-index: 210;width: 400px;top: 100px;left: 30%;box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: #9eacb4"
@@ -261,8 +263,12 @@
         }
 
         function adduser() {
-            m = document.getElementById('adduser');
-            m.style.display = ''
+            var add_user = document.getElementById('adduser');
+            add_user.style.display = ''
+        }
+        function cancle_add_user() {
+            var add_user = document.getElementById('adduser');
+            add_user.style.display = 'none'
         }
 
         function guanbiadd() {

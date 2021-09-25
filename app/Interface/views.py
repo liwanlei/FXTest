@@ -15,7 +15,7 @@ from config import Config_daoru_xianzhi
 from common.opearexcel import create_interface
 from common.merge import hebingDict
 
-interfac = Blueprint('interface', __name__)
+interfaceview = Blueprint('interface', __name__)
 
 
 def get_pro_mo():
@@ -42,7 +42,7 @@ class EditInterfaceView(MethodView):
                         projects.append(i.projects)
                         id.append(i.projects)
         project, models = get_pro_mo()
-        return render_template('edit/edit_inter.html', interfac=interface, projects=projects, models=models)
+        return render_template('edit/edit_interface.html', interfac=interface, projects=projects, models=models)
 
     @login_required
     def post(self, id):
@@ -70,7 +70,7 @@ class EditInterfaceView(MethodView):
         meth = request.form.get('meth')
         if projecct is None or model is None or intername == '' or headers == '' or url == '' or meth == '':
             flash(u'请确定各项参数都正常填写')
-            return render_template('edit/edit_inter.html', interfac=interface, projects=projects, models=models)
+            return render_template('edit/edit_interface.html', interfac=interface, projects=projects, models=models)
         project_id = Project.query.filter_by(project_name=projecct).first().id
         models_id = Model.query.filter_by(model_name=model).first().id
         interface.projects_id = project_id
@@ -132,10 +132,10 @@ class DaoruinterView(View):
                     return redirect(url_for('home.interface'))
                 except Exception as e:
                     flash(u'导入失败，请检查')
-                    return render_template('daoru.html')
+                    return render_template('import.html')
             flash(u'导入失败')
-            return render_template('daoru.html')
-        return render_template('daoru.html')
+            return render_template('import.html')
+        return render_template('import.html')
 
 
 class SerinterView(MethodView):

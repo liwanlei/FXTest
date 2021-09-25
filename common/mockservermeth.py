@@ -14,7 +14,7 @@ from common.packagedict import comp_dict, dict_par
 import json
 
 
-def get_to_data(path):
+def get_token_data(path):
     huoqupath = Mockserver.query.filter_by(path=path, status=True).first()
     if not huoqupath:
         abort(404)

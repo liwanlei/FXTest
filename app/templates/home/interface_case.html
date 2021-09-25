@@ -38,7 +38,7 @@
                     <a href="{{ url_for('case.addtestcase') }}">
                         <input type="button" name="" class="am-btn am-btn-default am-btn-success" value="添加用例">
                     </a>
-                    <a href="{{ url_for('case.daoru_case') }}">
+                    <a href="{{ url_for('case.import_case') }}">
                         <input type="button" name="" class="am-btn am-btn-default am-btn-success" value="批量导入">
                     </a>
                     <button class="am-btn am-btn-default am-btn-success">批量执行</button>
@@ -239,7 +239,7 @@
             var dddss = $('#ceshice');
             var inte = $('#interfacete');
             $.ajax({
-                url: '{{ url_for('case.ser_yongli') }}',
+                url: '{{ url_for('case.ser_case') }}',
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json; charset=UTF-8',
@@ -339,7 +339,7 @@
 
         function deletcase(id) {
             $.ajax({
-                url: '{{url_for( 'home.yongli') }}',
+                url: '{{url_for( 'home.case') }}',
                 type: 'DELETE',
                 data: id,
                 contentType: 'application/json; charset=UTF-8',

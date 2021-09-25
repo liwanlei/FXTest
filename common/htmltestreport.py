@@ -72,7 +72,7 @@ def time(starttime, endtime, passge, fail, excepts, yuqi, weizhi, maxs, mins, pi
 			   </tr> 
 			   </tbody></table>
 			   </div> ''' % (
-    starttime, endtime, (endtime - starttime), passge, fail, excepts, yuqi, weizhi, maxs, mins, pingluns)
+        starttime, endtime, (endtime - starttime), passge, fail, excepts, yuqi, weizhi, maxs, mins, pingluns)
     return beijing
 
 

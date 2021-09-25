@@ -27,17 +27,16 @@ class reques():
             return {'get请求出错': "错误原因:%s" % e}
 
     def post(self, url, params, headers):  # post消息
-
         data = json.dumps(params)
         try:
             reponse = requests.post(url,
-                                   data=data,
-                                   timeout=Interface_Time_Out)
+                                    data=data,
+                                    timeout=Interface_Time_Out,
+                                    headers=headers)
 
-            if reponse.status_code !=200:
+            if reponse.status_code != 200:
                 return {'post请求出错': "状态码返回不是200"}
             json_response = json.loads(reponse.text)
-
             spend = reponse.elapsed.total_seconds()
             return json_response, spend
         except exceptions.Timeout:
@@ -51,7 +50,9 @@ class reques():
 
     def delfile(self, url, params, headers):  # 删除的请求
         try:
-            self.rdel_word = requests.delete(url, data=params, headers=headers, timeout=Interface_Time_Out)
+            self.rdel_word = requests.delete(url, data=params,
+                                             headers=headers,
+                                             timeout=Interface_Time_Out)
             json_response = json.loads(self.rdel_word.text)
             spend = self.rdel_word.elapsed.total_seconds()
             return json_response, spend
@@ -67,7 +68,8 @@ class reques():
     def putfile(self, url, params, headers):  # put请求
         try:
             self.rdata = json.dumps(params)
-            me = requests.put(url, self.rdata, headers=headers, timeout=Interface_Time_Out)
+            me = requests.put(url, self.rdata, headers=headers,
+                              timeout=Interface_Time_Out)
             json_response = json.loads(me.text)
             spend = me.elapsed.total_seconds()
             return json_response, spend
