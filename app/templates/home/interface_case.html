@@ -170,8 +170,8 @@
                 success: function (testyong) {
                     if (testyong['code'] == 200) {
                         var pro = document.getElementById('ceshiyongprco');
-                        pro.innerText = testyong['data'];
-                        xuanze = testyong['huanjing']
+                        pro.innerText = testyong['data']['project'];
+                        xuanze = testyong['data']['url'];
                         var xuanz = $('#xuanzehuanjing');
                         xuanz.empty();
                         for (var i = 0; i < xuanze.length; i++) {
@@ -180,7 +180,7 @@
                         }
                     } else {
                         window.location.reload();
-                        alert(testyong['msg'])
+                        alert(testyong['message'])
                     }
                 }, error: function (res) {
                     alert('异步请求失败，请联系管理员！！！');
@@ -219,7 +219,7 @@
                         window.location.reload();
                         alert('测试用例在环境' + url + '中测试通过！！！');
                     } else {
-                        alert(result['msg'])
+                        alert(result['message'])
                         window.location.reload();
                     }
                 }
@@ -246,19 +246,19 @@
                 processData: false,
                 success: function (data) {
                     if (data['code'] == 200) {
-                        var mdata = data['data'];
+                        var mdata = data['data']['data'];
                         var insertss = $('#testyonglis');
                         insertss.empty();
                         dddss.empty();
-                        if (data['typeinter'] == 'http') {
+                        if (data['data']['typeinter'] == 'http') {
                             inte.empty();
                             inte.append(" <th></th><th>编号</th><th width='10px'>项目</th><th>模块</th><th>所属接口</th><th>请求头</th><th>请求方式</th><th>参数</th><th>预期</th><th width='1%'>操作</th>")
-                        } else if (data['typeinter'] == 'dubbo') {
+                        } else if (data['data']['typeinter'] == 'dubbo') {
                             inte.empty();
                             inte.append(" <th></th><th>编号</th><th width='10px'>项目</th><th>模块</th><th>所属接口</th><th>接口名称</th><th>请求方式</th><th>参数</th><th>预期</th><th width='1%'>操作</th>")
                         }
-                        for (var m = 0; m < data['url'].length; m++) {
-                            dddss.append('<option id=' + data['url'][m].id + ' >' + data['url'][m].url + '</option>')
+                        for (var m = 0; m < data['data']['url'].length; m++) {
+                            dddss.append('<option id=' + data['data']['url'][m].id + ' >' + data['data']['url'][m].url + '</option>')
                         }
                         ;
                         if (mdata.length < 1) {
@@ -327,7 +327,7 @@
                         }
                     } else {
                         inte.empty();
-                        inte.append("<h1>" + data['messgage'] + "</h1>")
+                        inte.append("<h1>" + data['message'] + "</h1>")
                     }
                 }
                 , error: function (res) {
@@ -345,10 +345,10 @@
                 contentType: 'application/json; charset=UTF-8',
                 processData: false,
                 success: function (data) {
-                    if (data['code'] != 2) {
-                        alert(data['data'])
+                    if (data['code'] != 200) {
+                        alert(data['message'])
                     } else {
-                        alert(data['data'])
+                        alert(data['message'])
                         caseid = document.getElementById(id);
                         caseid.hidden = true;
                     }

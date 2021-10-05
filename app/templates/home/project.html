@@ -116,8 +116,8 @@
 
         </div>
         <div style="margin-top: 5%;margin-bottom: auto">
-            <input value="添加" type="button" class="btn-default" onclick="tianjian()">
-            <input value="取消" type="button" class=" btn-default" onclick="guanbi()">
+            <input value="添加" type="button" class="btn-default" onclick="add()">
+            <input value="取消" type="button" class=" btn-default" onclick="closeadd()">
         </div>
     </div>
 {% endblock %}
@@ -128,12 +128,12 @@
             m.style.display = ''
         }
 
-        function guanbi() {
+        function closeadd() {
             m = document.getElementById('project');
             m.style.display = 'none'
         }
 
-        function tianjian() {
+        function add() {
             var project = document.getElementById('name').value;
             $.ajax({
                     url: '{{url_for( 'home.project') }}',
@@ -142,11 +142,11 @@
                     contentType: 'application/json; charset=UTF-8',
                     processData: false,
                     success: function (result) {
-                        if (result['code'] == 2) {
-                            alert(result['data']);
+                        if (result['code'] == 200) {
+                            alert(result['message']);
                             location.reload()
                         } else {
-                            alert(result['data']);
+                            alert(result['message']);
                         }
                     }
                 }
@@ -175,11 +175,11 @@
                     contentType: 'application/json; charset=UTF-8',
                     processData: false,
                     success: function (result) {
-                        if (result['code'] == 2) {
-                            alert(result['data']);
+                        if (result['code'] == 200) {
+                            alert(result['message']);
                             location.reload()
                         } else {
-                            alert(result['data']);
+                            alert(result['message']);
                         }
                     }
                 }
@@ -194,10 +194,10 @@
                 contentType: 'application/json; charset=UTF-8',
                 processData: false,
                 success: function (data) {
-                    if (data['code'] != 2) {
-                        alert(data['data'])
+                    if (data['code'] != 200) {
+                        alert(data['message'])
                     } else {
-                        alert(data['data'])
+                        alert(data['message'])
                         caseid = document.getElementById(id);
                         caseid.hidden = true;
                     }

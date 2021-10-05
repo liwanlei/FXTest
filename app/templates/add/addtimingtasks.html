@@ -104,7 +104,7 @@
                             urlproject.append("<option>" + data_result[m].url + "</option>")
                         }
                     } else {
-                        message.innerHTML = (result['msg']);
+                        message.innerHTML = (result['message']);
                     }
                 }
             })
@@ -164,7 +164,7 @@
                                     if (result['code'] == 200) {
                                         location.href = '{{ url_for('home.timingtask') }}';
                                     } else {
-                                        message.innerHTML = (result['msg']);
+                                        message.innerHTML = (result['message']);
                                     }
                                 }
                             });

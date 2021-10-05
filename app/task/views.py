@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : lileilei
 # @File    : views.py
-# @Time    : 2017/12/7 12:19
-from flask import Blueprint, jsonify
+from flask import Blueprint
 from flask import redirect, request, render_template, url_for, flash
 from app.models import *
 from flask.views import MethodView
@@ -14,6 +13,9 @@ from app.test_case.Test_case import ApiTestCase
 from common.mergelist import listmax
 from common.Dingtalk import send_ding
 from config import Dingtalk_access_token
+from error_message import *
+from common.jsontools import reponse
+from common.systemlog import logger
 
 task = Blueprint('task', __name__)
 
@@ -65,13 +67,18 @@ def addtask(id):  # 定时任务执行的时候所用的函数
         Interface_save_list.append(task_yongli.saveresult)
     testevent = task.testevent
     intest = Interfacehuan.query.filter_by(id=testevent, status=False).first()
-    apitest = ApiTestCase(inteface_url=Interface_url_list, inteface_meth=Interface_meth_list,
-                          inteface_parm=Interface_pase_list, inteface_assert=Interface_assert_list,
-                          file=file, headers=Interface_headers_list, pid=Interface_pid_list,
-                          is_database=Interface_is_data_list, data_mysql=Interface_mysql_list,
-                          data_ziduan=Interface_msyql_ziduan_list,
+    apitest = ApiTestCase(inteface_url=Interface_url_list,
+                          inteface_method=Interface_meth_list,
+                          inteface_parme=Interface_pase_list,
+                          inteface_assert=Interface_assert_list,
+                          file=file, headers=Interface_headers_list,
+                          pid=Interface_pid_list,
+                          is_database=Interface_is_data_list,
+                          data_mysql=Interface_mysql_list,
+                          data_field=Interface_msyql_ziduan_list,
                           urltest=intest.url,
-                          yilaidata=Interface_yilai_list, saveresult=Interface_save_list, id_list=id_list)
+                          replydata=Interface_yilai_list,
+                          saveresult=Interface_save_list, id_list=id_list)
     result_toal, result_pass, result_fail, relusts, \
     bask_list, result_cashu, result_wei, result_except, \
     spendlist = apitest.testapi()
@@ -104,6 +111,7 @@ def addtask(id):  # 定时任务执行的时候所用的函数
         send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
                   Dingtalk_access_token=Dingtalk_access_token)
     except Exception as e:
+
         print(e)
         # flash('定时任务的钉钉消息发送失败！原因:%s' % e)
 
@@ -146,11 +154,11 @@ class TestforTaskView(MethodView):  # 为测试任务添加测试用例
         task_one = Task.query.filter_by(id=id).first()
         procject_test = request.form.get('project')
         if procject_test == '':
-            flash(u'不能不添加测试项目！')
+            flash(MessageEnum.not_add_project.value[1])
             return render_template('add/addtestcasefortask.html', task_one=task_one, procjets=projects)
         test_yongli = request.form.getlist('testyongli')
         if test_yongli == '':
-            flash(u'亲你见过只有测试项目没有测试用例的测试任务吗！')
+            flash(MessageEnum.project_not_case.value[1])
             return render_template('add/addtestcasefortask.html', task_one=task_one, procjets=projects)
         for oldtask in task_one.interface.all():
             task_one.interface.remove(oldtask)
@@ -164,10 +172,11 @@ class TestforTaskView(MethodView):  # 为测试任务添加测试用例
         db.session.add(task_one)
         try:
             db.session.commit()
-            flash(u'任务更新用例成功')
+            flash(MessageEnum.task_update_case.value[1])
             return redirect(url_for('home.timingtask'))
-        except:
-            flash(u'任务更新用例失败')
+        except Exception as e:
+            logger.exception(e)
+            flash(MessageEnum.task_update_case_error.value[1])
             return redirect(url_for('home.timingtask'))
 
 
@@ -176,7 +185,7 @@ class StartTaskView(MethodView):  # 开始定时任务
     def get(self, id):
         task = Task.query.filter_by(id=id).first()
         if len(task.interface.all()) <= 1:
-            flash(u'定时任务执行过程的测试用例为多用例，请你谅解')
+            flash(MessageEnum.task_must_be_mulite_case.value[1])
             return redirect(url_for('home.timingtask'))
         try:
             time_start = eval(task.taskstart)
@@ -190,10 +199,11 @@ class StartTaskView(MethodView):  # 开始定时任务
                           replace_existing=True)
             task.yunxing_status = '启动'
             db.session.commit()
-            flash(u'定时任务启动成功！')
+            flash(MessageEnum.task_start_success.value[1])
             return redirect(url_for('home.timingtask'))
         except Exception as e:
-            flash(u'定时任务启动失败！原因：%e' % e)
+            logger.exception(e)
+            flash(MessageEnum.task_start_eeor.value[1])
             return redirect(url_for('home.timingtask'))
 
 
@@ -206,12 +216,13 @@ class PausedTaskView(MethodView):  # 暂停定时任务
             sched.pause_job(str(id))
             task.yunxing_status = u'暂停'
             db.session.commit()
-            flash(u'定时任务暂停成功！')
+            flash(u'！')
             return redirect(next or url_for('home.timingtask'))
         except Exception as e:
+            logger.exception(e)
             task.yunxing_status = u'创建'
             db.session.commit()
-            flash(u'定时任务暂停失败！已经为您初始化，原因：%s' % e)
+            flash(MessageEnum.task_stop_fail.value[1])
             return redirect(next or url_for('home.timingtask'))
 
 
@@ -224,12 +235,13 @@ class RecoverTaskView(MethodView):  # 回复定时任务
             sched.resume_job(str(id))
             task.yunxing_status = u'启动'
             db.session.commit()
-            flash(u'定时任务恢复成功！')
+            flash(MessageEnum.task_repuse_success.value[1])
             return redirect(next or url_for('home.timingtask'))
         except Exception as e:
+            logger.exception(e)
             task.yunxing_status = u'创建'
             db.session.commit()
-            flash(u'定时任务恢复失败！已经为您初始化,原因：%s' % e)
+            flash(MessageEnum.task_repuse_fail.value[1])
             return redirect(next or url_for('home.timingtask'))
 
 
@@ -242,12 +254,13 @@ class RemoveTaskView(MethodView):  # 移除定时任务
             sched.remove_job(str(id))
             task.yunxing_status = u'关闭'
             db.session.commit()
-            flash(u'定时任务移除成功！')
+            flash(MessageEnum.remove_success.value[1])
             return redirect(next or url_for('home.timingtask'))
-        except:
+        except Exception as  e:
+            logger.exception(e)
             task.yunxing_status = u'创建'
             db.session.commit()
-            flash(u'定时任务移除失败！已经为您初始化')
+            flash(MessageEnum.remove_fail.value[1])
             return redirect(next or url_for('home.timingtask'))
 
 
@@ -265,22 +278,31 @@ class AddTimingTaskView(MethodView):
         taskname_is = Task.query.filter_by(taskname=data['taskname']).first()
         testevent = Interfacehuan.query.filter_by(url=data['testevent']).first()
         if not testevent:
-            return jsonify({'code': 22, 'msg': '任务的测试环境不存在', 'data': ''})
+            return reponse(
+                code=MessageEnum.task_event_not_exict.value[0],
+                message=MessageEnum.task_event_not_exict.value[1],
+                data='')
         if taskname_is:
-            return jsonify({'code': 23, 'msg': '任务名不能重复', 'data': ''})
+            return reponse(
+                code=MessageEnum.task_name_not_same.value[0],
+                message=MessageEnum.task_name_not_same.value[1],
+                data='')
         procjt = Project.query.filter_by(project_name=data['projects'], status=False).first()
         if not procjt:
-            return jsonify({'code': 24, 'msg': '任务的所属项目不存在', 'data': ''})
+            return reponse(code=MessageEnum.task_project_is_not_exict.value[0],
+                           message=MessageEnum.task_project_is_not_exict.value[1], data='')
         new_task = Task(taskname=data['taskname'], taskstart=str(task_time),
                         taskrepor_to=data['to_email'], taskrepor_cao=data['cao_email'],
                         task_make_email=data['weihu'], makeuser=current_user.id,
                         prject=procjt.id, testevent=testevent.id)
         db.session.add(new_task)
         try:
-            return jsonify({'code': 200, 'msg': '成功', 'data': ''})
+            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1], data='')
         except Exception as e:
+            logger.exception(e)
             db.session.rollback()
-            return jsonify({'code': 25, 'msg': '任务添加失败，原因：%s' % e, 'data': ''})
+            return reponse(
+                code=MessageEnum.task_add_fail.value[0], message=MessageEnum.task_add_fail.value[1], data='')
 
 
 class EdiTmingTaskView(MethodView):
@@ -298,7 +320,7 @@ class EdiTmingTaskView(MethodView):
                         id.append(i.projects)
         task_one = Task.query.filter_by(id=id).first()
         if not task_one:
-            flash(u'你编辑的不存在')
+            flash(MessageEnum.task_edit_not_exict.value[1])
             return redirect(url_for('home.timingtask'))
         return render_template('edit/Edittimingtasks.html',
                                task_one=task_one, porjects=projects)
@@ -315,13 +337,13 @@ class EdiTmingTaskView(MethodView):
         task_time = {'type': 'cron', 'day_of_week': week, 'hour': hour, 'minute': minute}
         weihu = request.form['weihu']
         if taskname == '':
-            flash(u'任务名不能为空！')
+            flash(MessageEnum.task_name_not_none.value[1])
             return render_template('add/addtimingtasks.html')
         if to_email_data == '':
-            flash(u'发送给谁邮件不能为空！')
+            flash(MessageEnum.task_recevier.value[1])
             return render_template('add/addtimingtasks.html')
         if weihu == '':
-            flash(u'维护人邮件不能为空！')
+            flash(MessageEnum.task_user.value[1])
             return render_template('add/addtimingtasks.html')
         task_one.taskname = taskname
         task_one.taskrepor_to = to_email_data
@@ -331,11 +353,12 @@ class EdiTmingTaskView(MethodView):
         task_one.taskstart = str(task_time)
         try:
             db.session.commit()
-            flash(u'编辑成功')
+            flash(MessageEnum.task_edit.value[1])
             return redirect(url_for('home.timingtask'))
-        except:
+        except Exception as e:
+            logger.exception(e)
             db.session.rollback()
-            flash(u'编辑出现问题！')
+            flash(MessageEnum.task_edit_fail.value[1])
             return redirect(url_for('home.timingtask'))
 
 
@@ -344,19 +367,20 @@ class DeteleTaskView(MethodView):
         next = request.headers.get('Referer')
         task_one = Task.query.filter_by(id=id).first()
         if not task_one:
-            flash(u'你删除的不存在')
+            flash(MessageEnum.delete_not_exict.value[1])
             return redirect(next or url_for('home.timingtask'))
         if task_one.status is True:
-            flash(u'已经删除')
+            flash(MessageEnum.task_is_delete.value[1])
             return redirect(next or url_for('home.timingtask'))
         task_one.status = True
         try:
             db.session.commit()
-            flash(u'删除任务成功')
+            flash(MessageEnum.task_delete_success.value[1])
             return redirect(next or url_for('home.timingtask'))
-        except:
+        except Exception as e:
+            logger.exception(e)
             db.session.rollback()
-            flash(u'删除任务出现异常，系统已经为你还原')
+            flash(MessageEnum.task_delete_fail.value[1])
             return redirect(next or url_for('home.timingtask'))
 
 
@@ -367,11 +391,15 @@ class GetTestView(MethodView):
         project = project.decode('utf-8')
         changpr = Project.query.filter_by(project_name=project).first()
         if not changpr:
-            return jsonify({"code": 26, 'msg': '项目查询不到', 'data': ''})
+            return reponse(
+                code=MessageEnum.project_search.value[0], message=MessageEnum.project_search.value[1], data='')
         if changpr.status == True:
-            return jsonify({"code": 27, 'msg': '项目已经删除或者冻结', 'data': ''})
+            return reponse(
+                code=MessageEnum.project_delet_free.value[0], message=MessageEnum.project_delet_free.value[1],
+                data='')
         testevent = Interfacehuan.query.filter_by(projects=changpr, status=False).all()
         testeventlist = []
         for testeven in testevent:
             testeventlist.append({"url": testeven.url})
-        return jsonify({'code': 200, 'data': testeventlist, 'msg': '请求成功'})
+        return reponse(
+            code=MessageEnum.successs.value[0], data=testeventlist, message=MessageEnum.successs.value[1])

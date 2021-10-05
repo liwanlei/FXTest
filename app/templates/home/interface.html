@@ -141,7 +141,7 @@
                 processData: false,
                 success: function (data) {
                     if (data['code'] == 200) {
-                        var mdata = data['data'];
+                        var mdata = data['data']['data'];
                         var insertss = $('#testyonglis');
                         var inte = $('#interfacete');
                         insertss.empty();
@@ -155,7 +155,7 @@
                         if (mdata.length < 1) {
                             insertss.append("<tr id='" + mdata[i].id + "'><td><h5><strong style='color:red'>没有找到接口</strong></h5><td></tr>")
                         } else for (var i = 0; i < mdata.length; i++) {
-                            insertss.append("<tr id='" + mdata[i].id + "'><td>" + mdata[i].id + "</td><td><label class='label-important'>" + mdata[i].projects_id + "</label></td><td>" + mdata[i].model_id + "</td><td>" + mdata[i].Interface_name + "</td><td>" + mdata[i].Interface_url + "</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>" + mdata[i].Interface_headers + "</td><td>" + mdata[i].Interface_meth + "</td><td><a href='/interfac_edit/" + mdata[i].id + "'><input type='button' value='编辑' class='btn btn-primary'></a><a onclick='deleteinterface(" + mdata[i].id + ")'><input type='button' value='删除' class='btn btn-danger'></a><a href='/interface_one/" + mdata[i].id + "'' ><input type='button' class='btn btn-primary' value='详情' ></a></td></tr>")
+                            insertss.append("<tr id='" + mdata[i].id + "'><td>" + mdata[i].id + "</td><td><label class='label-important'>" + mdata[i].projects_id + "</label></td><td>" + mdata[i].model_id + "</td><td>" + mdata[i].Interface_name + "</td><td>" + mdata[i].Interface_url + "</td><td style='width: 10%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>" + mdata[i].Interface_headers + "</td><td>" + mdata[i].Interface_meth + "</td><td><a href='/interfac_edit/" + mdata[i].id + "'><input type='button' value='编辑' class='btn btn-primary'></a><a onclick='deleteinterface(" + mdata[i].id + ")'><input type='button' value='删除' class='btn btn-danger'></a><a href='/interface_detail/" + mdata[i].id + "'' ><input type='button' class='btn btn-primary' value='详情' ></a></td></tr>")
                         }
                         ;
                     }
@@ -225,11 +225,11 @@
                                 contentType: 'application/json; charset=UTF-8',
                                 processData: false,
                                 success: function (result) {
-                                    if (result['code'] == 2) {
-                                        alert(result['data']);
+                                    if (result['code'] == 100012) {
+                                        alert(result['message']);
                                         location.reload()
                                     } else {
-                                        alert(result['data']);
+                                        alert(result['message']);
                                     }
                                 }
                             }
@@ -247,10 +247,10 @@
                 contentType: 'application/json; charset=UTF-8',
                 processData: false,
                 success: function (data) {
-                    if (data['code'] != 2) {
-                        alert(data['data'])
+                    if (data['code'] != 200) {
+                        alert(data['message'])
                     } else {
-                        alert(data['data']);
+                        alert(data['message']);
                         caseid = document.getElementById(id);
                         caseid.hidden = true;
                     }

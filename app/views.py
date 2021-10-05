@@ -5,17 +5,18 @@
 """
 from app import app
 from flask import request, render_template, \
-    make_response, send_from_directory, jsonify, \
+    make_response, send_from_directory, \
     flash, redirect, url_for
 from flask_mail import Mail, Message
 from app.models import *
+from common.jsontools import reponse
 import os
 from flask.views import MethodView
-from error_message import *
 from app.form import RegFrom
 from flask_login import login_required, current_user
 from config import email_type
-
+from error_message import *
+from common.systemlog import logger
 
 def get_pro_mo():
     projects = Project.query.filter_by(status=False).all()
@@ -51,14 +52,14 @@ class LoadView(MethodView):
 
 
 @app.route('/gettest', methods=['POST'])
-@login_required
+# @login_required
 def gettest():  # ajax获取项目的测试用例
     projec = (request.get_data('project')).decode('utf-8')
     if not projec:
-        return []
+        return reponse(code=MessageEnum.successs.value[0], data={}, message=MessageEnum.successs.value[1])
     proje = Project.query.filter_by(project_name=str(projec)).first()
     if not proje:
-        return []
+        return reponse(code=MessageEnum.successs.value[0], data={}, message=MessageEnum.successs.value[1])
     testyong = InterfaceTest.query.filter_by(projects_id=proje.id).all()
     testyong_list = []
     for i in testyong:
@@ -66,7 +67,7 @@ def gettest():  # ajax获取项目的测试用例
             continue
         else:
             testyong_list.append({'name': i.Interface_name, 'id': i.id})
-    return jsonify({'data': testyong_list})
+    return reponse(code=MessageEnum.successs.value[0], data=testyong_list, message=MessageEnum.successs.value[1])
 
 
 @app.route('/getprojects', methods=['GET', 'POST'])
@@ -74,19 +75,32 @@ def gettest():  # ajax获取项目的测试用例
 def getprojects():  # 获取项目
     id = request.get_data('id')
     if not id:
-        return jsonify({'msg': request_null_message, 'code': 108})
+        return reponse(message=MessageEnum.request_null_message.value[1],
+                       code=MessageEnum.request_null_message.value[0],
+                       data={})
     peoject = InterfaceTest.query.filter_by(id=int(id)).first()
     result = peoject.projects
     projetc = Project.query.filter_by(project_name=str(result.project_name)).first()
     testhuanjing = Interfacehuan.query.filter_by(projects=projetc, status=False).all()
+
     if len(testhuanjing) <= 0:
-        return jsonify({'msg': testeveirment_not_exict, 'code': 107, 'data': str(result)})
+        return reponse(code=MessageEnum.testeveirment_not_exict.value[0],
+                       message=MessageEnum.testeveirment_not_exict.value[1],
+                       data={})
     url_list = []
     for huanjing in testhuanjing:
         url_list.append(huanjing.url)
     if not peoject:
-        return jsonify({'msg': project_not_exict, 'code': 109, 'data': ''})
-    return jsonify({'data': str(result), 'huanjing': url_list, 'code': 200, 'msg': request_success})
+        return reponse(code=MessageEnum.project_not_exict.value[0],
+                       message=MessageEnum.project_not_exict.value[1],
+                       data="")
+
+    data={}
+    data['project']=result.project_name
+    data['url']=url_list
+
+    return reponse(data=data, code=MessageEnum.successs.value[0],
+                   message=MessageEnum.successs.value[1])
 
 
 class GetCaseView(MethodView):  # 获取用例
@@ -95,15 +109,20 @@ class GetCaseView(MethodView):  # 获取用例
         id = request.get_data('id')
         project = id.decode('utf-8')
         if not project:
-            return jsonify({'msg': request_null_message, 'code': 8, 'data': ''})
+            return reponse(
+                message=MessageEnum.request_null_message.value[1], code=MessageEnum.request_null_message.value[0],
+                data='')
         peoject = Project.query.filter_by(project_name=project, status=False).first()
         if not peoject:
-            return jsonify({'msg': project_not_exict, 'code': 9, 'data': ''})
+            return reponse(
+                message=MessageEnum.project_not_exict.value[1], code=MessageEnum.project_not_exict.value[0],
+                data='')
         tesatcaelist = InterfaceTest.query.filter_by(projects_id=peoject.id, status=False).all()
         caselit = []
         for i in tesatcaelist:
             caselit.append(i.id)
-        return jsonify({'code': 200, 'msg': request_success, 'data': (caselit)})
+        return reponse(code=MessageEnum.request_success.value[0], message=MessageEnum.request_success.value[1],
+                       data=(caselit))
 
 
 @app.errorhandler(404)
@@ -131,29 +150,30 @@ def register():
         email = request.form.get('email')
         jobnum = request.form.get("jobnum")
         if email == "" or email is None:
-            flash('邮箱不能为空')
+            flash(MessageEnum.user_email_not_none.value[1])
             return render_template('home/register.html', form=form)
         try:
             if (str(email.split("@")[1]) != email_type):
-                flash(email_geshi_error)
+                flash(MessageEnum.email_geshi_error.value[1])
                 return render_template('home/register.html', form=form)
         except Exception as e:
-            flash("邮箱格式错误")
+            logger.exception(e)
+            flash(MessageEnum.user_email_error.value[1])
             return render_template('home/register.html', form=form)
         job_num = User.query.filter_by(jobnum=jobnum).first()
         if job_num:
-            flash(jobnum_oblg_reg_one)
+            flash(MessageEnum.jobnum_oblg_reg_one.value[1])
             return render_template('home/register.html', form=form)
         if pasword != setpasswod:
-            flash(password_not_same)
+            flash(MessageEnum.password_not_same.value[1])
             return render_template('home/register.html', form=form)
         user = User.query.filter_by(username=usernmae).first()
         if user:
-            flash(user_exict)
+            flash(MessageEnum.user_exict.value[1])
             return render_template('home/register.html', form=form)
         emai = User.query.filter_by(user_email=email).first()
         if emai:
-            flash(email_exict)
+            flash(MessageEnum.email_exict.value[1])
             return render_template('home/register.html', form=form)
         new_user = User(username=usernmae, user_email=email, jobnum=job_num)
         new_user.set_password(pasword)
@@ -164,12 +184,13 @@ def register():
             msg = Message(u"你好", sender=email, recipients=email)
             msg.body = u"欢迎你注册, 你的用户名：%s，你的密码是：%s" % (usernmae, pasword)
             msg.html = '<a href="http://127.0.0.1:5000/login">去登录</a>'
-            mail=Mail()
+            mail = Mail()
             mail.send(msg)
             return redirect(url_for('home.login'))
         except Exception as e:
+            logger.exception(e)
             db.session.rollback()
-            flash("注册失败")
+            flash(MessageEnum.user_register_error.value[1])
             return render_template('home/register.html', form=form)
     return render_template('home/register.html', form=form)
 
@@ -185,55 +206,63 @@ class GeneraConfig(MethodView):
             data = request.get_json()
             config = GeneralConfiguration.query.filter_by(name=data['name']).first()
             if config:
-                return jsonify({'code': 11, 'msg': common_is_same, 'data': ''})
+                return reponse(code=MessageEnum.common_is_same.value[0], message=MessageEnum.common_is_same.value[1],
+                               data='')
             if data['type'] == "key-value":
                 newconfig = GeneralConfiguration(user=current_user, style=0,
                                                  key=data["key"], name=data['name'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return jsonify({'code': 200, 'msg': request_success})
+                return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
             elif data['type'] == 'token':
                 newconfig = GeneralConfiguration(user=current_user, style=1,
                                                  name=data['name'], token_method=data['method'],
                                                  token_parame=data['parame'], token_url=data['url'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return jsonify({'code': 200, 'msg': request_success})
+                return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
             elif data['type'] == 'sql':
                 testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
                 if not testevnet:
-                    return jsonify({'code': 11, 'msg': testeveirment_not_exict})
+                    return reponse(code=MessageEnum.testeveirment_not_exict.value[0],
+                                   message=MessageEnum.testeveirment_not_exict.value[1])
                 newconfig = GeneralConfiguration(user=current_user, style=1,
                                                  name=data['name'], testevent=testevnet,
                                                  sqlurl=data['sql'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return jsonify({'code': 200, 'msg': request_success})
+                return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
             elif data['type'] == 'http请求':
                 newconfig = GeneralConfiguration(user=current_user, style=1,
                                                  name=data['name'], request_method=data['method'],
                                                  request_parame=data['parame'], request_url=data['url'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return jsonify({'code': 200, 'msg': request_success})
+                return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
             else:
-                return jsonify({'code': 11, 'msg': common_gene_not_support, 'data': ''})
+                return reponse(code=MessageEnum.common_gene_not_support.value[0],
+                               message=MessageEnum.common_gene_not_support.value[1], data='')
 
         except Exception as e:
-            return jsonify({'code': 12, 'data': "参数缺少"})
+            logger.exception(e)
+            return reponse(
+                code=MessageEnum.parames_not_null.value[0], data=MessageEnum.parames_not_null.value[1])
 
     @login_required
     def put(self):
         data = request.get_json()
         config_is = GeneralConfiguration.query.filter_by(id=int(data['id'])).first()
         if not config_is:
-            return jsonify({'code': 11, 'msg': common_is_not_exict, 'data': ''})
+            return reponse(
+                code=MessageEnum.common_is_not_exict.value[0], message=MessageEnum.common_is_not_exict.value[1],
+                data='')
         if data['type'] == "key-value":
             config_is.user = current_user
             config_is.style = 0
             config_is.key = data["key"]
             db.session.commit()
-            return jsonify({'code': 200, 'msg': common_edit_is_success})
+            return reponse(code=MessageEnum.common_edit_is_success.value[0],
+                           message=MessageEnum.common_edit_is_success.value[1])
         elif data['type'] == 'token':
             config_is.user = current_user
             config_is.style = 1,
@@ -242,18 +271,19 @@ class GeneraConfig(MethodView):
             config_is.token_parame = data['parame'],
             config_is.token_url = data['url']
             db.session.commit()
-            return jsonify({'code': 200, 'msg': common_edit_is_success})
+            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.common_gene_not_support.value[1])
         elif data['type'] == 'sql':
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
             if not testevnet:
-                return jsonify({'code': 11, 'msg': testeveirment_not_exict})
+                return reponse(code=MessageEnum.testeveirment_not_exict.value[0],
+                               message=MessageEnum.testeveirment_not_exict.value[1])
             config_is.user = current_user
             config_is.style = 1
             config_is.name = data['name']
             config_is.testevent = testevnet
             config_is.sqlurl = data['sql']
             db.session.commit()
-            return jsonify({'code': 200, 'msg': common_edit_is_success})
+            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
         elif data['type'] == 'http请求':
             config_is.user = current_user
             config_is.style = 1
@@ -262,9 +292,10 @@ class GeneraConfig(MethodView):
             config_is.request_parame = data['parame']
             config_is.request_url = data['url']
             db.session.commit()
-            return jsonify({'code': 200, 'msg': common_edit_is_success})
+            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.common_gene_not_support.value[1])
         else:
-            return jsonify({'code': 11, 'msg': common_gene_not_support, 'data': ''})
+            return reponse(code=MessageEnum.common_gene_not_support.value[0],
+                           message=MessageEnum.common_gene_not_support.value[1], data='')
 
 
 class ActionViews(MethodView):
@@ -275,7 +306,7 @@ class ActionViews(MethodView):
         data = request.get_json()
         name_is = Action.query.filter_by(name=data['name']).first()
         if name_is:
-            return jsonify({'code': 2, 'msg': re_is_same})
+            return reponse(code=MessageEnum.re_is_same.value[0], message=MessageEnum.re_is_same.value[1])
         action = Action(name=data['name'], user=current_user)
         if data['catepy'] == '前置':
             action.category = 0
@@ -286,30 +317,33 @@ class ActionViews(MethodView):
             action.style = 0
             db.session.add(action)
             db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success})
+            return reponse(code=MessageEnum.request_success.value[0], message=MessageEnum.request_success.value[1])
         elif data['type'] == "1":
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
             if not testevnet:
-                return jsonify({'code': 11, 'msg': testeveirment_not_exict})
+                return reponse(code=MessageEnum.testeveirment_not_exict.value[0],
+                               message=MessageEnum.testeveirment_not_exict.value[1])
             action.testevent = testevnet
             action.style = 1
             action.sql = data['sql']
             db.session.add(action)
             db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success})
+            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
         elif data['type'] == "2":
             action.style = 2
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
             if not testevnet:
-                return jsonify({'code': 11, 'msg': testeveirment_not_exict})
+                return reponse(code=MessageEnum.testeveirment_not_exict.value[0],
+                               message=MessageEnum.testeveirment_not_exict.value[1])
             case_is = InterfaceTest.query.filter_by(id=int(data['caseid'])).first()
             if not case_is:
-                return jsonify({'code': 11, 'msg': case_not_exict})
+                return reponse(
+                    code=MessageEnum.case_not_exict.value[0], message=MessageEnum.case_not_exict.value[1])
             action.testevent = testevnet
             action.caseid = int(data['caseid'])
             db.session.add(action)
             db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success})
+            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
         elif data['type'] == "3":
             action.style = 3
             action.requestsurl = data['url']
@@ -317,49 +351,54 @@ class ActionViews(MethodView):
             action.requestsparame = data['parame']
             db.session.add(action)
             db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success})
+            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
         else:
-            return jsonify({'code': 11, 'msg': re_is_not_exitc, 'data': ''})
+            return reponse(
+                code=MessageEnum.re_is_not_exitc.value[0], message=MessageEnum.re_is_not_exitc.value[1], data='')
 
     @login_required
     def put(self):
         data = request.get_json()
         id = Action.query.filter_by(id=data['id']).first()
         if not id:
-            return jsonify({'code': 2, 'msg': re_editisnot})
+            return reponse(code=MessageEnum.re_editisnot.value[0], message=MessageEnum.re_editisnot.value[1])
 
         if data['type'] == "0":
             id.sleepnum = int(data['num'])
             id.style = 0
             db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success})
+            return reponse(code=MessageEnum.re_editisnot.value[0], message=MessageEnum.successs.value[1])
         elif data['type'] == "1":
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
             if not testevnet:
-                return jsonify({'code': 11, 'msg': testeveirment_not_exict})
+                return reponse(code=MessageEnum.testeveirment_not_exict.value[0],
+                               message=MessageEnum.testeveirment_not_exict.value[1])
             id.testevent = testevnet
             id.style = 1
             id.sql = data['sql']
             db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success % id.name})
+            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
         elif data['type'] == "2":
             id.style = 2
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
             if not testevnet:
-                return jsonify({'code': 11, 'msg': testeveirment_not_exict})
+                return reponse(code=MessageEnum.testeveirment_not_exict.value[0],
+                               message=MessageEnum.testeveirment_not_exict.value[1])
             case_is = InterfaceTest.query.filter_by(id=int(data['caseid'])).first()
             if not case_is:
-                return jsonify({'code': 11, 'msg': case_not_exict})
+                return reponse(
+                    code=MessageEnum.case_not_exict.value[0], message=MessageEnum.case_not_exict.value[1])
             id.testevent = testevnet
             id.caseid = case_is.id
             db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success % id.name})
+            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
         elif data['type'] == "3":
             id.style = 3
             id.requestsurl = data['url']
             id.requestmethod = data['method']
             id.requestsparame = data['parame']
             db.session.commit()
-            return jsonify({'code': 200, 'msg': request_success % id.name})
+            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
         else:
-            return jsonify({'code': 11, 'msg': re_is_not_exitc, 'data': ''})
+            return reponse(
+                code=MessageEnum.re_is_not_exitc.value[0], message=MessageEnum.re_is_not_exitc.value[1], data='')

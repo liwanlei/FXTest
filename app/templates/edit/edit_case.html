@@ -160,8 +160,8 @@
                 contentType: 'application/json; charset=UTF-8',
                 processData: false,
                 success: function (reponse) {
-                    if (reponse['code'] == 200) {
-                        selectdata = reponse['data']
+                    if (reponse['code'] == 100017) {
+                        selectdata = reponse['data']['data']
                         var interce = $('#interface');
                         for (var i = 0; i < selectdata.length; i++) {
                             var url = selectdata[i];
@@ -169,7 +169,7 @@
                         }
                         ;
                     } else {
-                        alert(reponse['msg'])
+                        alert(reponse['message'])
                     }
                 }
             })

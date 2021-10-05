@@ -10,7 +10,8 @@ from flask.views import MethodView
 from flask_login import current_user, login_required
 from app import loginManager
 from common.mockservermeth import get_token_data
-
+from error_message import MessageEnum
+from common.systemlog import logger
 
 @loginManager.user_loader
 def load_user(user_id):
@@ -25,14 +26,14 @@ class EditMockServerView(MethodView):  # 编辑mock服务
     def get(self, id):
         mock = Mockserver.query.filter_by(id=id, status=False).first()
         if not mock:
-            flash(u'请重新选择编辑的mock')
+            flash(MessageEnum.use_select_edit.value[1])
             return redirect(url_for('home.mockserver'))
         return render_template('edit/editmock.html', mock=mock)
 
     def post(self, id):
         mock = Mockserver.query.filter_by(id=id, status=False).first()
         if not mock:
-            flash(u'请重新选择编辑的mock')
+            flash(MessageEnum.mock_check_again.value[1])
             return redirect(url_for('home.mockserver'))
         name = request.form['name']
         desc = request.form['desc']
@@ -72,11 +73,12 @@ class EditMockServerView(MethodView):  # 编辑mock服务
         mock.update_time = datetime.datetime.now()
         try:
             db.session.commit()
-            flash(u'编辑成功！')
+            flash(MessageEnum.successs.value[1])
             return redirect(url_for('home.mockserver'))
         except Exception as e:
+            logger.exception(e)
             db.session.rollback()
-            flash(u'编辑出现状况，请你看看,原因：%s' % e)
+            flash(MessageEnum.mock_edit_fail.value[1])
             return render_template('edit/editmock.html', mock=mock)
 
 
@@ -107,12 +109,13 @@ class StartMockView(MethodView):  # 开启mock服务
             start.status = True
             try:
                 db.session.commit()
-                flash(u'mock开启成功，可以正常使用')
+                flash(MessageEnum.mock_start_success.value[1])
                 return redirect(next or url_for('home.mockserver'))
-            except:
-                flash(u'mock开启失败，疑似库存遭到打击！！')
+            except Exception as e:
+                logger.exception(e)
+                flash(MessageEnum.mock_server_start_fail.value[1])
                 return redirect(next or url_for('home.mockserver'))
-        flash(u'mock的服务开启失败，因为不存在')
+        flash(MessageEnum.mock_start_error.value[1])
         return redirect(next or url_for('mockserver'))
 
 
@@ -125,10 +128,11 @@ class CloseMockView(MethodView):  # 关闭mock服务
             start.status = False
             try:
                 db.session.commit()
-                flash(u'mock关闭成功,停止访问')
+                flash(MessageEnum.mock_close_success.value[1])
                 return redirect(next or url_for('home.mockserver'))
-            except:
-                flash(u'mock关闭失败，疑似库存遭到打击！！')
+            except Exception as e:
+                logger.exception(e)
+                flash(MessageEnum.mock_server_close_fail.value[1])
                 return redirect(next or url_for('home.mockserver'))
-        flash(u'mock的服务关闭失败，因为不存在')
+        flash(MessageEnum.mock_stop_fail.value[1])
         return redirect(next or url_for('mockserver'))

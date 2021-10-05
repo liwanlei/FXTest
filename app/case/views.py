@@ -4,7 +4,7 @@
 @time: 2018/1/31 13:20 
 """
 from flask import redirect, request, render_template, \
-    session, url_for, flash, jsonify, Blueprint, make_response, \
+    session, url_for, flash, Blueprint, make_response, \
     send_from_directory
 from app.models import *
 from app.form import *
@@ -22,12 +22,15 @@ from common.Dingtalk import send_ding
 from common.oparmysqldatabase import *
 from config import Config_import, redis_host, \
     redis_port, redis_save_result_db, save_duration, \
-    jmeter_data_db
+    jmeter_data_db, paln_run_url
 from common.opearexcel import create_interface_case
 from common.mergelist import listmax
 from common.packageredis import ConRedisOper
 from common.CreateJxmUntil import make
 from common.SshTools import Sshtool
+from common.systemlog import logger
+from error_message import MessageEnum
+from common.jsontools import reponse as jsonreponse
 
 case = Blueprint('case', __name__)
 
@@ -101,14 +104,15 @@ class AddtestcaseView(View):
             else:
                 yilai_tes = yilai_test
                 if yilai_data is None or yilai_data == '':
-                    flash(u'选择依赖后必须填写获取依赖的接口的字段')
+                    flash(MessageEnum.reply_must_be_repy_flied.value[1])
                     return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
                                            inrterface_list=inrterface_list, mock_yilai=mock_yilai)
                 yilai_dat = yilai_data
             if yongli_nam == '' or mode == '' or interface_header == '' or interface_url == '' or interface_meth == '':
-                flash(u'请准确填写用例的各项信息')
+                flash(MessageEnum.must_be_every_parame.value[1])
                 return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
                                        inrterface_list=inrterface_list, mock_yilai=mock_yilai)
+            print(yongli_nam)
             project_id = Project.query.filter_by(project_name=yongli_nam).first().id
             models_id = Model.query.filter_by(model_name=mode).first().id
             interface = Interface.query.filter_by(Interface_name=interface_name).first()
@@ -117,7 +121,7 @@ class AddtestcaseView(View):
             elif save == 2 or save == '2':
                 saves = True
             else:
-                flash(u'选择保存测试结果出现异常')
+                flash(MessageEnum.save_test_result_error.value[1])
                 return render_template('add/add_test_case.html', form=form, projects=projects, mock_yilai=mock_yilai,
                                        models=models, inrterface_list=inrterface_list)
 
@@ -139,7 +143,7 @@ class AddtestcaseView(View):
                             if str(value).split(".")[0] == '#action':
                                 action = Action.query.filter_by(name=str(value).split(".")[1]).first()
                                 if not action:
-                                    flash(u'操作不存在')
+                                    flash(MessageEnum.action_not_exict.value[1])
                                     return render_template('add/add_test_case.html', form=form, projects=projects,
                                                            models=models,
                                                            inrterface_list=inrterface_list, mock_yilai=mock_yilai)
@@ -150,7 +154,7 @@ class AddtestcaseView(View):
                             elif str(value).split(".")[0] == '#conf':
                                 action = GeneralConfiguration.query.filter_by(name=str(value).split(".")[1]).first()
                                 if not action:
-                                    flash(u'配置不存在')
+                                    flash(MessageEnum.config_not_exict.value[1])
                                     return render_template('add/add_test_case.html', form=form, projects=projects,
                                                            models=models,
                                                            inrterface_list=inrterface_list, mock_yilai=mock_yilai)
@@ -160,14 +164,15 @@ class AddtestcaseView(View):
                             else:
                                 pass
                 except:
-                    flash(u'测试用例参数仅支持dict格式')
+                    flash(MessageEnum.test_feild.value[1])
                     return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
                                            inrterface_list=inrterface_list, mock_yilai=mock_yilai)
-                flash(u'添加用例成功')
+                flash(MessageEnum.successs.value[1])
                 return redirect(url_for('home.case'))
             except Exception as e:
+                logger.exception(e)
                 db.session.rollback()
-                flash(u'添加用例失败，原因是：%s' % e)
+                flash(MessageEnum.add_case_erro)
                 return redirect(url_for('home.case'))
         return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
                                inrterface_list=inrterface_list, mock_yilai=mock_yilai)
@@ -193,7 +198,7 @@ class EditcaseView(View):
                         id.append(i.projects)
         edit_case = InterfaceTest.query.filter_by(id=id, status=False).first()
         if not edit_case:
-            flash(u'编辑用例不存在!或者已经删除')
+            flash(MessageEnum.case_not_exict.value[1])
             return redirect(url_for('home.case'))
         if request.method == 'POST':
             save = request.form.get('save')
@@ -228,13 +233,13 @@ class EditcaseView(View):
             else:
                 yilai_tes = yilai_test
                 if yilai_data is None or yilai_data == '':
-                    flash(u'选择依赖后必须填写获取依赖的接口的字段')
+                    flash(MessageEnum.reply_must_be_repy_flied.value[1])
                     return render_template('edit/edit_case.html', edit=edit_case,
                                            projects=projects, models=models,
                                            inerfacelist=inrterface_list, mock_yilai=mock_yilai)
                 yilai_dat = yilai_data
             if yongli_nam == None or mode == None or url == '' or headers == '' or meth == '' or reque == '':
-                flash(u'请确定各项参数都正常填写')
+                flash(MessageEnum.edit_interface_null_parame.value[1])
                 return render_template('edit/edit_case.html', edit=edit_case, projects=projects,
                                        models=models,
                                        inerfacelist=inrterface_list, mock_yilai=mock_yilai)
@@ -246,7 +251,7 @@ class EditcaseView(View):
             elif save == '是':
                 saves = True
             else:
-                flash(u'选择保存测试用例异常')
+                flash(MessageEnum.save_test_result_error.value[1])
                 return render_template('edit/edit_case.html',
                                        edit=edit_case, projects=projects, models=models,
                                        inerfacelist=inrterface_list, mock_yilai=mock_yilai)
@@ -282,7 +287,7 @@ class EditcaseView(View):
                             if str(value).split(".")[0] == '#action':
                                 action = Action.query.filter_by(name=str(value).split(".")[1]).first()
                                 if not action:
-                                    flash(u'操作不存在')
+                                    flash(MessageEnum.action_not_exict.value[1])
                                     return render_template('edit/edit_case.html', edit=edit_case,
                                                            projects=projects, models=models,
                                                            inerfacelist=inrterface_list, mock_yilai=mock_yilai)
@@ -293,7 +298,7 @@ class EditcaseView(View):
                             elif str(value).split(".")[0] == '#conf':
                                 action = GeneralConfiguration.query.filter_by(name=str(value).split(".")[1]).first()
                                 if not action:
-                                    flash(u'配置不存在')
+                                    flash(MessageEnum.config_not_exict.value[1])
                                     return render_template('edit/edit_case.html', edit=edit_case,
                                                            projects=projects, models=models,
                                                            inerfacelist=inrterface_list, mock_yilai=mock_yilai)
@@ -303,18 +308,18 @@ class EditcaseView(View):
                             else:
                                 pass
                 except:
-                    flash(u'测试用例参数仅支持dict格式')
+                    flash(MessageEnum.test_feild.value[1])
                     return render_template('edit/edit_case.html', edit=edit_case,
                                            projects=projects, models=models,
                                            inerfacelist=inrterface_list, mock_yilai=mock_yilai)
 
                 db.session.commit()
-                flash(u'用例：%s编辑成功' % id)
+                flash(MessageEnum.successs.value[1])
                 return redirect(url_for('home.case'))
             except Exception as e:
                 print(e)
                 db.session.rollback()
-                flash(u'用例：%s 编辑失败，请重新编辑！' % id)
+                flash(MessageEnum.case_edit_error.value[1])
                 return render_template('edit/edit_case.html',
                                        edit=edit_case, projects=projects, models=models,
                                        inerfacelist=inrterface_list, mock_yilai=mock_yilai)
@@ -328,7 +333,8 @@ class SerCaseView(MethodView):
         id = request.get_data('id')
         project = json.loads(id.decode('utf-8'))
         if not project:
-            return jsonify({'msg': '没有发送数据', 'code': 39})
+            return jsonreponse(message=MessageEnum.error_send_message.value[1],
+                               code=MessageEnum.error_send_message.value[0])
         project_name = str(project['project'])
         project_is = Project.query.filter_by(project_name=project_name, status=False).first()
         testevent = Interfacehuan.query.filter_by(projects=project_is, status=False).all()
@@ -340,7 +346,8 @@ class SerCaseView(MethodView):
         else:
             typeinterface = 'none'
         if project_is.status is True:
-            return jsonify({'msg': '项目已经删除', 'code': 40})
+            return jsonreponse(message=MessageEnum.project_delet_free.value[1],
+                               code=MessageEnum.project_delet_free.value[0])
         intertestcases = InterfaceTest.query.filter_by(projects_id=project_is.id, status=False,
                                                        interface_type=str(interfatype)).order_by(
             InterfaceTest.id.desc()).all()
@@ -361,8 +368,14 @@ class SerCaseView(MethodView):
                                   'Interface_assert': interface.Interface_assert,
                                   'Interface_is_tiaoshi': interface.Interface_is_tiaoshi,
                                   'Interface_tiaoshi_shifou': interface.Interface_tiaoshi_shifou})
-        return jsonify(({'msg': '成功', 'code': 200, 'data': interfacelist, 'url': testeventlist,
-                         'typeinter': typeinterface}))
+
+        data = {}
+        data['data'] = interfacelist
+        data['url'] = testeventlist
+        data['typeinter'] = typeinterface
+        return jsonreponse(message=MessageEnum.successs.value[1],
+                           code=MessageEnum.successs.value[0],
+                           data=data)
 
 
 class ImportCaseView(View):
@@ -379,14 +392,17 @@ class ImportCaseView(View):
                 interface_meth, interface_par, interface_bas, interface_type, is_save_result, yilai_is, \
                 yilai, yilai_ziduan, is_cha_data, data_sql, paser_base = paser_interface_case(filename)
                 if len(yilai) > Config_import:
-                    flash(u'一次导入超过了系统的上限')
+                    flash(MessageEnum.import_max_big.value[1])
                     return redirect(url_for('home.import_case'))
                 try:
                     for i in range(len(jiekou_bianhao)):
                         projects_id = Project.query.filter_by(project_name=str(project_nam[i])).first()
                         model_id = Model.query.filter_by(model_name=str(model_nam[i])).first()
-                        if projects_id is None or model_id is None:
-                            flash(u'导入失败,项目或者模块不存在')
+                        if projects_id is None:
+                            flash(MessageEnum.project_not_exict.value[1])
+                            return redirect(url_for('home.import_case'))
+                        if model_id is None:
+                            flash(MessageEnum.model_not_exict.value[1])
                             return redirect(url_for('home.import_case'))
                         if is_save_result[i] == '是':
                             save_reslt = True
@@ -425,13 +441,14 @@ class ImportCaseView(View):
                                                           username=session.get('username')).first().id)
                         db.session.add(new_interface)
                         db.session.commit()
-                    flash(u'导入成功')
+                    flash(MessageEnum.import_success.value[1])
                     return redirect(url_for('home.case'))
                 except Exception as e:
+                    logger.exception(e)
                     db.session.rollback()
-                    flash(u'导入失败，原因：%s' % e)
+                    flash(MessageEnum.import_fail.value[1])
                     return render_template('import_case.html')
-            flash(u'导入失败')
+            flash(MessageEnum.import_fail.value[1])
             return render_template('import_case.html')
         return render_template('import_case.html')
 
@@ -458,10 +475,10 @@ class MuliteCaseLiView(View):
             me = request.form.getlist('yongli')
             testurl = request.form.get('urltest')
             if len(me) <= 1:
-                flash(u'请选择一个以上的用例来执行')
+                flash(MessageEnum.case_many_to_select.value[1])
                 return redirect(next or url_for('yongli'))
             if testurl is None:
-                flash(u'请选择测试环境')
+                flash(MessageEnum.select_event.value[1])
                 return redirect(next or url_for('yongli'))
             projecct_list = []
             model_list = []
@@ -496,7 +513,7 @@ class MuliteCaseLiView(View):
                 Interface_yilai_list.append(case_one.getattr_p)
                 Interface_save_list.append(case_one.saveresult)
             if (len(set(projecct_list))) > 1:
-                flash('目前单次只能执行一个项目')
+                flash(MessageEnum.run_only_one_project.value[1])
                 return redirect(next or url_for('mulitecase'))
             testevent = Interfacehuan.query.filter_by(url=testurl).first()
             try:
@@ -538,26 +555,27 @@ class MuliteCaseLiView(View):
                                         smtp=email.stmp_email, port=email.port, annexone=file,
                                         annextwo=filepath,
                                         subject=u'%s用例执行测试报告' % day,
-                                        url='http://127.0.0.1:5000/test_result')
+                                        url=paln_run_url + '/test_result')
                         if m == False:
-                            flash(u'发送邮件失败，请检查您默认的邮件设置是否正确')
+                            flash(MessageEnum.send_email_fali.value[1])
                             return redirect(url_for('home.test_result'))
-                        flash(u'测试已经完成，并且给您默认设置发送了测试报告')
+                        flash(MessageEnum.send_email_success.value[1])
                         return redirect(url_for('home.test_result'))
-                    flash(u'无法完成，需要去您的个人设置去设置一个默认的邮件发送')
+                    flash(MessageEnum.send_fail_oneuser.value[1])
                     return redirect(url_for('home.case'))
                 if f_dingding == 'dingding':
                     send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
                                      Dingtalk_access_token=Dingtalk_access_token)
                     if send is True:
-                        flash(u'测试报告已经发送钉钉讨论群，测试报告已经生成！')
+                        flash(MessageEnum.send_dingtlak_success.value[1])
                         return redirect(url_for('home.case'))
-                    flash(u'测试报告发送钉钉讨论群失败！请检查相关配置！')
+                    flash(MessageEnum.send_dingtalk_error.value[1])
                     return redirect(next or url_for('home.case'))
-                flash(u'测试已经完成，测试报告已经生成')
+                flash(MessageEnum.test_case_success.value[1])
                 return redirect(url_for('home.test_result'))
             except Exception as e:
-                flash(u'测试失败，出错原因:%s' % e)
+                logger.exception(e)
+                flash(MessageEnum.test_error.value[1])
                 return redirect(next or url_for('home.case'))
         return redirect(url_for('home.case'))
 
@@ -570,10 +588,12 @@ class MakeOnlyOneCaseView(MethodView):
         url = projec['url']
         testevent = Interfacehuan.query.filter_by(url=str(url)).first()
         if not testevent:
-            return jsonify({'code': 41, 'msg': '请确定你所选择的测试环境是否真实存在！'})
+            return jsonreponse(code=MessageEnum.testeveirment_not_exict.value[0],
+                               message=MessageEnum.testeveirment_not_exict.value[1])
         case = InterfaceTest.query.filter_by(id=int(case_id), status=False).first()
         if not case:
-            return jsonify({'code': 42, 'msg': '请确定你要测试的用力是否存在！'})
+            return jsonreponse(code=MessageEnum.test_case.value[0],
+                               message=MessageEnum.test_case.value[1])
         try:
             if case.interface_type == 'http':
                 if case.pid is not None and case.pid != 'None' and case.pid != '':
@@ -584,10 +604,12 @@ class MakeOnlyOneCaseView(MethodView):
                             testres = eval(tesyi.decode('utf-8'))
                             yilaidata = eval(testres)[canshu]
                         except Exception as e:
+                            logger.exception(e)
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
-                            return jsonify({'code': 44, 'msg': '获取依赖数据失败，原因：%s' % e})
+                            return jsonreponse(code=MessageEnum.get_reply_data_fail.value[0],
+                                               message=MessageEnum.get_reply_data_fail.value[1])
                         try:
                             pasrms = eval(case.Interface_pase)
                             pasrms.update({canshu: yilaidata})
@@ -595,7 +617,8 @@ class MakeOnlyOneCaseView(MethodView):
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
-                            return jsonify({'code': 45, 'msg': '测试参数应该是字典格式！'})
+                            return jsonreponse(code=MessageEnum.test_feild.value[0],
+                                               message=MessageEnum.test_feild.value[1])
                     else:
                         try:
                             pasrms = eval(case.Interface_pase)
@@ -603,7 +626,8 @@ class MakeOnlyOneCaseView(MethodView):
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
-                            return jsonify({'code': 46, 'msg': '测试参数应该是字典格式！'})
+                            return jsonreponse(code=MessageEnum.test_feild.value[0],
+                                               message=MessageEnum.test_feild.value[1])
                 else:
                     if case.Interface_pase is None or case.Interface_pase == "null":
                         pasrms = {}
@@ -614,7 +638,8 @@ class MakeOnlyOneCaseView(MethodView):
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
-                            return jsonify({'code': 47, 'msg': '测试参数应该是字典格式！'})
+                            return jsonreponse(code=MessageEnum.test_feild.value[0],
+                                               message=MessageEnum.test_feild.value[1])
                 new_headers = case.Interface_headers
                 if new_headers == 'None':
                     new_header = {'host': url}
@@ -628,41 +653,49 @@ class MakeOnlyOneCaseView(MethodView):
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonify({'code': 48, 'msg': '测试的请求头应该是字典格式的！'})
+                        return jsonreponse(code=MessageEnum.test_feild.value[0],
+                                           message=MessageEnum.test_feild.value[1])
                 if case.is_database is True:
 
                     if case.chaxunshujuku is None or case.databaseziduan is None:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonify({'code': 49, 'msg': '要判断数据库但是没有找到数据库的语句或者断言的字段！'})
+                        return jsonreponse(code=MessageEnum.assert_not_in_or_sql_not_in.value[0],
+                                           message=MessageEnum.assert_not_in_or_sql_not_in.value[1])
                     if testevent.database is None:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonify({'code': 50, 'msg': '测试环境数据库url配置不存在'})
+                        return jsonreponse(code=MessageEnum.test_sql_url_not_in.value[0],
+                                           message=MessageEnum.test_sql_url_not_in.value[1])
                     if testevent.dbport is None:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonify({'code': 51, 'msg': '测试环境数据库port配置不存在'})
+                        return jsonreponse(code=MessageEnum.test_sql_port_not_in.value[0],
+                                           message=MessageEnum.test_sql_port_not_in.value[1])
                     if testevent.dbhost is None:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonify({'code': 52, 'msg': '测试环境数据库host配置不存在'})
+                        return jsonreponse(code=MessageEnum.test_sql_host_not_in.value[0],
+                                           message=MessageEnum.test_sql_host_not_in.value[1])
                     if testevent.databaseuser is None:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonify({'code': 53, 'msg': '测试环境数据库登录user配置不存在'})
+                        return jsonreponse(code=MessageEnum.test_sql_login_user_not_in.value[0],
+                                           message=MessageEnum.test_sql_login_user_not_in.value[1])
                     if testevent.databasepassword is None:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonify({'code': 54, 'msg': '测试环境数据库登录密码配置不存在'})
+                        return jsonreponse(code=MessageEnum.test_sql_login_user_password_not_in.value[0],
+                                           message=MessageEnum.test_sql_login_user_password_not_in.value[1])
                     if case.databaseziduan == "" or case.chaxunshujuku == "":
-                        return jsonify({'code': 55, 'msg': '依赖数据库必须有字段'})
+                        return jsonreponse(code=MessageEnum.test_sql_repy_sql_feild.value[0],
+                                           message=MessageEnum.test_sql_repy_sql_feild.value[1])
                     conncts = cursemsql(host=testevent.dbhost, port=testevent.dbport,
                                         user=testevent.databaseuser, password=testevent.databasepassword,
                                         database=testevent.database)
@@ -670,37 +703,43 @@ class MakeOnlyOneCaseView(MethodView):
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonify({'code': 55, 'msg': '链接数据库出现问题，原因是：%s' % conncts['error']})
+                        return jsonreponse(code=MessageEnum.test_sql_connect_sql_error.value[0],
+                                           message=MessageEnum.test_sql_connect_sql_error.value[1])
                     else:
                         result_myql = excemysql(conne=conncts['conne'], Sqlmy=case.chaxunshujuku)
                         if result_myql['code'] == 0:
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
-                            return jsonify({'code': 56, 'msg': '查询数据库出现问题，原因是：%s' % conncts['error']})
+                            logger.error(result_myql)
+                            return jsonreponse(code=MessageEnum.test_sql_query_error.value[0],
+                                               message=MessageEnum.test_sql_query_error.value[1])
                         mysql_result = result_myql['result']
                 else:
                     mysql_result = []
                 try:
                     data = json.dumps(pasrms)
                 except Exception as e:
+                    logger.exception(e)
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
                     db.session.commit()
-                    return jsonify({'code': 57, 'msg': '转化请求参数失败，原因：%s' % e})
+                    return jsonreponse(code=MessageEnum.change_parames_faild.value[0],
+                                       message=MessageEnum.change_parames_faild.value[1])
 
                 response = Api(url=testevent.url + case.Interface_url,
                                method=case.Interface_meth,
                                params=data, headers=new_header)
                 result = response.getJson()
                 if result == "请求出错了":
-                    # save_reslut(key=str(case.id) + "&" + str(url), value=str(result))
-                    return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
+                    return jsonreponse(code=MessageEnum.test_case_run_error.value[0],
+                                       message=MessageEnum.test_case_run_error.value[1])
                 spend = response.spend()
                 if case.databaseziduan is not None:
                     return_mysql = pare_result_mysql(mysqlresult=mysql_result,
                                                      return_result=result, paseziduan=case.databaseziduan)
 
+                print(result)
                 retur_re = assert_in(case.Interface_assert, result)
                 try:
                     if case.is_database is True:
@@ -708,35 +747,43 @@ class MakeOnlyOneCaseView(MethodView):
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = False
                             save_reslut(key=str(case.id) + "&" + url, value=str(result))
-                            return jsonify({'code': 200, 'msg': '测试用例调试通过！'})
+                            return jsonreponse(code=MessageEnum.test_case_run_pass.value[0],
+                                               message=MessageEnum.test_case_run_pass.value[1]
+                                               )
                         elif retur_re == 'fail' or return_mysql['result'] == 'fail':
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             save_reslut(key=str(case.id) + "&" + url, value=str(result))
-                            return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
+                            return jsonreponse(code=MessageEnum.test_case_run_fail.value[0],
+                                               message=MessageEnum.test_case_run_fail.value[1])
                         else:
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             save_reslut(key=str(case.id) + "&" + url, value=str(result))
-                            return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
+                            return jsonreponse(code=MessageEnum.test_case_requesst_exception.value[0],
+                                               message=MessageEnum.test_case_requesst_exception.value[1])
 
                     if retur_re == 'pass':
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = False
                         save_reslut(key=str(case.id) + "&" + url, value=str(result))
-                        return jsonify({'code': 200, 'msg': '测试用例调试通过！'})
+                        return jsonreponse(code=MessageEnum.test_case_run_pass.value[0],
+                                           message=MessageEnum.test_case_run_pass.value[1])
                     else:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         key = str(case.id) + "&" + url
 
                         save_reslut(key=key, value=str(result))
-                        return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
+                        return jsonreponse(code=MessageEnum.test_case_run_fail.value[0],
+                                           message=MessageEnum.test_case_run_fail.value[1])
                 except Exception as e:
+                    logger.error(e)
                     case.Interface_is_tiaoshi = True
                     case.Interface_tiaoshi_shifou = True
                     save_reslut(key=str(case.id) + "&" + url, value=str(result))
-                    return jsonify({'code': 60, 'msg': u'用例测试失败,失败原因：{},请检查测试用例'.format(e)})
+                    return jsonreponse(code=MessageEnum.test_case_run_fail.value[0],
+                                       message=MessageEnum.test_case_run_fail.value[1])
             # elif case.interface_type == 'dubbo':
             #     try:
             #         data = eval(case.Interface_pase)
@@ -787,13 +834,15 @@ class MakeOnlyOneCaseView(MethodView):
             #         db.session.commit()
             #         return jsonify({'code': 630, 'msg': 'dubbo接口测试返回异常，请检查dubbo测试接口'})
             else:
-                return jsonify({'code': 62, 'msg': '目前还不支持你所选择的类型的协议！'})
+                return jsonreponse(code=MessageEnum.test_run_fail_not_support.value[0],
+                                   message=MessageEnum.test_run_fail_not_support.value[1])
         except Exception as e:
-
+            logger.exception(e)
             case.Interface_is_tiaoshi = True
             case.Interface_tiaoshi_shifou = True
             db.session.commit()
-            return jsonify({'code': 63, 'msg': '接口测试出错了！原因:%s' % e})
+            return jsonreponse(code=MessageEnum.test_case_run_fail.value[0],
+                               message=MessageEnum.test_case_run_fail.value[1])
 
 
 class ExportCaseView(MethodView):
@@ -802,7 +851,7 @@ class ExportCaseView(MethodView):
         project = request.form.get('interface_type')
         project_case = Project.query.filter_by(project_name=str(project), status=False).first()
         if project_case is None:
-            flash('你选择导出接口的项目不存在')
+            flash(MessageEnum.your_change_export_project_not_exict.value[1])
             return redirect(url_for('home.interface'))
         interface_list = InterfaceTest.query.filter_by(projects_id=project_case.id, status=False).all()
         pad = os.getcwd()
@@ -813,7 +862,8 @@ class ExportCaseView(MethodView):
             os.system('touch %s' % file)
         result = create_interface_case(filename=file, caselist=interface_list)
         if result['code'] == 1:
-            flash('导出接口失败！原因：%s' % result['error'])
+            logger.info('导出接口失败！原因：%s' % result['error'])
+            flash(MessageEnum.your_export_interface_fail.value[1])
             return redirect(url_for('home.case'))
         response = make_response(send_from_directory(file_dir, filename=day + '.xls', as_attachment=True))
         return response
@@ -825,10 +875,12 @@ class OneCaseDetialView(MethodView):
         case_id = request.get_data().decode('utf-8')
         case_one = InterfaceTest.query.filter_by(id=int(case_id)).first()
         if not case_one:
-            return jsonify({'code': 99, 'messgage': '没有找到你需要的测试用例', 'data': ''})
+            return jsonreponse(code=MessageEnum.not_find_your_case.value[0],
+                               message=MessageEnum.not_find_your_case.value[1])
         test_result = TestcaseResult.query.filter_by(case_id=case_one.id).all()
         if not test_result or len(test_result) <= 0:
-            return jsonify({'code': 101, 'messgage': '您的测试用例没有在任何环境调试过', 'data': ''})
+            return jsonreponse(code=MessageEnum.you_case_not_try.value[0],
+                               message=MessageEnum.you_case_not_try.value[1])
         result_all = []
         for rest_one in test_result:
             if rest_one.spend == None:
@@ -843,7 +895,9 @@ class OneCaseDetialView(MethodView):
                                'date': rest_one.date.strftime('%Y-%m-%d %H:%M:%S'),
                                'event': ceshihuanjing,
                                'spend': spend_ed})
-        return jsonify({'code': 200, 'messgage': '请求成功', 'data': result_all})
+        # return jsonify({'code': 200, 'messgage': '请求成功', 'data': result_all})
+        return jsonreponse(code=MessageEnum.successs.value[0],
+                           message=MessageEnum.successs.value[1], data=result_all)
 
 
 class CaseToJmxView(MethodView):
@@ -851,7 +905,9 @@ class CaseToJmxView(MethodView):
         try:
             data_jmx = eval(request.get_data().decode('utf-8'))
         except Exception as e:
-            return jsonify({'code': 99, 'messgage': '格式不正确', 'data': ''})
+            logger.exception(e)
+            return jsonreponse(code=MessageEnum.Incorrect_format.value[0],
+                               message=MessageEnum.Incorrect_format.value[1])
         interfacecaseid = data_jmx["interfaceid"]
         testid = data_jmx["testeventid"]
         runcount = data_jmx["runcount"]
@@ -860,13 +916,16 @@ class CaseToJmxView(MethodView):
         testserverid = data_jmx["testserverid"]
         case_one = InterfaceTest.query.filter_by(id=int(interfacecaseid)).first()
         if not case_one:
-            return jsonify({'code': 99, 'messgage': '没有测试用例', 'data': ''})
+            return jsonreponse(code=MessageEnum.case_not_exict.value[0],
+                               message=MessageEnum.case_not_exict.value[1])
         testvents = Interfacehuan.query.filter_by(id=int(testid)).first()
         if not testvents:
-            return jsonify({'code': 99, 'messgage': '测试环境不存在', 'data': ''})
+            return jsonreponse(code=MessageEnum.testeveirment_not_exict.value[0],
+                               message=MessageEnum.testeveirment_not_exict.value[1])
         tetserver = Testerver.query.filter_by(id=int(testserverid), status=0).first()
         if not tetserver:
-            return jsonify({'code': 99, 'messgage': '测试服务器不存在', 'data': ''})
+            return jsonreponse(code=MessageEnum.test_server_not_exict.value[0],
+                               message=MessageEnum.test_server_not_exict.value[1])
         all = str(testvents.url).split("://")[1].split(":")
         if len(all) == 1:
             port = 80
@@ -887,7 +946,8 @@ class CaseToJmxView(MethodView):
               </elementProp>''' % (value, key)
             except Exception as e:
                 print(e)
-                return jsonify({'code': 99, 'messgage': '转换接口压测测试用例失败', 'data': ''})
+                return jsonreponse(code=MessageEnum.case_to_jmx_case_fail.value[0],
+                                   message=MessageEnum.case_to_jmx_case_fail.value[1])
         all = make(runcount, loopcount, all[0], port, case_one.interfaces.Interface_url,
                    case_one.Interface_meth, dbname, case_one.projects.project_name, parame)
         path = os.getcwd()
@@ -900,7 +960,9 @@ class CaseToJmxView(MethodView):
                           jmxpath=filepathname, serverid=tetserver.id, name=name)
         db.session.add(testjmx)
         db.session.commit()
-        return jsonify({'code': 0, 'messgage': '转化接口压测用例成功', 'data': testjmx.id})
+        return jsonreponse(code=MessageEnum.case_to_jmx_success.value[0],
+                           message=MessageEnum.case_to_jmx_success.value[1],
+                           data=testjmx.id)
 
 
 class JmxToServerView(MethodView):
@@ -914,12 +976,15 @@ class JmxToServerView(MethodView):
         '''
         testjmx = TestJmx.query.filter_by(id=int(id)).first()
         if not testjmx:
-            return jsonify({'code': 99, 'messgage': '测试脚本不存在', 'data': ''})
+            return jsonreponse(code=MessageEnum.case_jmx_not_excit.value[0],
+                               message=MessageEnum.case_jmx_not_excit.value[1])
         if testjmx.serverid is None:
-            return jsonify({'code': 99, 'messgage': '测试脚本没有选择服务器', 'data': ''})
+            return jsonreponse(code=MessageEnum.case_jmx_not_select_server.value[0],
+                               message=MessageEnum.case_jmx_not_select_server.value[1])
         testserver = Testerver.query.filter_by(id=int(testjmx.serverid), status=0).first()
         if not testserver:
-            return jsonify({'code': 99, 'messgage': '测试服务器不存在或者已经删除', 'data': ''})
+            return jsonreponse(code=MessageEnum.case_test_sever_not_exict.value[0],
+                               message=MessageEnum.case_test_sever_not_exict.value[1])
         cmd = "sshpass -p " + testserver.loginpassword + " scp -P " + testserver.port + "  " + testjmx.jmxpath + " " + testserver.loginuser + "@" + testserver.ip + ":/home"
         os.system(cmd)
         commentc = Sshtool(testserver.ip, testserver.port, testserver.loginuser, testserver.loginpassword)
@@ -928,4 +993,5 @@ class JmxToServerView(MethodView):
         testserver.is_run = 1
         db.session.add(testserver)
         db.session.commit()
-        return jsonify({'code': 0, 'messgage': '压测已经在远程服务器运行', 'data': testjmx.id})
+        return jsonreponse(code=MessageEnum.case_jmx_run_seccess.value[0],
+                           message=MessageEnum.case_jmx_run_seccess.value[1])

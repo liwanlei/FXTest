@@ -29,6 +29,7 @@ redis_port = 6379
 task_redis_db = 3
 redis_save_result_db = 2
 jmeter_data_db = 'test'
+paln_run_url='http://127.0.0.1:5000'  #测试环境运行地址
 
 email_type = "online.com"  # 用于校验邮箱
 

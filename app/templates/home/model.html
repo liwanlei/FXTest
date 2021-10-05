@@ -84,7 +84,13 @@
                     <select id="projetc-{{ project.id }}">
                 <option>请选择</option>
                         {% for pro in project_list %}
-                            <option>{{ pro.project_name }}</option>
+                            {% if  pro.name ==project.name %}
+                                 <option selected>{{ pro.project_name }}</option>
+
+                                {% else %}
+                                <option>{{ pro.project_name }}</option>
+                            {% endif %}
+
                         {% endfor %}
             </select>
             </span>
@@ -168,11 +174,11 @@
                     contentType: 'application/json; charset=UTF-8',
                     processData: false,
                     success: function (result) {
-                        if (result['code'] == 2) {
-                            alert(result['data']);
+                        if (result['code'] == 200) {
+                            alert(result['message']);
                             location.reload()
                         } else {
-                            alert(result['data']);
+                            alert(result['message']);
                         }
                     }
                 }
@@ -187,10 +193,10 @@
                 contentType: 'application/json; charset=UTF-8',
                 processData: false,
                 success: function (data) {
-                    if (data['code'] != 2) {
-                        alert(data['data'])
+                    if (data['code'] != 200) {
+                        alert(data['message'])
                     } else {
-                        alert(data['data']);
+                        alert(data['message']);
                         caseid = document.getElementById(id);
                         caseid.hidden = true;
                     }
@@ -224,11 +230,11 @@
                     contentType: 'application/json; charset=UTF-8',
                     processData: false,
                     success: function (result) {
-                        if (result['code'] == 2) {
-                            alert(result['data']);
+                        if (result['code'] == 200) {
+                            alert(result['message']);
                             location.reload()
                         } else {
-                            alert(result['data']);
+                            alert(result['message']);
                         }
                     }
                 }

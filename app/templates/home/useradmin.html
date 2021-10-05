@@ -205,10 +205,10 @@
                 success: function (result) {
                     if (result['code'] == 200) {
                         window.location.reload();
-                        alert(result['msg'])
+                        alert(result['message'])
                     } else {
                         window.location.reload();
-                        alert(result['msg'])
+                        alert(result['message'])
                     }
                 }
             })
@@ -247,10 +247,10 @@
                 success: function (result) {
                     if (result['code'] == 200) {
                         window.location.reload();
-                        alert(result['msg'])
+                        alert(result['message'])
                     } else {
                         window.location.reload();
-                        alert(result['msg'])
+                        alert(result['message'])
                     }
                 }
             })
@@ -307,11 +307,11 @@
                         contentType: 'application/json; charset=UTF-8',
                         processData: false,
                         success: function (result) {
-                            if (result['code'] == 2) {
-                                alert(result['data']);
+                            if (result['code'] == 200) {
+                                alert(result['message']);
                                 location.reload()
                             } else {
-                                alert(result['data']);
+                                alert(result['message']);
                             }
                         }
                     }

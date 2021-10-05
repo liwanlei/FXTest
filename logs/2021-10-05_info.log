@@ -1,0 +1,2171 @@
+2021-10-05 17:28:12.592 | ERROR    | app.views:register:155 - list index out of range
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x10a2bc1f0>
+    └ <Thread(Thread-39, started daemon 4618882304)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x10a2bbee0>
+    └ <Thread(Thread-39, started daemon 4618882304)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-39, started daemon 4618882304)>
+    │    │        │    └ (<gevent._socket3.socket at 0x133b84fa0 object, fd=50, family=2, type=1, proto=0>, ('127.0.0.1', 54064))
+    │    │        └ <Thread(Thread-39, started daemon 4618882304)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x1135dac10>>
+    └ <Thread(Thread-39, started daemon 4618882304)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 54064)
+    │    │              └ <gevent._socket3.socket at 0x133b84fa0 object, fd=50, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x1101ca0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x1135dac10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x1135dac10>
+    │    │                   │        └ ('127.0.0.1', 54064)
+    │    │                   └ <gevent._socket3.socket at 0x133b84fa0 object, fd=50, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x1135dac10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x1104319d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1134da0d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x1134da0d0>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x1104300d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x110431b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1134da0d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x110431940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x1134da0d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x11341be20>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x1135dac10>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x1134da0d0>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x133b87670>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x133b8c9e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x133b87790>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=50>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x11341be20>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x133b87790>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=50>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x1106d65e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x1106d4ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x1106d4c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/register' [POST]>
+           │    │              │    └ 'register'
+           │    │              └ <Rule '/register' (POST, OPTIONS, HEAD, GET) -> register>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/app/views.py", line 151, in register
+    if (str(email.split("@")[1]) != email_type):
+            │     │                 └ 'online.com'
+            │     └ <method 'split' of 'str' objects>
+            └ '212'
+
+IndexError: list index out of range
+2021-10-05 17:49:30.281 | INFO     | app.Interface.views:dispatch_request:145 - 导入失败，请联系管理员
+2021-10-05 18:23:30.015 | ERROR    | common.PackageRequest:get:24 - <class 'requests.exceptions.InvalidURL'>
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/models.py", line 382, in prepare_url
+    scheme, auth, host, port, path, query, fragment = parse_url(url)
+                                                      │         └ 'http://127.0.0.1:5002萨达萨达'
+                                                      └ <function parse_url at 0x10daceee0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/urllib3/util/url.py", line 392, in parse_url
+    return six.raise_from(LocationParseError(source_url), None)
+           │   │          │                  └ 'http://127.0.0.1:5002萨达萨达'
+           │   │          └ <class 'urllib3.exceptions.LocationParseError'>
+           │   └ <function raise_from at 0x10d9b6790>
+           └ <module 'urllib3.packages.six' from '/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/urllib3/pa...
+  File "<string>", line 3, in raise_from
+
+urllib3.exceptions.LocationParseError: Failed to parse: http://127.0.0.1:5002萨达萨达
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105ce01f0>
+    └ <Thread(Thread-17, started daemon 4545640640)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105cdfee0>
+    └ <Thread(Thread-17, started daemon 4545640640)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-17, started daemon 4545640640)>
+    │    │        │    └ (<gevent._socket3.socket at 0x10f1e8f40 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 49829))
+    │    │        └ <Thread(Thread-17, started daemon 4545640640)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>>
+    └ <Thread(Thread-17, started daemon 4545640640)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 49829)
+    │    │              └ <gevent._socket3.socket at 0x10f1e8f40 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10bbed0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │    │                   │        └ ('127.0.0.1', 49829)
+    │    │                   └ <gevent._socket3.socket at 0x10f1e8f40 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10be559d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f6d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f6d0>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10be540d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10be55b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f6d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10be55940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f6d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f6d0>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x10f1eedc0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x10f1df040>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f1eeca0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f1eeca0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10c0fa5e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10c0f8ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10c0f8c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/makeonlyonecase' [POST]>
+           │    │              │    └ 'case.makeonlyonecase'
+           │    │              └ <Rule '/makeonlyonecase' (POST, OPTIONS) -> case.makeonlyonecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MethodView.dispatch_request at 0x10d14b820>
+           └ <app.case.views.MakeOnlyOneCaseView object at 0x10f21ffd0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 163, in dispatch_request
+    return meth(*args, **kwargs)
+           │     │       └ {}
+           │     └ ()
+           └ <bound method MakeOnlyOneCaseView.post of <app.case.views.MakeOnlyOneCaseView object at 0x10f21ffd0>>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MakeOnlyOneCaseView object at 0x10f21ffd0>,)
+           └ <function MakeOnlyOneCaseView.post at 0x10eaeb0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 733, in post
+    result = response.getJson()
+             │        └ <function Api.getJson at 0x10dc8f670>
+             └ <common.requ_case.Api object at 0x10f1ca730>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x10dc8f5e0>
+                       └ <common.requ_case.Api object at 0x10f1ca730>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 31, in testapi
+    response, spend = self.requ.get(url=self.url, headers=self.headers, parms=self.param)
+                      │    │    │       │    │            │    │              │    └ '{}'
+                      │    │    │       │    │            │    │              └ <common.requ_case.Api object at 0x10f1ca730>
+                      │    │    │       │    │            │    └ {'host': 'http://127.0.0.1:5002'}
+                      │    │    │       │    │            └ <common.requ_case.Api object at 0x10f1ca730>
+                      │    │    │       │    └ 'http://127.0.0.1:5002萨达萨达'
+                      │    │    │       └ <common.requ_case.Api object at 0x10f1ca730>
+                      │    │    └ <function reques.get at 0x10dbf1670>
+                      │    └ <common.PackageRequest.reques object at 0x10f219b80>
+                      └ <common.requ_case.Api object at 0x10f1ca730>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/PackageRequest.py", line 15, in get
+    self.r = requests.get(url, headers=headers, params=parms, timeout=Interface_Time_Out)
+    │        │        │   │            │               │              └ 5000
+    │        │        │   │            │               └ '{}'
+    │        │        │   │            └ {'host': 'http://127.0.0.1:5002'}
+    │        │        │   └ 'http://127.0.0.1:5002萨达萨达'
+    │        │        └ <function get at 0x10dc8ef70>
+    │        └ <module 'requests' from '/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/__init__.py'>
+    └ <common.PackageRequest.reques object at 0x10f219b80>
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+           │              │           │         └ {'headers': {'host': 'http://127.0.0.1:5002'}, 'timeout': 5000, 'allow_redirects': True}
+           │              │           └ '{}'
+           │              └ 'http://127.0.0.1:5002萨达萨达'
+           └ <function request at 0x10dc7be50>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+           │       │              │           │      └ {'params': '{}', 'headers': {'host': 'http://127.0.0.1:5002'}, 'timeout': 5000, 'allow_redirects': True}
+           │       │              │           └ 'http://127.0.0.1:5002萨达萨达'
+           │       │              └ 'get'
+           │       └ <function Session.request at 0x10dc8e700>
+           └ <requests.sessions.Session object at 0x10f219c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/sessions.py", line 528, in request
+    prep = self.prepare_request(req)
+           │    │               └ <Request [GET]>
+           │    └ <function Session.prepare_request at 0x10dc8e670>
+           └ <requests.sessions.Session object at 0x10f219c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/sessions.py", line 456, in prepare_request
+    p.prepare(
+    │ └ <function PreparedRequest.prepare at 0x10dc75a60>
+    └ <PreparedRequest [GET]>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/models.py", line 316, in prepare
+    self.prepare_url(url, params)
+    │    │           │    └ '{}'
+    │    │           └ 'http://127.0.0.1:5002萨达萨达'
+    │    └ <function PreparedRequest.prepare_url at 0x10dc75d30>
+    └ <PreparedRequest [GET]>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/models.py", line 384, in prepare_url
+    raise InvalidURL(*e.args)
+          └ <class 'requests.exceptions.InvalidURL'>
+
+requests.exceptions.InvalidURL: Failed to parse: http://127.0.0.1:5002萨达萨达
+2021-10-05 18:23:30.055 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105ce01f0>
+    └ <Thread(Thread-17, started daemon 4545640640)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105cdfee0>
+    └ <Thread(Thread-17, started daemon 4545640640)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-17, started daemon 4545640640)>
+    │    │        │    └ (<gevent._socket3.socket at 0x10f1e8f40 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 49829))
+    │    │        └ <Thread(Thread-17, started daemon 4545640640)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>>
+    └ <Thread(Thread-17, started daemon 4545640640)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 49829)
+    │    │              └ <gevent._socket3.socket at 0x10f1e8f40 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10bbed0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │    │                   │        └ ('127.0.0.1', 49829)
+    │    │                   └ <gevent._socket3.socket at 0x10f1e8f40 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10be559d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f6d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f6d0>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10be540d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10be55b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f6d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10be55940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f6d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f6d0>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x10f1eedc0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x10f1df040>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f1eeca0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f1eeca0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10c0fa5e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10c0f8ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10c0f8c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/makeonlyonecase' [POST]>
+           │    │              │    └ 'case.makeonlyonecase'
+           │    │              └ <Rule '/makeonlyonecase' (POST, OPTIONS) -> case.makeonlyonecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MethodView.dispatch_request at 0x10d14b820>
+           └ <app.case.views.MakeOnlyOneCaseView object at 0x10f21ffd0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 163, in dispatch_request
+    return meth(*args, **kwargs)
+           │     │       └ {}
+           │     └ ()
+           └ <bound method MakeOnlyOneCaseView.post of <app.case.views.MakeOnlyOneCaseView object at 0x10f21ffd0>>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MakeOnlyOneCaseView object at 0x10f21ffd0>,)
+           └ <function MakeOnlyOneCaseView.post at 0x10eaeb0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 733, in post
+    result = response.getJson()
+             │        └ <function Api.getJson at 0x10dc8f670>
+             └ <common.requ_case.Api object at 0x10f1ca730>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x10dc8f5e0>
+                       └ <common.requ_case.Api object at 0x10f1ca730>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 31, in testapi
+    response, spend = self.requ.get(url=self.url, headers=self.headers, parms=self.param)
+                      │    │    │       │    │            │    │              │    └ '{}'
+                      │    │    │       │    │            │    │              └ <common.requ_case.Api object at 0x10f1ca730>
+                      │    │    │       │    │            │    └ {'host': 'http://127.0.0.1:5002'}
+                      │    │    │       │    │            └ <common.requ_case.Api object at 0x10f1ca730>
+                      │    │    │       │    └ 'http://127.0.0.1:5002萨达萨达'
+                      │    │    │       └ <common.requ_case.Api object at 0x10f1ca730>
+                      │    │    └ <function reques.get at 0x10dbf1670>
+                      │    └ <common.PackageRequest.reques object at 0x10f219b80>
+                      └ <common.requ_case.Api object at 0x10f1ca730>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-05 18:24:46.662 | ERROR    | common.PackageRequest:get:24 - <class 'requests.exceptions.InvalidURL'>
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/models.py", line 382, in prepare_url
+    scheme, auth, host, port, path, query, fragment = parse_url(url)
+                                                      │         └ 'http://127.0.0.1:5002萨达萨达'
+                                                      └ <function parse_url at 0x10daceee0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/urllib3/util/url.py", line 392, in parse_url
+    return six.raise_from(LocationParseError(source_url), None)
+           │   │          │                  └ 'http://127.0.0.1:5002萨达萨达'
+           │   │          └ <class 'urllib3.exceptions.LocationParseError'>
+           │   └ <function raise_from at 0x10d9b6790>
+           └ <module 'urllib3.packages.six' from '/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/urllib3/pa...
+  File "<string>", line 3, in raise_from
+
+urllib3.exceptions.LocationParseError: Failed to parse: http://127.0.0.1:5002萨达萨达
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105ce01f0>
+    └ <Thread(Thread-31, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105cdfee0>
+    └ <Thread(Thread-31, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-31, started daemon 4545641728)>
+    │    │        │    └ (<gevent._socket3.socket at 0x10f291d00 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 50179))
+    │    │        └ <Thread(Thread-31, started daemon 4545641728)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>>
+    └ <Thread(Thread-31, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 50179)
+    │    │              └ <gevent._socket3.socket at 0x10f291d00 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10bbed0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │    │                   │        └ ('127.0.0.1', 50179)
+    │    │                   └ <gevent._socket3.socket at 0x10f291d00 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10be559d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f3540a0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x10f3540a0>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10be540d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10be55b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f3540a0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10be55940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x10f3540a0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x10f3540a0>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x10f34daf0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x10f2c69e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f34d3a0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f34d3a0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10c0fa5e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10c0f8ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10c0f8c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/makeonlyonecase' [POST]>
+           │    │              │    └ 'case.makeonlyonecase'
+           │    │              └ <Rule '/makeonlyonecase' (POST, OPTIONS) -> case.makeonlyonecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MethodView.dispatch_request at 0x10d14b820>
+           └ <app.case.views.MakeOnlyOneCaseView object at 0x10f354ac0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 163, in dispatch_request
+    return meth(*args, **kwargs)
+           │     │       └ {}
+           │     └ ()
+           └ <bound method MakeOnlyOneCaseView.post of <app.case.views.MakeOnlyOneCaseView object at 0x10f354ac0>>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MakeOnlyOneCaseView object at 0x10f354ac0>,)
+           └ <function MakeOnlyOneCaseView.post at 0x10eaeb0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 733, in post
+    result = response.getJson()
+             │        └ <function Api.getJson at 0x10dc8f670>
+             └ <common.requ_case.Api object at 0x10f1f73d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x10dc8f5e0>
+                       └ <common.requ_case.Api object at 0x10f1f73d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 31, in testapi
+    response, spend = self.requ.get(url=self.url, headers=self.headers, parms=self.param)
+                      │    │    │       │    │            │    │              │    └ '{}'
+                      │    │    │       │    │            │    │              └ <common.requ_case.Api object at 0x10f1f73d0>
+                      │    │    │       │    │            │    └ {'host': 'http://127.0.0.1:5002'}
+                      │    │    │       │    │            └ <common.requ_case.Api object at 0x10f1f73d0>
+                      │    │    │       │    └ 'http://127.0.0.1:5002萨达萨达'
+                      │    │    │       └ <common.requ_case.Api object at 0x10f1f73d0>
+                      │    │    └ <function reques.get at 0x10dbf1670>
+                      │    └ <common.PackageRequest.reques object at 0x10f1f7130>
+                      └ <common.requ_case.Api object at 0x10f1f73d0>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/PackageRequest.py", line 15, in get
+    self.r = requests.get(url, headers=headers, params=parms, timeout=Interface_Time_Out)
+    │        │        │   │            │               │              └ 5000
+    │        │        │   │            │               └ '{}'
+    │        │        │   │            └ {'host': 'http://127.0.0.1:5002'}
+    │        │        │   └ 'http://127.0.0.1:5002萨达萨达'
+    │        │        └ <function get at 0x10dc8ef70>
+    │        └ <module 'requests' from '/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/__init__.py'>
+    └ <common.PackageRequest.reques object at 0x10f1f7130>
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+           │              │           │         └ {'headers': {'host': 'http://127.0.0.1:5002'}, 'timeout': 5000, 'allow_redirects': True}
+           │              │           └ '{}'
+           │              └ 'http://127.0.0.1:5002萨达萨达'
+           └ <function request at 0x10dc7be50>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+           │       │              │           │      └ {'params': '{}', 'headers': {'host': 'http://127.0.0.1:5002'}, 'timeout': 5000, 'allow_redirects': True}
+           │       │              │           └ 'http://127.0.0.1:5002萨达萨达'
+           │       │              └ 'get'
+           │       └ <function Session.request at 0x10dc8e700>
+           └ <requests.sessions.Session object at 0x10f1f7220>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/sessions.py", line 528, in request
+    prep = self.prepare_request(req)
+           │    │               └ <Request [GET]>
+           │    └ <function Session.prepare_request at 0x10dc8e670>
+           └ <requests.sessions.Session object at 0x10f1f7220>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/sessions.py", line 456, in prepare_request
+    p.prepare(
+    │ └ <function PreparedRequest.prepare at 0x10dc75a60>
+    └ <PreparedRequest [GET]>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/models.py", line 316, in prepare
+    self.prepare_url(url, params)
+    │    │           │    └ '{}'
+    │    │           └ 'http://127.0.0.1:5002萨达萨达'
+    │    └ <function PreparedRequest.prepare_url at 0x10dc75d30>
+    └ <PreparedRequest [GET]>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/models.py", line 384, in prepare_url
+    raise InvalidURL(*e.args)
+          └ <class 'requests.exceptions.InvalidURL'>
+
+requests.exceptions.InvalidURL: Failed to parse: http://127.0.0.1:5002萨达萨达
+2021-10-05 18:24:46.679 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105ce01f0>
+    └ <Thread(Thread-31, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105cdfee0>
+    └ <Thread(Thread-31, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-31, started daemon 4545641728)>
+    │    │        │    └ (<gevent._socket3.socket at 0x10f291d00 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 50179))
+    │    │        └ <Thread(Thread-31, started daemon 4545641728)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>>
+    └ <Thread(Thread-31, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 50179)
+    │    │              └ <gevent._socket3.socket at 0x10f291d00 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10bbed0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │    │                   │        └ ('127.0.0.1', 50179)
+    │    │                   └ <gevent._socket3.socket at 0x10f291d00 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10be559d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f3540a0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x10f3540a0>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10be540d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10be55b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f3540a0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10be55940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x10f3540a0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x10f3540a0>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x10f34daf0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x10f2c69e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f34d3a0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f34d3a0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10c0fa5e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10c0f8ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10c0f8c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/makeonlyonecase' [POST]>
+           │    │              │    └ 'case.makeonlyonecase'
+           │    │              └ <Rule '/makeonlyonecase' (POST, OPTIONS) -> case.makeonlyonecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MethodView.dispatch_request at 0x10d14b820>
+           └ <app.case.views.MakeOnlyOneCaseView object at 0x10f354ac0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 163, in dispatch_request
+    return meth(*args, **kwargs)
+           │     │       └ {}
+           │     └ ()
+           └ <bound method MakeOnlyOneCaseView.post of <app.case.views.MakeOnlyOneCaseView object at 0x10f354ac0>>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MakeOnlyOneCaseView object at 0x10f354ac0>,)
+           └ <function MakeOnlyOneCaseView.post at 0x10eaeb0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 733, in post
+    result = response.getJson()
+             │        └ <function Api.getJson at 0x10dc8f670>
+             └ <common.requ_case.Api object at 0x10f1f73d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x10dc8f5e0>
+                       └ <common.requ_case.Api object at 0x10f1f73d0>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 31, in testapi
+    response, spend = self.requ.get(url=self.url, headers=self.headers, parms=self.param)
+                      │    │    │       │    │            │    │              │    └ '{}'
+                      │    │    │       │    │            │    │              └ <common.requ_case.Api object at 0x10f1f73d0>
+                      │    │    │       │    │            │    └ {'host': 'http://127.0.0.1:5002'}
+                      │    │    │       │    │            └ <common.requ_case.Api object at 0x10f1f73d0>
+                      │    │    │       │    └ 'http://127.0.0.1:5002萨达萨达'
+                      │    │    │       └ <common.requ_case.Api object at 0x10f1f73d0>
+                      │    │    └ <function reques.get at 0x10dbf1670>
+                      │    └ <common.PackageRequest.reques object at 0x10f1f7130>
+                      └ <common.requ_case.Api object at 0x10f1f73d0>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-05 18:26:06.312 | ERROR    | common.PackageRequest:get:24 - <class 'requests.exceptions.InvalidURL'>
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/models.py", line 382, in prepare_url
+    scheme, auth, host, port, path, query, fragment = parse_url(url)
+                                                      │         └ 'http://127.0.0.1:5002萨达萨达'
+                                                      └ <function parse_url at 0x10daceee0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/urllib3/util/url.py", line 392, in parse_url
+    return six.raise_from(LocationParseError(source_url), None)
+           │   │          │                  └ 'http://127.0.0.1:5002萨达萨达'
+           │   │          └ <class 'urllib3.exceptions.LocationParseError'>
+           │   └ <function raise_from at 0x10d9b6790>
+           └ <module 'urllib3.packages.six' from '/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/urllib3/pa...
+  File "<string>", line 3, in raise_from
+
+urllib3.exceptions.LocationParseError: Failed to parse: http://127.0.0.1:5002萨达萨达
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105ce01f0>
+    └ <Thread(Thread-42, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105cdfee0>
+    └ <Thread(Thread-42, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-42, started daemon 4545641728)>
+    │    │        │    └ (<gevent._socket3.socket at 0x10f20fee0 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 50388))
+    │    │        └ <Thread(Thread-42, started daemon 4545641728)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>>
+    └ <Thread(Thread-42, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 50388)
+    │    │              └ <gevent._socket3.socket at 0x10f20fee0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10bbed0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │    │                   │        └ ('127.0.0.1', 50388)
+    │    │                   └ <gevent._socket3.socket at 0x10f20fee0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10be559d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f35ffd0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x10f35ffd0>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10be540d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10be55b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f35ffd0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10be55940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x10f35ffd0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x10f35ffd0>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x10f34d5e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x10f2c69e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f34d790>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f34d790>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10c0fa5e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10c0f8ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10c0f8c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/makeonlyonecase' [POST]>
+           │    │              │    └ 'case.makeonlyonecase'
+           │    │              └ <Rule '/makeonlyonecase' (POST, OPTIONS) -> case.makeonlyonecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MethodView.dispatch_request at 0x10d14b820>
+           └ <app.case.views.MakeOnlyOneCaseView object at 0x10f35fee0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 163, in dispatch_request
+    return meth(*args, **kwargs)
+           │     │       └ {}
+           │     └ ()
+           └ <bound method MakeOnlyOneCaseView.post of <app.case.views.MakeOnlyOneCaseView object at 0x10f35fee0>>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MakeOnlyOneCaseView object at 0x10f35fee0>,)
+           └ <function MakeOnlyOneCaseView.post at 0x10eaeb0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 733, in post
+    result = response.getJson()
+             │        └ <function Api.getJson at 0x10dc8f670>
+             └ <common.requ_case.Api object at 0x10f35fe80>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x10dc8f5e0>
+                       └ <common.requ_case.Api object at 0x10f35fe80>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 31, in testapi
+    response, spend = self.requ.get(url=self.url, headers=self.headers, parms=self.param)
+                      │    │    │       │    │            │    │              │    └ '{}'
+                      │    │    │       │    │            │    │              └ <common.requ_case.Api object at 0x10f35fe80>
+                      │    │    │       │    │            │    └ {'host': 'http://127.0.0.1:5002'}
+                      │    │    │       │    │            └ <common.requ_case.Api object at 0x10f35fe80>
+                      │    │    │       │    └ 'http://127.0.0.1:5002萨达萨达'
+                      │    │    │       └ <common.requ_case.Api object at 0x10f35fe80>
+                      │    │    └ <function reques.get at 0x10dbf1670>
+                      │    └ <common.PackageRequest.reques object at 0x10f35fac0>
+                      └ <common.requ_case.Api object at 0x10f35fe80>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/PackageRequest.py", line 15, in get
+    self.r = requests.get(url, headers=headers, params=parms, timeout=Interface_Time_Out)
+    │        │        │   │            │               │              └ 5000
+    │        │        │   │            │               └ '{}'
+    │        │        │   │            └ {'host': 'http://127.0.0.1:5002'}
+    │        │        │   └ 'http://127.0.0.1:5002萨达萨达'
+    │        │        └ <function get at 0x10dc8ef70>
+    │        └ <module 'requests' from '/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/__init__.py'>
+    └ <common.PackageRequest.reques object at 0x10f35fac0>
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+           │              │           │         └ {'headers': {'host': 'http://127.0.0.1:5002'}, 'timeout': 5000, 'allow_redirects': True}
+           │              │           └ '{}'
+           │              └ 'http://127.0.0.1:5002萨达萨达'
+           └ <function request at 0x10dc7be50>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+           │       │              │           │      └ {'params': '{}', 'headers': {'host': 'http://127.0.0.1:5002'}, 'timeout': 5000, 'allow_redirects': True}
+           │       │              │           └ 'http://127.0.0.1:5002萨达萨达'
+           │       │              └ 'get'
+           │       └ <function Session.request at 0x10dc8e700>
+           └ <requests.sessions.Session object at 0x10f35ff40>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/sessions.py", line 528, in request
+    prep = self.prepare_request(req)
+           │    │               └ <Request [GET]>
+           │    └ <function Session.prepare_request at 0x10dc8e670>
+           └ <requests.sessions.Session object at 0x10f35ff40>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/sessions.py", line 456, in prepare_request
+    p.prepare(
+    │ └ <function PreparedRequest.prepare at 0x10dc75a60>
+    └ <PreparedRequest [GET]>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/models.py", line 316, in prepare
+    self.prepare_url(url, params)
+    │    │           │    └ '{}'
+    │    │           └ 'http://127.0.0.1:5002萨达萨达'
+    │    └ <function PreparedRequest.prepare_url at 0x10dc75d30>
+    └ <PreparedRequest [GET]>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/requests/models.py", line 384, in prepare_url
+    raise InvalidURL(*e.args)
+          └ <class 'requests.exceptions.InvalidURL'>
+
+requests.exceptions.InvalidURL: Failed to parse: http://127.0.0.1:5002萨达萨达
+2021-10-05 18:26:06.326 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105ce01f0>
+    └ <Thread(Thread-42, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105cdfee0>
+    └ <Thread(Thread-42, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-42, started daemon 4545641728)>
+    │    │        │    └ (<gevent._socket3.socket at 0x10f20fee0 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 50388))
+    │    │        └ <Thread(Thread-42, started daemon 4545641728)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>>
+    └ <Thread(Thread-42, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 50388)
+    │    │              └ <gevent._socket3.socket at 0x10f20fee0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10bbed0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │    │                   │        └ ('127.0.0.1', 50388)
+    │    │                   └ <gevent._socket3.socket at 0x10f20fee0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10be559d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f35ffd0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x10f35ffd0>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10be540d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10be55b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f35ffd0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10be55940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x10f35ffd0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x10f35ffd0>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x10f34d5e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x10f2c69e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f34d790>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f34d790>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10c0fa5e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10c0f8ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10c0f8c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/makeonlyonecase' [POST]>
+           │    │              │    └ 'case.makeonlyonecase'
+           │    │              └ <Rule '/makeonlyonecase' (POST, OPTIONS) -> case.makeonlyonecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MethodView.dispatch_request at 0x10d14b820>
+           └ <app.case.views.MakeOnlyOneCaseView object at 0x10f35fee0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 163, in dispatch_request
+    return meth(*args, **kwargs)
+           │     │       └ {}
+           │     └ ()
+           └ <bound method MakeOnlyOneCaseView.post of <app.case.views.MakeOnlyOneCaseView object at 0x10f35fee0>>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MakeOnlyOneCaseView object at 0x10f35fee0>,)
+           └ <function MakeOnlyOneCaseView.post at 0x10eaeb0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 733, in post
+    result = response.getJson()
+             │        └ <function Api.getJson at 0x10dc8f670>
+             └ <common.requ_case.Api object at 0x10f35fe80>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x10dc8f5e0>
+                       └ <common.requ_case.Api object at 0x10f35fe80>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 31, in testapi
+    response, spend = self.requ.get(url=self.url, headers=self.headers, parms=self.param)
+                      │    │    │       │    │            │    │              │    └ '{}'
+                      │    │    │       │    │            │    │              └ <common.requ_case.Api object at 0x10f35fe80>
+                      │    │    │       │    │            │    └ {'host': 'http://127.0.0.1:5002'}
+                      │    │    │       │    │            └ <common.requ_case.Api object at 0x10f35fe80>
+                      │    │    │       │    └ 'http://127.0.0.1:5002萨达萨达'
+                      │    │    │       └ <common.requ_case.Api object at 0x10f35fe80>
+                      │    │    └ <function reques.get at 0x10dbf1670>
+                      │    └ <common.PackageRequest.reques object at 0x10f35fac0>
+                      └ <common.requ_case.Api object at 0x10f35fe80>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-05 18:29:31.086 | ERROR    | common.PackageRequest:get:30 - Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105ce01f0>
+    └ <Thread(Thread-78, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105cdfee0>
+    └ <Thread(Thread-78, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-78, started daemon 4545641728)>
+    │    │        │    └ (<gevent._socket3.socket at 0x10f1e8fa0 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 50887))
+    │    │        └ <Thread(Thread-78, started daemon 4545641728)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>>
+    └ <Thread(Thread-78, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 50887)
+    │    │              └ <gevent._socket3.socket at 0x10f1e8fa0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10bbed0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │    │                   │        └ ('127.0.0.1', 50887)
+    │    │                   └ <gevent._socket3.socket at 0x10f1e8fa0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10be559d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f4f0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f4f0>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10be540d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10be55b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f4f0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10be55940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f4f0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f4f0>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x10f3798b0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x10f30e510>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f379dc0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f379dc0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10c0fa5e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10c0f8ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10c0f8c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/makeonlyonecase' [POST]>
+           │    │              │    └ 'case.makeonlyonecase'
+           │    │              └ <Rule '/makeonlyonecase' (POST, OPTIONS) -> case.makeonlyonecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MethodView.dispatch_request at 0x10d14b820>
+           └ <app.case.views.MakeOnlyOneCaseView object at 0x10f395100>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 163, in dispatch_request
+    return meth(*args, **kwargs)
+           │     │       └ {}
+           │     └ ()
+           └ <bound method MakeOnlyOneCaseView.post of <app.case.views.MakeOnlyOneCaseView object at 0x10f395100>>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MakeOnlyOneCaseView object at 0x10f395100>,)
+           └ <function MakeOnlyOneCaseView.post at 0x10eaeb0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 733, in post
+    result = response.getJson()
+             │        └ <function Api.getJson at 0x10dc8f670>
+             └ <common.requ_case.Api object at 0x10f395fd0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x10dc8f5e0>
+                       └ <common.requ_case.Api object at 0x10f395fd0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 31, in testapi
+    response, spend = self.requ.get(url=self.url, headers=self.headers, parms=self.param)
+                      │    │    │       │    │            │    │              │    └ '{}'
+                      │    │    │       │    │            │    │              └ <common.requ_case.Api object at 0x10f395fd0>
+                      │    │    │       │    │            │    └ {'host': 'http://127.0.0.1:5002'}
+                      │    │    │       │    │            └ <common.requ_case.Api object at 0x10f395fd0>
+                      │    │    │       │    └ 'http://127.0.0.1:5002/login'
+                      │    │    │       └ <common.requ_case.Api object at 0x10f395fd0>
+                      │    │    └ <function reques.get at 0x10dbf1670>
+                      │    └ <common.PackageRequest.reques object at 0x10f395520>
+                      └ <common.requ_case.Api object at 0x10f395fd0>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/PackageRequest.py", line 18, in get
+    json_response = json.loads(self.r.text)
+                    │    │     │    │ └ <property object at 0x10dc7e0e0>
+                    │    │     │    └ <Response [200]>
+                    │    │     └ <common.PackageRequest.reques object at 0x10f395520>
+                    │    └ <function loads at 0x10b6d0820>
+                    └ <module 'json' from '/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/json/__init__.py'>
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           │                │      └ '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <title>FXTest测试平台</title>\n    <link href="/stati...
+           │                └ <function JSONDecoder.decode at 0x10b6d01f0>
+           └ <json.decoder.JSONDecoder object at 0x10b6c7580>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               │    │          │      │  └ '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <title>FXTest测试平台</title>\n    <link href="/stati...
+               │    │          │      └ <built-in method match of re.Pattern object at 0x10b586f30>
+               │    │          └ '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <title>FXTest测试平台</title>\n    <link href="/stati...
+               │    └ <function JSONDecoder.raw_decode at 0x10b6d0280>
+               └ <json.decoder.JSONDecoder object at 0x10b6c7580>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+          │                                  └ '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <title>FXTest测试平台</title>\n    <link href="/stati...
+          └ <class 'json.decoder.JSONDecodeError'>
+
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2021-10-05 18:29:31.098 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105ce01f0>
+    └ <Thread(Thread-78, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105cdfee0>
+    └ <Thread(Thread-78, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-78, started daemon 4545641728)>
+    │    │        │    └ (<gevent._socket3.socket at 0x10f1e8fa0 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 50887))
+    │    │        └ <Thread(Thread-78, started daemon 4545641728)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>>
+    └ <Thread(Thread-78, started daemon 4545641728)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 50887)
+    │    │              └ <gevent._socket3.socket at 0x10f1e8fa0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10bbed0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │    │                   │        └ ('127.0.0.1', 50887)
+    │    │                   └ <gevent._socket3.socket at 0x10f1e8fa0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10be559d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f4f0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f4f0>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10be540d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10be55b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f4f0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10be55940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f4f0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x10f001c10>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x10f21f4f0>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x10f3798b0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x10f30e510>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f379dc0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x10ee49970>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x10f379dc0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10c0fa5e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10c0f8ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10c0f8c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/makeonlyonecase' [POST]>
+           │    │              │    └ 'case.makeonlyonecase'
+           │    │              └ <Rule '/makeonlyonecase' (POST, OPTIONS) -> case.makeonlyonecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MethodView.dispatch_request at 0x10d14b820>
+           └ <app.case.views.MakeOnlyOneCaseView object at 0x10f395100>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 163, in dispatch_request
+    return meth(*args, **kwargs)
+           │     │       └ {}
+           │     └ ()
+           └ <bound method MakeOnlyOneCaseView.post of <app.case.views.MakeOnlyOneCaseView object at 0x10f395100>>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MakeOnlyOneCaseView object at 0x10f395100>,)
+           └ <function MakeOnlyOneCaseView.post at 0x10eaeb0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 733, in post
+    result = response.getJson()
+             │        └ <function Api.getJson at 0x10dc8f670>
+             └ <common.requ_case.Api object at 0x10f395fd0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x10dc8f5e0>
+                       └ <common.requ_case.Api object at 0x10f395fd0>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 31, in testapi
+    response, spend = self.requ.get(url=self.url, headers=self.headers, parms=self.param)
+                      │    │    │       │    │            │    │              │    └ '{}'
+                      │    │    │       │    │            │    │              └ <common.requ_case.Api object at 0x10f395fd0>
+                      │    │    │       │    │            │    └ {'host': 'http://127.0.0.1:5002'}
+                      │    │    │       │    │            └ <common.requ_case.Api object at 0x10f395fd0>
+                      │    │    │       │    └ 'http://127.0.0.1:5002/login'
+                      │    │    │       └ <common.requ_case.Api object at 0x10f395fd0>
+                      │    │    └ <function reques.get at 0x10dbf1670>
+                      │    └ <common.PackageRequest.reques object at 0x10f395520>
+                      └ <common.requ_case.Api object at 0x10f395fd0>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-05 18:33:01.957 | INFO     | common.PackageRequest:post:56 - 'str' object has no attribute 'items'
+2021-10-05 18:33:01.957 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105f3b1f0>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105f3aee0>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-19, started daemon 5085912048)>
+    │    │        │    └ (<gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 51046))
+    │    │        └ <Thread(Thread-19, started daemon 5085912048)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 51046)
+    │    │              └ <gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x12bf1c0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │    │                   │        └ ('127.0.0.1', 51046)
+    │    │                   └ <gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x12c1839d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x12c1820d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x12c183b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x12c183940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x12f566280>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x12f4fe7b0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x12f37a9d0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x12f37a9d0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x12c4205e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x12c41eca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x12c41ec10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/mulitecase' [POST]>
+           │    │              │    └ 'case.mulitecase'
+           │    │              └ <Rule '/mulitecase' (OPTIONS, HEAD, GET, POST) -> case.mulitecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MuliteCaseLiView.dispatch_request at 0x12ee3d160>
+           └ <app.case.views.MuliteCaseLiView object at 0x1306012e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MuliteCaseLiView object at 0x1306012e0>,)
+           └ <function MuliteCaseLiView.dispatch_request at 0x12ee3d0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 530, in dispatch_request
+    result_wei, result_except, spend_list = apitest.testapi()
+                                            │       └ <function ApiTestCase.testapi at 0x12e392310>
+                                            └ <app.test_case.Test_case.ApiTestCase object at 0x12f4dbc70>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/test_case/Test_case.py", line 225, in testapi
+    apijson = api.getJson()
+              │   └ <function Api.getJson at 0x12dfb6820>
+              └ <common.requ_case.Api object at 0x130601f40>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x12dfb6790>
+                       └ <common.requ_case.Api object at 0x130601f40>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 26, in testapi
+    response, spend = self.requ.post(url=self.url,
+                      │    │    │        │    └ 'http://127.0.0.1:5002/login'
+                      │    │    │        └ <common.requ_case.Api object at 0x130601f40>
+                      │    │    └ <function reques.post at 0x12dfb6550>
+                      │    └ <common.PackageRequest.reques object at 0x130601490>
+                      └ <common.requ_case.Api object at 0x130601f40>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-05 18:33:01.986 | INFO     | common.PackageRequest:post:56 - 'str' object has no attribute 'items'
+2021-10-05 18:33:01.986 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105f3b1f0>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105f3aee0>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-19, started daemon 5085912048)>
+    │    │        │    └ (<gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 51046))
+    │    │        └ <Thread(Thread-19, started daemon 5085912048)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 51046)
+    │    │              └ <gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x12bf1c0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │    │                   │        └ ('127.0.0.1', 51046)
+    │    │                   └ <gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x12c1839d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x12c1820d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x12c183b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x12c183940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x12f566280>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x12f4fe7b0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x12f37a9d0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x12f37a9d0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x12c4205e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x12c41eca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x12c41ec10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/mulitecase' [POST]>
+           │    │              │    └ 'case.mulitecase'
+           │    │              └ <Rule '/mulitecase' (OPTIONS, HEAD, GET, POST) -> case.mulitecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MuliteCaseLiView.dispatch_request at 0x12ee3d160>
+           └ <app.case.views.MuliteCaseLiView object at 0x1306012e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MuliteCaseLiView object at 0x1306012e0>,)
+           └ <function MuliteCaseLiView.dispatch_request at 0x12ee3d0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 530, in dispatch_request
+    result_wei, result_except, spend_list = apitest.testapi()
+                                            │       └ <function ApiTestCase.testapi at 0x12e392310>
+                                            └ <app.test_case.Test_case.ApiTestCase object at 0x12f4dbc70>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/test_case/Test_case.py", line 226, in testapi
+    spend = api.spend()
+            │   └ <function Api.spend at 0x12dfb68b0>
+            └ <common.requ_case.Api object at 0x130601f40>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 52, in spend
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x12dfb6790>
+                       └ <common.requ_case.Api object at 0x130601f40>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 26, in testapi
+    response, spend = self.requ.post(url=self.url,
+                      │    │    │        │    └ 'http://127.0.0.1:5002/login'
+                      │    │    │        └ <common.requ_case.Api object at 0x130601f40>
+                      │    │    └ <function reques.post at 0x12dfb6550>
+                      │    └ <common.PackageRequest.reques object at 0x130601490>
+                      └ <common.requ_case.Api object at 0x130601f40>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-05 18:33:02.000 | INFO     | common.PackageRequest:post:56 - 'str' object has no attribute 'items'
+2021-10-05 18:33:02.000 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105f3b1f0>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105f3aee0>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-19, started daemon 5085912048)>
+    │    │        │    └ (<gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 51046))
+    │    │        └ <Thread(Thread-19, started daemon 5085912048)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 51046)
+    │    │              └ <gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x12bf1c0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │    │                   │        └ ('127.0.0.1', 51046)
+    │    │                   └ <gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x12c1839d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x12c1820d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x12c183b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x12c183940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x12f566280>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x12f4fe7b0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x12f37a9d0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x12f37a9d0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x12c4205e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x12c41eca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x12c41ec10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/mulitecase' [POST]>
+           │    │              │    └ 'case.mulitecase'
+           │    │              └ <Rule '/mulitecase' (OPTIONS, HEAD, GET, POST) -> case.mulitecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MuliteCaseLiView.dispatch_request at 0x12ee3d160>
+           └ <app.case.views.MuliteCaseLiView object at 0x1306012e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MuliteCaseLiView object at 0x1306012e0>,)
+           └ <function MuliteCaseLiView.dispatch_request at 0x12ee3d0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 530, in dispatch_request
+    result_wei, result_except, spend_list = apitest.testapi()
+                                            │       └ <function ApiTestCase.testapi at 0x12e392310>
+                                            └ <app.test_case.Test_case.ApiTestCase object at 0x12f4dbc70>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/test_case/Test_case.py", line 225, in testapi
+    apijson = api.getJson()
+              │   └ <function Api.getJson at 0x12dfb6820>
+              └ <common.requ_case.Api object at 0x12f587d60>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x12dfb6790>
+                       └ <common.requ_case.Api object at 0x12f587d60>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 26, in testapi
+    response, spend = self.requ.post(url=self.url,
+                      │    │    │        │    └ 'http://127.0.0.1:5002/login'
+                      │    │    │        └ <common.requ_case.Api object at 0x12f587d60>
+                      │    │    └ <function reques.post at 0x12dfb6550>
+                      │    └ <common.PackageRequest.reques object at 0x12f535fa0>
+                      └ <common.requ_case.Api object at 0x12f587d60>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-05 18:33:02.008 | INFO     | common.PackageRequest:post:56 - 'str' object has no attribute 'items'
+2021-10-05 18:33:02.009 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105f3b1f0>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105f3aee0>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-19, started daemon 5085912048)>
+    │    │        │    └ (<gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 51046))
+    │    │        └ <Thread(Thread-19, started daemon 5085912048)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>>
+    └ <Thread(Thread-19, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 51046)
+    │    │              └ <gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x12bf1c0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │    │                   │        └ ('127.0.0.1', 51046)
+    │    │                   └ <gevent._socket3.socket at 0x12f533b20 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x12c1839d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x12c1820d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x12c183b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x12c183940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x12f375460>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x12f566280>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x12f4fe7b0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x12f37a9d0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x12f37a9d0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x12c4205e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x12c41eca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x12c41ec10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://localhost:5002/mulitecase' [POST]>
+           │    │              │    └ 'case.mulitecase'
+           │    │              └ <Rule '/mulitecase' (OPTIONS, HEAD, GET, POST) -> case.mulitecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MuliteCaseLiView.dispatch_request at 0x12ee3d160>
+           └ <app.case.views.MuliteCaseLiView object at 0x1306012e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MuliteCaseLiView object at 0x1306012e0>,)
+           └ <function MuliteCaseLiView.dispatch_request at 0x12ee3d0d0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 530, in dispatch_request
+    result_wei, result_except, spend_list = apitest.testapi()
+                                            │       └ <function ApiTestCase.testapi at 0x12e392310>
+                                            └ <app.test_case.Test_case.ApiTestCase object at 0x12f4dbc70>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/test_case/Test_case.py", line 226, in testapi
+    spend = api.spend()
+            │   └ <function Api.spend at 0x12dfb68b0>
+            └ <common.requ_case.Api object at 0x12f587d60>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 52, in spend
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x12dfb6790>
+                       └ <common.requ_case.Api object at 0x12f587d60>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 26, in testapi
+    response, spend = self.requ.post(url=self.url,
+                      │    │    │        │    └ 'http://127.0.0.1:5002/login'
+                      │    │    │        └ <common.requ_case.Api object at 0x12f587d60>
+                      │    │    └ <function reques.post at 0x12dfb6550>
+                      │    └ <common.PackageRequest.reques object at 0x12f535fa0>
+                      └ <common.requ_case.Api object at 0x12f587d60>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-05 18:34:40.618 | ERROR    | app.users.views:dispatch_request:211 - The curent application was not configured with Flask-Mail
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_mail.py", line 508, in connect
+    return Connection(app.extensions['mail'])
+           │          └ <Flask 'app'>
+           └ <class 'flask_mail.Connection'>
+
+KeyError: 'mail'
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105f3b1f0>
+    └ <Thread(Thread-37, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105f3aee0>
+    └ <Thread(Thread-37, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-37, started daemon 5085912048)>
+    │    │        │    └ (<gevent._socket3.socket at 0x13074f040 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 51109))
+    │    │        └ <Thread(Thread-37, started daemon 5085912048)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>>
+    └ <Thread(Thread-37, started daemon 5085912048)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 51109)
+    │    │              └ <gevent._socket3.socket at 0x13074f040 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x12bf1c0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │    │                   │        └ ('127.0.0.1', 51109)
+    │    │                   └ <gevent._socket3.socket at 0x13074f040 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x12c1839d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1307404f0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x1307404f0>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x12c1820d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x12c183b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1307404f0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x12c183940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x1307404f0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x1307404f0>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x12f37ab80>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x130753120>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x12f37a820>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x12f37a820>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x12c4205e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x12c41eca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x12c41ec10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {'id': 89}
+           │    │              │    │           └ <Request 'http://localhost:5002/resetpassword/89' [GET]>
+           │    │              │    └ 'user.resetpassword'
+           │    │              └ <Rule '/resetpassword/<id>' (OPTIONS, HEAD, GET, POST) -> user.resetpassword>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {'id': 89}
+           │    │                 └ ()
+           │    └ <function ResetPasswordView.dispatch_request at 0x12e39b820>
+           └ <app.users.views.ResetPasswordView object at 0x1307b5f70>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {'id': 89}
+           │     └ (<app.users.views.ResetPasswordView object at 0x1307b5f70>,)
+           └ <function ResetPasswordView.dispatch_request at 0x12e39b790>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/app/users/views.py", line 207, in dispatch_request
+    mail.send(msg)
+    │    │    └ <flask_mail.Message object at 0x13076e0a0>
+    │    └ <function _MailMixin.send at 0x12d546c10>
+    └ <flask_mail.Mail object at 0x13076e5b0>
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_mail.py", line 491, in send
+    with self.connect() as connection:
+         │    └ <function _MailMixin.connect at 0x12d546d30>
+         └ <flask_mail.Mail object at 0x13076e5b0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_mail.py", line 510, in connect
+    raise RuntimeError("The curent application was not configured with Flask-Mail")
+
+RuntimeError: The curent application was not configured with Flask-Mail
+2021-10-05 18:36:10.595 | ERROR    | app.users.views:dispatch_request:211 - The curent application was not configured with Flask-Mail
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_mail.py", line 508, in connect
+    return Connection(app.extensions['mail'])
+           │          └ <Flask 'app'>
+           └ <class 'flask_mail.Connection'>
+
+KeyError: 'mail'
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105f3b1f0>
+    └ <Thread(Thread-51, started daemon 5085910960)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105f3aee0>
+    └ <Thread(Thread-51, started daemon 5085910960)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-51, started daemon 5085910960)>
+    │    │        │    └ (<gevent._socket3.socket at 0x1307842e0 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 51356))
+    │    │        └ <Thread(Thread-51, started daemon 5085910960)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>>
+    └ <Thread(Thread-51, started daemon 5085910960)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 51356)
+    │    │              └ <gevent._socket3.socket at 0x1307842e0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x12bf1c0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │    │                   │        └ ('127.0.0.1', 51356)
+    │    │                   └ <gevent._socket3.socket at 0x1307842e0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x12c1839d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x12f547820>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x12f547820>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x12c1820d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x12c183b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x12f547820>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x12c183940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x12f547820>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x12f547820>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x13079f1f0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x130753120>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x13079f5e0>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x13079f5e0>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x12c4205e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x12c41eca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x12c41ec10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {'id': 89}
+           │    │              │    │           └ <Request 'http://localhost:5002/resetpassword/89' [GET]>
+           │    │              │    └ 'user.resetpassword'
+           │    │              └ <Rule '/resetpassword/<id>' (OPTIONS, HEAD, GET, POST) -> user.resetpassword>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {'id': 89}
+           │    │                 └ ()
+           │    └ <function ResetPasswordView.dispatch_request at 0x12e39b820>
+           └ <app.users.views.ResetPasswordView object at 0x1307935e0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {'id': 89}
+           │     └ (<app.users.views.ResetPasswordView object at 0x1307935e0>,)
+           └ <function ResetPasswordView.dispatch_request at 0x12e39b790>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/app/users/views.py", line 207, in dispatch_request
+    mail.send(msg)
+    │    │    └ <flask_mail.Message object at 0x13075bf10>
+    │    └ <function _MailMixin.send at 0x12d546c10>
+    └ <flask_mail.Mail object at 0x130747d00>
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_mail.py", line 491, in send
+    with self.connect() as connection:
+         │    └ <function _MailMixin.connect at 0x12d546d30>
+         └ <flask_mail.Mail object at 0x130747d00>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_mail.py", line 510, in connect
+    raise RuntimeError("The curent application was not configured with Flask-Mail")
+
+RuntimeError: The curent application was not configured with Flask-Mail
+2021-10-05 18:36:34.974 | ERROR    | common.mockservermeth:get_token_data:51 - 'HTTP_TOKEN'
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x105f3b1f0>
+    └ <Thread(Thread-66, started daemon 5085910960)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x105f3aee0>
+    └ <Thread(Thread-66, started daemon 5085910960)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-66, started daemon 5085910960)>
+    │    │        │    └ (<gevent._socket3.socket at 0x1307fa4c0 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 51411))
+    │    │        └ <Thread(Thread-66, started daemon 5085910960)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>>
+    └ <Thread(Thread-66, started daemon 5085910960)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 51411)
+    │    │              └ <gevent._socket3.socket at 0x1307fa4c0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x12bf1c0d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │    │                   │        └ ('127.0.0.1', 51411)
+    │    │                   └ <gevent._socket3.socket at 0x1307fa4c0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x12c1839d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1307c3d90>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x1307c3d90>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x12c1820d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x12c183b80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1307c3d90>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x12c183940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x1307c3d90>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x12f328d30>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x1307c3d90>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x13079f820>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x1307a9430>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x13079f670>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x12f1b0730>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x13079f670>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x12c4205e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x12c41eca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x12c41ec10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {'path': 'login'}
+           │    │              │    │           └ <Request 'http://localhost:5002/mackserver/login' [GET]>
+           │    │              │    └ 'mock.mackserver'
+           │    │              └ <Rule '/mackserver/<path>' (PUT, OPTIONS, GET, DELETE, POST, HEAD) -> mock.mackserver>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {'path': 'login'}
+           │    │                 └ ()
+           │    └ <function MethodView.dispatch_request at 0x12d471820>
+           └ <app.mock.views.MakeMockserverView object at 0x10a8c9130>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 163, in dispatch_request
+    return meth(*args, **kwargs)
+           │     │       └ {'path': 'login'}
+           │     └ ()
+           └ <bound method MakeMockserverView.get of <app.mock.views.MakeMockserverView object at 0x10a8c9130>>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/mock/views.py", line 87, in get
+    data = get_token_data(path)
+           │              └ 'login'
+           └ <function get_token_data at 0x12dc92160>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/mockservermeth.py", line 30, in get_token_data
+    token = heders['token']
+            └ EnvironHeaders([('Host', 'localhost:5002'), ('Connection', 'keep-alive'), ('Sec-Ch-Ua', '"Chromium";v="94", "Microsoft Edge";...
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/datastructures.py", line 1375, in __getitem__
+    return _unicodify_header_value(self.environ["HTTP_" + key])
+           │                       │    │                 └ 'TOKEN'
+           │                       │    └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │                       └ EnvironHeaders([('Host', 'localhost:5002'), ('Connection', 'keep-alive'), ('Sec-Ch-Ua', '"Chromium";v="94", "Microsoft Edge";...
+           └ <function _unicodify_header_value at 0x12c1d3c10>
+
+KeyError: 'HTTP_TOKEN'

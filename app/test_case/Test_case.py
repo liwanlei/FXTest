@@ -7,20 +7,20 @@ from common.judgment import assert_in
 from common.judgment import pare_result_mysql
 from common.log import log_t
 from common.oparmysqldatabase import *
-from config import redis_host, redis_port,\
+from config import redis_host, redis_port, \
     redis_save_result_db, save_duration
 from app.models import *
 from common.packageredis import ConRedisOper
 
 
 def save_reslut(key, value):
-    m = ConRedisOper(host=redis_host, port=redis_port, 
+    m = ConRedisOper(host=redis_host, port=redis_port,
                      db=redis_save_result_db)
     m.sethash(key, value, save_duration)
 
 
 def get_reslut(key):
-    m = ConRedisOper(host=redis_host, port=redis_port, 
+    m = ConRedisOper(host=redis_host, port=redis_port,
                      db=redis_save_result_db)
     reslit = m.getset(key)
     return reslit
@@ -287,7 +287,7 @@ class ApiTestCase():
                     self.resultall.append('Exception')
                     self.save_case_result(result=str(apijson), by=False,
                                           caseid=self.id[case], testevir=testevent,
-                                          spend=spend)
+                                          spend=0)
                     save_reslut(key=str(self.id[case]) + '&' + testevent.url, value=str(apijson))
                     continue
         return self.result_toal, self.result_pass, self.result_fail, self.resultall, self.bask_list, \

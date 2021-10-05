@@ -7,7 +7,7 @@
 目前只支持dict格式的参数，和请求headers。
 '''
 from common.PackageRequest import reques
-
+from common.systemlog import logger
 
 class Api():
     def __init__(self, url, method, params, headers):
@@ -39,6 +39,7 @@ class Api():
             return response, spend
         except Exception as e:
             print(e)
+            logger.exception(e)
             response = "请求出错了"
             spend = "错误"
             return response, spend

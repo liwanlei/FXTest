@@ -80,7 +80,7 @@
                     contentType: 'application/json; charset=UTF-8',
                     processData: false,
                     success: function (result) {
-                        if (result['code'] == 200) {
+                        if (result['code'] == 0) {
                             location.href = '{{ url_for('home.index') }}';
                         } else {
                             message.innerHTML = (result['msg']);

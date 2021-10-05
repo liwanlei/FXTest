@@ -291,11 +291,11 @@
                                     contentType: 'application/json; charset=UTF-8',
                                     processData: false,
                                     success: function (result) {
-                                        if (result['code'] == 2) {
-                                            alert(result['data']);
+                                        if (result['code'] == 200) {
+                                            alert(result['message']);
                                             location.reload()
                                         } else {
-                                            alert(result['data']);
+                                            alert(result['message']);
                                         }
                                     }
                                 });
@@ -314,10 +314,10 @@
                 contentType: 'application/json; charset=UTF-8',
                 processData: false,
                 success: function (data) {
-                    if (data['code'] != 2) {
-                        alert(data['data'])
+                    if (data['code'] != 200) {
+                        alert(data['message'])
                     } else {
-                        alert(data['data']);
+                        alert(data['message']);
                         location.reload()
                     }
                 }

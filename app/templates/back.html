@@ -188,7 +188,7 @@
                     contentType: 'application/json; charset=UTF-8',
                     processData: false,
                     success: function (data) {
-                        if (data['code'] == '1') {
+                        if (data['code'] == 100031) {
                             alert('修改密码成功');
                             window.location.href = ('{{ url_for("home.login") }}')
                         } else {

@@ -12,6 +12,9 @@ from flask import request, abort, jsonify, make_response
 from app.models import *
 from common.packagedict import comp_dict, dict_par
 import json
+from error_message import MessageEnum
+from common.jsontools import reponse as jsonreponse
+from common.systemlog import logger
 
 
 def get_token_data(path):
@@ -21,7 +24,8 @@ def get_token_data(path):
     heders = request.headers
     method = request.method
     if method.lower() != huoqupath.methods:
-        return jsonify({'code': '-1', 'message': u'请求方式错误!', 'data': ''})
+        return jsonreponse(code=MessageEnum.request_method.value[0],
+                           message=MessageEnum.request_method.value[1])
     try:
         token = heders['token']
         if token == 'Fetext_token_system':
@@ -30,14 +34,21 @@ def get_token_data(path):
                 if huoqupath.rebacktype == 'json':
                     try:
                         json_fan = json.dumps(huoqupath.fanhui)
-                        return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
-                    except:
-                        return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
+                        return jsonreponse(code=MessageEnum.successs.value[0],
+                                           message=MessageEnum.successs.value[1],
+                                           data=json_fan)
+                    except Exception as e:
+                        logger.exception(e)
+                        return jsonreponse(code=MessageEnum.resquest_return_not_json.value[0],
+                                           message=MessageEnum.resquest_return_not_json.value[1])
                 else:
-                    return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
+                    return jsonreponse(code=MessageEnum.request_method_not_supprot.value[0],
+                                       message=MessageEnum.request_method_not_supprot.value[1])
             else:
-                return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
-    except:
+                return jsonreponse(code=MessageEnum.method_parame_not_right.value[0],
+                                   message=MessageEnum.method_parame_not_right.value[1])
+    except Exception as e:
+        logger.exception(e)
         if huoqupath.is_headers == True:
             if comp_dict(heders, huoqupath.headers) == True:
                 if huoqupath.ischeck == True:
@@ -45,57 +56,80 @@ def get_token_data(path):
                     if dict_par(paerm, huoqupath.params) == True:
                         if huoqupath.rebacktype == 'json':
                             try:
-                                json_fan = json.dumps(huoqupath.fanhui)
-                                return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
-                            except:
-                                return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
+                                json_return = json.dumps(huoqupath.fanhui)
+                                return jsonreponse(code=MessageEnum.successs.value[0],
+                                                   message=MessageEnum.successs.value[1],
+                                                   data=json_return)
+                            except Exception as e:
+                                logger.exception(e)
+                                return jsonreponse(code=MessageEnum.resquest_return_not_json.value[0],
+                                                   message=MessageEnum.resquest_return_not_json.value[1])
                         elif huoqupath.rebacktype == 'xml':
                             response = make_response(huoqupath.fanhui)
                             response.content_type = 'application/xml'
                             return response
                         else:
-                            return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
+                            return jsonreponse(code=MessageEnum.request_method_not_supprot.value[0],
+                                               message=MessageEnum.request_method_not_supprot.value[1])
                     else:
-                        return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
+                        return jsonreponse(code=MessageEnum.method_parame_not_right.value[0],
+                                           message=MessageEnum.method_parame_not_right.value[1])
                 else:
                     if huoqupath.rebacktype == 'json':
                         try:
-                            json_fan = json.dumps(huoqupath.fanhui)
-                            return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
-                        except:
-                            return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
+                            json_return = json.dumps(huoqupath.fanhui)
+                            return jsonreponse(code=MessageEnum.successs.value[0],
+                                               message=MessageEnum.successs.value[1],
+                                               data=json_return)
+                        except Exception as e:
+                            logger.exception(e)
+                            return jsonreponse(code=MessageEnum.resquest_return_not_json.value[0],
+                                               message=MessageEnum.resquest_return_not_json.value[1])
                     elif huoqupath.rebacktype == 'xml':
                         response = make_response(huoqupath.fanhui)
                         response.content_type = 'application/xml'
                         return response
-                    return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
-            return jsonify({'code': '-3', 'message': u'安全校验失败!', 'data': ''})
+                    return jsonreponse(code=MessageEnum.request_method_not_supprot.value[0],
+                                       message=MessageEnum.request_method_not_supprot.value[1])
+            return jsonreponse(code=MessageEnum.request_scre.value[0],
+                               message=MessageEnum.request_scre.value[1])
         else:
             if huoqupath.ischeck == True:
                 paerm = request.values.to_dict()
                 if dict_par(paerm, huoqupath.params) == True:
                     if huoqupath.rebacktype == 'json':
                         try:
-                            json_fan = json.dumps(huoqupath.fanhui)
-                            return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
-                        except:
-                            return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
+                            json_return = json.dumps(huoqupath.fanhui)
+                            return jsonreponse(code=MessageEnum.successs.value[0],
+                                               message=MessageEnum.successs.value[1],
+                                               data=json_return)
+                        except Exception as e:
+                            logger.exception(e)
+                            return jsonreponse(code=MessageEnum.resquest_return_not_json.value[0],
+                                               message=MessageEnum.resquest_return_not_json.value[1])
                     elif huoqupath.rebacktype == 'xml':
                         response = make_response(huoqupath.fanhui)
                         response.content_type = 'application/xml'
                         return response
                     else:
-                        return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
-                return jsonify({'code': '-4', 'message': u'你输入的参数不正确', 'data': ''})
+                        return jsonreponse(code=MessageEnum.request_method_not_supprot.value[0],
+                                           message=MessageEnum.request_method_not_supprot.value[1])
+                return jsonreponse(code=MessageEnum.method_parame_not_right.value[0],
+                                   message=MessageEnum.method_parame_not_right.value[1])
             if huoqupath.rebacktype == 'json':
                 try:
-                    json_fan = json.dumps(huoqupath.fanhui)
-                    return jsonify({'code': '1', 'message': 'successs', 'data': json_fan})
-                except:
-                    return jsonify({'code': '-2', 'message': u'你写入的返回不能正常json！请检查', 'data': ''})
+                    json_return = json.dumps(huoqupath.fanhui)
+                    return jsonreponse(code=MessageEnum.successs.value[0],
+                                       message=MessageEnum.successs.value[1],
+                                       data=json_return)
+                except Exception as e:
+                    logger.exception(e)
+                    return jsonreponse(code=MessageEnum.resquest_return_not_json.value[0],
+                                       message=MessageEnum.resquest_return_not_json.value[1])
             elif huoqupath.rebacktype == 'xml':
                 response = make_response(huoqupath.fanhui)
                 response.content_type = 'application/xml'
                 return response
             else:
-                return jsonify({'code': '-2', 'message': u'你写入的类型目前系统不支持', 'data': ''})
+                return jsonreponse(code=MessageEnum.request_method_not_supprot.value[0],
+                                   message=MessageEnum.request_method_not_supprot.value[1])
