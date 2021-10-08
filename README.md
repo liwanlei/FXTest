@@ -43,6 +43,8 @@
 ### 9.利用mitmproxy录制接口case
 ### 10.转化后的压测用例一键执行（待开发）
 ### 11.支持docker一键部署
+### 12.优化代码，调整执行用例。调整到使用unittest管理测试用例
+### 13.升级系统使用的日志框架
 
 ## [其他版本更新日志](https://github.com/liwanlei/FXTest/blob/master/versions.md)
 # 有问题可以联系我，增加定制开发。QQ&微信:952943386  java 版本的平台暂无开源计划。

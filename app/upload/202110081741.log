@@ -1,0 +1,27 @@
+2021-10-08 17:41:20.946 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:41:20.954 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:41:20.954 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:41:20.955 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:41:20.955 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:41:20.955 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:41:20.955 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:41:20.982 | INFO     | app.test_case.new_unittest_case:testcase:131 - 测试的:接口地址：http://127.0.0.1:5002/login,请求头：{},参数:{},实际返回:{'code': 100001, 'data': '', 'message': '用户名没有输入'},预期:code=100001
+2021-10-08 17:41:20.982 | INFO     | app.test_case.new_unittest_case:testcase:131 - 测试的:接口地址：http://127.0.0.1:5002/login,请求头：{},参数:{},实际返回:{'code': 100001, 'data': '', 'message': '用户名没有输入'},预期:code=100001
+2021-10-08 17:41:20.982 | INFO     | app.test_case.new_unittest_case:testcase:136 - {'code': '100001'}
+2021-10-08 17:41:20.982 | INFO     | app.test_case.new_unittest_case:testcase:136 - {'code': '100001'}
+2021-10-08 17:41:20.983 | INFO     | app.test_case.new_unittest_case:testcase:138 - ['100001']
+2021-10-08 17:41:20.983 | INFO     | app.test_case.new_unittest_case:testcase:138 - ['100001']
+2021-10-08 17:41:20.983 | INFO     | app.test_case.new_unittest_case:testcase:140 - ['100001']
+2021-10-08 17:41:20.983 | INFO     | app.test_case.new_unittest_case:testcase:140 - ['100001']
+2021-10-08 17:41:20.987 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:41:20.987 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:41:20.987 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:41:20.987 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:41:20.997 | INFO     | app.test_case.new_unittest_case:testcase:131 - 测试的:接口地址：http://127.0.0.1:5002/login,请求头：{},参数:{},实际返回:{'code': 100001, 'data': '', 'message': '用户名没有输入'},预期:code=100001
+2021-10-08 17:41:20.997 | INFO     | app.test_case.new_unittest_case:testcase:131 - 测试的:接口地址：http://127.0.0.1:5002/login,请求头：{},参数:{},实际返回:{'code': 100001, 'data': '', 'message': '用户名没有输入'},预期:code=100001
+2021-10-08 17:41:21.033 | INFO     | app.test_case.new_unittest_case:testcase:136 - {'code': '100001'}
+2021-10-08 17:41:21.033 | INFO     | app.test_case.new_unittest_case:testcase:136 - {'code': '100001'}
+2021-10-08 17:41:21.034 | INFO     | app.test_case.new_unittest_case:testcase:138 - ['100001']
+2021-10-08 17:41:21.034 | INFO     | app.test_case.new_unittest_case:testcase:138 - ['100001']
+2021-10-08 17:41:21.034 | INFO     | app.test_case.new_unittest_case:testcase:140 - ['100001']
+2021-10-08 17:41:21.034 | INFO     | app.test_case.new_unittest_case:testcase:140 - ['100001']

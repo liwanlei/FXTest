@@ -1,0 +1,766 @@
+2021-10-08 13:33:50.908 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:33:50.917 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:35:18.295 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:35:18.304 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:37:31.930 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:37:31.939 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:48:32.784 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:48:32.792 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:49:32.269 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:49:32.278 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:50:46.337 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:50:46.346 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:52:48.898 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:52:48.906 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:54:54.299 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:54:54.306 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 13:54:54.307 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 13:54:54.308 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 13:54:54.326 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 13:54:54.327 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:26:27.581 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:26:27.591 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:26:27.592 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:26:27.592 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:26:27.610 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:26:27.611 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:27:45.171 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:27:45.177 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:27:45.178 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:27:45.178 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:27:45.179 | INFO     | app.test_case.new_unittest_case:setUp:85 - http://127.0.0.1:5002
+2021-10-08 14:27:45.193 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:27:45.194 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:27:45.194 | INFO     | app.test_case.new_unittest_case:setUp:85 - http://127.0.0.1:5002
+2021-10-08 14:30:37.700 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:30:37.708 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:30:37.709 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:30:37.710 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:30:37.710 | INFO     | app.test_case.new_unittest_case:setUp:85 - http://127.0.0.1:5002
+2021-10-08 14:30:37.724 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:30:37.725 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:30:37.725 | INFO     | app.test_case.new_unittest_case:setUp:85 - http://127.0.0.1:5002
+2021-10-08 14:31:24.524 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:31:24.531 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:31:24.532 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:31:24.532 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:31:24.533 | INFO     | app.test_case.new_unittest_case:setUp:85 - http://127.0.0.1:5002
+2021-10-08 14:31:24.548 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:31:24.549 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:31:24.549 | INFO     | app.test_case.new_unittest_case:setUp:85 - http://127.0.0.1:5002
+2021-10-08 14:32:11.584 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:32:11.591 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:32:11.592 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:32:11.593 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:32:11.607 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:32:11.608 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:32:50.915 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:32:50.923 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:32:50.924 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:32:50.924 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:32:50.939 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:32:50.940 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:33:59.545 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:33:59.553 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 14:33:59.554 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:33:59.554 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 14:33:59.559 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 14:33:59.559 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:37:09.617 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:37:09.624 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:37:09.625 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:37:09.625 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:37:09.646 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:37:09.647 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:37:50.128 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:37:50.136 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:37:50.137 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:37:50.137 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:37:50.153 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:37:50.154 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:38:59.718 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:38:59.725 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:38:59.726 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:38:59.726 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:38:59.729 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:38:59.730 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:39:46.210 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:39:46.217 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:39:46.218 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:39:46.219 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:39:46.225 | INFO     | common.PackageRequest:post:56 - Invalid URL '/login': No schema supplied. Perhaps you meant http:///login?
+2021-10-08 17:39:46.226 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x1090e01f0>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x1090dfee0>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-4, started daemon 5138299888)>
+    │    │        │    └ (<gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 60322))
+    │    │        └ <Thread(Thread-4, started daemon 5138299888)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 60322)
+    │    │              └ <gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10b1b70d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+    │    │                   │        └ ('127.0.0.1', 60322)
+    │    │                   └ <gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10b41e9d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10b41d0d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10b41eb80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10b41e940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x1324d83d0>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x1325d2ee0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x132649a50>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x1325d2e50>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x1324d83d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x1325d2e50>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10b6c35e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10b6c1ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10b6c1c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://127.0.0.1:5002/mulitecase' [POST]>
+           │    │              │    └ 'case.mulitecase'
+           │    │              └ <Rule '/mulitecase' (HEAD, OPTIONS, POST, GET) -> case.mulitecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MuliteCaseLiView.dispatch_request at 0x13207ce50>
+           └ <app.case.views.MuliteCaseLiView object at 0x1325cfac0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MuliteCaseLiView object at 0x1325cfac0>,)
+           └ <function MuliteCaseLiView.dispatch_request at 0x13207cdc0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 506, in dispatch_request
+    n = runner.run(test_suit)
+        │      │   └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[<app.test_case.new_unittest_case.TestCase testMethod=testca...
+        │      └ <function BSTestRunner.run at 0x13207c310>
+        └ <common.BSTestRunner.BSTestRunner object at 0x132743c70>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/BSTestRunner.py", line 604, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=1 errors=0 failures=0>
+    └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[<app.test_case.new_unittest_case.TestCase testMethod=testca...
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=1 errors=0 failures=0>,)
+           │    └ <function TestSuite.run at 0x131feae50>
+           └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[<app.test_case.new_unittest_case.TestCase testMethod=testca...
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 122, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=1 errors=0 failures=0>
+    └ <unittest.suite.TestSuite tests=[<app.test_case.new_unittest_case.TestCase testMethod=testcase>, <app.test_case.new_unittest_...
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=1 errors=0 failures=0>,)
+           │    └ <function TestSuite.run at 0x131feae50>
+           └ <unittest.suite.TestSuite tests=[<app.test_case.new_unittest_case.TestCase testMethod=testcase>, <app.test_case.new_unittest_...
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 122, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=1 errors=0 failures=0>
+    └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 653, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=1 errors=0 failures=0>,)
+           │    └ <function TestCase.run at 0x131fe7af0>
+           └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 593, in run
+    self._callTestMethod(testMethod)
+    │    │               └ <bound method TestCase.testcase of <app.test_case.new_unittest_case.TestCase testMethod=testcase>>
+    │    └ <function TestCase._callTestMethod at 0x131fe7940>
+    └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+    └ <bound method TestCase.testcase of <app.test_case.new_unittest_case.TestCase testMethod=testcase>>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/test_case/new_unittest_case.py", line 128, in testcase
+    apijson = api.getJson()
+              │   └ <function Api.getJson at 0x131160820>
+              └ <common.requ_case.Api object at 0x132743f10>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x131160790>
+                       └ <common.requ_case.Api object at 0x132743f10>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 26, in testapi
+    response, spend = self.requ.post(url=self.url,
+                      │    │    │        │    └ '/login'
+                      │    │    │        └ <common.requ_case.Api object at 0x132743f10>
+                      │    │    └ <function reques.post at 0x131160550>
+                      │    └ <common.PackageRequest.reques object at 0x13274b4f0>
+                      └ <common.requ_case.Api object at 0x132743f10>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-08 17:39:46.262 | INFO     | common.PackageRequest:post:56 - Invalid URL '/login': No schema supplied. Perhaps you meant http:///login?
+2021-10-08 17:39:46.262 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x1090e01f0>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x1090dfee0>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-4, started daemon 5138299888)>
+    │    │        │    └ (<gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 60322))
+    │    │        └ <Thread(Thread-4, started daemon 5138299888)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 60322)
+    │    │              └ <gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10b1b70d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+    │    │                   │        └ ('127.0.0.1', 60322)
+    │    │                   └ <gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10b41e9d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10b41d0d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10b41eb80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10b41e940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x1324d83d0>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x1325d2ee0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x132649a50>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x1325d2e50>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x1324d83d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x1325d2e50>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10b6c35e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10b6c1ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10b6c1c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://127.0.0.1:5002/mulitecase' [POST]>
+           │    │              │    └ 'case.mulitecase'
+           │    │              └ <Rule '/mulitecase' (HEAD, OPTIONS, POST, GET) -> case.mulitecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MuliteCaseLiView.dispatch_request at 0x13207ce50>
+           └ <app.case.views.MuliteCaseLiView object at 0x1325cfac0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MuliteCaseLiView object at 0x1325cfac0>,)
+           └ <function MuliteCaseLiView.dispatch_request at 0x13207cdc0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 506, in dispatch_request
+    n = runner.run(test_suit)
+        │      │   └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[<app.test_case.new_unittest_case.TestCase testMethod=testca...
+        │      └ <function BSTestRunner.run at 0x13207c310>
+        └ <common.BSTestRunner.BSTestRunner object at 0x132743c70>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/BSTestRunner.py", line 604, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=1 errors=0 failures=0>
+    └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[<app.test_case.new_unittest_case.TestCase testMethod=testca...
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=1 errors=0 failures=0>,)
+           │    └ <function TestSuite.run at 0x131feae50>
+           └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[<app.test_case.new_unittest_case.TestCase testMethod=testca...
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 122, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=1 errors=0 failures=0>
+    └ <unittest.suite.TestSuite tests=[<app.test_case.new_unittest_case.TestCase testMethod=testcase>, <app.test_case.new_unittest_...
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=1 errors=0 failures=0>,)
+           │    └ <function TestSuite.run at 0x131feae50>
+           └ <unittest.suite.TestSuite tests=[<app.test_case.new_unittest_case.TestCase testMethod=testcase>, <app.test_case.new_unittest_...
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 122, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=1 errors=0 failures=0>
+    └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 653, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=1 errors=0 failures=0>,)
+           │    └ <function TestCase.run at 0x131fe7af0>
+           └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 593, in run
+    self._callTestMethod(testMethod)
+    │    │               └ <bound method TestCase.testcase of <app.test_case.new_unittest_case.TestCase testMethod=testcase>>
+    │    └ <function TestCase._callTestMethod at 0x131fe7940>
+    └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+    └ <bound method TestCase.testcase of <app.test_case.new_unittest_case.TestCase testMethod=testcase>>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/test_case/new_unittest_case.py", line 129, in testcase
+    spend = api.spend()
+            │   └ <function Api.spend at 0x1311608b0>
+            └ <common.requ_case.Api object at 0x132743f10>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 52, in spend
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x131160790>
+                       └ <common.requ_case.Api object at 0x132743f10>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 26, in testapi
+    response, spend = self.requ.post(url=self.url,
+                      │    │    │        │    └ '/login'
+                      │    │    │        └ <common.requ_case.Api object at 0x132743f10>
+                      │    │    └ <function reques.post at 0x131160550>
+                      │    └ <common.PackageRequest.reques object at 0x13274b4f0>
+                      └ <common.requ_case.Api object at 0x132743f10>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-08 17:39:46.280 | INFO     | app.test_case.new_unittest_case:testcase:130 - 测试的:接口地址：/login,请求头：{},参数:{},实际返回:请求出错了,预期:code=100001
+2021-10-08 17:39:46.280 | INFO     | app.test_case.new_unittest_case:testcase:135 - {'code': '100001'}
+2021-10-08 17:39:46.280 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:39:46.281 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:39:46.283 | INFO     | common.PackageRequest:post:56 - Invalid URL '/login': No schema supplied. Perhaps you meant http:///login?
+2021-10-08 17:39:46.284 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x1090e01f0>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x1090dfee0>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-4, started daemon 5138299888)>
+    │    │        │    └ (<gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 60322))
+    │    │        └ <Thread(Thread-4, started daemon 5138299888)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 60322)
+    │    │              └ <gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10b1b70d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+    │    │                   │        └ ('127.0.0.1', 60322)
+    │    │                   └ <gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10b41e9d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10b41d0d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10b41eb80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10b41e940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x1324d83d0>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x1325d2ee0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x132649a50>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x1325d2e50>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x1324d83d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x1325d2e50>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10b6c35e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10b6c1ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10b6c1c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://127.0.0.1:5002/mulitecase' [POST]>
+           │    │              │    └ 'case.mulitecase'
+           │    │              └ <Rule '/mulitecase' (HEAD, OPTIONS, POST, GET) -> case.mulitecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MuliteCaseLiView.dispatch_request at 0x13207ce50>
+           └ <app.case.views.MuliteCaseLiView object at 0x1325cfac0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MuliteCaseLiView object at 0x1325cfac0>,)
+           └ <function MuliteCaseLiView.dispatch_request at 0x13207cdc0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 506, in dispatch_request
+    n = runner.run(test_suit)
+        │      │   └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[None, <app.test_case.new_unittest_case.TestCase testMethod=...
+        │      └ <function BSTestRunner.run at 0x13207c310>
+        └ <common.BSTestRunner.BSTestRunner object at 0x132743c70>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/BSTestRunner.py", line 604, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=2 errors=1 failures=0>
+    └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[None, <app.test_case.new_unittest_case.TestCase testMethod=...
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=2 errors=1 failures=0>,)
+           │    └ <function TestSuite.run at 0x131feae50>
+           └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[None, <app.test_case.new_unittest_case.TestCase testMethod=...
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 122, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=2 errors=1 failures=0>
+    └ <unittest.suite.TestSuite tests=[None, <app.test_case.new_unittest_case.TestCase testMethod=testcase>]>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=2 errors=1 failures=0>,)
+           │    └ <function TestSuite.run at 0x131feae50>
+           └ <unittest.suite.TestSuite tests=[None, <app.test_case.new_unittest_case.TestCase testMethod=testcase>]>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 122, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=2 errors=1 failures=0>
+    └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 653, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=2 errors=1 failures=0>,)
+           │    └ <function TestCase.run at 0x131fe7af0>
+           └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 593, in run
+    self._callTestMethod(testMethod)
+    │    │               └ <bound method TestCase.testcase of <app.test_case.new_unittest_case.TestCase testMethod=testcase>>
+    │    └ <function TestCase._callTestMethod at 0x131fe7940>
+    └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+    └ <bound method TestCase.testcase of <app.test_case.new_unittest_case.TestCase testMethod=testcase>>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/test_case/new_unittest_case.py", line 128, in testcase
+    apijson = api.getJson()
+              │   └ <function Api.getJson at 0x131160820>
+              └ <common.requ_case.Api object at 0x132743eb0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 48, in getJson
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x131160790>
+                       └ <common.requ_case.Api object at 0x132743eb0>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 26, in testapi
+    response, spend = self.requ.post(url=self.url,
+                      │    │    │        │    └ '/login'
+                      │    │    │        └ <common.requ_case.Api object at 0x132743eb0>
+                      │    │    └ <function reques.post at 0x131160550>
+                      │    └ <common.PackageRequest.reques object at 0x13275f700>
+                      └ <common.requ_case.Api object at 0x132743eb0>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-08 17:39:46.300 | INFO     | common.PackageRequest:post:56 - Invalid URL '/login': No schema supplied. Perhaps you meant http:///login?
+2021-10-08 17:39:46.300 | ERROR    | common.requ_case:testapi:42 - not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 912, in _bootstrap
+    self._bootstrap_inner()
+    │    └ <function Thread._bootstrap_inner at 0x1090e01f0>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 954, in _bootstrap_inner
+    self.run()
+    │    └ <function Thread.run at 0x1090dfee0>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 892, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {}
+    │    │        │    │        └ <Thread(Thread-4, started daemon 5138299888)>
+    │    │        │    └ (<gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>, ('127.0.0.1', 60322))
+    │    │        └ <Thread(Thread-4, started daemon 5138299888)>
+    │    └ <bound method ThreadingMixIn.process_request_thread of <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>>
+    └ <Thread(Thread-4, started daemon 5138299888)>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+    │    │              │        └ ('127.0.0.1', 60322)
+    │    │              └ <gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <function BaseServer.finish_request at 0x10b1b70d0>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    │    │                   │        │               └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+    │    │                   │        └ ('127.0.0.1', 60322)
+    │    │                   └ <gevent._socket3.socket at 0x13264aac0 object, fd=47, family=2, type=1, proto=0>
+    │    └ <class 'werkzeug.serving.WSGIRequestHandler'>
+    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+    │    └ <function WSGIRequestHandler.handle at 0x10b41e9d0>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 329, in handle
+    rv = BaseHTTPRequestHandler.handle(self)
+         │                      │      └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+         │                      └ <function BaseHTTPRequestHandler.handle at 0x10b41d0d0>
+         └ <class 'http.server.BaseHTTPRequestHandler'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/server.py", line 427, in handle
+    self.handle_one_request()
+    │    └ <function WSGIRequestHandler.handle_one_request at 0x10b41eb80>
+    └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 364, in handle_one_request
+    return self.run_wsgi()
+           │    └ <function WSGIRequestHandler.run_wsgi at 0x10b41e940>
+           └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 306, in run_wsgi
+    execute(self.server.app)
+    │       │    │      └ <werkzeug.debug.DebuggedApplication object at 0x1324d83d0>
+    │       │    └ <werkzeug.serving.ThreadedWSGIServer object at 0x132592100>
+    │       └ <werkzeug.serving.WSGIRequestHandler object at 0x1325b4940>
+    └ <function WSGIRequestHandler.run_wsgi.<locals>.execute at 0x1325d2ee0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/serving.py", line 296, in execute
+    for data in application_iter:
+                └ <generator object DebuggedApplication.debug_application at 0x132649a50>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/werkzeug/debug/__init__.py", line 330, in debug_application
+    app_iter = self.app(environ, start_response)
+               │    │   │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x1325d2e50>
+               │    │   └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+               │    └ <Flask 'app'>
+               └ <werkzeug.debug.DebuggedApplication object at 0x1324d83d0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+           │    │        │        └ <function WSGIRequestHandler.run_wsgi.<locals>.start_response at 0x1325d2e50>
+           │    │        └ {'wsgi.version': (1, 0), 'wsgi.url_scheme': 'http', 'wsgi.input': <_io.BufferedReader name=47>, 'wsgi.errors': <_io.TextIOWra...
+           │    └ <function Flask.wsgi_app at 0x10b6c35e0>
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+               │    └ <function Flask.full_dispatch_request at 0x10b6c1ca0>
+               └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+         │    └ <function Flask.dispatch_request at 0x10b6c1c10>
+         └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+           │    │              │    │           │   └ {}
+           │    │              │    │           └ <Request 'http://127.0.0.1:5002/mulitecase' [POST]>
+           │    │              │    └ 'case.mulitecase'
+           │    │              └ <Rule '/mulitecase' (HEAD, OPTIONS, POST, GET) -> case.mulitecase>
+           │    └ {'static': <bound method _PackageBoundObject.send_static_file of <Flask 'app'>>, 'specs': <function View.as_view.<locals>.vie...
+           └ <Flask 'app'>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/Flask-1.1.2-py3.9.egg/flask/views.py", line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+           │    │                 │       └ {}
+           │    │                 └ ()
+           │    └ <function MuliteCaseLiView.dispatch_request at 0x13207ce50>
+           └ <app.case.views.MuliteCaseLiView object at 0x1325cfac0>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask_login.py", line 786, in decorated_view
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<app.case.views.MuliteCaseLiView object at 0x1325cfac0>,)
+           └ <function MuliteCaseLiView.dispatch_request at 0x13207cdc0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/case/views.py", line 506, in dispatch_request
+    n = runner.run(test_suit)
+        │      │   └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[None, <app.test_case.new_unittest_case.TestCase testMethod=...
+        │      └ <function BSTestRunner.run at 0x13207c310>
+        └ <common.BSTestRunner.BSTestRunner object at 0x132743c70>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/BSTestRunner.py", line 604, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=2 errors=1 failures=0>
+    └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[None, <app.test_case.new_unittest_case.TestCase testMethod=...
+
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=2 errors=1 failures=0>,)
+           │    └ <function TestSuite.run at 0x131feae50>
+           └ <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[None, <app.test_case.new_unittest_case.TestCase testMethod=...
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 122, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=2 errors=1 failures=0>
+    └ <unittest.suite.TestSuite tests=[None, <app.test_case.new_unittest_case.TestCase testMethod=testcase>]>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=2 errors=1 failures=0>,)
+           │    └ <function TestSuite.run at 0x131feae50>
+           └ <unittest.suite.TestSuite tests=[None, <app.test_case.new_unittest_case.TestCase testMethod=testcase>]>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/suite.py", line 122, in run
+    test(result)
+    │    └ <common.BSTestRunner._TestResult run=2 errors=1 failures=0>
+    └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 653, in __call__
+    return self.run(*args, **kwds)
+           │    │    │       └ {}
+           │    │    └ (<common.BSTestRunner._TestResult run=2 errors=1 failures=0>,)
+           │    └ <function TestCase.run at 0x131fe7af0>
+           └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 593, in run
+    self._callTestMethod(testMethod)
+    │    │               └ <bound method TestCase.testcase of <app.test_case.new_unittest_case.TestCase testMethod=testcase>>
+    │    └ <function TestCase._callTestMethod at 0x131fe7940>
+    └ <app.test_case.new_unittest_case.TestCase testMethod=testcase>
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 550, in _callTestMethod
+    method()
+    └ <bound method TestCase.testcase of <app.test_case.new_unittest_case.TestCase testMethod=testcase>>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/app/test_case/new_unittest_case.py", line 129, in testcase
+    spend = api.spend()
+            │   └ <function Api.spend at 0x1311608b0>
+            └ <common.requ_case.Api object at 0x132743eb0>
+
+  File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 52, in spend
+    json_data, spend = self.testapi()
+                       │    └ <function Api.testapi at 0x131160790>
+                       └ <common.requ_case.Api object at 0x132743eb0>
+
+> File "/Users/lileilei/Desktop/testplan/FXTest/common/requ_case.py", line 26, in testapi
+    response, spend = self.requ.post(url=self.url,
+                      │    │    │        │    └ '/login'
+                      │    │    │        └ <common.requ_case.Api object at 0x132743eb0>
+                      │    │    └ <function reques.post at 0x131160550>
+                      │    └ <common.PackageRequest.reques object at 0x13275f700>
+                      └ <common.requ_case.Api object at 0x132743eb0>
+
+ValueError: not enough values to unpack (expected 2, got 1)
+2021-10-08 17:39:46.316 | INFO     | app.test_case.new_unittest_case:testcase:130 - 测试的:接口地址：/login,请求头：{},参数:{},实际返回:请求出错了,预期:code=100001
+2021-10-08 17:39:46.316 | INFO     | app.test_case.new_unittest_case:testcase:135 - {'code': '100001'}
+2021-10-08 17:41:20.946 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:41:20.954 | INFO     | app.test_case.new_unittest_case:__init__:79 - caselog完成初始化
+2021-10-08 17:41:20.955 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:41:20.955 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:41:20.982 | INFO     | app.test_case.new_unittest_case:testcase:131 - 测试的:接口地址：http://127.0.0.1:5002/login,请求头：{},参数:{},实际返回:{'code': 100001, 'data': '', 'message': '用户名没有输入'},预期:code=100001
+2021-10-08 17:41:20.982 | INFO     | app.test_case.new_unittest_case:testcase:136 - {'code': '100001'}
+2021-10-08 17:41:20.983 | INFO     | app.test_case.new_unittest_case:testcase:138 - ['100001']
+2021-10-08 17:41:20.983 | INFO     | app.test_case.new_unittest_case:testcase:140 - ['100001']
+2021-10-08 17:41:20.987 | INFO     | app.test_case.new_unittest_case:setUp:83 - 登录测试用例开始执行
+2021-10-08 17:41:20.987 | INFO     | app.test_case.new_unittest_case:setUp:84 - 登录 用例开始查询测试环境是否存在
+2021-10-08 17:41:20.997 | INFO     | app.test_case.new_unittest_case:testcase:131 - 测试的:接口地址：http://127.0.0.1:5002/login,请求头：{},参数:{},实际返回:{'code': 100001, 'data': '', 'message': '用户名没有输入'},预期:code=100001
+2021-10-08 17:41:21.033 | INFO     | app.test_case.new_unittest_case:testcase:136 - {'code': '100001'}
+2021-10-08 17:41:21.034 | INFO     | app.test_case.new_unittest_case:testcase:138 - ['100001']
+2021-10-08 17:41:21.034 | INFO     | app.test_case.new_unittest_case:testcase:140 - ['100001']

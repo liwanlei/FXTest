@@ -139,7 +139,8 @@ class LoginView(MethodView):
                                data='')
             else:
                 if (user.err_num != None and user.err_num >= 5):
-                    if (user.freetime != 'None'):
+                    print(user.freetime is None)
+                    if (user.freetime != 'None' and user.freetime is not None ):
                         if (datetime.datetime.now() - user.freetime).min > 10:
                             user.err_num = user_err_num + 1
                             db.session.add(user)

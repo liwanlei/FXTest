@@ -31,7 +31,9 @@ from common.SshTools import Sshtool
 from common.systemlog import logger
 from error_message import MessageEnum
 from common.jsontools import reponse as jsonreponse
-
+from app.test_case.new_unittest_case import TestCase,Parmer
+from common.BSTestRunner import BSTestRunner
+import unittest
 case = Blueprint('case', __name__)
 
 
@@ -453,6 +455,7 @@ class ImportCaseView(View):
         return render_template('import_case.html')
 
 
+
 class MuliteCaseLiView(View):
     methods = ['GET', 'POST']
 
@@ -472,112 +475,165 @@ class MuliteCaseLiView(View):
             os.system(r'touch %s' % filepath)
         if request.method == 'POST':
             f_dingding = request.form.get('dingding')
-            me = request.form.getlist('yongli')
+            allcase = request.form.getlist('yongli')
             testurl = request.form.get('urltest')
-            if len(me) <= 1:
+            if len(allcase) <= 1:
                 flash(MessageEnum.case_many_to_select.value[1])
                 return redirect(next or url_for('yongli'))
             if testurl is None:
                 flash(MessageEnum.select_event.value[1])
                 return redirect(next or url_for('yongli'))
-            projecct_list = []
-            model_list = []
-            Interface_name_list = []
-            Interface_url_list = []
-            Interface_meth_list = []
-            Interface_pase_list = []
-            Interface_assert_list = []
-            Interface_headers_list = []
-            Interface_pid_list = []
-            Interface_yilai_list = []
-            Interface_save_list = []
-            Interface_is_data_list = []
-            Interface_mysql_list = []
-            Interface_msyql_ziduan_list = []
-            id_list = []
-            for case in me:
+            testcase_list=[]
+            projecct_list=[]
+            for case in allcase:
+                run_case_item={}
                 case_one = InterfaceTest.query.filter_by(id=case).first()
-                Interface_is_data_list.append(case_one.is_database)
-                Interface_mysql_list.append(case_one.chaxunshujuku)
-                Interface_msyql_ziduan_list.append(case_one.databaseziduan)
-                id_list.append(case_one.id)
+                run_case_item['caselog']=file
+                run_case_item['id']=case_one
+                run_case_item['project']=case_one.projects
                 projecct_list.append(case_one.projects)
-                model_list.append(case_one.models)
-                Interface_url_list.append(case_one.interfaces.Interface_url)
-                Interface_name_list.append(case_one.Interface_name)
-                Interface_meth_list.append(case_one.Interface_meth)
-                Interface_pase_list.append(case_one.Interface_pase)
-                Interface_assert_list.append(case_one.Interface_assert)
-                Interface_headers_list.append(case_one.Interface_headers)
-                Interface_pid_list.append(case_one.pid)
-                Interface_yilai_list.append(case_one.getattr_p)
-                Interface_save_list.append(case_one.saveresult)
+                run_case_item['testevent']=Interfacehuan.query.filter_by(url=testurl).first()
+                testcase_list.append(run_case_item)
             if (len(set(projecct_list))) > 1:
                 flash(MessageEnum.run_only_one_project.value[1])
                 return redirect(next or url_for('mulitecase'))
-            testevent = Interfacehuan.query.filter_by(url=testurl).first()
-            try:
-                apitest = ApiTestCase(inteface_url=Interface_url_list,
-                                      inteface_method=Interface_meth_list,
-                                      inteface_parme=Interface_pase_list, inteface_assert=Interface_assert_list,
-                                      file=file, headers=Interface_headers_list, pid=Interface_pid_list,
-                                      replydata=Interface_yilai_list, saveresult=Interface_save_list,
-                                      id_list=id_list, is_database=Interface_is_data_list,
-                                      data_mysql=Interface_mysql_list,
-                                      data_field=Interface_msyql_ziduan_list,
-                                      urltest=testevent.url)
-                result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, \
-                result_wei, result_except, spend_list = apitest.testapi()
-                large, minx, pinglun = listmax(list2=spend_list)
-                endtime = datetime.datetime.now()
-                end = time.time()
-                createHtml(titles=u'接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
-                           passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
-                           headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
-                           meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
-                           excepts=result_except, yuqis=result_cashu, weizhi=result_wei, maxs=large, mins=minx,
-                           pingluns=pinglun)
-                hour = end - star
-                user_id = current_user.id
-                new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
-                                       fail_num=result_fail, test_time=starttime, hour_time=hour,
-                                       test_rep=(day + '.html'), test_log=(day + '.log'),
-                                       Exception_num=result_except, can_num=result_cashu,
-                                       wei_num=result_wei, projects_id=projecct_list[0].id)
-                db.session.add(new_reust)
-                db.session.commit()
-                if f_dingding == 'email':
-                    email = EmailReport.query.filter_by(email_re_user_id=int(current_user.id),
-                                                        default_set=True).first()
-                    if email:
-                        m = send_emails(sender=email.send_email, receivers=email.to_email,
-                                        password=email.send_email_password,
-                                        smtp=email.stmp_email, port=email.port, annexone=file,
-                                        annextwo=filepath,
-                                        subject=u'%s用例执行测试报告' % day,
-                                        url=paln_run_url + '/test_result')
-                        if m == False:
-                            flash(MessageEnum.send_email_fali.value[1])
-                            return redirect(url_for('home.test_result'))
-                        flash(MessageEnum.send_email_success.value[1])
+            test_suit = unittest.TestSuite()
+            test_suit.addTest(Parmer.parametrize(TestCase, parame=testcase_list))  # 扩展的其他的测试用例均这样添加
+            re_open = open(filepath, 'wb')
+            runner = BSTestRunner(stream=re_open,
+                                  title=u'自动化测试平台自动生成',
+                                  description=u'自动化测试结果')
+            n = runner.run(test_suit)
+            success = n.success_count
+            faill = n.failure_count
+            error = n.error_count
+            end = time.time()
+            hour = end - star
+            new_reust = TestResult(Test_user_id=current_user.id,
+                                   test_num=success+faill+error,
+                                   pass_num=success,
+                                           fail_num=faill,
+                                   test_time=starttime, hour_time=hour,
+                                           test_rep=day + '.html', test_log=day + '.log',
+                                           Exception_num=error, can_num=0,
+                                           wei_num=0, projects_id=projecct_list[0].id)
+            db.session.add(new_reust)
+            db.session.commit()
+            if f_dingding == 'email':
+                email = EmailReport.query.filter_by(email_re_user_id=int(current_user.id),
+                                                            default_set=True).first()
+                if email:
+                    m = send_emails(sender=email.send_email, receivers=email.to_email,
+                                            password=email.send_email_password,
+                                            smtp=email.stmp_email, port=email.port, annexone=file,
+                                            annextwo=filepath,
+                                            subject=u'%s用例执行测试报告' % day,
+                                            url=paln_run_url + '/test_result')
+                    if m == False:
+                        flash(MessageEnum.send_email_fali.value[1])
                         return redirect(url_for('home.test_result'))
-                    flash(MessageEnum.send_fail_oneuser.value[1])
-                    return redirect(url_for('home.case'))
-                if f_dingding == 'dingding':
-                    send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
-                                     Dingtalk_access_token=Dingtalk_access_token)
-                    if send is True:
-                        flash(MessageEnum.send_dingtlak_success.value[1])
-                        return redirect(url_for('home.case'))
-                    flash(MessageEnum.send_dingtalk_error.value[1])
-                    return redirect(next or url_for('home.case'))
-                flash(MessageEnum.test_case_success.value[1])
-                return redirect(url_for('home.test_result'))
-            except Exception as e:
-                logger.exception(e)
-                flash(MessageEnum.test_error.value[1])
-                return redirect(next or url_for('home.case'))
-        return redirect(url_for('home.case'))
+                    flash(MessageEnum.send_email_success.value[1])
+                    return redirect(url_for('home.test_result'))
+            flash(MessageEnum.send_email_success.value[1])
+            return redirect(url_for('home.test_result'))
+        #     projecct_list = []
+        #     model_list = []
+        #     Interface_name_list = []
+        #     Interface_url_list = []
+        #     Interface_meth_list = []
+        #     Interface_pase_list = []
+        #     Interface_assert_list = []
+        #     Interface_headers_list = []
+        #     Interface_pid_list = []
+        #     Interface_yilai_list = []
+        #     Interface_save_list = []
+        #     Interface_is_data_list = []
+        #     Interface_mysql_list = []
+        #     Interface_msyql_ziduan_list = []
+        #     id_list = []
+        #     for case in allcase:
+        #         case_one = InterfaceTest.query.filter_by(id=case).first()
+        #         Interface_is_data_list.append(case_one.is_database)
+        #         Interface_mysql_list.append(case_one.chaxunshujuku)
+        #         Interface_msyql_ziduan_list.append(case_one.databaseziduan)
+        #         id_list.append(case_one.id)
+        #         projecct_list.append(case_one.projects)
+        #         model_list.append(case_one.models)
+        #         Interface_url_list.append(case_one.interfaces.Interface_url)
+        #         Interface_name_list.append(case_one.Interface_name)
+        #         Interface_meth_list.append(case_one.Interface_meth)
+        #         Interface_pase_list.append(case_one.Interface_pase)
+        #         Interface_assert_list.append(case_one.Interface_assert)
+        #         Interface_headers_list.append(case_one.Interface_headers)
+        #         Interface_pid_list.append(case_one.pid)
+        #         Interface_yilai_list.append(case_one.getattr_p)
+        #         Interface_save_list.append(case_one.saveresult)
+        #     if (len(set(projecct_list))) > 1:
+        #         flash(MessageEnum.run_only_one_project.value[1])
+        #         return redirect(next or url_for('mulitecase'))
+        #     testevent = Interfacehuan.query.filter_by(url=testurl).first()
+        #     try:
+        #         apitest = ApiTestCase(inteface_url=Interface_url_list,
+        #                               inteface_method=Interface_meth_list,
+        #                               inteface_parme=Interface_pase_list, inteface_assert=Interface_assert_list,
+        #                               file=file, headers=Interface_headers_list, pid=Interface_pid_list,
+        #                               replydata=Interface_yilai_list, saveresult=Interface_save_list,
+        #                               id_list=id_list, is_database=Interface_is_data_list,
+        #                               data_mysql=Interface_mysql_list,
+        #                               data_field=Interface_msyql_ziduan_list,
+        #                               urltest=testevent.url)
+        #         result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, \
+        #         result_wei, result_except, spend_list = apitest.testapi()
+        #         large, minx, pinglun = listmax(list2=spend_list)
+        #         endtime = datetime.datetime.now()
+        #         end = time.time()
+        #         createHtml(titles=u'接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
+        #                    passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
+        #                    headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
+        #                    meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
+        #                    excepts=result_except, yuqis=result_cashu, weizhi=result_wei, maxs=large, mins=minx,
+        #                    pingluns=pinglun)
+        #         hour = end - star
+        #         user_id = current_user.id
+        #         new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
+        #                                fail_num=result_fail, test_time=starttime, hour_time=hour,
+        #                                test_rep=(day + '.html'), test_log=(day + '.log'),
+        #                                Exception_num=result_except, can_num=result_cashu,
+        #                                wei_num=result_wei, projects_id=projecct_list[0].id)
+        #         db.session.add(new_reust)
+        #         db.session.commit()
+        #         if f_dingding == 'email':
+        #             email = EmailReport.query.filter_by(email_re_user_id=int(current_user.id),
+        #                                                 default_set=True).first()
+        #             if email:
+        #                 m = send_emails(sender=email.send_email, receivers=email.to_email,
+        #                                 password=email.send_email_password,
+        #                                 smtp=email.stmp_email, port=email.port, annexone=file,
+        #                                 annextwo=filepath,
+        #                                 subject=u'%s用例执行测试报告' % day,
+        #                                 url=paln_run_url + '/test_result')
+        #                 if m == False:
+        #                     flash(MessageEnum.send_email_fali.value[1])
+        #                     return redirect(url_for('home.test_result'))
+        #                 flash(MessageEnum.send_email_success.value[1])
+        #                 return redirect(url_for('home.test_result'))
+        #             flash(MessageEnum.send_fail_oneuser.value[1])
+        #             return redirect(url_for('home.case'))
+        #         if f_dingding == 'dingding':
+        #             send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
+        #                              Dingtalk_access_token=Dingtalk_access_token)
+        #             if send is True:
+        #                 flash(MessageEnum.send_dingtlak_success.value[1])
+        #                 return redirect(url_for('home.case'))
+        #             flash(MessageEnum.send_dingtalk_error.value[1])
+        #             return redirect(next or url_for('home.case'))
+        #         flash(MessageEnum.test_case_success.value[1])
+        #         return redirect(url_for('home.test_result'))
+        #     except Exception as e:
+        #         logger.exception(e)
+        #         flash(MessageEnum.test_error.value[1])
+        #         return redirect(next or url_for('home.case'))
+        # return redirect(url_for('home.case'))
 
 
 class MakeOnlyOneCaseView(MethodView):
