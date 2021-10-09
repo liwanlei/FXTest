@@ -3,14 +3,12 @@
 # @File    : views.py
 from flask import Blueprint
 from flask import redirect, request, render_template, url_for, flash
-from app.models import *
+from common.BSTestRunner import BSTestRunner
 from flask.views import MethodView
 from flask_login import current_user, login_required
 from app import loginManager, sched
 import time, os
-from common.htmltestreport import createHtml
-from app.test_case.Test_case import ApiTestCase
-from common.mergelist import listmax
+from app.test_case.new_unittest_case import *
 from common.Dingtalk import send_ding
 from config import Dingtalk_access_token
 from error_message import *
@@ -18,7 +16,6 @@ from common.jsontools import reponse
 from common.systemlog import logger
 
 task = Blueprint('task', __name__)
-
 
 def addtask(id):  # 定时任务执行的时候所用的函数
     in_id = int(id)
@@ -34,88 +31,49 @@ def addtask(id):  # 定时任务执行的时候所用的函数
     filepath = os.path.join(file_dir, (day + '.html'))
     if os.path.exists(filepath) is False:
         os.system(r'touch %s' % filepath)
+    testcase_list = []
     projecct_list = []
-    model_list = []
-    Interface_name_list = []
-    Interface_url_list = []
-    Interface_meth_list = []
-    Interface_pase_list = []
-    Interface_assert_list = []
-    Interface_headers_list = []
-    Interface_pid_list = []
-    Interface_yilai_list = []
-    Interface_save_list = []
-    Interface_is_data_list = []
-    Interface_mysql_list = []
-    Interface_msyql_ziduan_list = []
-    id_list = []
-    for task_yongli in task.interface.all():
-        id_list.append(task_yongli.id)
-        projecct_list.append(task_yongli.projects)
-        model_list.append(task_yongli.models)
-        Interface_is_data_list.append(task_yongli.is_database)
-        Interface_mysql_list.append(task_yongli.chaxunshujuku)
-        Interface_msyql_ziduan_list.append(task_yongli.databaseziduan)
-        Interface_url_list.append(task_yongli.Interface_url)
-        Interface_name_list.append(task_yongli.Interface_name)
-        Interface_meth_list.append(task_yongli.Interface_meth)
-        Interface_pase_list.append(task_yongli.Interface_pase)
-        Interface_assert_list.append(task_yongli.Interface_assert)
-        Interface_headers_list.append(task_yongli.Interface_headers)
-        Interface_pid_list.append(task_yongli.pid)
-        Interface_yilai_list.append(task_yongli.getattr_p)
-        Interface_save_list.append(task_yongli.saveresult)
-    testevent = task.testevent
-    intest = Interfacehuan.query.filter_by(id=testevent, status=False).first()
-    apitest = ApiTestCase(inteface_url=Interface_url_list,
-                          inteface_method=Interface_meth_list,
-                          inteface_parme=Interface_pase_list,
-                          inteface_assert=Interface_assert_list,
-                          file=file, headers=Interface_headers_list,
-                          pid=Interface_pid_list,
-                          is_database=Interface_is_data_list,
-                          data_mysql=Interface_mysql_list,
-                          data_field=Interface_msyql_ziduan_list,
-                          urltest=intest.url,
-                          replydata=Interface_yilai_list,
-                          saveresult=Interface_save_list, id_list=id_list)
-    result_toal, result_pass, result_fail, relusts, \
-    bask_list, result_cashu, result_wei, result_except, \
-    spendlist = apitest.testapi()
-    large, small, pingjun = listmax(spendlist)
-    endtime = datetime.datetime.now()
+    for case in task.interface.all():
+        run_case_item = {}
+        case_one = InterfaceTest.query.filter_by(id=case).first()
+        run_case_item['caselog'] = file
+        run_case_item['id'] = case_one
+        run_case_item['project'] = case_one.projects
+        projecct_list.append(case_one.projects)
+        run_case_item['testevent'] = Interfacehuan.query.filter_by(url=task.testevent.url).first()
+        testcase_list.append(run_case_item)
+    if (len(set(projecct_list))) > 1:
+        flash(MessageEnum.run_only_one_project.value[1])
+        return redirect(next or url_for('mulitecase'))
+    test_suit = unittest.TestSuite()
+    test_suit.addTest(Parmer.parametrize(TestCase, parame=testcase_list))  # 扩展的其他的测试用例均这样添加
+    re_open = open(filepath, 'wb')
+    runner = BSTestRunner(stream=re_open,
+                          title=u'自动化测试平台自动生成',
+                          description=u'自动化测试结果')
+    n = runner.run(test_suit)
+    success = n.success_count
+    faill = n.failure_count
+    error = n.error_count
     end = time.time()
-    createHtml(titles=u'定时任务接口测试报告', filepath=filepath,
-               starttime=starttime, endtime=endtime,
-               passge=result_pass, fail=result_fail, id=id_list,
-               name=projecct_list,
-               headers=Interface_headers_list, coneent=Interface_url_list,
-               url=Interface_meth_list,
-               meth=Interface_pase_list, yuqi=Interface_assert_list,
-               json=bask_list, relusts=relusts,
-               excepts=result_except, yuqis=result_cashu,
-               weizhi=result_wei, maxs=large, mins=small,
-               pingluns=pingjun)
     hour = end - star
-    new_reust = TestResult(Test_user_id=1, test_num=result_toal,
-                           pass_num=result_pass,
-                           fail_num=result_fail, test_time=starttime,
-                           hour_time=hour,
-                           test_rep=(day + '.html'), test_log=(day + '.log'),
-                           Exception_num=result_except,
-                           can_num=result_cashu, wei_num=result_wei,
-                           projects_id=projecct_list[0].id)
+    new_reust = TestResult(Test_user_id=current_user.id,
+                           test_num=success + faill + error,
+                           pass_num=success,
+                           fail_num=faill,
+                           test_time=starttime, hour_time=hour,
+                           test_rep=day + '.html', test_log=day + '.log',
+                           Exception_num=error, can_num=0,
+                           wei_num=0, projects_id=projecct_list[0].id)
     db.session.add(new_reust)
     db.session.commit()
     try:
-        send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
+        send_ding(content="定时任务多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (success,
+                                                                 faill),
                   Dingtalk_access_token=Dingtalk_access_token)
     except Exception as e:
-
+        logger.exception(e)
         print(e)
-        # flash('定时任务的钉钉消息发送失败！原因:%s' % e)
-
-
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

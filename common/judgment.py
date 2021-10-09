@@ -53,6 +53,6 @@ def pare_result_mysql(mysqlresult, paseziduan, return_result):
     except Exception as e:
         return {'code': 1, 'result': e}
     if test_result == mysql_list:
-        return {'code': 2, 'result': 'pass'}
+        return {'code': 0, 'result': 'pass'}
     else:
         return {'code': 3, 'result': 'fail'}
