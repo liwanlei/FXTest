@@ -24,12 +24,6 @@ from common.systemlog import logger
 home = Blueprint('home', __name__)
 
 
-def get_pro_mo():
-    projects = Project.query.filter_by(status=False).all()
-    model = Model.query.filter_by(status=False).all()
-    return projects, model
-
-
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -79,7 +73,8 @@ class IndexView(MethodView):
             if job_task.makeuser == current_user.id:
                 My_task.append({'taskname': job_task.taskname,
                                 'next_run': job.next_run_time.strftime('%Y-%m-%d %H:%M:%S '),
-                                'run_status': job_task.yunxing_status, 'id': job_task.id
+                                'run_status': job_task.yunxing_status,
+                                'id': job_task.id
                                 })
         project_cout = Project.query.filter_by(status=False).count()
         model_cout = Model.query.filter_by(status=False).count()
@@ -107,10 +102,12 @@ class LoginView(MethodView):
         password = data['password']
         if username is None:
             return reponse(message=MessageEnum.login_username_not_message.value[1],
-                           code=MessageEnum.login_username_not_message.value[0], data="")
+                           code=MessageEnum.login_username_not_message.value[0],
+                           data="")
         if password is None:
             return reponse(message=MessageEnum.login_password_not_message.value[1],
-                           code=MessageEnum.login_password_not_message.value[0], data='')
+                           code=MessageEnum.login_password_not_message.value[0],
+                           data='')
         user = User.query.filter_by(username=username).first()
         user_err_num = user.err_num
         if (user.jobnum == "None" or user.jobnum is None):
@@ -120,7 +117,8 @@ class LoginView(MethodView):
         if user:
             if user.status is True:
                 return reponse(message=MessageEnum.login_user_free_message.value[1],
-                               code=MessageEnum.login_user_free_message.value[0], data='')
+                               code=MessageEnum.login_user_free_message.value[0],
+                               data='')
             if user.check_password(password):
                 if (user.is_free == True and user.freetime != None and user.err_num > 6 and (
                         datetime.datetime.now() - user.freetime).min > 10):
@@ -129,7 +127,9 @@ class LoginView(MethodView):
                         code=MessageEnum.login_user_fremm.value[0],
                         data='')
                 user.is_login = True
-                userlog = UserLoginlog(user=user.id, ip=ip, datatime=datetime.datetime.now())
+                userlog = UserLoginlog(user=user.id,
+                                       ip=ip,
+                                       datatime=datetime.datetime.now())
                 db.session.add_all([user, userlog])
                 db.session.commit()
                 login_user(user)
@@ -175,7 +175,8 @@ class LoginView(MethodView):
                     return reponse(message=MessageEnum.login_password_error_message.value[1],
                                    code=MessageEnum.login_password_error_message.value[0], data='')
         return reponse(message=MessageEnum.login_user_not_exict_message.value[1],
-                       code=MessageEnum.login_user_not_exict_message.value[0], data='')
+                       code=MessageEnum.login_user_not_exict_message.value[0],
+                       data='')
 
 
 class LoginViewRedis(MethodView):

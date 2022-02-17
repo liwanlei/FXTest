@@ -17,14 +17,20 @@ from common.systemlog import logger
 
 task = Blueprint('task', __name__)
 
+
 def addtask(id):  # 定时任务执行的时候所用的函数
+    '''
+    添加定时任务的方法
+    :param id:
+    :return:
+    '''
     in_id = int(id)
     task = Task.query.filter_by(id=in_id, status=False).first()
     starttime = datetime.datetime.now()
     star = time.time()
     day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
-    pad = os.getcwd()
-    file_dir = pad + '/app/upload'
+    cwd = os.getcwd()
+    file_dir = os.path.join(os.path.join(cwd, 'app'), 'upload')
     file = os.path.join(file_dir, (day + '.log'))
     if os.path.exists(file) is False:
         os.system('touch %s' % file)
@@ -57,7 +63,7 @@ def addtask(id):  # 定时任务执行的时候所用的函数
     error = n.error_count
     end = time.time()
     hour = end - star
-    new_reust = TestResult(Test_user_id=current_user.id,
+    new_result = TestResult(Test_user_id=current_user.id,
                            test_num=success + faill + error,
                            pass_num=success,
                            fail_num=faill,
@@ -65,15 +71,16 @@ def addtask(id):  # 定时任务执行的时候所用的函数
                            test_rep=day + '.html', test_log=day + '.log',
                            Exception_num=error, can_num=0,
                            wei_num=0, projects_id=projecct_list[0].id)
-    db.session.add(new_reust)
+    db.session.add(new_result)
     db.session.commit()
     try:
         send_ding(content="定时任务多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (success,
-                                                                 faill),
+                                                                     faill),
                   Dingtalk_access_token=Dingtalk_access_token)
     except Exception as e:
         logger.exception(e)
-        print(e)
+
+
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -347,17 +354,22 @@ class GetTestView(MethodView):
     def post(self):
         project = request.get_data('value')
         project = project.decode('utf-8')
-        changpr = Project.query.filter_by(project_name=project).first()
-        if not changpr:
+        changProject = Project.query.filter_by(project_name=project).first()
+        if not changProject:
             return reponse(
-                code=MessageEnum.project_search.value[0], message=MessageEnum.project_search.value[1], data='')
-        if changpr.status == True:
+                code=MessageEnum.project_search.value[0],
+                message=MessageEnum.project_search.value[1], data='')
+        if changProject.status == True:
             return reponse(
-                code=MessageEnum.project_delet_free.value[0], message=MessageEnum.project_delet_free.value[1],
+                code=MessageEnum.project_delet_free.value[0],
+                message=MessageEnum.project_delet_free.value[1],
                 data='')
-        testevent = Interfacehuan.query.filter_by(projects=changpr, status=False).all()
+        testevent = Interfacehuan.query.filter_by(projects=changProject,
+                                                  status=False).all()
         testeventlist = []
         for testeven in testevent:
             testeventlist.append({"url": testeven.url})
         return reponse(
-            code=MessageEnum.successs.value[0], data=testeventlist, message=MessageEnum.successs.value[1])
+            code=MessageEnum.successs.value[0],
+            data=testeventlist,
+            message=MessageEnum.successs.value[1])

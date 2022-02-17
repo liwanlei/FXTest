@@ -21,7 +21,7 @@ from common.jsontools import reponse
 interfaceview = Blueprint('interface', __name__)
 
 
-def get_pro_mo():
+def get_project_model():
     projects = Project.query.filter_by(status=False).all()
     model = Model.query.filter_by(status=False).all()
     return projects, model
@@ -45,7 +45,7 @@ class EditInterfaceView(MethodView):
                     if i.projects.status is False:
                         projects.append(i.projects)
                         id.append(i.projects)
-        project, models = get_pro_mo()
+        project, models = get_project_model()
         return render_template('edit/edit_interface.html', interfac=interface, projects=projects, models=models)
 
     @login_required
@@ -54,7 +54,7 @@ class EditInterfaceView(MethodView):
         if interface is None:
             flash(MessageEnum.edit_interface.value[1])
             return redirect(url_for('home.interface'))
-        project, models = get_pro_mo()
+        project, models = get_project_model()
         if current_user.is_sper == True:
             projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
@@ -163,7 +163,8 @@ class SerinterView(MethodView):
             typeinterface = 'none'
         if not project:
             return (
-                {'msg': MessageEnum.project_not_exict.value[0], 'code': MessageEnum.project_not_exict.value[1],
+                {'msg': MessageEnum.project_not_exict.value[0],
+                 'code': MessageEnum.project_not_exict.value[1],
                  'data': ''})
         project_is = Project.query.filter_by(project_name=str(projec)).first()
         if project_is.status is True:

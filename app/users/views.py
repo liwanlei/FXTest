@@ -25,14 +25,16 @@ class SetAdminView(View):  # 设置管理员
     def dispatch_request(self):
         if chckuserpermisson() is False:
             return reponse(
-                code= MessageEnum.permiss_is_ness.value[0],message= MessageEnum.permiss_is_ness.value[1], data='')
+                code= MessageEnum.permiss_is_ness.value[0],
+                message= MessageEnum.permiss_is_ness.value[1], data='')
         projec = request.get_json()
         try:
             username = projec['username']
             por = projec['url']
             if por == '':
                 return reponse(
-                    code= MessageEnum.select_project_not.value[0], message= MessageEnum.select_project_not.value[1],
+                    code= MessageEnum.select_project_not.value[0],
+                    message= MessageEnum.select_project_not.value[1],
                      data= '')
             pan_user = User.query.filter_by(username=username).first()
             if not pan_user:
@@ -60,12 +62,14 @@ class SetAdminView(View):  # 设置管理员
                     roses.rose = 2
             try:
                 db.session.commit()
-                return reponse(code= MessageEnum.successs.value[0], message= MessageEnum.successs.value[1])
+                return reponse(code= MessageEnum.successs.value[0],
+                               message= MessageEnum.successs.value[1])
             except Exception as e:
                 logger.exception(e)
                 db.session.rollback()
                 return reponse(
-                    code= MessageEnum.set_fail.value[0], message= MessageEnum.set_fail.value[1], data= '')
+                    code= MessageEnum.set_fail.value[0],
+                    message= MessageEnum.set_fail.value[1], data= '')
         except Exception as e:
             logger.exception(e)
             return reponse(code= MessageEnum.set_project_admin_exception.value[0],

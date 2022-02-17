@@ -18,7 +18,8 @@ from config import email_type
 from error_message import *
 from common.systemlog import logger
 
-def get_pro_mo():
+
+def get_common_data():
     projects = Project.query.filter_by(status=False).all()
     model = Model.query.filter_by(status=False).all()
     return projects, model
@@ -56,18 +57,19 @@ class LoadView(MethodView):
 def gettest():  # ajax获取项目的测试用例
     projec = (request.get_data('project')).decode('utf-8')
     if not projec:
-        return reponse(code=MessageEnum.successs.value[0], data={}, message=MessageEnum.successs.value[1])
+        return reponse(code=MessageEnum.successs.value[0], data='', message=MessageEnum.successs.value[1])
     proje = Project.query.filter_by(project_name=str(projec)).first()
     if not proje:
-        return reponse(code=MessageEnum.successs.value[0], data={}, message=MessageEnum.successs.value[1])
-    testyong = InterfaceTest.query.filter_by(projects_id=proje.id).all()
-    testyong_list = []
-    for i in testyong:
-        if i.status == True:
+        return reponse(code=MessageEnum.successs.value[0], data='', message=MessageEnum.successs.value[1])
+    all_case = InterfaceTest.query.filter_by(projects_id=proje.id).all()
+    case_list = []
+    for item in all_case:
+        if item.status == True:
             continue
         else:
-            testyong_list.append({'name': i.Interface_name, 'id': i.id})
-    return reponse(code=MessageEnum.successs.value[0], data=testyong_list, message=MessageEnum.successs.value[1])
+            case_list.append({'name': item.Interface_name, 'id': item.id})
+    return reponse(code=MessageEnum.successs.value[0],
+                   data=case_list, message=MessageEnum.successs.value[1])
 
 
 @app.route('/getprojects', methods=['GET', 'POST'])
@@ -78,8 +80,8 @@ def getprojects():  # 获取项目
         return reponse(message=MessageEnum.request_null_message.value[1],
                        code=MessageEnum.request_null_message.value[0],
                        data={})
-    peoject = InterfaceTest.query.filter_by(id=int(id)).first()
-    result = peoject.projects
+    interface = InterfaceTest.query.filter_by(id=int(id)).first()
+    result = interface.projects
     projetc = Project.query.filter_by(project_name=str(result.project_name)).first()
     testhuanjing = Interfacehuan.query.filter_by(projects=projetc, status=False).all()
 
@@ -88,16 +90,16 @@ def getprojects():  # 获取项目
                        message=MessageEnum.testeveirment_not_exict.value[1],
                        data={})
     url_list = []
-    for huanjing in testhuanjing:
-        url_list.append(huanjing.url)
-    if not peoject:
+    for testevent in testhuanjing:
+        url_list.append(testevent.url)
+    if not interface:
         return reponse(code=MessageEnum.project_not_exict.value[0],
                        message=MessageEnum.project_not_exict.value[1],
                        data="")
 
-    data={}
-    data['project']=result.project_name
-    data['url']=url_list
+    data = {}
+    data['project'] = result.project_name
+    data['url'] = url_list
 
     return reponse(data=data, code=MessageEnum.successs.value[0],
                    message=MessageEnum.successs.value[1])
@@ -110,18 +112,20 @@ class GetCaseView(MethodView):  # 获取用例
         project = id.decode('utf-8')
         if not project:
             return reponse(
-                message=MessageEnum.request_null_message.value[1], code=MessageEnum.request_null_message.value[0],
+                message=MessageEnum.request_null_message.value[1],
+                code=MessageEnum.request_null_message.value[0],
                 data='')
-        peoject = Project.query.filter_by(project_name=project, status=False).first()
-        if not peoject:
+        projectdata = Project.query.filter_by(project_name=project, status=False).first()
+        if not projectdata:
             return reponse(
                 message=MessageEnum.project_not_exict.value[1], code=MessageEnum.project_not_exict.value[0],
                 data='')
-        tesatcaelist = InterfaceTest.query.filter_by(projects_id=peoject.id, status=False).all()
+        tesatcaelist = InterfaceTest.query.filter_by(projects_id=projectdata.id, status=False).all()
         caselit = []
         for i in tesatcaelist:
             caselit.append(i.id)
-        return reponse(code=MessageEnum.request_success.value[0], message=MessageEnum.request_success.value[1],
+        return reponse(code=MessageEnum.request_success.value[0],
+                       message=MessageEnum.request_success.value[1],
                        data=(caselit))
 
 
@@ -206,21 +210,25 @@ class GeneraConfig(MethodView):
             data = request.get_json()
             config = GeneralConfiguration.query.filter_by(name=data['name']).first()
             if config:
-                return reponse(code=MessageEnum.common_is_same.value[0], message=MessageEnum.common_is_same.value[1],
+                return reponse(code=MessageEnum.common_is_same.value[0],
+                               message=MessageEnum.common_is_same.value[1],
                                data='')
             if data['type'] == "key-value":
                 newconfig = GeneralConfiguration(user=current_user, style=0,
-                                                 key=data["key"], name=data['name'])
+                                                 key=data["key"],
+                                                 name=data['name'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+                return reponse(code=MessageEnum.successs.value[0],
+                               message=MessageEnum.successs.value[1])
             elif data['type'] == 'token':
                 newconfig = GeneralConfiguration(user=current_user, style=1,
                                                  name=data['name'], token_method=data['method'],
                                                  token_parame=data['parame'], token_url=data['url'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+                return reponse(code=MessageEnum.successs.value[0],
+                               message=MessageEnum.successs.value[1])
             elif data['type'] == 'sql':
                 testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
                 if not testevnet:
@@ -231,14 +239,16 @@ class GeneraConfig(MethodView):
                                                  sqlurl=data['sql'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+                return reponse(code=MessageEnum.successs.value[0],
+                               message=MessageEnum.successs.value[1])
             elif data['type'] == 'http请求':
                 newconfig = GeneralConfiguration(user=current_user, style=1,
                                                  name=data['name'], request_method=data['method'],
                                                  request_parame=data['parame'], request_url=data['url'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+                return reponse(code=MessageEnum.successs.value[0],
+                               message=MessageEnum.successs.value[1])
             else:
                 return reponse(code=MessageEnum.common_gene_not_support.value[0],
                                message=MessageEnum.common_gene_not_support.value[1], data='')
@@ -246,7 +256,8 @@ class GeneraConfig(MethodView):
         except Exception as e:
             logger.exception(e)
             return reponse(
-                code=MessageEnum.parames_not_null.value[0], data=MessageEnum.parames_not_null.value[1])
+                code=MessageEnum.parames_not_null.value[0],
+                message=MessageEnum.parames_not_null.value[1])
 
     @login_required
     def put(self):
@@ -254,7 +265,8 @@ class GeneraConfig(MethodView):
         config_is = GeneralConfiguration.query.filter_by(id=int(data['id'])).first()
         if not config_is:
             return reponse(
-                code=MessageEnum.common_is_not_exict.value[0], message=MessageEnum.common_is_not_exict.value[1],
+                code=MessageEnum.common_is_not_exict.value[0],
+                message=MessageEnum.common_is_not_exict.value[1],
                 data='')
         if data['type'] == "key-value":
             config_is.user = current_user
@@ -271,7 +283,8 @@ class GeneraConfig(MethodView):
             config_is.token_parame = data['parame'],
             config_is.token_url = data['url']
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.common_gene_not_support.value[1])
+            return reponse(code=MessageEnum.successs.value[0],
+                           message=MessageEnum.common_gene_not_support.value[1])
         elif data['type'] == 'sql':
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
             if not testevnet:
@@ -283,7 +296,8 @@ class GeneraConfig(MethodView):
             config_is.testevent = testevnet
             config_is.sqlurl = data['sql']
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.successs.value[0],
+                           message=MessageEnum.successs.value[1])
         elif data['type'] == 'http请求':
             config_is.user = current_user
             config_is.style = 1
@@ -292,7 +306,8 @@ class GeneraConfig(MethodView):
             config_is.request_parame = data['parame']
             config_is.request_url = data['url']
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.common_gene_not_support.value[1])
+            return reponse(code=MessageEnum.successs.value[0],
+                           message=MessageEnum.common_gene_not_support.value[1])
         else:
             return reponse(code=MessageEnum.common_gene_not_support.value[0],
                            message=MessageEnum.common_gene_not_support.value[1], data='')
@@ -328,7 +343,8 @@ class ActionViews(MethodView):
             action.sql = data['sql']
             db.session.add(action)
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.successs.value[0],
+                           message=MessageEnum.successs.value[1])
         elif data['type'] == "2":
             action.style = 2
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
@@ -343,7 +359,8 @@ class ActionViews(MethodView):
             action.caseid = int(data['caseid'])
             db.session.add(action)
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.successs.value[0],
+                           message=MessageEnum.successs.value[1])
         elif data['type'] == "3":
             action.style = 3
             action.requestsurl = data['url']
@@ -351,23 +368,27 @@ class ActionViews(MethodView):
             action.requestsparame = data['parame']
             db.session.add(action)
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.successs.value[0],
+                           message=MessageEnum.successs.value[1])
         else:
             return reponse(
-                code=MessageEnum.re_is_not_exitc.value[0], message=MessageEnum.re_is_not_exitc.value[1], data='')
+                code=MessageEnum.re_is_not_exitc.value[0],
+                message=MessageEnum.re_is_not_exitc.value[1], data='')
 
     @login_required
     def put(self):
         data = request.get_json()
         id = Action.query.filter_by(id=data['id']).first()
         if not id:
-            return reponse(code=MessageEnum.re_editisnot.value[0], message=MessageEnum.re_editisnot.value[1])
+            return reponse(code=MessageEnum.re_editisnot.value[0],
+                           message=MessageEnum.re_editisnot.value[1])
 
         if data['type'] == "0":
             id.sleepnum = int(data['num'])
             id.style = 0
             db.session.commit()
-            return reponse(code=MessageEnum.re_editisnot.value[0], message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.re_editisnot.value[0],
+                           message=MessageEnum.successs.value[1])
         elif data['type'] == "1":
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
             if not testevnet:
@@ -387,18 +408,21 @@ class ActionViews(MethodView):
             case_is = InterfaceTest.query.filter_by(id=int(data['caseid'])).first()
             if not case_is:
                 return reponse(
-                    code=MessageEnum.case_not_exict.value[0], message=MessageEnum.case_not_exict.value[1])
+                    code=MessageEnum.case_not_exict.value[0],
+                    message=MessageEnum.case_not_exict.value[1])
             id.testevent = testevnet
             id.caseid = case_is.id
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.successs.value[0],
+                           message=MessageEnum.successs.value[1])
         elif data['type'] == "3":
             id.style = 3
             id.requestsurl = data['url']
             id.requestmethod = data['method']
             id.requestsparame = data['parame']
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.successs.value[0],
+                           message=MessageEnum.successs.value[1])
         else:
             return reponse(
                 code=MessageEnum.re_is_not_exitc.value[0], message=MessageEnum.re_is_not_exitc.value[1], data='')

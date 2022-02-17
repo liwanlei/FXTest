@@ -513,8 +513,10 @@ class MuliteCaseLiView(View):
                                    test_num=success+faill+error,
                                    pass_num=success,
                                            fail_num=faill,
-                                   test_time=starttime, hour_time=hour,
-                                           test_rep=day + '.html', test_log=day + '.log',
+                                   test_time=starttime,
+                                   hour_time=hour,
+                                           test_rep=day + '.html',
+                                   test_log=day + '.log',
                                            Exception_num=error, can_num=0,
                                            wei_num=0, projects_id=projecct_list[0].id)
             db.session.add(new_reust)
@@ -536,104 +538,6 @@ class MuliteCaseLiView(View):
                     return redirect(url_for('home.test_result'))
             flash(MessageEnum.send_email_success.value[1])
             return redirect(url_for('home.test_result'))
-        #     projecct_list = []
-        #     model_list = []
-        #     Interface_name_list = []
-        #     Interface_url_list = []
-        #     Interface_meth_list = []
-        #     Interface_pase_list = []
-        #     Interface_assert_list = []
-        #     Interface_headers_list = []
-        #     Interface_pid_list = []
-        #     Interface_yilai_list = []
-        #     Interface_save_list = []
-        #     Interface_is_data_list = []
-        #     Interface_mysql_list = []
-        #     Interface_msyql_ziduan_list = []
-        #     id_list = []
-        #     for case in allcase:
-        #         case_one = InterfaceTest.query.filter_by(id=case).first()
-        #         Interface_is_data_list.append(case_one.is_database)
-        #         Interface_mysql_list.append(case_one.chaxunshujuku)
-        #         Interface_msyql_ziduan_list.append(case_one.databaseziduan)
-        #         id_list.append(case_one.id)
-        #         projecct_list.append(case_one.projects)
-        #         model_list.append(case_one.models)
-        #         Interface_url_list.append(case_one.interfaces.Interface_url)
-        #         Interface_name_list.append(case_one.Interface_name)
-        #         Interface_meth_list.append(case_one.Interface_meth)
-        #         Interface_pase_list.append(case_one.Interface_pase)
-        #         Interface_assert_list.append(case_one.Interface_assert)
-        #         Interface_headers_list.append(case_one.Interface_headers)
-        #         Interface_pid_list.append(case_one.pid)
-        #         Interface_yilai_list.append(case_one.getattr_p)
-        #         Interface_save_list.append(case_one.saveresult)
-        #     if (len(set(projecct_list))) > 1:
-        #         flash(MessageEnum.run_only_one_project.value[1])
-        #         return redirect(next or url_for('mulitecase'))
-        #     testevent = Interfacehuan.query.filter_by(url=testurl).first()
-        #     try:
-        #         apitest = ApiTestCase(inteface_url=Interface_url_list,
-        #                               inteface_method=Interface_meth_list,
-        #                               inteface_parme=Interface_pase_list, inteface_assert=Interface_assert_list,
-        #                               file=file, headers=Interface_headers_list, pid=Interface_pid_list,
-        #                               replydata=Interface_yilai_list, saveresult=Interface_save_list,
-        #                               id_list=id_list, is_database=Interface_is_data_list,
-        #                               data_mysql=Interface_mysql_list,
-        #                               data_field=Interface_msyql_ziduan_list,
-        #                               urltest=testevent.url)
-        #         result_toal, result_pass, result_fail, relusts, bask_list, result_cashu, \
-        #         result_wei, result_except, spend_list = apitest.testapi()
-        #         large, minx, pinglun = listmax(list2=spend_list)
-        #         endtime = datetime.datetime.now()
-        #         end = time.time()
-        #         createHtml(titles=u'接口测试报告', filepath=filepath, starttime=starttime, endtime=endtime,
-        #                    passge=result_pass, fail=result_fail, id=id_list, name=projecct_list,
-        #                    headers=Interface_headers_list, coneent=Interface_url_list, url=Interface_meth_list,
-        #                    meth=Interface_pase_list, yuqi=Interface_assert_list, json=bask_list, relusts=relusts,
-        #                    excepts=result_except, yuqis=result_cashu, weizhi=result_wei, maxs=large, mins=minx,
-        #                    pingluns=pinglun)
-        #         hour = end - star
-        #         user_id = current_user.id
-        #         new_reust = TestResult(Test_user_id=user_id, test_num=result_toal, pass_num=result_pass,
-        #                                fail_num=result_fail, test_time=starttime, hour_time=hour,
-        #                                test_rep=(day + '.html'), test_log=(day + '.log'),
-        #                                Exception_num=result_except, can_num=result_cashu,
-        #                                wei_num=result_wei, projects_id=projecct_list[0].id)
-        #         db.session.add(new_reust)
-        #         db.session.commit()
-        #         if f_dingding == 'email':
-        #             email = EmailReport.query.filter_by(email_re_user_id=int(current_user.id),
-        #                                                 default_set=True).first()
-        #             if email:
-        #                 m = send_emails(sender=email.send_email, receivers=email.to_email,
-        #                                 password=email.send_email_password,
-        #                                 smtp=email.stmp_email, port=email.port, annexone=file,
-        #                                 annextwo=filepath,
-        #                                 subject=u'%s用例执行测试报告' % day,
-        #                                 url=paln_run_url + '/test_result')
-        #                 if m == False:
-        #                     flash(MessageEnum.send_email_fali.value[1])
-        #                     return redirect(url_for('home.test_result'))
-        #                 flash(MessageEnum.send_email_success.value[1])
-        #                 return redirect(url_for('home.test_result'))
-        #             flash(MessageEnum.send_fail_oneuser.value[1])
-        #             return redirect(url_for('home.case'))
-        #         if f_dingding == 'dingding':
-        #             send = send_ding(content="多用例测试已经完成，通过用例：%s，失败用例：%s，详情见测试报告" % (result_pass, result_fail),
-        #                              Dingtalk_access_token=Dingtalk_access_token)
-        #             if send is True:
-        #                 flash(MessageEnum.send_dingtlak_success.value[1])
-        #                 return redirect(url_for('home.case'))
-        #             flash(MessageEnum.send_dingtalk_error.value[1])
-        #             return redirect(next or url_for('home.case'))
-        #         flash(MessageEnum.test_case_success.value[1])
-        #         return redirect(url_for('home.test_result'))
-        #     except Exception as e:
-        #         logger.exception(e)
-        #         flash(MessageEnum.test_error.value[1])
-        #         return redirect(next or url_for('home.case'))
-        # return redirect(url_for('home.case'))
 
 
 class MakeOnlyOneCaseView(MethodView):
@@ -840,55 +744,6 @@ class MakeOnlyOneCaseView(MethodView):
                     save_reslut(key=str(case.id) + "&" + url, value=str(result))
                     return jsonreponse(code=MessageEnum.test_case_run_fail.value[0],
                                        message=MessageEnum.test_case_run_fail.value[1])
-            # elif case.interface_type == 'dubbo':
-            #     try:
-            #         data = eval(case.Interface_pase)
-            #     except Exception as e:
-            #         case.Interface_is_tiaoshi = True
-            #         case.Interface_tiaoshi_shifou = True
-            #         new_testre = TestcaseResult(case_id=case)
-            #         new_testre.result = str("转换参数失败")
-            #         new_testre.testevir = url
-            #         new_testre.by = False
-            #         db.session.commit()
-            #         return jsonify({'code': 61, 'msg': '转化请求参数失败，原因：%s' % e})
-            #     dubboapi = DubboInterface(url=case.Interface_url, interface=case.Interface_pase,
-            #                               method=case.Interface_meth,
-            #                               param=case.Interface_headers, **(data))
-            #     dubboapireslu = dubboapi.getresult()
-            #     if case.saveresult is True:
-            #         new_testre = TestcaseResult(case_id=case.id)
-            #         new_testre.result = str(dubboapireslu)
-            #         db.session.add(new_testre)
-            #         db.session.commit()
-            #     if dubboapireslu['code'] == 0:
-            #         assert_re = assert_in(asserqiwang=case.Interface_assert,
-            #                               fanhuijson=json.loads(dubboapireslu))
-            #         if assert_re == 'pass':
-            #             case.Interface_is_tiaoshi = True
-            #             case.Interface_tiaoshi_shifou = False
-            #             db.session.commit()
-            #             return jsonify({'code': 200, 'msg': '测试用例调试通过！'})
-            #         elif assert_re == 'fail':
-            #             case.Interface_is_tiaoshi = True
-            #             case.Interface_tiaoshi_shifou = True
-            #             db.session.commit()
-            #             return jsonify({'code': 58, 'msg': '测试用例测试失败,请检查用例！'})
-            #         else:
-            #             case.Interface_is_tiaoshi = True
-            #             case.Interface_tiaoshi_shifou = True
-            #             db.session.commit()
-            #             return jsonify({'code': 59, 'msg': '测试返回异常，,请检查用例！'})
-            #     elif dubboapireslu['code'] == 1:
-            #         case.Interface_is_tiaoshi = True
-            #         case.Interface_tiaoshi_shifou = True
-            #         db.session.commit()
-            #         return jsonify({'code': 63, 'msg': '接口测试出错了！原因:%s' % dubboapireslu['result']})
-            #     else:
-            #         case.Interface_is_tiaoshi = True
-            #         case.Interface_tiaoshi_shifou = True
-            #         db.session.commit()
-            #         return jsonify({'code': 630, 'msg': 'dubbo接口测试返回异常，请检查dubbo测试接口'})
             else:
                 return jsonreponse(code=MessageEnum.test_run_fail_not_support.value[0],
                                    message=MessageEnum.test_run_fail_not_support.value[1])
@@ -951,7 +806,6 @@ class OneCaseDetialView(MethodView):
                                'date': rest_one.date.strftime('%Y-%m-%d %H:%M:%S'),
                                'event': ceshihuanjing,
                                'spend': spend_ed})
-        # return jsonify({'code': 200, 'messgage': '请求成功', 'data': result_all})
         return jsonreponse(code=MessageEnum.successs.value[0],
                            message=MessageEnum.successs.value[1], data=result_all)
 
