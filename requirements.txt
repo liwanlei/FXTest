@@ -1,7 +1,7 @@
 APScheduler==3.7.0
 cached-property==1.5.2
 cchardet==2.1.7
-celery==3.1.25
+celery==5.2.2
 celery-with-redis==3.0
 ddt==1.4.2
 decorator==5.1.1
@@ -53,8 +53,6 @@ imageio==2.15.0
 importlib-metadata==4.11.3
 importlib-resources==5.7.1
 iniconfig==1.1.1
-ipython==7.15.0
-ipython-genutils==0.2.0
 itsdangerous==2.1.2
 jdcal==1.4.1
 jedi==0.18.1
@@ -71,7 +69,7 @@ kombu==3.0.37
 ldap3==2.9
 libusb1==1.9.2
 Logbook==1.5.3
-paramiko==2.7.2
+paramiko==2.10.1
 parso==0.8.2
 pymongo==3.11.4
 PyMySQL==1.0.2
@@ -81,7 +79,7 @@ redis==3.5.3
 requests==2.25.1
 SQLAlchemy==1.4.13
 sqlalchemy-migrate==0.13.0
-urllib3==1.26.4
+urllib3==1.26.5
 urwid==2.1.2
 uvicorn==0.17.6
 visitor==0.1.3
