@@ -373,3 +373,78 @@ class GetTestView(MethodView):
             code=MessageEnum.successs.value[0],
             data=testeventlist,
             message=MessageEnum.successs.value[1])
+
+
+class CreateTaskCaseAndRunView(MethodView):
+    def post(self):
+        data = request.get_json()
+        testevent_url=data['testevent_url']
+        caselist=data['caselist']
+        project=data['project']
+        is_run_now=data['is_run_now']
+        taskmd5=data['taskmd5']
+        changProject = Project.query.filter_by(project_name=project).first()
+        if changProject:
+            testevent_url_exit=Interfacehuan.query.filter_by(url=testevent_url,
+                                                             project=changProject.id).first()
+            if testevent_url_exit:
+                if len(caselist)<1:
+                    return reponse(
+                        code=MessageEnum.task_must_be_mulite_case_recommend.value[0],
+                        data={},
+                        message=MessageEnum.task_must_be_mulite_case_recommend.value[1])
+                if is_run_now=="0":
+                    success,faill,error,hou=runtestcase(taskcase=caselist,testevent_url=testevent_url)
+                    data={"project":project,'taskmd5':taskmd5,'passnum':success,
+                          'failnum':faill,'error':error,'extimetime':hou}
+                    return reponse(
+                        code=MessageEnum.successs.value[0],
+                        data=data,
+                        message=MessageEnum.successs.value[1])
+                else:
+                    pass
+
+            return reponse(
+                code=MessageEnum.testeveirment_not_exict.value[0],
+                data={},
+                message=MessageEnum.testeveirment_not_exict.value[1])
+        return reponse(
+            code=MessageEnum.project_not_exict.value[0],
+            data={},
+            message=MessageEnum.project_not_exict.value[1])
+
+def runtestcase(taskcase,testevent_url):
+    star = time.time()
+    day = time.strftime("%Y%m%d%H%M", time.localtime(time.time()))
+    cwd = os.getcwd()
+    file_dir = os.path.join(os.path.join(cwd, 'app'), 'upload')
+    file = os.path.join(file_dir, (day + '.log'))
+    if os.path.exists(file) is False:
+        os.system('touch %s' % file)
+    filepath = os.path.join(file_dir, (day + '.html'))
+    if os.path.exists(filepath) is False:
+        os.system(r'touch %s' % filepath)
+    testcase_list = []
+    projecct_list = []
+    for case in taskcase:
+        run_case_item = {}
+        case_one = InterfaceTest.query.filter_by(id=case).first()
+        run_case_item['caselog'] = file
+        run_case_item['id'] = case_one
+        run_case_item['project'] = case_one.projects
+        projecct_list.append(case_one.projects)
+        run_case_item['testevent'] = Interfacehuan.query.filter_by(url=testevent_url).first()
+        testcase_list.append(run_case_item)
+    test_suit = unittest.TestSuite()
+    test_suit.addTest(Parmer.parametrize(TestCase, parame=testcase_list))  # 扩展的其他的测试用例均这样添加
+    re_open = open(filepath, 'wb')
+    runner = BSTestRunner(stream=re_open,
+                          title=u'自动化测试平台自动生成',
+                          description=u'自动化测试结果')
+    n = runner.run(test_suit)
+    success = n.success_count
+    faill = n.failure_count
+    error = n.error_count
+    end = time.time()
+    hou = end - star
+    return success,faill,error,hou

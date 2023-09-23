@@ -16,3 +16,7 @@ case.add_url_rule('/exportcase', view_func=ExportCaseView.as_view('exportcase'))
 case.add_url_rule("/casetojmx", view_func=CaseToJmxView.as_view("casetojmx"))
 case.add_url_rule("/jmxtoserver", view_func=JmxToServerView.as_view("jmxtoserver"))
 case.add_url_rule('/caseonedeteil', view_func=OneCaseDetialView.as_view('caseonedeteil'))
+
+
+
+case.add_url_rule("/getprojectinterfacecase",view_func=GetProjectInterfaceCase.as_view("getprojectinterfacecase"))

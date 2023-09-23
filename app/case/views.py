@@ -810,6 +810,8 @@ class OneCaseDetialView(MethodView):
                            message=MessageEnum.successs.value[1], data=result_all)
 
 
+
+
 class CaseToJmxView(MethodView):
     def post(self):
         try:
@@ -905,3 +907,35 @@ class JmxToServerView(MethodView):
         db.session.commit()
         return jsonreponse(code=MessageEnum.case_jmx_run_seccess.value[0],
                            message=MessageEnum.case_jmx_run_seccess.value[1])
+
+
+class GetProjectInterfaceCase(MethodView):
+    def post(self,project:str=None,interface:str=None):
+        if project and interface:
+            projectis = Project.query.filter_by(project_name=project).first()
+            if projectis is None:
+                return jsonreponse(code=MessageEnum.requests_case_project_not_exit.value[0],
+                                   message=MessageEnum.requests_case_project_not_exit.value[1],
+                                   data=[])
+            interfaceis = Interface.query.filter_by(Interface_url=interface,
+                                                    projects_id=projectis.id).first()
+            if interfaceis is None:
+                return jsonreponse(code=MessageEnum.requests_case_interface_not_exit.value[0],
+                                   message=MessageEnum.requests_case_interface_not_exit.value[1],
+                                   data=[])
+
+            interfacetestcaselist=InterfaceTest.query.filter_by(projects_id=projectis.id,
+                                                                interface_id=interfaceis.id).all()
+            if len(interfacetestcaselist)>0:
+                reslutcaselit=[]
+                for item in interfacetestcaselist:
+                    caseitem={}
+                    caseitem['id']=item.id
+                    caseitem['name']=item.bian_num
+                    reslutcaselit.append(caseitem)
+                return jsonreponse(code=MessageEnum.successs.value[0],
+                                   message=MessageEnum.successs.value[1],
+                                   data=reslutcaselit)
+            return jsonreponse(code=MessageEnum.successs.value[0],
+                               message=MessageEnum.successs.value[1],
+                               data=[])

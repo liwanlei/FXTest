@@ -13,3 +13,4 @@ task.add_url_rule('/pusedtask/<int:id>', view_func=PausedTaskView.as_view('pused
 task.add_url_rule('/recivertask/<int:id>', view_func=RecoverTaskView.as_view('recivertask'))
 task.add_url_rule('/removetask/<int:id>', view_func=RemoveTaskView.as_view('removetask'))
 task.add_url_rule('/getpro', view_func=GetTestView.as_view('getpro'))
+task.add_url_rule("/createtaskcaseandrun",view_func=CreateTaskCaseAndRunView.as_view('createtaskcaseandrun'))

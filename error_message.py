@@ -200,4 +200,6 @@ class MessageEnum(Enum):
     request_method_not_supprot=-2,'你写入的类型目前系统不支持'
     method_parame_not_right=-4,'你输入的参数不正确'
     request_scre=-3,'安全校验失败!'
-
+    requests_case_interface_not_exit=100190,'获取用例的时候，接口不存在'
+    requests_case_project_not_exit = 100191, '获取用例的时候，项目不存在'
+    task_must_be_mulite_case_recommend=100192,"推荐用例必须是多个才能执行"
