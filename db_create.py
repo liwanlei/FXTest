@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # @Time    : 2017/7/13 20:53
 # @Author  : lileilei
 # @File    : db_create.py
@@ -8,8 +7,11 @@ from app.models import Permisson, Role
 
 
 def create_roles():  # 创建角色
-    '''创建三个角色，分别是用户，
-               普通管理员，超级管理员'''
+    '''
+    创建三个角色，分别是用户，
+    普通管理员，超级管理员
+    :return:
+    '''
     roles = {'User': Permisson.DELETE | Permisson.EDIT | Permisson.ADD,
              'Oneadmin': Permisson.DELETE | Permisson.EDIT | Permisson.ADD | Permisson.ONEADMIN,
              'Administrator': Permisson.DELETE | Permisson.EDIT | Permisson.ADD | Permisson.ONEADMIN | Permisson.ADMIN
@@ -24,5 +26,5 @@ def create_roles():  # 创建角色
 
 
 if __name__ == '__main__':
-    # create_roles()
+    # create_roles()  默认给数据库创建几个角色
     db.create_all()

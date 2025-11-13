@@ -45,8 +45,8 @@ class SetAdminView(View):  # 设置管理员
                                 message= MessageEnum.super_admin_not_set_project.value[1], data= '')
             pand_por = Project.query.filter_by(project_name=por).first()
             if not pand_por:
-                return reponse(code= MessageEnum.set_project_bot_exict.value[0],
-                                message= MessageEnum.set_project_bot_exict.value[1], data= '')
+                return reponse(code= MessageEnum.set_project_not_exist.value[0],
+                                message= MessageEnum.set_project_not_exist.value[1], data= '')
             pro_per = Quanxian.query.filter_by(project=pand_por.id).all()
             oneadmin = []
             for i in pro_per:
@@ -216,7 +216,7 @@ class ResetPasswordView(View):  # 重置密码
                     db.session.rollback()
                     flash(MessageEnum.user_reset_error.value[1])
                     return redirect(url_for('home.adminuser'))
-            flash(MessageEnum.user_reset_isnot_amin.value[1])
+            flash(MessageEnum.user_reset_is_not_admin.value[1])
             return redirect(url_for('home.adminuser'))
         flash(MessageEnum.user_reset_owner.value[1])
         return redirect(url_for('home.adminuser'))

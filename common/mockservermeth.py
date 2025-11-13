@@ -42,8 +42,8 @@ def get_token_data(path):
                         return jsonreponse(code=MessageEnum.resquest_return_not_json.value[0],
                                            message=MessageEnum.resquest_return_not_json.value[1])
                 else:
-                    return jsonreponse(code=MessageEnum.request_method_not_supprot.value[0],
-                                       message=MessageEnum.request_method_not_supprot.value[1])
+                    return jsonreponse(code=MessageEnum.request_method_not_support.value[0],
+                                       message=MessageEnum.request_method_not_support.value[1])
             else:
                 return jsonreponse(code=MessageEnum.method_parame_not_right.value[0],
                                    message=MessageEnum.method_parame_not_right.value[1])
@@ -69,8 +69,8 @@ def get_token_data(path):
                             response.content_type = 'application/xml'
                             return response
                         else:
-                            return jsonreponse(code=MessageEnum.request_method_not_supprot.value[0],
-                                               message=MessageEnum.request_method_not_supprot.value[1])
+                            return jsonreponse(code=MessageEnum.request_method_not_support.value[0],
+                                               message=MessageEnum.request_method_not_support.value[1])
                     else:
                         return jsonreponse(code=MessageEnum.method_parame_not_right.value[0],
                                            message=MessageEnum.method_parame_not_right.value[1])
@@ -89,10 +89,10 @@ def get_token_data(path):
                         response = make_response(huoqupath.fanhui)
                         response.content_type = 'application/xml'
                         return response
-                    return jsonreponse(code=MessageEnum.request_method_not_supprot.value[0],
-                                       message=MessageEnum.request_method_not_supprot.value[1])
-            return jsonreponse(code=MessageEnum.request_scre.value[0],
-                               message=MessageEnum.request_scre.value[1])
+                    return jsonreponse(code=MessageEnum.request_method_not_support.value[0],
+                                       message=MessageEnum.request_method_not_support.value[1])
+            return jsonreponse(code=MessageEnum.request_secure.value[0],
+                               message=MessageEnum.request_secure.value[1])
         else:
             if huoqupath.ischeck == True:
                 paerm = request.values.to_dict()
@@ -112,8 +112,8 @@ def get_token_data(path):
                         response.content_type = 'application/xml'
                         return response
                     else:
-                        return jsonreponse(code=MessageEnum.request_method_not_supprot.value[0],
-                                           message=MessageEnum.request_method_not_supprot.value[1])
+                        return jsonreponse(code=MessageEnum.request_method_not_support.value[0],
+                                           message=MessageEnum.request_method_not_support.value[1])
                 return jsonreponse(code=MessageEnum.method_parame_not_right.value[0],
                                    message=MessageEnum.method_parame_not_right.value[1])
             if huoqupath.rebacktype == 'json':
@@ -131,5 +131,5 @@ def get_token_data(path):
                 response.content_type = 'application/xml'
                 return response
             else:
-                return jsonreponse(code=MessageEnum.request_method_not_supprot.value[0],
-                                   message=MessageEnum.request_method_not_supprot.value[1])
+                return jsonreponse(code=MessageEnum.request_method_not_support.value[0],
+                                   message=MessageEnum.request_method_not_support.value[1])

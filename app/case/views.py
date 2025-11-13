@@ -106,7 +106,7 @@ class AddtestcaseView(View):
             else:
                 yilai_tes = yilai_test
                 if yilai_data is None or yilai_data == '':
-                    flash(MessageEnum.reply_must_be_repy_flied.value[1])
+                    flash(MessageEnum.reply_must_be_reply_field.value[1])
                     return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
                                            inrterface_list=inrterface_list, mock_yilai=mock_yilai)
                 yilai_dat = yilai_data
@@ -145,7 +145,7 @@ class AddtestcaseView(View):
                             if str(value).split(".")[0] == '#action':
                                 action = Action.query.filter_by(name=str(value).split(".")[1]).first()
                                 if not action:
-                                    flash(MessageEnum.action_not_exict.value[1])
+                                    flash(MessageEnum.action_not_exit.value[1])
                                     return render_template('add/add_test_case.html', form=form, projects=projects,
                                                            models=models,
                                                            inrterface_list=inrterface_list, mock_yilai=mock_yilai)
@@ -235,7 +235,7 @@ class EditcaseView(View):
             else:
                 yilai_tes = yilai_test
                 if yilai_data is None or yilai_data == '':
-                    flash(MessageEnum.reply_must_be_repy_flied.value[1])
+                    flash(MessageEnum.reply_must_be_reply_field.value[1])
                     return render_template('edit/edit_case.html', edit=edit_case,
                                            projects=projects, models=models,
                                            inerfacelist=inrterface_list, mock_yilai=mock_yilai)
@@ -289,7 +289,7 @@ class EditcaseView(View):
                             if str(value).split(".")[0] == '#action':
                                 action = Action.query.filter_by(name=str(value).split(".")[1]).first()
                                 if not action:
-                                    flash(MessageEnum.action_not_exict.value[1])
+                                    flash(MessageEnum.action_not_exit.value[1])
                                     return render_template('edit/edit_case.html', edit=edit_case,
                                                            projects=projects, models=models,
                                                            inerfacelist=inrterface_list, mock_yilai=mock_yilai)
@@ -654,8 +654,8 @@ class MakeOnlyOneCaseView(MethodView):
                         return jsonreponse(code=MessageEnum.test_sql_login_user_password_not_in.value[0],
                                            message=MessageEnum.test_sql_login_user_password_not_in.value[1])
                     if case.databaseziduan == "" or case.chaxunshujuku == "":
-                        return jsonreponse(code=MessageEnum.test_sql_repy_sql_feild.value[0],
-                                           message=MessageEnum.test_sql_repy_sql_feild.value[1])
+                        return jsonreponse(code=MessageEnum.test_sql_reply_sql_field.value[0],
+                                           message=MessageEnum.test_sql_reply_sql_field.value[1])
                     conncts = cursemsql(host=testevent.dbhost, port=testevent.dbport,
                                         user=testevent.databaseuser, password=testevent.databasepassword,
                                         database=testevent.database)
@@ -888,15 +888,15 @@ class JmxToServerView(MethodView):
         '''
         testjmx = TestJmx.query.filter_by(id=int(id)).first()
         if not testjmx:
-            return jsonreponse(code=MessageEnum.case_jmx_not_excit.value[0],
-                               message=MessageEnum.case_jmx_not_excit.value[1])
+            return jsonreponse(code=MessageEnum.case_jmx_not_exist.value[0],
+                               message=MessageEnum.case_jmx_not_exist.value[1])
         if testjmx.serverid is None:
             return jsonreponse(code=MessageEnum.case_jmx_not_select_server.value[0],
                                message=MessageEnum.case_jmx_not_select_server.value[1])
         testserver = Testerver.query.filter_by(id=int(testjmx.serverid), status=0).first()
         if not testserver:
-            return jsonreponse(code=MessageEnum.case_test_sever_not_exict.value[0],
-                               message=MessageEnum.case_test_sever_not_exict.value[1])
+            return jsonreponse(code=MessageEnum.case_test_sever_not_exit.value[0],
+                               message=MessageEnum.case_test_sever_not_exit.value[1])
         cmd = "sshpass -p " + testserver.loginpassword + " scp -P " + testserver.port + "  " + testjmx.jmxpath + " " + testserver.loginuser + "@" + testserver.ip + ":/home"
         os.system(cmd)
         commentc = Sshtool(testserver.ip, testserver.port, testserver.loginuser, testserver.loginpassword)

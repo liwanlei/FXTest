@@ -368,7 +368,7 @@ class EditPParameterView(MethodView):
             return redirect(url_for('interface.interface_detail', id=inte_id))
         except Exception as e:
             logger.exception(e)
-            flash(MessageEnum.edit_fial.value[1])
+            flash(MessageEnum.edit_fail.value[1])
             return render_template('edit/edtiparmes.html', pasrm=pasrm, interface_one=interface_one)
 
 

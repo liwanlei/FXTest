@@ -111,8 +111,8 @@ class LoginView(MethodView):
         user = User.query.filter_by(username=username).first()
         user_err_num = user.err_num
         if (user.jobnum == "None" or user.jobnum is None):
-            return reponse(message=MessageEnum.login_user_inactivatesd.value[1],
-                           code=MessageEnum.login_user_inactivatesd.value[0],
+            return reponse(message=MessageEnum.login_user_inactive.value[1],
+                           code=MessageEnum.login_user_inactive.value[0],
                            data='')
         if user:
             if user.status is True:
@@ -287,7 +287,7 @@ class InterfaceView(MethodView):
             logger.error(e)
             db.session.rollback()
             return reponse(
-                message=MessageEnum.interface_add_erroe.value[1], code=MessageEnum.interface_add_erroe.value[0],
+                message=MessageEnum.interface_add_error.value[1], code=MessageEnum.interface_add_erroe.value[0],
                 data='')
 
     @login_required
@@ -391,8 +391,8 @@ class AdminUserView(MethodView):
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
-            return reponse(message=MessageEnum.model_edit_fial.value[1],
-                           code=MessageEnum.model_edit_fial.value[0])
+            return reponse(message=MessageEnum.model_edit_fail.value[1],
+                           code=MessageEnum.model_edit_fail.value[0])
         if len(project) <= 0:
             return reponse(message=MessageEnum.successs.value[1],
                            code=MessageEnum.successs.value[0])
@@ -409,7 +409,7 @@ class AdminUserView(MethodView):
             except Exception as e:
                 logger.exception(e)
                 db.session.rollback()
-                return reponse(message=MessageEnum.model_edit_fial.value[1], code=MessageEnum.model_edit_fial.value[0])
+                return reponse(message=MessageEnum.model_edit_fail.value[1], code=MessageEnum.model_edit_fail.value[0])
 
 
 class TestResultView(MethodView):
@@ -517,7 +517,8 @@ class ProjectView(MethodView):
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
-            return reponse(code=MessageEnum.eidt_excption.value[0], message=MessageEnum.eidt_excption.value[1])
+            return reponse(code=MessageEnum.edit_exception.value[0],
+                           message=MessageEnum.edit_exception.value[1])
 
     @login_required
     def delete(self):

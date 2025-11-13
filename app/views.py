@@ -173,7 +173,7 @@ def register():
             return render_template('home/register.html', form=form)
         user = User.query.filter_by(username=usernmae).first()
         if user:
-            flash(MessageEnum.user_exict.value[1])
+            flash(MessageEnum.user_exist.value[1])
             return render_template('home/register.html', form=form)
         emai = User.query.filter_by(user_email=email).first()
         if emai:

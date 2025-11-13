@@ -168,7 +168,7 @@ class StartTaskView(MethodView):  # 开始定时任务
             return redirect(url_for('home.timingtask'))
         except Exception as e:
             logger.exception(e)
-            flash(MessageEnum.task_start_eeor.value[1])
+            flash(MessageEnum.task_start_error.value[1])
             return redirect(url_for('home.timingtask'))
 
 
