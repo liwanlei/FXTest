@@ -54,7 +54,7 @@ class LoadView(MethodView):
 
 @app.route('/gettest', methods=['POST'])
 # @login_required
-def gettest():  # ajax获取项目的测试用例
+def get_test_case_list():  # ajax获取项目的测试用例
     projec = (request.get_data('project')).decode('utf-8')
     if not projec:
         return reponse(code=MessageEnum.successs.value[0], data='', message=MessageEnum.successs.value[1])

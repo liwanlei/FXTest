@@ -14,7 +14,7 @@ from app.models import *
 from common.packageredis import ConRedisOper
 from common.caselog import filelogpath
 from common.packeagedictry import getdictvalue
-
+from common.systemlog import logger
 
 def save_reslut(key, value):
     m = ConRedisOper(host=redis_host, port=redis_port,

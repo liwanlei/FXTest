@@ -88,7 +88,7 @@ class IndexView(MethodView):
 
 class LoginView(MethodView):
     def get(self):
-        form = LoginFrom()
+        form = LoginForm()
         return render_template('home/login.html', form=form)
 
     def post(self):
@@ -138,7 +138,8 @@ class LoginView(MethodView):
                                code=MessageEnum.login_user_sucess_message.value[0],
                                data='')
             else:
-                if (user.err_num != None and user.err_num >= 5):
+                num = user.err_num != None and user.err_num >= 5
+                if num:
                     print(user.freetime is None)
                     if (user.freetime != 'None' and user.freetime is not None ):
                         if (datetime.datetime.now() - user.freetime).min > 10:
@@ -186,7 +187,7 @@ class LoginViewRedis(MethodView):
         self.conris = ConRedisOper(redis_host, redis_port, 3)
 
     def get(self):
-        form = LoginFrom()
+        form = LoginForm()
         return render_template('home/login.html', form=form)
 
     def post(self):

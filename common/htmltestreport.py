@@ -199,9 +199,11 @@ def relust(titles, starttime, endtime, passge, fail, id: list, name: list, heade
     return text
 
 
-def createHtml(filepath, titles, starttime, endtime, passge, fail, id, name, headers, coneent, url, meth, yuqi, json,
+def createHtml(filepath, titles, starttime, endtime, passge, fail,
+               id, name, headers, coneent, url, meth, yuqi, json,
                relusts, excepts, yuqis, weizhi, maxs, mins, pingluns):
-    texts = relust(titles=titles, starttime=starttime, endtime=endtime, passge=passge, fail=fail, id=id, name=name,
+    texts = relust(titles=titles, starttime=starttime,
+                   endtime=endtime, passge=passge, fail=fail, id=id, name=name,
                    headers=headers, coneent=coneent,
                    url=url, meth=meth, yuqi=yuqi, json=json, relust=relusts, excepts=excepts, yuqis=yuqis,
                    weizhi=weizhi, maxs=maxs, mins=mins, pingluns=pingluns)

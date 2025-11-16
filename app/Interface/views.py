@@ -13,7 +13,7 @@ from flask_login import login_required, current_user
 import json, os, time
 from config import Config_import
 from common.opearexcel import create_interface
-from common.merge import hebingDict
+from common.merge import mergeDict
 from error_message import MessageEnum
 from common.systemlog import logger
 from common.jsontools import reponse
@@ -39,14 +39,15 @@ class EditInterfaceView(MethodView):
             projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
-            id = []
+            project_ids = []
             for i in current_user.quanxians:
                 if (i.projects in id) is False:
                     if i.projects.status is False:
                         projects.append(i.projects)
-                        id.append(i.projects)
+                        project_ids.append(i.projects)
         project, models = get_project_model()
-        return render_template('edit/edit_interface.html', interfac=interface, projects=projects, models=models)
+        return render_template('edit/edit_interface.html', interfac=interface,
+                               projects=projects, models=models)
 
     @login_required
     def post(self, id):
@@ -55,7 +56,7 @@ class EditInterfaceView(MethodView):
             flash(MessageEnum.edit_interface.value[1])
             return redirect(url_for('home.interface'))
         project, models = get_project_model()
-        if current_user.is_sper == True:
+        if current_user.is_sper:
             projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
@@ -184,7 +185,8 @@ class SerinterView(MethodView):
         data = {}
         data['data'] = interfaclists
         data['typeinter'] = typeinterface
-        return reponse(message=MessageEnum.successs.value[1], code=MessageEnum.successs.value[0],
+        return reponse(message=MessageEnum.successs.value[1],
+                       code=MessageEnum.successs.value[0],
                        data=data)
 
 
@@ -236,8 +238,8 @@ class DetailView(MethodView):
             except:
                 pass
         return render_template('home/interface_detail.html', id_one=interface_one, chucanlist=chucan,
-                               rucanlist=rucan, chucan_def=hebingDict(parame_deft),
-                               rucan_def=hebingDict(sendparame_deft))
+                               rucanlist=rucan, chucan_def=mergeDict(parame_deft),
+                               rucan_def=mergeDict(sendparame_deft))
 
 
 class AddParameterView(MethodView):
@@ -257,7 +259,7 @@ class AddParameterView(MethodView):
         nuss = request.form.get('nussu')
         typec = request.form.get('typechu')
         desec = request.form.get('desec')
-        shili = request.form.get('shili')
+        demo = request.form.get('shili')
         if name is None or name == '':
             flash(MessageEnum.parame_name_not_empty.value[1])
             return render_template('add/addparmes.html', interface=self.interface)
@@ -273,13 +275,13 @@ class AddParameterView(MethodView):
         else:
             if_nuss = False
         if typec == '出参':
-            is_chu = 1
+            is_return = 1
         else:
-            is_chu = 0
+            is_return = 0
         new = Parameter(interface_id=self.interface.id,
                         parameter_name=name, parameter_type=type,
-                        necessary=if_nuss, type=is_chu,
-                        default=shili, desc=desec,
+                        necessary=if_nuss, type=is_return,
+                        default=demo, desc=desec,
                         user_id=current_user.id)
         db.session.add(new)
         try:

@@ -10,14 +10,14 @@ from wtforms import StringField, validators, PasswordField, SelectField, Validat
 from wtforms.validators import Email
 from app.models import Work
 
-choice_list = []
+work_choices = []
 work_list = Work.query.all()
 choice_l = [(1, '否'), (2, '是')]
 for i in range(len(work_list)):
-    choice_list.append((work_list[i].id, work_list[i].name))
+    work_choices.append((work_list[i].id, work_list[i].name))
 
 
-class LoginFrom(Form):
+class LoginForm(Form):
     username = StringField(u'用户名',
                            [validators.Length(min=4, max=16, message=u'用户名长度在4-16位'), validators.DataRequired()],
                            render_kw={'placeholder': u'请输入用户名'})
@@ -38,7 +38,7 @@ class RegFrom(Form):
     jobnum = StringField(u'输入注册的工号', [validators.DataRequired(message=u'请输入工号')],
                          render_kw={'placeholder': u'输入注册的工号'})
 
-    work = SelectField(u'选择职位', choices=choice_list, coerce=int,
+    work = SelectField(u'选择职位', choices=work_choices, coerce=int,
                        validators=[validators.DataRequired(message=u"项目名称不能为空")])
 
 

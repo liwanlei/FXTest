@@ -8,7 +8,7 @@
 '''
 
 
-def hebingDict(dict_list: dict):
+def mergeDict(dict_list: dict):
     dictMerged = {}
     for item in dict_list:
         try:

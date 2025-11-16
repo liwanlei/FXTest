@@ -90,7 +90,7 @@ class TestforTaskView(MethodView):  # 为测试任务添加测试用例
 
     @login_required
     def get(self, id):
-        if current_user.is_sper == True:
+        if current_user.is_sper:
             projects = Project.query.filter_by(status=False).all()
         else:
             projects = []
@@ -117,23 +117,23 @@ class TestforTaskView(MethodView):  # 为测试任务添加测试用例
                         projects.append(i.projects)
                         id.append(i.projects)
         task_one = Task.query.filter_by(id=id).first()
-        procject_test = request.form.get('project')
-        if procject_test == '':
+        project_test = request.form.get('project')
+        if project_test == '':
             flash(MessageEnum.not_add_project.value[1])
             return render_template('add/addtestcasefortask.html', task_one=task_one, procjets=projects)
-        test_yongli = request.form.getlist('testyongli')
-        if test_yongli == '':
+        test_case = request.form.getlist('testyongli')
+        if test_case == '':
             flash(MessageEnum.project_not_case.value[1])
             return render_template('add/addtestcasefortask.html', task_one=task_one, procjets=projects)
         for oldtask in task_one.interface.all():
             task_one.interface.remove(oldtask)
-        for yongli in test_yongli:
-            task_yong = InterfaceTest.query.filter_by(id=yongli).first()
-            if task_yong.status is True:
+        for case in test_case:
+            task_case = InterfaceTest.query.filter_by(id=case).first()
+            if task_case.status is True:
                 continue
             else:
-                task_one.interface.append(task_yong)
-        task_one.prject = procject_test
+                task_one.interface.append(task_case)
+        task_one.prject = project_test
         db.session.add(task_one)
         try:
             db.session.commit()
@@ -354,21 +354,21 @@ class GetTestView(MethodView):
     def post(self):
         project = request.get_data('value')
         project = project.decode('utf-8')
-        changProject = Project.query.filter_by(project_name=project).first()
-        if not changProject:
+        changeProject = Project.query.filter_by(project_name=project).first()
+        if not changeProject:
             return reponse(
                 code=MessageEnum.project_search.value[0],
                 message=MessageEnum.project_search.value[1], data='')
-        if changProject.status == True:
+        if changeProject.status:
             return reponse(
                 code=MessageEnum.project_delet_free.value[0],
                 message=MessageEnum.project_delet_free.value[1],
                 data='')
-        testevent = Interfacehuan.query.filter_by(projects=changProject,
+        testevents = Interfacehuan.query.filter_by(projects=changeProject,
                                                   status=False).all()
         testeventlist = []
-        for testeven in testevent:
-            testeventlist.append({"url": testeven.url})
+        for testevent in testevents:
+            testeventlist.append({"url": testevent.url})
         return reponse(
             code=MessageEnum.successs.value[0],
             data=testeventlist,
@@ -425,14 +425,14 @@ def runtestcase(taskcase,testevent_url):
     if os.path.exists(filepath) is False:
         os.system(r'touch %s' % filepath)
     testcase_list = []
-    projecct_list = []
+    # project_list = []
     for case in taskcase:
         run_case_item = {}
         case_one = InterfaceTest.query.filter_by(id=case).first()
         run_case_item['caselog'] = file
         run_case_item['id'] = case_one
         run_case_item['project'] = case_one.projects
-        projecct_list.append(case_one.projects)
+        # project_list.append(case_one.projects)
         run_case_item['testevent'] = Interfacehuan.query.filter_by(url=testevent_url).first()
         testcase_list.append(run_case_item)
     test_suit = unittest.TestSuite()

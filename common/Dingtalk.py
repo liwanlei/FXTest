@@ -13,7 +13,7 @@ import requests, json
 def send_ding(content: str, Dingtalk_access_token: str):
     try:
         url = Dingtalk_access_token
-        pagrem = {
+        data = {
             "msgtype": "text",
             "text": {
                 "content": content
@@ -23,7 +23,7 @@ def send_ding(content: str, Dingtalk_access_token: str):
         headers = {
             'Content-Type': 'application/json'
         }
-        f = requests.post(url, data=json.dumps(pagrem), headers=headers)
+        f = requests.post(url, data=json.dumps(data), headers=headers)
         if f.status_code == 200:
             return True
         else:

@@ -1,9 +1,10 @@
 """ 
 @author: lileilei
 @file: admin.py 
-@time: 2018/3/21 9:54 
+@time: 2018/3/21 9:54
+@description: 管理后台
 """
-'''管理后台'''
+
 from app import admin
 from app.models import *
 from flask_admin.contrib.sqla import ModelView

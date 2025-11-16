@@ -12,10 +12,11 @@ from common.systemlog import logger
 class reques():
     def get(self, url, headers, parms):  # get消息
         try:
-            self.r = requests.get(url, headers=headers, params=parms, timeout=Interface_Time_Out)
-            self.r.encoding = 'UTF-8'
-            spend = self.r.elapsed.total_seconds()
-            json_response = json.loads(self.r.text)
+            self.reponse = requests.get(url, headers=headers,
+                                  params=parms, timeout=Interface_Time_Out)
+            self.reponse.encoding = 'UTF-8'
+            spend = self.reponse.elapsed.total_seconds()
+            json_response = json.loads(self.reponse.text)
             return json_response, spend
         except exceptions.Timeout:
             logger.exception(exceptions.Timeout)

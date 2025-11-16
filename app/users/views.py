@@ -43,22 +43,24 @@ class SetAdminView(View):  # 设置管理员
             if pan_user.is_sper is True:
                 return reponse(code= MessageEnum.super_admin_not_set_project.value[0],
                                 message= MessageEnum.super_admin_not_set_project.value[1], data= '')
-            pand_por = Project.query.filter_by(project_name=por).first()
-            if not pand_por:
+            project_exit = Project.query.filter_by(project_name=por).first()
+            if not project_exit:
                 return reponse(code= MessageEnum.set_project_not_exist.value[0],
                                 message= MessageEnum.set_project_not_exist.value[1], data= '')
-            pro_per = Quanxian.query.filter_by(project=pand_por.id).all()
+            pro_per = Quanxian.query.filter_by(project=project_exit.id).all()
             oneadmin = []
             for i in pro_per:
                 if i.rose == 2:
                     oneadmin.append(i.user.all())
             if [pan_user] in oneadmin:
-                return reponse(code= MessageEnum.set_is_admin.value[0], message= MessageEnum.set_is_admin.value[1])
+                return reponse(code= MessageEnum.set_is_admin.value[0],
+                               message= MessageEnum.set_is_admin.value[1])
             if (len(oneadmin)) > OneAdminCount:
                 return reponse(
-                    code= MessageEnum.project_admin_many.value[0], message= MessageEnum.project_admin_many.value[1])
+                    code= MessageEnum.project_admin_many.value[0],
+                    message= MessageEnum.project_admin_many.value[1])
             for roses in pan_user.quanxians:
-                if roses.project == pand_por.id:
+                if roses.project == project_exit.id:
                     roses.rose = 2
             try:
                 db.session.commit()
@@ -130,7 +132,7 @@ class UnFreezeUserView(View):  # 解冻
 
     @login_required
     def dispatch_request(self, id):
-        if chckuserpermisson() == False:
+        if chckuserpermisson() is False:
             flash(MessageEnum.permiss_is_ness.value[1])
             return redirect(request.headers.get('Referer'))
         user = User.query.filter_by(username=session.get('username')).first()
@@ -160,14 +162,16 @@ class ActivationUserview(View):
     def dispatch_request(self):
         if chckuserpermisson() is False:
             return reponse(
-                code= MessageEnum.permiss_is_ness.value[0], message= MessageEnum.permiss_is_ness.value[1], data= '')
+                code= MessageEnum.permiss_is_ness.value[0],
+                message= MessageEnum.permiss_is_ness.value[1], data= '')
         userjobnum = request.get_json()
         try:
             id = int(userjobnum['id'])
             job_num = int(userjobnum['jobnum'])
         except Exception as e:
             logger.exception(e)
-            return reponse(code= MessageEnum.activ_is_int.value[0], message= MessageEnum.activ_is_int.value[1])
+            return reponse(code= MessageEnum.activ_is_int.value[0],
+                           message= MessageEnum.activ_is_int.value[1])
         user = User.query.filter_by(id=id, status=False).first()
         if not user:
             return reponse(code= MessageEnum.login_user_not_exict_message.value[0],
@@ -176,7 +180,8 @@ class ActivationUserview(View):
             user_job = User.query.filter_by(jobnum=job_num).first()
             if user_job:
                 return reponse(
-                    code= MessageEnum.activi_user_jobnum.value[0], message= MessageEnum.activi_user_jobnum.value[1])
+                    code= MessageEnum.activi_user_jobnum.value[0],
+                    message= MessageEnum.activi_user_jobnum.value[1])
         except Exception as e:
             logger.exception(e)
             pass
@@ -184,7 +189,8 @@ class ActivationUserview(View):
             user.jobnum = job_num
             db.session.add(user)
             db.session.commit()
-            return reponse(code= MessageEnum.successs.value[0], message= MessageEnum.successs.value[1], data= '')
+            return reponse(code= MessageEnum.successs.value[0],
+                           message= MessageEnum.successs.value[1], data= '')
         return reponse(code= MessageEnum.activi_user_jobnum_is.value[0],
                         message= MessageEnum.activi_user_jobnum_is.value[1])
 

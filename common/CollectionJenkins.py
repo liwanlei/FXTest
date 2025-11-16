@@ -29,8 +29,8 @@ class Conlenct_jenkins(object):
             return False
 
     def job_bulid_list(self, jobname):
-        bulid_list = self.servir.get_job_info(jobname)['builds']
-        return bulid_list
+        build_list = self.servir.get_job_info(jobname)['builds']
+        return build_list
 
     def job_bulid_log(self, url, jobname):
         id = self.servir.get_job_info(jobname)['lastCompletedBuild']['number']
