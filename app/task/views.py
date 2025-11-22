@@ -150,7 +150,7 @@ class StartTaskView(MethodView):  # 开始定时任务
     def get(self, id):
         task = Task.query.filter_by(id=id).first()
         if len(task.interface.all()) <= 1:
-            flash(MessageEnum.task_must_be_mulite_case.value[1])
+            flash(MessageEnum.task_must_be_multiple_cases.value[1])
             return redirect(url_for('home.timingtask'))
         try:
             time_start = eval(task.taskstart)
@@ -262,7 +262,7 @@ class AddTimingTaskView(MethodView):
                         prject=procjt.id, testevent=testevent.id)
         db.session.add(new_task)
         try:
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1], data='')
+            return reponse(code=MessageEnum.success.value[0], message=MessageEnum.success.value[1], data='')
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
@@ -370,9 +370,9 @@ class GetTestView(MethodView):
         for testevent in testevents:
             testeventlist.append({"url": testevent.url})
         return reponse(
-            code=MessageEnum.successs.value[0],
+            code=MessageEnum.success.value[0],
             data=testeventlist,
-            message=MessageEnum.successs.value[1])
+            message=MessageEnum.success.value[1])
 
 
 class CreateTaskCaseAndRunView(MethodView):
@@ -398,9 +398,9 @@ class CreateTaskCaseAndRunView(MethodView):
                     data={"project":project,'taskmd5':taskmd5,'passnum':success,
                           'failnum':faill,'error':error,'extimetime':hou}
                     return reponse(
-                        code=MessageEnum.successs.value[0],
+                        code=MessageEnum.success.value[0],
                         data=data,
-                        message=MessageEnum.successs.value[1])
+                        message=MessageEnum.success.value[1])
                 else:
                     pass
 

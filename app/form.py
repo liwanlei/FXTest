@@ -4,17 +4,15 @@
 @file: form.py
 @time: 2017/7/13 16:42
 """
+from app import work_choices
+
 '''form表单'''
 from flask_wtf import Form
 from wtforms import StringField, validators, PasswordField, SelectField, ValidationError
 from wtforms.validators import Email
 from app.models import Work
 
-work_choices = []
-work_list = Work.query.all()
-choice_l = [(1, '否'), (2, '是')]
-for i in range(len(work_list)):
-    work_choices.append((work_list[i].id, work_list[i].name))
+
 
 
 class LoginForm(Form):

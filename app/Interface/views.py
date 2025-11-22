@@ -185,8 +185,8 @@ class SerinterView(MethodView):
         data = {}
         data['data'] = interfaclists
         data['typeinter'] = typeinterface
-        return reponse(message=MessageEnum.successs.value[1],
-                       code=MessageEnum.successs.value[0],
+        return reponse(message=MessageEnum.success.value[1],
+                       code=MessageEnum.success.value[0],
                        data=data)
 
 
@@ -219,7 +219,7 @@ class DetailView(MethodView):
     def get(self, id):
         interface_one = Interface.query.filter_by(id=id, status=False).first()
         if not interface_one:
-            flash(MessageEnum.Interface_not_exict.value[1])
+            flash(MessageEnum.interface_not_exist.value[1])
             return redirect(url_for('home.interface'))
         parme = Parameter.query.filter_by(interface_id=interface_one.id, status=False).all()
         rucan = []
@@ -230,7 +230,7 @@ class DetailView(MethodView):
             try:
                 if parme[i].type == 1:
                     chucan.append(parme[i])
-                    parame_deft.update(eval(parme[i].default))
+                    parame_deft.update(json.loads(parme[i].default))
                 else:
                     print(parme[i].default)
                     rucan.append(parme[i])
@@ -305,7 +305,7 @@ class DeleteParameterView(MethodView):
         passem.status = True
         try:
             db.session.commit()
-            flash(MessageEnum.successs.value[1])
+            flash(MessageEnum.success.value[1])
             return redirect(url_for('interface.interface_detail',
                                     id=passem.interfaces.id))
         except Exception as e:
@@ -323,7 +323,7 @@ class EditPParameterView(MethodView):
         interface_one = Interface.query.filter_by(id=inte_id,
                                                   status=False).first()
         if interface_one is None:
-            flash(MessageEnum.Interface_not_exict.value[1])
+            flash(MessageEnum.interface_not_exist.value[1])
             return redirect(url_for('home.interface'))
         if pasrm is None:
             flash(MessageEnum.parame_is_not_exict.value[1])
@@ -335,7 +335,7 @@ class EditPParameterView(MethodView):
         pasrm = Parameter.query.filter_by(id=int(id)).first()
         interface_one = Interface.query.filter_by(id=inte_id, status=False).first()
         if interface_one is None:
-            flash(MessageEnum.Interface_not_exict.value[1])
+            flash(MessageEnum.interface_not_exist.value[1])
             return redirect(url_for('home.interface'))
         if pasrm is None:
             flash(MessageEnum.parame_is_not_exict.value[1])
@@ -365,7 +365,7 @@ class EditPParameterView(MethodView):
         pasrm.desc = desec
         pasrm.default = shili
         try:
-            flash(MessageEnum.successs.value[1])
+            flash(MessageEnum.success.value[1])
             db.session.commit()
             return redirect(url_for('interface.interface_detail', id=inte_id))
         except Exception as e:
@@ -380,10 +380,10 @@ class AddGroupInterface(MethodView):
     def get(self, interfaceid):
         interface_one = Interface.query.filter_by(id=interfaceid, status=False).first()
         if not interface_one:
-            return reponse(message=MessageEnum.Interface_not_exict.value[1],
-                           code=MessageEnum.Interface_not_exict.value[0])
+            return reponse(message=MessageEnum.interface_not_exist.value[1],
+                           code=MessageEnum.interface_not_exist.value[0])
 
-        return reponse(message=MessageEnum.successs.value[1], code=MessageEnum.successs.value[0])
+        return reponse(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0])
 
 
 class GetGroupInterface(MethodView):
@@ -393,8 +393,8 @@ class GetGroupInterface(MethodView):
     def get(self, interfaceid):
         interface_one = Interface.query.filter_by(id=interfaceid, status=False).first()
         if not interface_one:
-            return reponse(message=MessageEnum.Interface_not_exict.value[1],
-                           code=MessageEnum.Interface_not_exict.value[0])
+            return reponse(message=MessageEnum.interface_not_exist.value[1],
+                           code=MessageEnum.interface_not_exist.value[0])
 
-        return reponse(message=MessageEnum.successs.value[1],
-                       code=MessageEnum.successs.value[0])
+        return reponse(message=MessageEnum.success.value[1],
+                       code=MessageEnum.success.value[0])

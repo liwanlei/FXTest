@@ -9,6 +9,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
+
+from app.models import Work
 from config import lod
 from apscheduler.schedulers.background import BackgroundScheduler, BlockingScheduler
 from config import jobstores, executors
@@ -38,7 +40,11 @@ def listerner(event):
 
 sched = BackgroundScheduler(jobstores=jobstores, executors=executors)
 sched.add_listener(listerner, EVENT_JOB_ERROR | EVENT_JOB_EXECUTED)
-
+work_choices = []
+work_list = Work.query.all()
+choice_l = [(1, '否'), (2, '是')]
+for i in range(len(work_list)):
+    work_choices.append((work_list[i].id, work_list[i].name))
 try:
     sched.start()
 except Exception as e:

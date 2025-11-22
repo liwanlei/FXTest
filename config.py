@@ -4,6 +4,8 @@
 @file: config.py
 @time: 2017/7/13 16:39
 """
+from app.models import Permisson
+
 '''配置文件，后台一些需要的配置需要在这里进行配置'''
 import os
 from apscheduler.jobstores.redis import RedisJobStore
@@ -32,7 +34,10 @@ jmeter_data_db = 'test'
 paln_run_url='http://127.0.0.1:5000'  #测试环境运行地址
 
 email_type = "online.com"  # 用于校验邮箱
-
+roles = {'User': Permisson.DELETE | Permisson.EDIT | Permisson.ADD,
+		 'Oneadmin': Permisson.DELETE | Permisson.EDIT | Permisson.ADD | Permisson.ONEADMIN,
+		 'Administrator': Permisson.DELETE | Permisson.EDIT | Permisson.ADD | Permisson.ONEADMIN | Permisson.ADMIN
+		 }
 REDIS = {
 	'host': redis_host,
 	'port': redis_port,

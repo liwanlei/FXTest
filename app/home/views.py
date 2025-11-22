@@ -39,7 +39,8 @@ class IndexView(MethodView):
             result_list_case.append(result.case_id)
         all_run_case_count = len(set(result_list_case))
         interface_list = []
-        for interface in range(len(interface_cont) + 1):
+        length=len(interface_cont) + 1
+        for interface in range(length):
             try:
                 if interface_cont[interface].projects.status is False:
                     interface_list.append(interface_cont[interface])
@@ -108,7 +109,7 @@ class LoginView(MethodView):
             return reponse(message=MessageEnum.login_password_not_message.value[1],
                            code=MessageEnum.login_password_not_message.value[0],
                            data='')
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(User.username == username).first()
         user_err_num = user.err_num
         if (user.jobnum == "None" or user.jobnum is None):
             return reponse(message=MessageEnum.login_user_inactive.value[1],
@@ -119,12 +120,12 @@ class LoginView(MethodView):
                 return reponse(message=MessageEnum.login_user_free_message.value[1],
                                code=MessageEnum.login_user_free_message.value[0],
                                data='')
-            if user.check_password(password):
+            if password and user.check_password(password):
                 if (user.is_free == True and user.freetime != None and user.err_num > 6 and (
                         datetime.datetime.now() - user.freetime).min > 10):
                     return reponse(
-                        message=MessageEnum.login_user_fremm.value[1],
-                        code=MessageEnum.login_user_fremm.value[0],
+                        message=MessageEnum.login_password_error_exceed_limit.value[1],
+                        code=MessageEnum.login_password_error_exceed_limit.value[0],
                         data='')
                 user.is_login = True
                 userlog = UserLoginlog(user=user.id,
@@ -155,8 +156,8 @@ class LoginView(MethodView):
                             user.is_free = True
                             db.session.add(user)
                             db.session.commit()
-                            return reponse(message=MessageEnum.login_user_fremm.value[1],
-                                           code=MessageEnum.login_user_fremm.value[0], data='')
+                            return reponse(message=MessageEnum.login_password_error_exceed_limit.value[1],
+                                           code=MessageEnum.login_password_error_exceed_limit.value[0], data='')
                     else:
                         if user.err_num == None:
                             user.err_num = 0
@@ -219,8 +220,8 @@ class LoginViewRedis(MethodView):
                 try:
                     num = int(self.conris.getset(user.username))
                     if (user.is_free == True and num > 5):
-                        return reponse(message=MessageEnum.login_user_fremm.value[1],
-                                       code=MessageEnum.login_user_fremm.value[0], data='')
+                        return reponse(message=MessageEnum.login_password_error_exceed_limit.value[1],
+                                       code=MessageEnum.login_password_error_exceed_limit.value[0], data='')
                     else:
                         self.conris.sethash(username, num + 1, 1000 * 60 * 10)
                         return reponse(message=MessageEnum.login_password_error_message.value[1],
@@ -303,13 +304,13 @@ class InterfaceView(MethodView):
         interface.status = True
         try:
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1],
-                           code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1],
+                           code=MessageEnum.success.value[0])
         except Exception as e:
             logger.info(e)
             db.session.rollback()
-            return reponse(message=MessageEnum.delete_inteface_error.value[1],
-                           code=MessageEnum.delete_inteface_error.value[0])
+            return reponse(message=MessageEnum.delete_interface_error.value[1],
+                           code=MessageEnum.delete_interface_error.value[0])
 
 
 class CaseView(MethodView):
@@ -333,8 +334,8 @@ class CaseView(MethodView):
         try:
             testcase.status = True
             db.session.commit()
-            return reponse(data=MessageEnum.successs.value[1],
-                           code=MessageEnum.successs.value[0])
+            return reponse(data=MessageEnum.success.value[1],
+                           code=MessageEnum.success.value[0])
         except Exception as e:
             logger.error(e)
             db.session.rollback()
@@ -395,8 +396,8 @@ class AdminUserView(MethodView):
             return reponse(message=MessageEnum.model_edit_fail.value[1],
                            code=MessageEnum.model_edit_fail.value[0])
         if len(project) <= 0:
-            return reponse(message=MessageEnum.successs.value[1],
-                           code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1],
+                           code=MessageEnum.success.value[0])
         else:
             try:
                 user_id = User.query.filter_by(username=name).first()
@@ -406,7 +407,7 @@ class AdminUserView(MethodView):
                     quanxian.user.append(user_id)
                     db.session.add(quanxian)
                 db.session.commit()
-                return reponse(message=MessageEnum.successs.value[1], code=MessageEnum.successs.value[0])
+                return reponse(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0])
             except Exception as e:
                 logger.exception(e)
                 db.session.rollback()
@@ -440,8 +441,8 @@ class TestResultView(MethodView):
         delTest.status = True
         try:
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1],
-                           code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1],
+                           code=MessageEnum.success.value[0])
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
@@ -492,7 +493,7 @@ class ProjectView(MethodView):
             #                       name='黑名单', projectid=new_moel.id)
             # db.session.add(testgroup)
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0], message=MessageEnum.success.value[1])
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
@@ -509,12 +510,12 @@ class ProjectView(MethodView):
             new = Project(project_name=name, project_user_id=current_user.id)
             db.session.add(new)
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1], code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0])
         prohect.project_name = name
         try:
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
-                           message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1])
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
@@ -530,7 +531,7 @@ class ProjectView(MethodView):
         proje.status = True
         try:
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1], code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0])
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
@@ -562,7 +563,7 @@ class ModelView(MethodView):
         model.status = True
         try:
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1], code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0])
         except Exception as e:
             logger.error(e)
             db.session.rollback()
@@ -587,8 +588,8 @@ class ModelView(MethodView):
 
         try:
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
-                           message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1])
         except Exception as e:
             logger.error(e)
             db.session.rollback()
@@ -610,12 +611,12 @@ class ModelView(MethodView):
             mew = Model(model_name=name, model_user_id=current_user.id)
             db.session.add(mew)
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1], code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0])
         edit_mode.model_name = name
         edit_mode.project = project_one
         try:
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1], code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0])
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
@@ -666,8 +667,8 @@ class TestenvironmentView(MethodView):
         try:
             db.session.commit()
             return reponse(
-                code=MessageEnum.successs.value[0]
-                , message=MessageEnum.successs.value[1]
+                code=MessageEnum.success.value[0]
+                , message=MessageEnum.success.value[1]
             )
         except Exception as e:
             logger.error(e)
@@ -688,8 +689,8 @@ class TestenvironmentView(MethodView):
         password = json_data['password']
         url_old = Interfacehuan.query.filter_by(url=str(url)).first()
         if url_old:
-            return reponse(message=MessageEnum.testeveirment_use_one_nam.value[1],
-                           code=MessageEnum.testeveirment_use_one_nam.value[0], data='')
+            return reponse(message=MessageEnum.test_environment_must_be_independent.value[1],
+                           code=MessageEnum.test_environment_must_be_independent.value[0], data='')
         prkcyt = Project.query.filter_by(project_name=project).first()
         testevent = Interfacehuan(url=url, desc=desc, project=prkcyt.id,
                                   database=name,
@@ -699,8 +700,8 @@ class TestenvironmentView(MethodView):
         db.session.add(testevent)
         try:
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1],
-                           code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1],
+                           code=MessageEnum.success.value[0])
         except Exception as e:
             logger.error(e)
             db.session.rollback()
@@ -730,8 +731,8 @@ class TestenvironmentView(MethodView):
                                      dbport=port, make_user=current_user.id)
             db.session.add(newevent)
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1],
-                           code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1],
+                           code=MessageEnum.success.value[0])
         event.url = url
         event.desc = desc
         event.database = name
@@ -743,8 +744,8 @@ class TestenvironmentView(MethodView):
         event.make_user = current_user.id
         try:
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1],
-                           code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1],
+                           code=MessageEnum.success.value[0])
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
@@ -797,8 +798,8 @@ class MockViews(MethodView):
         db.session.add(new_mock)
         try:
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
-                           message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1])
         except Exception as e:
             logger.error(e)
             db.session.rollback()
@@ -812,8 +813,8 @@ class MockViews(MethodView):
         if ded:
             ded.delete = True
             db.session.commit()
-            return reponse(message=MessageEnum.successs.value[1],
-                           code=MessageEnum.successs.value[0])
+            return reponse(message=MessageEnum.success.value[1],
+                           code=MessageEnum.success.value[0])
         return reponse(message=MessageEnum.delete_mock_error.value[1],
                        code=MessageEnum.delete_mock_error.value[0])
 
@@ -853,7 +854,7 @@ class GetProtestReportView(MethodView):
                            code=MessageEnum.error_send_message.value[0], data='')
         project_is = Project.query.filter_by(project_name=project).first()
         if not project_is:
-            return reponse(message=MessageEnum.successs.value[1], code=MessageEnum.successs.value[0], data=[])
+            return reponse(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0], data=[])
         testreport = TestResult.query.filter_by(projects_id=project_is.id,
                                                 status=False).order_by(
             TestResult.id.desc()).all()
@@ -869,7 +870,7 @@ class GetProtestReportView(MethodView):
                                    'test_time': str(test.test_time),
                                    'Test_user_id': test.users.username, 'id': test.id,
                                    'fenshu': test.pass_num / test.test_num})
-        return reponse(message=MessageEnum.successs.value[1], code=MessageEnum.successs.value[0], data=(testreportlist))
+        return reponse(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0], data=(testreportlist))
 
     # class JenkinsFirst(MethodView):
     #     @login_required
@@ -942,10 +943,10 @@ class DeleteGenconfigView(MethodView):
         gencofigilist.status = True
         try:
             db.session.commit()
-            flash(MessageEnum.successs.value[1])
+            flash(MessageEnum.success.value[1])
             return redirect(url_for('home.genconfig'))
         except Exception as e:
             logger.error('删除配置失败！原因：%s' % e)
             db.session.rollback()
-            flash(MessageEnum.cobfig_delete_error.value[1])
+            flash(MessageEnum.config_delete_error.value[1])
             return redirect(url_for('home.genconfig'))

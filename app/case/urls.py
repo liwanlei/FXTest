@@ -3,7 +3,7 @@
 @file: urls.py 
 @time: 2018/1/31 13:20 
 """
-from app.case.views import *
+from app.case.views import AddtestcaseView, EditcaseView, ImportCaseView, SerCaseView, MakeOnlyOneCaseView, MuliteCaseLiView, ExportCaseView, CaseToJmxView, JmxToServerView, OneCaseDetialView, GetProjectInterfaceCase
 from app.case import case
 
 case.add_url_rule('/addtestcase', view_func=AddtestcaseView.as_view('addtestcase'))
@@ -16,7 +16,4 @@ case.add_url_rule('/exportcase', view_func=ExportCaseView.as_view('exportcase'))
 case.add_url_rule("/casetojmx", view_func=CaseToJmxView.as_view("casetojmx"))
 case.add_url_rule("/jmxtoserver", view_func=JmxToServerView.as_view("jmxtoserver"))
 case.add_url_rule('/caseonedeteil', view_func=OneCaseDetialView.as_view('caseonedeteil'))
-
-
-
 case.add_url_rule("/getprojectinterfacecase",view_func=GetProjectInterfaceCase.as_view("getprojectinterfacecase"))

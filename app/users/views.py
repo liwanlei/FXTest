@@ -64,8 +64,8 @@ class SetAdminView(View):  # 设置管理员
                     roses.rose = 2
             try:
                 db.session.commit()
-                return reponse(code= MessageEnum.successs.value[0],
-                               message= MessageEnum.successs.value[1])
+                return reponse(code= MessageEnum.success.value[0],
+                               message= MessageEnum.success.value[1])
             except Exception as e:
                 logger.exception(e)
                 db.session.rollback()
@@ -189,8 +189,8 @@ class ActivationUserview(View):
             user.jobnum = job_num
             db.session.add(user)
             db.session.commit()
-            return reponse(code= MessageEnum.successs.value[0],
-                           message= MessageEnum.successs.value[1], data= '')
+            return reponse(code= MessageEnum.success.value[0],
+                           message= MessageEnum.success.value[1], data= '')
         return reponse(code= MessageEnum.activi_user_jobnum_is.value[0],
                         message= MessageEnum.activi_user_jobnum_is.value[1])
 

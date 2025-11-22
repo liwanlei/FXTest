@@ -2,7 +2,7 @@
 # @Date    : 2017-08-09 20:05:32
 # @Author  : lileilei
 '''url'''
-from app.views import *
+from app.views import IndexFirstview, LoadView, GetCaseView, GeneraConfig, ActionViews
 from app import app
 
 app.add_url_rule('/', view_func=IndexFirstview.as_view("homeone"))

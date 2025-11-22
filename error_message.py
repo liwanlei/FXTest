@@ -8,14 +8,14 @@ from enum import Enum
 
 
 class MessageEnum(Enum):
-    successs = 200, "成功"
+    success = 200, "成功"
     login_username_not_message = 100001, "用户名没有输入"
     login_password_not_message = 100002, '密码没有输入'
     login_user_inactive = 100003, '用户未激活,请联系管理员激活'
     login_user_free_message = 100004, '用户冻结！'
     login_user_is_login = 100005, '用户已经登录'
     login_user_sucess_message = 0, '登录成功！'
-    login_user_fremm = 100007, "密码错误超过5次，请十分钟后登录"
+    login_password_error_exceed_limit = 100007, "密码错误超过5次，请十分钟后登录"
     login_password_error_message = 100008, '密码错误'
     login_user_not_exict_message = 100009, '用户不存在'
     activi_user_jobnum = 100010, '用户工号唯一'
@@ -35,7 +35,7 @@ class MessageEnum(Enum):
     common_gene_not_support = 100024, '通用配置的类型暂时不支持'
     common_is_not_exict = 100025, '编辑的通用配置不存在，请确定'
     common_edit_is_success = 100026, '通用配置编辑成功'
-    re_is_same = 100027, '操作的名称必须唯一'
+    operation_name_must_be_unique = 100027, '操作的名称必须唯一'
     case_not_exict = 100028, '测试用例不存在'
     re_is_not_exitc = 100029, '操作的类型不支持'
     re_editisnot = 100030, '编辑操作不存在'
@@ -71,7 +71,7 @@ class MessageEnum(Enum):
     project_not_case=100060,'亲你见过只有测试项目没有测试用例的测试任务吗'
     task_update_case=100061,'任务更新用例成功'
     task_update_case_error=100062,'任务更新用例失败'
-    task_must_be_mulite_case=10063,'定时任务执行过程的测试用例为多用例，请你谅解'
+    task_must_be_multiple_cases=10063,'定时任务执行过程的测试用例为多用例，请你修改定时任务'
     task_start_success=100064,"定时任务启动成功"
     task_start_error=100065,'定时任务启动失败'
     task_stop_fail=100066,'定时任务暂停成功'
@@ -100,7 +100,7 @@ class MessageEnum(Enum):
     mock_edit_fail=100089,'编辑出现状况'
     mock_start_success=100090,'mock开启成功，可以正常使用'
     mock_start_error=100091,'mock的服务开启失败，因为不存在'
-    mock_server_start_fail=100091,'mock开启失败'
+    mock_server_start_failed=100091,'mock开启失败'
     mock_close_success=100092,'mock关闭成功,停止访问'
     mock_server_close_fail = 100093, 'mock开启失败'
     mock_stop_fail=100094,'mock的服务关闭失败，因为不存在或者已经删除'
@@ -117,16 +117,16 @@ class MessageEnum(Enum):
     add_parame_interface=100105,'添加参数的接口不存在'
     export_fail=100106,'导出失败！'
     interface_add_not=100107,'删除接口不存在'
-    delete_inteface_error=100108,'删除接口失败'
+    delete_interface_error=100108,'删除接口失败'
     delete_case_error=100109,'删除用例失败'
     user_is_exict=100110,'用户已经存在！不能重复!'
     delete_fail=100111,'删除失败'
-    testeveirment_use_one_nam=100112,'测试环境必须是相互独立的'
+    test_environment_must_be_independent=100112,'测试环境必须是相互独立的'
     add_case_erro=100113,'添加测试用例失败'
     mock_name_only_one=100114,'mockserver的名称不能重复'
     add_mock_exception=100115,'创建新的mock接口出错'
     config_not_exict=100116,'配置已经删除或者不存在'
-    cobfig_delete_error=100117,'删除配置失败！'
+    config_delete_error=100117,'删除配置失败！'
     error_send_message=100118,'没有发送数据'
     edit_mock_error=100119,'编辑失败'
     delete_mock_error=100120,'删除失败，找不到mocksever'
@@ -143,7 +143,7 @@ class MessageEnum(Enum):
     user_not_permision=100131,'权限不足！'
     project_cannot_empty=100132,'项目名称不能为空！'
     project_add_error=100133,'项目添加失败'
-    Interface_not_exict=100134,'要查看的接口不存在'
+    interface_not_exist=100134,'要查看的接口不存在'
     parame_name_not_empty=100135,'参数的名字不能为空'
     parame_error=100136,'参数格式类型必须填写进去'
     parame_is_exict=100137,'参数名称已经存在于该接口'
@@ -162,7 +162,7 @@ class MessageEnum(Enum):
     test_error=100150,'测试失败'
     test_case=100151,'请确定你要测试的用例是否存在！'
     get_reply_data_fail=100152,'获取依赖数据失败'
-    test_feild=100153,'测试参数应该是字典格式！'
+    test_field_should_be_dict=100153,'测试参数应该是字典格式！'
     assert_not_in_or_sql_not_in=100154,'要判断数据库但是没有找到数据库的语句或者断言的字段'
     test_sql_url_not_in=100155,'测试环境数据库url配置不存在'
     test_sql_port_not_in=100156,'测试环境数据库port配置不存在'

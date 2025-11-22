@@ -57,10 +57,12 @@ class LoadView(MethodView):
 def get_test_case_list():  # ajax获取项目的测试用例
     projec = (request.get_data('project')).decode('utf-8')
     if not projec:
-        return reponse(code=MessageEnum.successs.value[0], data='', message=MessageEnum.successs.value[1])
+        return reponse(code=MessageEnum.success.value[0], data='',
+                       message=MessageEnum.success.value[1])
     proje = Project.query.filter_by(project_name=str(projec)).first()
     if not proje:
-        return reponse(code=MessageEnum.successs.value[0], data='', message=MessageEnum.successs.value[1])
+        return reponse(code=MessageEnum.success.value[0], data='',
+                       message=MessageEnum.success.value[1])
     all_case = InterfaceTest.query.filter_by(projects_id=proje.id).all()
     case_list = []
     for item in all_case:
@@ -68,8 +70,8 @@ def get_test_case_list():  # ajax获取项目的测试用例
             continue
         else:
             case_list.append({'name': item.Interface_name, 'id': item.id})
-    return reponse(code=MessageEnum.successs.value[0],
-                   data=case_list, message=MessageEnum.successs.value[1])
+    return reponse(code=MessageEnum.success.value[0],
+                   data=case_list, message=MessageEnum.success.value[1])
 
 
 @app.route('/getprojects', methods=['GET', 'POST'])
@@ -101,8 +103,8 @@ def getprojects():  # 获取项目
     data['project'] = result.project_name
     data['url'] = url_list
 
-    return reponse(data=data, code=MessageEnum.successs.value[0],
-                   message=MessageEnum.successs.value[1])
+    return reponse(data=data, code=MessageEnum.success.value[0],
+                   message=MessageEnum.success.value[1])
 
 
 class GetCaseView(MethodView):  # 获取用例
@@ -118,15 +120,16 @@ class GetCaseView(MethodView):  # 获取用例
         projectdata = Project.query.filter_by(project_name=project, status=False).first()
         if not projectdata:
             return reponse(
-                message=MessageEnum.project_not_exict.value[1], code=MessageEnum.project_not_exict.value[0],
+                message=MessageEnum.project_not_exict.value[1],
+                code=MessageEnum.project_not_exict.value[0],
                 data='')
-        tesatcaelist = InterfaceTest.query.filter_by(projects_id=projectdata.id, status=False).all()
-        caselit = []
-        for i in tesatcaelist:
-            caselit.append(i.id)
+        test_case_list = InterfaceTest.query.filter_by(projects_id=projectdata.id, status=False).all()
+        caselist = []
+        for i in test_case_list:
+            caselist.append(i.id)
         return reponse(code=MessageEnum.request_success.value[0],
                        message=MessageEnum.request_success.value[1],
-                       data=(caselit))
+                       data=(caselist))
 
 
 @app.errorhandler(404)
@@ -148,9 +151,9 @@ class IndexFirstview(MethodView):
 def register():
     form = RegFrom()
     if request.method == 'POST':
-        usernmae = request.form.get('username')
-        pasword = request.form.get('password')
-        setpasswod = request.form.get('se_password')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        setpassword = request.form.get('se_password')
         email = request.form.get('email')
         jobnum = request.form.get("jobnum")
         if email == "" or email is None:
@@ -168,10 +171,10 @@ def register():
         if job_num:
             flash(MessageEnum.jobnum_oblg_reg_one.value[1])
             return render_template('home/register.html', form=form)
-        if pasword != setpasswod:
+        if password != setpassword:
             flash(MessageEnum.password_not_same.value[1])
             return render_template('home/register.html', form=form)
-        user = User.query.filter_by(username=usernmae).first()
+        user = User.query.filter_by(username=username).first()
         if user:
             flash(MessageEnum.user_exist.value[1])
             return render_template('home/register.html', form=form)
@@ -179,14 +182,14 @@ def register():
         if emai:
             flash(MessageEnum.email_exict.value[1])
             return render_template('home/register.html', form=form)
-        new_user = User(username=usernmae, user_email=email, jobnum=job_num)
-        new_user.set_password(pasword)
+        new_user = User(username=username, user_email=email, jobnum=job_num)
+        new_user.set_password(password)
         db.session.add(new_user)
         try:
             db.session.commit()
             # 需要邮箱发送的方法
             msg = Message(u"你好", sender=email, recipients=email)
-            msg.body = u"欢迎你注册, 你的用户名：%s，你的密码是：%s" % (usernmae, pasword)
+            msg.body = u"欢迎你注册, 你的用户名：%s" % (username)
             msg.html = '<a href="http://127.0.0.1:5000/login">去登录</a>'
             mail = Mail()
             mail.send(msg)
@@ -214,41 +217,48 @@ class GeneraConfig(MethodView):
                                message=MessageEnum.common_is_same.value[1],
                                data='')
             if data['type'] == "key-value":
-                newconfig = GeneralConfiguration(user=current_user, style=0,
+                newconfig = GeneralConfiguration(user=current_user,
+                                                 style=0,
                                                  key=data["key"],
                                                  name=data['name'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return reponse(code=MessageEnum.successs.value[0],
-                               message=MessageEnum.successs.value[1])
+                return reponse(code=MessageEnum.success.value[0],
+                               message=MessageEnum.success.value[1])
             elif data['type'] == 'token':
                 newconfig = GeneralConfiguration(user=current_user, style=1,
-                                                 name=data['name'], token_method=data['method'],
-                                                 token_parame=data['parame'], token_url=data['url'])
+                                                 name=data['name'],
+                                                 token_method=data['method'],
+                                                 token_parame=data['parame'],
+                                                 token_url=data['url'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return reponse(code=MessageEnum.successs.value[0],
-                               message=MessageEnum.successs.value[1])
+                return reponse(code=MessageEnum.success.value[0],
+                               message=MessageEnum.success.value[1])
             elif data['type'] == 'sql':
                 testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
                 if not testevnet:
                     return reponse(code=MessageEnum.testeveirment_not_exict.value[0],
                                    message=MessageEnum.testeveirment_not_exict.value[1])
-                newconfig = GeneralConfiguration(user=current_user, style=1,
-                                                 name=data['name'], testevent=testevnet,
+                newconfig = GeneralConfiguration(user=current_user,
+                                                 style=1,
+                                                 name=data['name'],
+                                                 testevent=testevnet,
                                                  sqlurl=data['sql'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return reponse(code=MessageEnum.successs.value[0],
-                               message=MessageEnum.successs.value[1])
+                return reponse(code=MessageEnum.success.value[0],
+                               message=MessageEnum.success.value[1])
             elif data['type'] == 'http请求':
                 newconfig = GeneralConfiguration(user=current_user, style=1,
-                                                 name=data['name'], request_method=data['method'],
-                                                 request_parame=data['parame'], request_url=data['url'])
+                                                 name=data['name'],
+                                                 request_method=data['method'],
+                                                 request_parame=data['parame'],
+                                                 request_url=data['url'])
                 db.session.add(newconfig)
                 db.session.commit()
-                return reponse(code=MessageEnum.successs.value[0],
-                               message=MessageEnum.successs.value[1])
+                return reponse(code=MessageEnum.success.value[0],
+                               message=MessageEnum.success.value[1])
             else:
                 return reponse(code=MessageEnum.common_gene_not_support.value[0],
                                message=MessageEnum.common_gene_not_support.value[1], data='')
@@ -283,7 +293,7 @@ class GeneraConfig(MethodView):
             config_is.token_parame = data['parame'],
             config_is.token_url = data['url']
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
+            return reponse(code=MessageEnum.success.value[0],
                            message=MessageEnum.common_gene_not_support.value[1])
         elif data['type'] == 'sql':
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
@@ -296,8 +306,8 @@ class GeneraConfig(MethodView):
             config_is.testevent = testevnet
             config_is.sqlurl = data['sql']
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
-                           message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1])
         elif data['type'] == 'http请求':
             config_is.user = current_user
             config_is.style = 1
@@ -306,7 +316,7 @@ class GeneraConfig(MethodView):
             config_is.request_parame = data['parame']
             config_is.request_url = data['url']
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
+            return reponse(code=MessageEnum.success.value[0],
                            message=MessageEnum.common_gene_not_support.value[1])
         else:
             return reponse(code=MessageEnum.common_gene_not_support.value[0],
@@ -321,7 +331,8 @@ class ActionViews(MethodView):
         data = request.get_json()
         name_is = Action.query.filter_by(name=data['name']).first()
         if name_is:
-            return reponse(code=MessageEnum.re_is_same.value[0], message=MessageEnum.re_is_same.value[1])
+            return reponse(code=MessageEnum.operation_name_must_be_unique.value[0],
+                           message=MessageEnum.operation_name_must_be_unique.value[1])
         action = Action(name=data['name'], user=current_user)
         if data['catepy'] == '前置':
             action.category = 0
@@ -332,7 +343,8 @@ class ActionViews(MethodView):
             action.style = 0
             db.session.add(action)
             db.session.commit()
-            return reponse(code=MessageEnum.request_success.value[0], message=MessageEnum.request_success.value[1])
+            return reponse(code=MessageEnum.request_success.value[0],
+                           message=MessageEnum.request_success.value[1])
         elif data['type'] == "1":
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
             if not testevnet:
@@ -343,8 +355,8 @@ class ActionViews(MethodView):
             action.sql = data['sql']
             db.session.add(action)
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
-                           message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1])
         elif data['type'] == "2":
             action.style = 2
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
@@ -354,13 +366,14 @@ class ActionViews(MethodView):
             case_is = InterfaceTest.query.filter_by(id=int(data['caseid'])).first()
             if not case_is:
                 return reponse(
-                    code=MessageEnum.case_not_exict.value[0], message=MessageEnum.case_not_exict.value[1])
+                    code=MessageEnum.case_not_exict.value[0],
+                    message=MessageEnum.case_not_exict.value[1])
             action.testevent = testevnet
             action.caseid = int(data['caseid'])
             db.session.add(action)
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
-                           message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1])
         elif data['type'] == "3":
             action.style = 3
             action.requestsurl = data['url']
@@ -368,8 +381,8 @@ class ActionViews(MethodView):
             action.requestsparame = data['parame']
             db.session.add(action)
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
-                           message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1])
         else:
             return reponse(
                 code=MessageEnum.re_is_not_exitc.value[0],
@@ -388,7 +401,7 @@ class ActionViews(MethodView):
             id.style = 0
             db.session.commit()
             return reponse(code=MessageEnum.re_editisnot.value[0],
-                           message=MessageEnum.successs.value[1])
+                           message=MessageEnum.success.value[1])
         elif data['type'] == "1":
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
             if not testevnet:
@@ -398,7 +411,8 @@ class ActionViews(MethodView):
             id.style = 1
             id.sql = data['sql']
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0], message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1])
         elif data['type'] == "2":
             id.style = 2
             testevnet = Interfacehuan.query.filter_by(id=int(data['eventid'])).first()
@@ -413,16 +427,17 @@ class ActionViews(MethodView):
             id.testevent = testevnet
             id.caseid = case_is.id
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
-                           message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1])
         elif data['type'] == "3":
             id.style = 3
             id.requestsurl = data['url']
             id.requestmethod = data['method']
             id.requestsparame = data['parame']
             db.session.commit()
-            return reponse(code=MessageEnum.successs.value[0],
-                           message=MessageEnum.successs.value[1])
+            return reponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1])
         else:
             return reponse(
-                code=MessageEnum.re_is_not_exitc.value[0], message=MessageEnum.re_is_not_exitc.value[1], data='')
+                code=MessageEnum.re_is_not_exitc.value[0],
+                message=MessageEnum.re_is_not_exitc.value[1], data='')

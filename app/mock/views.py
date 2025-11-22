@@ -73,7 +73,7 @@ class EditMockServerView(MethodView):  # 编辑mock服务
         mock.update_time = datetime.datetime.now()
         try:
             db.session.commit()
-            flash(MessageEnum.successs.value[1])
+            flash(MessageEnum.success.value[1])
             return redirect(url_for('home.mockserver'))
         except Exception as e:
             logger.exception(e)
@@ -113,7 +113,7 @@ class StartMockView(MethodView):  # 开启mock服务
                 return redirect(next or url_for('home.mockserver'))
             except Exception as e:
                 logger.exception(e)
-                flash(MessageEnum.mock_server_start_fail.value[1])
+                flash(MessageEnum.mock_server_start_failed.value[1])
                 return redirect(next or url_for('home.mockserver'))
         flash(MessageEnum.mock_start_error.value[1])
         return redirect(next or url_for('mockserver'))

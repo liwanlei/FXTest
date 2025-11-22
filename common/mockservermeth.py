@@ -34,8 +34,8 @@ def get_token_data(path):
                 if huoqupath.rebacktype == 'json':
                     try:
                         json_fan = json.dumps(huoqupath.fanhui)
-                        return jsonreponse(code=MessageEnum.successs.value[0],
-                                           message=MessageEnum.successs.value[1],
+                        return jsonreponse(code=MessageEnum.success.value[0],
+                                           message=MessageEnum.success.value[1],
                                            data=json_fan)
                     except Exception as e:
                         logger.exception(e)
@@ -57,8 +57,8 @@ def get_token_data(path):
                         if huoqupath.rebacktype == 'json':
                             try:
                                 json_return = json.dumps(huoqupath.fanhui)
-                                return jsonreponse(code=MessageEnum.successs.value[0],
-                                                   message=MessageEnum.successs.value[1],
+                                return jsonreponse(code=MessageEnum.success.value[0],
+                                                   message=MessageEnum.success.value[1],
                                                    data=json_return)
                             except Exception as e:
                                 logger.exception(e)
@@ -78,8 +78,8 @@ def get_token_data(path):
                     if huoqupath.rebacktype == 'json':
                         try:
                             json_return = json.dumps(huoqupath.fanhui)
-                            return jsonreponse(code=MessageEnum.successs.value[0],
-                                               message=MessageEnum.successs.value[1],
+                            return jsonreponse(code=MessageEnum.success.value[0],
+                                               message=MessageEnum.success.value[1],
                                                data=json_return)
                         except Exception as e:
                             logger.exception(e)
@@ -100,8 +100,8 @@ def get_token_data(path):
                     if huoqupath.rebacktype == 'json':
                         try:
                             json_return = json.dumps(huoqupath.fanhui)
-                            return jsonreponse(code=MessageEnum.successs.value[0],
-                                               message=MessageEnum.successs.value[1],
+                            return jsonreponse(code=MessageEnum.success.value[0],
+                                               message=MessageEnum.success.value[1],
                                                data=json_return)
                         except Exception as e:
                             logger.exception(e)
@@ -119,8 +119,8 @@ def get_token_data(path):
             if huoqupath.rebacktype == 'json':
                 try:
                     json_return = json.dumps(huoqupath.fanhui)
-                    return jsonreponse(code=MessageEnum.successs.value[0],
-                                       message=MessageEnum.successs.value[1],
+                    return jsonreponse(code=MessageEnum.success.value[0],
+                                       message=MessageEnum.success.value[1],
                                        data=json_return)
                 except Exception as e:
                     logger.exception(e)

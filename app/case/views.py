@@ -160,24 +160,32 @@ class AddtestcaseView(View):
                                     return render_template('add/add_test_case.html', form=form, projects=projects,
                                                            models=models,
                                                            inrterface_list=inrterface_list, mock_yilai=mock_yilai)
-                                caseac = CaseGeneral(case=newcase, general=action, filed=key)
+                                caseac = CaseGeneral(case=newcase,
+                                                     general=action, filed=key)
                                 db.session.add(caseac)
                                 db.session.commit()
                             else:
                                 pass
                 except:
-                    flash(MessageEnum.test_feild.value[1])
-                    return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
-                                           inrterface_list=inrterface_list, mock_yilai=mock_yilai)
-                flash(MessageEnum.successs.value[1])
+                    flash(MessageEnum.test_field_should_be_dict.value[1])
+                    return render_template('add/add_test_case.html',
+                                           form=form, projects=projects,
+                                           models=models,
+                                           inrterface_list=inrterface_list,
+                                           mock_yilai=mock_yilai)
+                flash(MessageEnum.success.value[1])
                 return redirect(url_for('home.case'))
             except Exception as e:
                 logger.exception(e)
                 db.session.rollback()
                 flash(MessageEnum.add_case_erro)
                 return redirect(url_for('home.case'))
-        return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
-                               inrterface_list=inrterface_list, mock_yilai=mock_yilai)
+        return render_template('add/add_test_case.html',
+                               form=form,
+                               projects=projects,
+                               models=models,
+                               inrterface_list=inrterface_list,
+                               mock_yilai=mock_yilai)
 
 
 class EditcaseView(View):
@@ -188,7 +196,7 @@ class EditcaseView(View):
         project, models = get_project_model()
         inrterface_list = Interface.query.filter_by(status=False).all()
         mock_yilai = Mockserver.query.filter_by(delete=False).all()
-        if current_user.is_sper == True:
+        if current_user.is_sper:
             projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
             projects = []
@@ -310,13 +318,13 @@ class EditcaseView(View):
                             else:
                                 pass
                 except:
-                    flash(MessageEnum.test_feild.value[1])
+                    flash(MessageEnum.test_field_should_be_dict.value[1])
                     return render_template('edit/edit_case.html', edit=edit_case,
                                            projects=projects, models=models,
                                            inerfacelist=inrterface_list, mock_yilai=mock_yilai)
 
                 db.session.commit()
-                flash(MessageEnum.successs.value[1])
+                flash(MessageEnum.success.value[1])
                 return redirect(url_for('home.case'))
             except Exception as e:
                 print(e)
@@ -375,8 +383,8 @@ class SerCaseView(MethodView):
         data['data'] = interfacelist
         data['url'] = testeventlist
         data['typeinter'] = typeinterface
-        return jsonreponse(message=MessageEnum.successs.value[1],
-                           code=MessageEnum.successs.value[0],
+        return jsonreponse(message=MessageEnum.success.value[1],
+                           code=MessageEnum.success.value[0],
                            data=data)
 
 
@@ -577,8 +585,8 @@ class MakeOnlyOneCaseView(MethodView):
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
-                            return jsonreponse(code=MessageEnum.test_feild.value[0],
-                                               message=MessageEnum.test_feild.value[1])
+                            return jsonreponse(code=MessageEnum.test_field_should_be_dict.value[0],
+                                               message=MessageEnum.test_field_should_be_dict.value[1])
                     else:
                         try:
                             pasrms = eval(case.Interface_pase)
@@ -586,8 +594,8 @@ class MakeOnlyOneCaseView(MethodView):
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
-                            return jsonreponse(code=MessageEnum.test_feild.value[0],
-                                               message=MessageEnum.test_feild.value[1])
+                            return jsonreponse(code=MessageEnum.test_field_should_be_dict.value[0],
+                                               message=MessageEnum.test_field_should_be_dict.value[1])
                 else:
                     if case.Interface_pase is None or case.Interface_pase == "null":
                         pasrms = {}
@@ -598,8 +606,8 @@ class MakeOnlyOneCaseView(MethodView):
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
-                            return jsonreponse(code=MessageEnum.test_feild.value[0],
-                                               message=MessageEnum.test_feild.value[1])
+                            return jsonreponse(code=MessageEnum.test_field_should_be_dict.value[0],
+                                               message=MessageEnum.test_field_should_be_dict.value[1])
                 new_headers = case.Interface_headers
                 if new_headers == 'None':
                     new_header = {'host': url}
@@ -613,8 +621,8 @@ class MakeOnlyOneCaseView(MethodView):
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
-                        return jsonreponse(code=MessageEnum.test_feild.value[0],
-                                           message=MessageEnum.test_feild.value[1])
+                        return jsonreponse(code=MessageEnum.test_field_should_be_dict.value[0],
+                                           message=MessageEnum.test_field_should_be_dict.value[1])
                 if case.is_database is True:
 
                     if case.chaxunshujuku is None or case.databaseziduan is None:
@@ -806,8 +814,8 @@ class OneCaseDetialView(MethodView):
                                'date': rest_one.date.strftime('%Y-%m-%d %H:%M:%S'),
                                'event': ceshihuanjing,
                                'spend': spend_ed})
-        return jsonreponse(code=MessageEnum.successs.value[0],
-                           message=MessageEnum.successs.value[1], data=result_all)
+        return jsonreponse(code=MessageEnum.success.value[0],
+                           message=MessageEnum.success.value[1], data=result_all)
 
 
 
@@ -933,9 +941,9 @@ class GetProjectInterfaceCase(MethodView):
                     caseitem['id']=item.id
                     caseitem['name']=item.bian_num
                     reslutcaselit.append(caseitem)
-                return jsonreponse(code=MessageEnum.successs.value[0],
-                                   message=MessageEnum.successs.value[1],
+                return jsonreponse(code=MessageEnum.success.value[0],
+                                   message=MessageEnum.success.value[1],
                                    data=reslutcaselit)
-            return jsonreponse(code=MessageEnum.successs.value[0],
-                               message=MessageEnum.successs.value[1],
+            return jsonreponse(code=MessageEnum.success.value[0],
+                               message=MessageEnum.success.value[1],
                                data=[])

@@ -73,7 +73,7 @@ class User(db.Model):  # 用户表
     __tablename__ = 'users'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     username = db.Column(db.String(63), unique=True)
-    password = db.Column(db.String(252))
+    password = db.Column(db.String(512))
     user_email = db.Column(db.String(64), unique=True)
     jobnum = db.Column(db.Integer())
     status = db.Column(db.Boolean(), default=False)
@@ -295,7 +295,7 @@ class EmailReport(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     email_re_user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
     send_email = db.Column(db.String(64))  # 发送邮箱的邮件
-    send_email_password = db.Column(db.String(64))  # 发送邮件的密码
+    send_email_password = db.Column(db.String(512))  # 发送邮件的密码
     stmp_email = db.Column(db.String(64))  # stmp服务器
     port = db.Column(db.Integer())  # 端口号
     to_email = db.Column(db.String())  # 收件人
@@ -316,7 +316,7 @@ class Interfacehuan(db.Model):  # 测试环境
     dbport = db.Column(db.String(252))  # 数据库服务端口号
     dbhost = db.Column(db.String(252))  # 数据库主机
     databaseuser = db.Column(db.String(32))
-    databasepassword = db.Column(db.String(32))
+    databasepassword = db.Column(db.String(512))
     project = db.Column(db.Integer(), db.ForeignKey('projects.id'))  # 环境对应的项目
     status = db.Column(db.Boolean(), default=False)  # 状态
     testcaseresult = db.relationship('TestcaseResult', backref='ceshihuanjing',
