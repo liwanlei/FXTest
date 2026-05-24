@@ -5,16 +5,18 @@
 
 import unittest
 
-from common.requ_case import Api
-from common.judgment import pare_result_mysql
-from common.oparmysqldatabase import *
+from common.api_client import Api
+from common.assertions import pare_result_mysql
+from common.mysql_client import *
 from config import redis_host, redis_port, \
     redis_save_result_db, save_duration
 from app.models import *
-from common.packageredis import ConRedisOper
-from common.caselog import filelogpath
-from common.packeagedictry import getdictvalue
+from common.redis_client import ConRedisOper
+from common.case_logger import filelogpath
+from common.nested_dict import getdictvalue
 from common.systemlog import logger
+import json
+from ast import literal_eval
 
 def save_reslut(key, value):
     m = ConRedisOper(host=redis_host, port=redis_port,
@@ -99,7 +101,7 @@ class TestCase(Parmer):
             logger.info("测试用例不存在")
             save_reslut(key=str(self.parm['id']) + '&'+ self.testevent.url, value='测试用例不存在')
         try:
-            self.parame = eval(self.testcase.Interface_pase)
+            self.parame = literal_eval(self.testcase.Interface_pase)
         except Exception as e:
             logger.exception(e)
             self.is_run = False
@@ -108,7 +110,7 @@ class TestCase(Parmer):
             save_reslut(key=str(self.parm['id']) + '&'+ self.testevent.url, value='测试用例参数转化失败')
         self.interface_url = self.testevent.url+self.testcase.interfaces.Interface_url
         try:
-            self.headers = eval(self.testcase.Interface_headers)
+            self.headers = literal_eval(self.testcase.Interface_headers)
         except Exception as e:
             logger.exception(e)
             self.is_run = False
@@ -126,7 +128,7 @@ class TestCase(Parmer):
                     save_reslut(key=str(self.parm['id']) +  '&' + self.testevent.url, value=str('依赖用例失败'))
                 else:
                     try:
-                        replydata = eval(testrepycase.result)[self.testcase.getattr_p]
+                        replydata = literal_eval(testrepycase.result)[self.testcase.getattr_p]
                         self.parame.update({self.testcase.getattr_p: replydata})
                     except Exception as e:
                         logger.exception(e)

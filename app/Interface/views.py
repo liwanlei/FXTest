@@ -7,12 +7,12 @@ from flask import redirect, request, \
     render_template, session, url_for, flash, Blueprint, \
     make_response, send_from_directory
 from app.models import *
-from common.parsingexcel import pasre_inter
+from common.excel_parser import pasre_inter
 from flask.views import MethodView, View
 from flask_login import login_required, current_user
 import json, os, time
 from config import Config_import
-from common.opearexcel import create_interface
+from common.excel_utils import create_interface
 from common.merge import mergeDict
 from error_message import MessageEnum
 from common.systemlog import logger
@@ -205,7 +205,7 @@ class ExportinterfaceInterfceView(MethodView):
         file_dir = pad + '/app/upload'
         file = os.path.join(file_dir, (day + '.xls'))
         if os.path.exists(file) is False:
-            os.system('touch %s' % file)
+            open(file, 'a').close()
         result = create_interface(filename=file, interfacelist=interface_list)
         if result['code'] == 1:
             flash(MessageEnum.export_fail.value[1] + '原因：%s' % result['error'])
@@ -232,10 +232,9 @@ class DetailView(MethodView):
                     chucan.append(parme[i])
                     parame_deft.update(json.loads(parme[i].default))
                 else:
-                    print(parme[i].default)
                     rucan.append(parme[i])
                     sendparame_deft.update(str(parme[i].default))
-            except:
+            except Exception:
                 pass
         return render_template('home/interface_detail.html', id_one=interface_one, chucanlist=chucan,
                                rucanlist=rucan, chucan_def=mergeDict(parame_deft),

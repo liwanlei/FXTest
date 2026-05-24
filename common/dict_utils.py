@@ -12,7 +12,7 @@ def comp_dict(dict1, dict2):
                     return True
                 else:
                     return False
-    except:
+    except Exception:
         return False
 
 

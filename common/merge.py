@@ -6,13 +6,14 @@
 '''
 字典的合并
 '''
+from ast import literal_eval
 
 
 def mergeDict(dict_list: dict):
     dictMerged = {}
     for item in dict_list:
         try:
-            dictMerged.update(eval(item))
+            dictMerged.update(literal_eval(item))
         except Exception as e:
-            print(e)
+            pass
     return dictMerged

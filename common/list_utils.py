@@ -21,7 +21,7 @@ def listmax(list2: list):
     for i in list2:
         try:
             list_int.append(float(i))
-        except:
+        except Exception:
             list_int.append(0)
     nsm = 0
     for j in range(len(list_int)):

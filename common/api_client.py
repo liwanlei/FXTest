@@ -6,7 +6,7 @@
 调用类，传入url，请求方法，参数，请求headers，就可以进行请求，
 目前只支持dict格式的参数，和请求headers。
 '''
-from common.PackageRequest import reques
+from common.PackageRequest import Request
 from common.systemlog import logger
 
 class Api():
@@ -15,7 +15,7 @@ class Api():
         self.method = method
         self.param = params
         self.headers = headers
-        self.request = reques()
+        self.request = Request()
         self.response = []
 
     def testapi(self):
@@ -44,7 +44,6 @@ class Api():
                 spend = ""
             return response, spend
         except Exception as e:
-            print(e)
             logger.exception(e)
             response = "请求出错了"
             spend = "错误"

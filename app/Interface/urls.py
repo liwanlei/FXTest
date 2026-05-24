@@ -3,8 +3,8 @@
 @file: urls.py 
 @time: 2018/1/31 13:31 
 """
-from app.Interface.views import SerinterView, ImportInterfaceView, EditInterfaceView,ExportinterfaceInterfceView,DetailView,AddParameterView,EditPParameterView,DeleteParameterView
-from app.Interface import interfaceview
+from app.interface.views import SerinterView, ImportInterfaceView, EditInterfaceView,ExportinterfaceInterfceView,DetailView,AddParameterView,EditPParameterView,DeleteParameterView
+from app.interface import interfaceview
 
 interfaceview.add_url_rule('/ser_inter', view_func=SerinterView.as_view('ser_inter'))
 interfaceview.add_url_rule('/import_interface', view_func=ImportInterfaceView.as_view('import_inter'))

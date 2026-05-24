@@ -4,20 +4,20 @@
 # @Time    : 2017/12/7 9:23
 from flask import Blueprint, flash
 import json
-from common.mergelist import hebinglist
+from common.list_utils import hebinglist
 from flask import redirect, request, render_template, url_for, session
 
 from common.jsontools import reponse
 from app.models import *
-from app.form import *
+from app.forms import *
 from flask.views import MethodView
 from flask_login import login_required, login_user, \
     logout_user, current_user
 from app import loginManager, sched
-from common.Pagination import fenye_list
-from common.pageination import Pagination
+from common.list_paging import fenye_list
+from common.pagination import Pagination
 from error_message import *
-from common.packageredis import ConRedisOper
+from common.redis_client import ConRedisOper
 from config import *
 from common.systemlog import logger
 
@@ -46,7 +46,7 @@ class IndexView(MethodView):
                     interface_list.append(interface_cont[interface])
                 else:
                     interface += 1
-            except:
+            except Exception:
                 interface += 1
         interfaceTest_cunt = InterfaceTest.query.filter_by(status=False).all()
         case_list = []
@@ -56,7 +56,7 @@ class IndexView(MethodView):
                     case_list.append(interfaceTest_cunt[case])
                 else:
                     case += 1
-            except:
+            except Exception:
                 case += 1
         resu_cout = TestResult.query.filter_by(status=False).all()
         reslut_list = []
@@ -66,7 +66,7 @@ class IndexView(MethodView):
                     reslut_list.append(resu_cout[result])
                 else:
                     result += 1
-            except:
+            except Exception:
                 result += 1
         My_task = []
         for job in sched.get_jobs():
@@ -141,7 +141,6 @@ class LoginView(MethodView):
             else:
                 num = user.err_num != None and user.err_num >= 5
                 if num:
-                    print(user.freetime is None)
                     if (user.freetime != 'None' and user.freetime is not None ):
                         if (datetime.datetime.now() - user.freetime).min > 10:
                             user.err_num = user_err_num + 1
@@ -467,7 +466,7 @@ class ProjectView(MethodView):
         try:
             pyth_post1 = projects_lsit[int(page) - 1]
             return render_template('home/project.html', projects=pyth_post1, pages=pages)
-        except:
+        except Exception:
             return redirect(url_for('home.project'))
 
     @login_required
@@ -656,7 +655,7 @@ class TestenvironmentView(MethodView):
                                    pages=pages,
                                    projects=projects)
         except Exception as e:
-            print(e)
+            logger.exception(e)
             return redirect(url_for('home.testenvironment'))
 
     @login_required

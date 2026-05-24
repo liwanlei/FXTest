@@ -15,6 +15,7 @@ from config import lod
 from apscheduler.schedulers.background import BackgroundScheduler, BlockingScheduler
 from config import jobstores, executors
 from flask_admin import Admin
+from common.systemlog import logger
 
 from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 
@@ -28,14 +29,14 @@ loginManager.login_view = 'home.login'
 loginManager.login_message = u'FXTest测试平台必须登录，请登录您的FXTest平台账号！'
 db = SQLAlchemy(app)
 admin = Admin(app, name=u'FXTest系统管理后台')
-from app import views, models, url, apiadmin
+from app import views, models, urls, apiadmin
 
 
 def listerner(event):
     if event.exception:
-        print('任务出错了！')
+        logger.error('任务出错了！')
     else:
-        print('任务正常运行中...')
+        logger.info('任务正常运行中...')
 
 
 sched = BackgroundScheduler(jobstores=jobstores, executors=executors)
@@ -48,4 +49,4 @@ for i in range(len(work_list)):
 try:
     sched.start()
 except Exception as e:
-    print(e)
+    logger.exception(e)

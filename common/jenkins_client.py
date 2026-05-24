@@ -8,6 +8,7 @@ jenkins的链接
 '''
 import jenkins, requests
 from config import jenkins_password, jenkins_user, jenkins_url
+from common.systemlog import logger
 
 
 class Conlenct_jenkins(object):
@@ -19,13 +20,13 @@ class Conlenct_jenkins(object):
             self.servir = jenkins.Jenkins(url=self.jenkins_url, username=self.jenkins_user,
                                           password=self.jenkins_password, timeout=20)
         except Exception as e:
-            print('Jenkins 链接失败!原因：%s' % e)
+            logger.error('Jenkins 链接失败!原因：%s' % e)
 
     def build_job(self, jobname):
         try:
             self.servir.build_job(jobname)
             return True
-        except:
+        except Exception:
             return False
 
     def job_bulid_list(self, jobname):
@@ -49,14 +50,14 @@ class Conlenct_jenkins(object):
     def great_task(self, jobname, config_xml):
         try:
             self.servir.create_job(jobname, config_xml)
-        except:
-            print('创建构建失败')
+        except Exception:
+            logger.error('创建构建失败')
 
     def rename_task(self, jobname, toname):
         try:
             self.servir.rename_job(jobname, toname)
-        except:
-            print('修改名字失败')
+        except Exception:
+            logger.error('修改名字失败')
 
     def delete_task(self, jobname):
         self.servir.delete_job(jobname)

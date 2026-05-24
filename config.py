@@ -12,26 +12,26 @@ from apscheduler.jobstores.redis import RedisJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, \
 	ProcessPoolExecutor
 
-jenkins_url = 'http://localhost:8080'  # jenkins的地址
-jenkins_user = 'liwanlei'  # jenkins的用户名
-jenkins_password = '123456'  # jenkins的密码
-xitong_request_toke = 'Fetext_token_system'  # 系统内部依赖接口请求的时候需要加个token来区分
-Try_Num_Case = 5  # 重试的次数
-Interface_Time_Out = 5000  # 超时时间
-redis_password = ''  # reids的密码
-max_connec_redis = 10  # 最大链接池
+jenkins_url = os.environ.get('JENKINS_URL', 'http://localhost:8080')
+jenkins_user = os.environ.get('JENKINS_USER', 'liwanlei')
+jenkins_password = os.environ.get('JENKINS_PASSWORD', '')
+xitong_request_toke = os.environ.get('SYSTEM_REQUEST_TOKEN', 'Fetext_token_system')
+Try_Num_Case = 5
+Interface_Time_Out = 5000
+redis_password = os.environ.get('REDIS_PASSWORD', '')
+max_connec_redis = 10
 test_fail_try_num = 3  # 测试用例测试重试次数
 PageShow = 25  # 这里配置的就是每个页显示多少条数据
-Dingtalk_access_token = ''  # 在这里配置您的接受通知的钉钉群自定义机器人webhook，
-OneAdminCount = 10  # 设置项目管理员的数量
-Config_import = 100  # 配置可以导入限制
-save_duration = 24 * 60  # 配置redis存储的时长
-redis_host = '127.0.0.1'  # redis地址
-redis_port = 6379
-task_redis_db = 3
-redis_save_result_db = 2
-jmeter_data_db = 'test'
-paln_run_url='http://127.0.0.1:5000'  #测试环境运行地址
+Dingtalk_access_token = os.environ.get('DINGTALK_ACCESS_TOKEN', '')
+OneAdminCount = 10
+Config_import = 100
+save_duration = 24 * 60
+redis_host = os.environ.get('REDIS_HOST', '127.0.0.1')
+redis_port = int(os.environ.get('REDIS_PORT', '6379'))
+task_redis_db = int(os.environ.get('TASK_REDIS_DB', '3'))
+redis_save_result_db = int(os.environ.get('REDIS_SAVE_RESULT_DB', '2'))
+jmeter_data_db = os.environ.get('JMETER_DATA_DB', 'test')
+paln_run_url = os.environ.get('PLAN_RUN_URL', 'http://127.0.0.1:5000')
 
 email_type = "online.com"  # 用于校验邮箱
 roles = {'User': Permisson.DELETE | Permisson.EDIT | Permisson.ADD,
@@ -53,17 +53,17 @@ executors = {
 
 
 class dev(object):  # 研发环境配置
-	SECRET_KEY = 'BaSeQuie'
+	SECRET_KEY = os.environ.get('SECRET_KEY', 'BaSeQuie')
 	basedir = os.path.abspath(os.path.dirname(__file__))
 	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir,
 														  "data.sqlite")  # mysql 配置mysql+pymysql://root:liwanlei@localhost:3306/test
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
-	MAIL_SERVER = 'smtp.163.com'  # 你的邮箱的smtp服务
-	MAIL_PORT = 25  # 端口号
-	MAIL_USE_TLS = True  # 是否检验
-	MAIL_USERNAME = ""  # 你的邮箱
-	MAIL_PASSWORD = ""  # 你邮箱的授权码
+	MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.163.com')
+	MAIL_PORT = int(os.environ.get('MAIL_PORT', '25'))
+	MAIL_USE_TLS = True
+	MAIL_USERNAME = os.environ.get('MAIL_USERNAME', '')
+	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '')
 	CSRF_ENABLED = True
 	UPLOAD_FOLDER = '/upload'
 	DEBUG = True
@@ -74,16 +74,16 @@ class dev(object):  # 研发环境配置
 
 
 class test(object):  # 测试环境的配置
-	SECRET_KEY = 'BaSeQuie'
+	SECRET_KEY = os.environ.get('SECRET_KEY', 'BaSeQuie')
 	basedir = os.path.abspath(os.path.dirname(__file__))
-	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "test.sqlite")
+	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', "sqlite:///" + os.path.join(basedir, "test.sqlite"))
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
-	MAIL_SERVER = 'smtp.163.com'  # 你的邮箱的smtp服务
-	MAIL_PORT = 25  # 端口号
-	MAIL_USE_TLS = True  # 是否检验
-	MAIL_USERNAME = ""  # 你的邮箱
-	MAIL_PASSWORD = ""  # 你邮箱的授权码
+	MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.163.com')
+	MAIL_PORT = int(os.environ.get('MAIL_PORT', '25'))
+	MAIL_USE_TLS = True
+	MAIL_USERNAME = os.environ.get('MAIL_USERNAME', '')
+	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '')
 	CSRF_ENABLED = True
 	UPLOAD_FOLDER = '/upload'
 	DEBUG = True
@@ -93,18 +93,17 @@ class test(object):  # 测试环境的配置
 		pass
 
 
-class produce(object):
-	# 线上环境的配置
-	SECRET_KEY = 'ProduceFXTest'
+class produce(object):  # 线上环境的配置
+	SECRET_KEY = os.environ.get('SECRET_KEY', 'ProduceFXTest')
 	basedir = os.path.abspath(os.path.dirname(__file__))
-	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "produce.sqlite")
+	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', "sqlite:///" + os.path.join(basedir, "produce.sqlite"))
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
-	MAIL_SERVER = 'smtp.163.com'  # 你的邮箱的smtp服务
-	MAIL_PORT = 25  # 端口号
-	MAIL_USE_TLS = True  # 是否检验
-	MAIL_USERNAME = ""  # 你的邮箱
-	MAIL_PASSWORD = ""  # 你邮箱的授权码
+	MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.163.com')
+	MAIL_PORT = int(os.environ.get('MAIL_PORT', '25'))
+	MAIL_USE_TLS = True
+	MAIL_USERNAME = os.environ.get('MAIL_USERNAME', '')
+	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '')
 	CSRF_ENABLED = True
 	UPLOAD_FOLDER = '/upload'
 	DEBUG = False

@@ -147,7 +147,7 @@ class UnFreezeUserView(View):  # 解冻
                 flash(MessageEnum.user_is_un_free.value[1])
                 return redirect(url_for('home.adminuser'))
             except Exception as e:
-                print(e)
+                logger.exception(e)
                 db.session.rollback()
                 flash(MessageEnum.user_is_unfree_success.value[1])
                 return redirect(url_for('home.adminuser'))

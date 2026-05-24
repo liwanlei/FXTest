@@ -12,7 +12,7 @@ from app.models import *
 from common.jsontools import reponse
 import os
 from flask.views import MethodView
-from app.form import RegFrom
+from app.forms import RegFrom
 from flask_login import login_required, current_user
 from config import email_type
 from error_message import *
@@ -138,8 +138,8 @@ def page_not_found(e):
 
 
 @app.errorhandler(500)
-def page_not_found(e):
-    return render_template('500.html')
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 
 class IndexFirstview(MethodView):
@@ -182,7 +182,7 @@ def register():
         if emai:
             flash(MessageEnum.email_exict.value[1])
             return render_template('home/register.html', form=form)
-        new_user = User(username=username, user_email=email, jobnum=job_num)
+        new_user = User(username=username, user_email=email, jobnum=jobnum)
         new_user.set_password(password)
         db.session.add(new_user)
         try:

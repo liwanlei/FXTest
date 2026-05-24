@@ -9,11 +9,12 @@ from flask_login import current_user, login_required
 from app import loginManager, sched
 import time, os
 from app.test_case.new_unittest_case import *
-from common.Dingtalk import send_ding
+from common.dingtalk import send_ding
 from config import Dingtalk_access_token
 from error_message import *
 from common.jsontools import reponse
 from common.systemlog import logger
+from ast import literal_eval
 
 task = Blueprint('task', __name__)
 
@@ -33,10 +34,10 @@ def addtask(id):  # 定时任务执行的时候所用的函数
     file_dir = os.path.join(os.path.join(cwd, 'app'), 'upload')
     file = os.path.join(file_dir, (day + '.log'))
     if os.path.exists(file) is False:
-        os.system('touch %s' % file)
+        open(file, 'a').close()
     filepath = os.path.join(file_dir, (day + '.html'))
     if os.path.exists(filepath) is False:
-        os.system(r'touch %s' % filepath)
+        open(filepath, 'a').close()
     testcase_list = []
     projecct_list = []
     for case in task.interface.all():
@@ -153,7 +154,7 @@ class StartTaskView(MethodView):  # 开始定时任务
             flash(MessageEnum.task_must_be_multiple_cases.value[1])
             return redirect(url_for('home.timingtask'))
         try:
-            time_start = eval(task.taskstart)
+            time_start = literal_eval(task.taskstart)
             day_week = time_start['day_of_week']
             hour = time_start['hour']
             mindes = time_start['minute']
@@ -287,7 +288,7 @@ class EdiTmingTaskView(MethodView):
         if not task_one:
             flash(MessageEnum.task_edit_not_exict.value[1])
             return redirect(url_for('home.timingtask'))
-        return render_template('edit/Edittimingtasks.html',
+        return render_template('edit/edit_timing_tasks.html',
                                task_one=task_one, porjects=projects)
 
     @login_required
@@ -420,10 +421,10 @@ def runtestcase(taskcase,testevent_url):
     file_dir = os.path.join(os.path.join(cwd, 'app'), 'upload')
     file = os.path.join(file_dir, (day + '.log'))
     if os.path.exists(file) is False:
-        os.system('touch %s' % file)
+        open(file, 'a').close()
     filepath = os.path.join(file_dir, (day + '.html'))
     if os.path.exists(filepath) is False:
-        os.system(r'touch %s' % filepath)
+        open(filepath, 'a').close()
     testcase_list = []
     # project_list = []
     for case in taskcase:

@@ -10,7 +10,7 @@ mockserver封装,用于在提供mock服务的时候使用
 '''
 from flask import request, abort, jsonify, make_response
 from app.models import *
-from common.packagedict import comp_dict, dict_par
+from common.dict_utils import comp_dict, dict_par
 import json
 from error_message import MessageEnum
 from common.jsontools import reponse as jsonreponse

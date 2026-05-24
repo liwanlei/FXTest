@@ -4,6 +4,9 @@
 @time: 2017/7/13 16:39
 """
 """主运行文件 使用gevent异步请求"""
+from dotenv import load_dotenv
+load_dotenv()
+
 from app import app
 from app import sched
 from app.home import home
@@ -11,7 +14,7 @@ from app.mock import mock
 from app.task import task
 from app.users import user
 from app.case import case
-from app.Interface import interfaceview
+from app.interface import interfaceview
 from gevent.pywsgi import WSGIServer
 from gevent import monkey
 from config import Config

@@ -7,32 +7,33 @@ from flask import redirect, request, render_template, \
     session, url_for, flash, Blueprint, make_response, \
     send_from_directory
 from app.models import *
-from app.form import *
+from app.forms import *
 from config import Dingtalk_access_token
-import os, time, datetime, json
-from common.parsingexcel import paser_interface_case
+import os, time, datetime, json, subprocess
+from common.excel_parser import paser_interface_case
 from common.htmltestreport import createHtml
-from common.requ_case import Api
-from common.judgment import assert_in, pare_result_mysql
-from app.test_case.Test_case import ApiTestCase
+from common.api_client import Api
+from common.assertions import assert_in, pare_result_mysql
+from app.test_case.test_case_runner import ApiTestCase
 from common.send_email import send_emails
 from flask.views import View, MethodView
 from flask_login import current_user, login_required
-from common.Dingtalk import send_ding
-from common.oparmysqldatabase import *
+from common.dingtalk import send_ding
+from common.mysql_client import *
 from config import Config_import, redis_host, \
     redis_port, redis_save_result_db, save_duration, \
     jmeter_data_db, paln_run_url
-from common.opearexcel import create_interface_case
-from common.mergelist import listmax
-from common.packageredis import ConRedisOper
-from common.CreateJxmUntil import make
-from common.SshTools import Sshtool
+from common.excel_utils import create_interface_case
+from common.list_utils import listmax
+from common.redis_client import ConRedisOper
+from common.jmx_builder import make
+from common.ssh_tools import Sshtool
 from common.systemlog import logger
 from error_message import MessageEnum
 from common.jsontools import reponse as jsonreponse
 from app.test_case.new_unittest_case import TestCase,Parmer
 from common.BSTestRunner import BSTestRunner
+from ast import literal_eval
 import unittest
 case = Blueprint('case', __name__)
 
@@ -114,7 +115,6 @@ class AddtestcaseView(View):
                 flash(MessageEnum.must_be_every_parame.value[1])
                 return render_template('add/add_test_case.html', form=form, projects=projects, models=models,
                                        inrterface_list=inrterface_list, mock_yilai=mock_yilai)
-            print(yongli_nam)
             project_id = Project.query.filter_by(project_name=yongli_nam).first().id
             models_id = Model.query.filter_by(model_name=mode).first().id
             interface = Interface.query.filter_by(Interface_name=interface_name).first()
@@ -140,7 +140,7 @@ class AddtestcaseView(View):
                 db.session.add(newcase)
                 db.session.commit()
                 try:
-                    for key, value in dict(eval(interface_can)):
+                    for key, value in dict(literal_eval(interface_can)):
                         if str(value).startswith("#"):
                             if str(value).split(".")[0] == '#action':
                                 action = Action.query.filter_by(name=str(value).split(".")[1]).first()
@@ -166,7 +166,7 @@ class AddtestcaseView(View):
                                 db.session.commit()
                             else:
                                 pass
-                except:
+                except Exception:
                     flash(MessageEnum.test_field_should_be_dict.value[1])
                     return render_template('add/add_test_case.html',
                                            form=form, projects=projects,
@@ -292,7 +292,7 @@ class EditcaseView(View):
                     db.session.delete(m)
                 db.session.commit()
                 try:
-                    for key, value in dict(eval(parme)):
+                    for key, value in dict(literal_eval(parme)):
                         if str(value).startswith("#"):
                             if str(value).split(".")[0] == '#action':
                                 action = Action.query.filter_by(name=str(value).split(".")[1]).first()
@@ -317,7 +317,7 @@ class EditcaseView(View):
                                 db.session.commit()
                             else:
                                 pass
-                except:
+                except Exception:
                     flash(MessageEnum.test_field_should_be_dict.value[1])
                     return render_template('edit/edit_case.html', edit=edit_case,
                                            projects=projects, models=models,
@@ -327,7 +327,7 @@ class EditcaseView(View):
                 flash(MessageEnum.success.value[1])
                 return redirect(url_for('home.case'))
             except Exception as e:
-                print(e)
+                logger.exception(e)
                 db.session.rollback()
                 flash(MessageEnum.case_edit_error.value[1])
                 return render_template('edit/edit_case.html',
@@ -477,10 +477,10 @@ class MuliteCaseLiView(View):
         file_dir = pad + '/app/upload'
         file = os.path.join(file_dir, (day + '.log'))
         if os.path.exists(file) is False:
-            os.system('touch %s' % file)
+            open(file, 'a').close()
         filepath = os.path.join(file_dir, (day + '.html'))
         if os.path.exists(filepath) is False:
-            os.system(r'touch %s' % filepath)
+            open(filepath, 'a').close()
         if request.method == 'POST':
             f_dingding = request.form.get('dingding')
             allcase = request.form.getlist('yongli')
@@ -569,8 +569,8 @@ class MakeOnlyOneCaseView(MethodView):
                     if tesyi is not None:
                         canshu = case.getattr_p
                         try:
-                            testres = eval(tesyi.decode('utf-8'))
-                            yilaidata = eval(testres)[canshu]
+                            testres = literal_eval(tesyi.decode('utf-8'))
+                            yilaidata = testres[canshu]
                         except Exception as e:
                             logger.exception(e)
                             case.Interface_is_tiaoshi = True
@@ -579,9 +579,9 @@ class MakeOnlyOneCaseView(MethodView):
                             return jsonreponse(code=MessageEnum.get_reply_data_fail.value[0],
                                                message=MessageEnum.get_reply_data_fail.value[1])
                         try:
-                            pasrms = eval(case.Interface_pase)
+                            pasrms = literal_eval(case.Interface_pase)
                             pasrms.update({canshu: yilaidata})
-                        except:
+                        except Exception:
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
@@ -589,8 +589,8 @@ class MakeOnlyOneCaseView(MethodView):
                                                message=MessageEnum.test_field_should_be_dict.value[1])
                     else:
                         try:
-                            pasrms = eval(case.Interface_pase)
-                        except:
+                            pasrms = literal_eval(case.Interface_pase)
+                        except Exception:
                             case.Interface_is_tiaoshi = True
                             case.Interface_tiaoshi_shifou = True
                             db.session.commit()
@@ -615,9 +615,9 @@ class MakeOnlyOneCaseView(MethodView):
                     new_header = {'host': url}
                 else:
                     try:
-                        new_header = eval(new_headers)
+                        new_header = literal_eval(new_headers)
                         new_header['host'] = url
-                    except:
+                    except Exception:
                         case.Interface_is_tiaoshi = True
                         case.Interface_tiaoshi_shifou = True
                         db.session.commit()
@@ -707,7 +707,6 @@ class MakeOnlyOneCaseView(MethodView):
                     return_mysql = pare_result_mysql(mysqlresult=mysql_result,
                                                      return_result=result, paseziduan=case.databaseziduan)
 
-                print(result)
                 retur_re = assert_in(case.Interface_assert, result)
                 try:
                     if case.is_database is True:
@@ -778,7 +777,7 @@ class ExportCaseView(MethodView):
         file_dir = pad + '/app/upload'
         file = os.path.join(file_dir, (day + '.xls'))
         if os.path.exists(file) is False:
-            os.system('touch %s' % file)
+            open(file, 'a').close()
         result = create_interface_case(filename=file, caselist=interface_list)
         if result['code'] == 1:
             logger.info('导出接口失败！原因：%s' % result['error'])
@@ -823,7 +822,7 @@ class OneCaseDetialView(MethodView):
 class CaseToJmxView(MethodView):
     def post(self):
         try:
-            data_jmx = eval(request.get_data().decode('utf-8'))
+            data_jmx = json.loads(request.get_data().decode('utf-8'))
         except Exception as e:
             logger.exception(e)
             return jsonreponse(code=MessageEnum.Incorrect_format.value[0],
@@ -855,7 +854,7 @@ class CaseToJmxView(MethodView):
         parame = ""
         if case_one.Interface_pase is not None:
             try:
-                data = eval(case_one.Interface_pase)
+                data = literal_eval(case_one.Interface_pase)
                 for key, value in data.items():
                     parame += '''' <elementProp name="password" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -865,7 +864,7 @@ class CaseToJmxView(MethodView):
                 <stringProp name="Argument.name">%s</stringProp>
               </elementProp>''' % (value, key)
             except Exception as e:
-                print(e)
+                logger.exception(e)
                 return jsonreponse(code=MessageEnum.case_to_jmx_case_fail.value[0],
                                    message=MessageEnum.case_to_jmx_case_fail.value[1])
         all = make(runcount, loopcount, all[0], port, case_one.interfaces.Interface_url,
@@ -906,7 +905,7 @@ class JmxToServerView(MethodView):
             return jsonreponse(code=MessageEnum.case_test_sever_not_exit.value[0],
                                message=MessageEnum.case_test_sever_not_exit.value[1])
         cmd = "sshpass -p " + testserver.loginpassword + " scp -P " + testserver.port + "  " + testjmx.jmxpath + " " + testserver.loginuser + "@" + testserver.ip + ":/home"
-        os.system(cmd)
+        subprocess.run(cmd, shell=True)
         commentc = Sshtool(testserver.ip, testserver.port, testserver.loginuser, testserver.loginpassword)
         cmd = "./jmeter -n -t /home/" + testjmx.name + '  -l name.htl'
         commentc.command(cmd)

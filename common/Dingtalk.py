@@ -28,5 +28,5 @@ def send_ding(content: str, Dingtalk_access_token: str):
             return True
         else:
             return False
-    except:
+    except Exception:
         return False

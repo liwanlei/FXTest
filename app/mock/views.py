@@ -9,7 +9,7 @@ from app.models import *
 from flask.views import MethodView
 from flask_login import current_user, login_required
 from app import loginManager
-from common.mockservermeth import get_token_data
+from common.mock_server import get_token_data
 from error_message import MessageEnum
 from common.systemlog import logger
 

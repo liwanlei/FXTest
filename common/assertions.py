@@ -4,7 +4,7 @@
 '''
 判断
 '''
-from common.packeagedictry import getdictvalue
+from common.nested_dict import getdictvalue
 
 
 def assert_in(assertin, returnjson):
@@ -19,7 +19,7 @@ def assert_in(assertin, returnjson):
                 return 'pass'
             else:
                 return 'fail'
-        except:
+        except Exception:
             return 'exception '
     else:
         return '请检查断言'

@@ -2,15 +2,16 @@
 # @Date    : 2017-07-20 21:06:16
 # @Author  : lileilei
 '''封装多用例执行'''
-from common.requ_case import Api
-from common.judgment import assert_in
-from common.judgment import pare_result_mysql
-from common.log import log_t
-from common.oparmysqldatabase import *
+from common.api_client import Api
+from common.assertions import assert_in
+from common.assertions import pare_result_mysql
+from common.test_log import log_t
+from common.mysql_client import *
 from config import redis_host, redis_port, \
     redis_save_result_db, save_duration
 from app.models import *
-from common.packageredis import ConRedisOper
+from common.redis_client import ConRedisOper
+from ast import literal_eval
 
 
 def save_reslut(key, value):
@@ -73,7 +74,7 @@ class ApiTestCase():
                 continue
             testcase = InterfaceTest.query.filter_by(id=self.id[case]).first()
             try:
-                yuanlai = eval(self.parme[case])
+                yuanlai = literal_eval(self.parme[case])
             except Exception as e:
                 self.log_can.error_log('用例：%s转化参数！原因：%s' % (self.id[case], e))
                 self.result_toal += 1
@@ -98,7 +99,7 @@ class ApiTestCase():
                             save_reslut(key=str(self.id[case]) + '&' + testevent.url, value=str('依赖用例失败'))
                         else:
                             try:
-                                huoqudata = eval(data)[testcase.getattr_p]
+                                huoqudata = data[testcase.getattr_p]
                                 yuanlai.update({testcase.getattr_p: huoqudata})
                             except Exception as e:
                                 self.spendlist.append('0')
