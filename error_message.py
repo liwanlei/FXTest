@@ -172,7 +172,7 @@ class MessageEnum(Enum):
     test_sql_reply_sql_field=100160,'依赖数据库必须有字段'
     test_sql_connect_sql_error=100161,'链接数据库出现问题'
     test_sql_query_error=100162,'查询数据库出现问题'
-    change_parames_faild=100163,'转化请求参数失败'
+    change_params_failed=100163,'转化请求参数失败'
     test_case_run_error=100164,'测试用例测试失败,请检查用例！'
     test_case_run_pass=100165,'测试用例执行通过'
     test_case_run_fail=100166,'测试用例测试失败,请检查用例！'
