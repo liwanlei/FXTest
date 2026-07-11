@@ -7,7 +7,7 @@
 import xlrd
 
 
-def pasre_inter(filename):  # 导入接口
+def parse_interface(filename):  # 导入接口
     file = xlrd.open_workbook(filename)
     me = file.sheets()[0]
     nrows = me.nrows
@@ -39,7 +39,7 @@ def pasre_inter(filename):  # 导入接口
 
 
 # 导入测试用例
-def paser_interface_case(filename):
+def parse_interface_case(filename):
     file = xlrd.open_workbook(filename)
     me = file.sheets()[0]
     nrows = me.nrows
@@ -83,3 +83,7 @@ def paser_interface_case(filename):
     return jiekou_bianhao, interface_name, project_name, model_name, interface_url, \
            interface_header, interface_meth, interface_par, interface_bas, interface_type, \
            is_save_result, yilai_is, yilai, yilai_ziduan, is_cha_data, data_sql, paser_base
+
+# 向后兼容别名
+pasre_inter = parse_interface
+paser_interface_case = parse_interface_case

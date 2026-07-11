@@ -5,6 +5,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
+from common.system_log import logger
 
 
 def send_emails(sender, receivers, password, smtp,
@@ -21,18 +22,25 @@ def send_emails(sender, receivers, password, smtp,
     message['To'] = ','.join(receivers)
     message['Subject'] = Header(subject, 'utf-8')
     message.attach(MIMEText(mail_msg, 'html', 'utf-8'))
-    att1 = MIMEText(open(annexone, 'rb').read(), 'base64', 'utf-8')
-    att1["Content-Type"] = 'application/octet-stream'
-    att1["Content-Disposition"] = 'attachment; filename="%s"' % annexone
-    message.attach(att1)
-    att2 = MIMEText(open(annextwo, 'rb').read(), 'base64', 'utf-8')
-    att2["Content-Type"] = 'application/octet-stream'
-    att2["Content-Disposition"] = 'attachment; filename="%s"' % annextwo
-    message.attach(att2)
+    try:
+        with open(annexone, 'rb') as f1:
+            att1 = MIMEText(f1.read(), 'base64', 'utf-8')
+        att1["Content-Type"] = 'application/octet-stream'
+        att1["Content-Disposition"] = 'attachment; filename="%s"' % annexone
+        message.attach(att1)
+        with open(annextwo, 'rb') as f2:
+            att2 = MIMEText(f2.read(), 'base64', 'utf-8')
+        att2["Content-Type"] = 'application/octet-stream'
+        att2["Content-Disposition"] = 'attachment; filename="%s"' % annextwo
+        message.attach(att2)
+    except Exception as e:
+        logger.exception('读取邮件附件失败: %s' % e)
+        return False
     try:
         smtpObj = smtplib.SMTP_SSL(smtp, port)
         smtpObj.login(sender, password)
         smtpObj.sendmail(sender, receivers, message.as_string())
         return True
     except Exception as e:
+        logger.exception('邮件发送失败: %s' % e)
         return False

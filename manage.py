@@ -9,6 +9,7 @@ load_dotenv()
 
 from app import app
 from app import sched
+from app import init_work_choices
 from app.home import home
 from app.mock import mock
 from app.task import task
@@ -32,9 +33,9 @@ def register_blueprints():
 
 
 def app_start():
-    app.config.from_object('config')
-    sched.start()
     register_blueprints()
+    init_work_choices()
+    sched.start()
     http_server = WSGIServer(('127.0.0.1', 5000), app)
     http_server.serve_forever()
 

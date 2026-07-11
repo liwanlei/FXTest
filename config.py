@@ -52,11 +52,9 @@ executors = {
 }
 
 
-class dev(object):  # 研发环境配置
-	SECRET_KEY = os.environ.get('SECRET_KEY', 'BaSeQuie')
+class BaseConfig(object):
+	'''所有环境共享的配置基类'''
 	basedir = os.path.abspath(os.path.dirname(__file__))
-	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir,
-														  "data.sqlite")  # mysql 配置mysql+pymysql://root:liwanlei@localhost:3306/test
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
 	MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.163.com')
@@ -66,55 +64,38 @@ class dev(object):  # 研发环境配置
 	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '')
 	CSRF_ENABLED = True
 	UPLOAD_FOLDER = '/upload'
-	DEBUG = True
 
 	@staticmethod
 	def init_app(app):
 		pass
 
 
-class test(object):  # 测试环境的配置
+class dev(BaseConfig):  # 研发环境配置
 	SECRET_KEY = os.environ.get('SECRET_KEY', 'BaSeQuie')
-	basedir = os.path.abspath(os.path.dirname(__file__))
-	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', "sqlite:///" + os.path.join(basedir, "test.sqlite"))
-	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-	SQLALCHEMY_TRACK_MODIFICATIONS = False
-	MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.163.com')
-	MAIL_PORT = int(os.environ.get('MAIL_PORT', '25'))
-	MAIL_USE_TLS = True
-	MAIL_USERNAME = os.environ.get('MAIL_USERNAME', '')
-	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '')
-	CSRF_ENABLED = True
-	UPLOAD_FOLDER = '/upload'
+	SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(BaseConfig.basedir,
+														  "data.sqlite")
 	DEBUG = True
 
-	@staticmethod
-	def init_app(app):
-		pass
+
+class test(BaseConfig):  # 测试环境的配置
+	SECRET_KEY = os.environ.get('SECRET_KEY', 'BaSeQuie')
+	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', "sqlite:///" + os.path.join(BaseConfig.basedir, "test.sqlite"))
+	DEBUG = True
 
 
-class produce(object):  # 线上环境的配置
+class produce(BaseConfig):  # 线上环境的配置
 	SECRET_KEY = os.environ.get('SECRET_KEY', 'ProduceFXTest')
-	basedir = os.path.abspath(os.path.dirname(__file__))
-	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', "sqlite:///" + os.path.join(basedir, "produce.sqlite"))
-	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-	SQLALCHEMY_TRACK_MODIFICATIONS = False
-	MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.163.com')
-	MAIL_PORT = int(os.environ.get('MAIL_PORT', '25'))
-	MAIL_USE_TLS = True
-	MAIL_USERNAME = os.environ.get('MAIL_USERNAME', '')
-	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '')
-	CSRF_ENABLED = True
-	UPLOAD_FOLDER = '/upload'
+	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', "sqlite:///" + os.path.join(BaseConfig.basedir, "produce.sqlite"))
 	DEBUG = False
-
-	@staticmethod
-	def init_app(app):
-		pass
 
 
 def lod():
-	return dev
+    env = os.environ.get('FLASK_ENV', 'dev')
+    if env == 'test':
+        return test
+    elif env == 'produce':
+        return produce
+    return dev
 
 
 class Config(object):

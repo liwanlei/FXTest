@@ -9,13 +9,13 @@ from flask import redirect, request, \
     session, url_for, flash
 from app.models import *
 from flask.views import View, MethodView
-from common.decorators import chckuserpermisson
+from common.decorators import check_user_permission
 from flask_login import login_required
 from config import OneAdminCount
 from error_message import MessageEnum
 from flask_mail import Message, Mail
-from common.jsontools import reponse
-from  common.systemlog import logger
+from common.json_tools import response
+from common.system_log import logger
 
 
 class SetAdminView(View):  # 设置管理员
@@ -23,8 +23,8 @@ class SetAdminView(View):  # 设置管理员
 
     @login_required
     def dispatch_request(self):
-        if chckuserpermisson() is False:
-            return reponse(
+        if check_user_permission() is False:
+            return response(
                 code= MessageEnum.permiss_is_ness.value[0],
                 message= MessageEnum.permiss_is_ness.value[1], data='')
         projec = request.get_json()
@@ -32,20 +32,20 @@ class SetAdminView(View):  # 设置管理员
             username = projec['username']
             por = projec['url']
             if por == '':
-                return reponse(
+                return response(
                     code= MessageEnum.select_project_not.value[0],
                     message= MessageEnum.select_project_not.value[1],
                      data= '')
             pan_user = User.query.filter_by(username=username).first()
             if not pan_user:
-                return reponse(code= MessageEnum.login_user_not_exict_message.value[0],
-                                message= MessageEnum.login_user_not_exict_message.value[1], data= '')
+                return response(code= MessageEnum.login_user_not_exist_message.value[0],
+                                message= MessageEnum.login_user_not_exist_message.value[1], data= '')
             if pan_user.is_sper is True:
-                return reponse(code= MessageEnum.super_admin_not_set_project.value[0],
+                return response(code= MessageEnum.super_admin_not_set_project.value[0],
                                 message= MessageEnum.super_admin_not_set_project.value[1], data= '')
             project_exit = Project.query.filter_by(project_name=por).first()
             if not project_exit:
-                return reponse(code= MessageEnum.set_project_not_exist.value[0],
+                return response(code= MessageEnum.set_project_not_exist.value[0],
                                 message= MessageEnum.set_project_not_exist.value[1], data= '')
             pro_per = Quanxian.query.filter_by(project=project_exit.id).all()
             oneadmin = []
@@ -53,10 +53,10 @@ class SetAdminView(View):  # 设置管理员
                 if i.rose == 2:
                     oneadmin.append(i.user.all())
             if [pan_user] in oneadmin:
-                return reponse(code= MessageEnum.set_is_admin.value[0],
+                return response(code= MessageEnum.set_is_admin.value[0],
                                message= MessageEnum.set_is_admin.value[1])
             if (len(oneadmin)) > OneAdminCount:
-                return reponse(
+                return response(
                     code= MessageEnum.project_admin_many.value[0],
                     message= MessageEnum.project_admin_many.value[1])
             for roses in pan_user.quanxians:
@@ -64,17 +64,17 @@ class SetAdminView(View):  # 设置管理员
                     roses.rose = 2
             try:
                 db.session.commit()
-                return reponse(code= MessageEnum.success.value[0],
+                return response(code= MessageEnum.success.value[0],
                                message= MessageEnum.success.value[1])
             except Exception as e:
                 logger.exception(e)
                 db.session.rollback()
-                return reponse(
+                return response(
                     code= MessageEnum.set_fail.value[0],
                     message= MessageEnum.set_fail.value[1], data= '')
         except Exception as e:
             logger.exception(e)
-            return reponse(code= MessageEnum.set_project_admin_exception.value[0],
+            return response(code= MessageEnum.set_project_admin_exception.value[0],
                             message= MessageEnum.set_project_admin_exception.value[1] + '原因是：%s' % e, data= '')
 
 
@@ -83,12 +83,12 @@ class CancelAdminView(View):  # 取消管理员
 
     @login_required
     def dispatch_request(self, id):
-        if chckuserpermisson() is False:
+        if check_user_permission() is False:
             flash(MessageEnum.permiss_is_ness.value[1])
             return redirect(request.headers.get('Referer'))
         new_ad = User.query.filter_by(id=id, status=False).first()
         if not new_ad:
-            flash(MessageEnum.login_user_not_exict_message.value[1])
+            flash(MessageEnum.login_user_not_exist_message.value[1])
             return redirect(url_for('home.adminuser'))
         if new_ad == user:
             flash(MessageEnum.admin_cannot_use.value[1])
@@ -101,7 +101,7 @@ class FreezeUserView(View):  # 冻结
 
     @login_required
     def dispatch_request(self, id):
-        if chckuserpermisson() is False:
+        if check_user_permission() is False:
             flash(MessageEnum.permiss_is_ness.value[1])
             return redirect(request.headers.get('Referer'))
         user = User.query.filter_by(username=session.get('username')).first()
@@ -113,7 +113,7 @@ class FreezeUserView(View):  # 冻结
             flash(MessageEnum.free_is_again.value[1])
             return redirect(url_for('home.adminuser'))
         if new_ad == user:
-            flash(MessageEnum.ower_cannot_free_me.value[1])
+            flash(MessageEnum.owner_cannot_free_me.value[1])
             return redirect(url_for('home.adminuser'))
         new_ad.status = True
         try:
@@ -132,7 +132,7 @@ class UnFreezeUserView(View):  # 解冻
 
     @login_required
     def dispatch_request(self, id):
-        if chckuserpermisson() is False:
+        if check_user_permission() is False:
             flash(MessageEnum.permiss_is_ness.value[1])
             return redirect(request.headers.get('Referer'))
         user = User.query.filter_by(username=session.get('username')).first()
@@ -151,7 +151,7 @@ class UnFreezeUserView(View):  # 解冻
                 db.session.rollback()
                 flash(MessageEnum.user_is_unfree_success.value[1])
                 return redirect(url_for('home.adminuser'))
-        flash(MessageEnum.ower_not_free_me.value[1])
+        flash(MessageEnum.owner_not_free_me.value[1])
         return redirect(url_for('home.adminuser'))
 
 
@@ -160,8 +160,8 @@ class ActivationUserview(View):
 
     @login_required
     def dispatch_request(self):
-        if chckuserpermisson() is False:
-            return reponse(
+        if check_user_permission() is False:
+            return response(
                 code= MessageEnum.permiss_is_ness.value[0],
                 message= MessageEnum.permiss_is_ness.value[1], data= '')
         userjobnum = request.get_json()
@@ -170,16 +170,16 @@ class ActivationUserview(View):
             job_num = int(userjobnum['jobnum'])
         except Exception as e:
             logger.exception(e)
-            return reponse(code= MessageEnum.activ_is_int.value[0],
+            return response(code= MessageEnum.activ_is_int.value[0],
                            message= MessageEnum.activ_is_int.value[1])
         user = User.query.filter_by(id=id, status=False).first()
         if not user:
-            return reponse(code= MessageEnum.login_user_not_exict_message.value[0],
-                            message= MessageEnum.login_user_not_exict_message.value[1])
+            return response(code= MessageEnum.login_user_not_exist_message.value[0],
+                            message= MessageEnum.login_user_not_exist_message.value[1])
         try:
             user_job = User.query.filter_by(jobnum=job_num).first()
             if user_job:
-                return reponse(
+                return response(
                     code= MessageEnum.activi_user_jobnum.value[0],
                     message= MessageEnum.activi_user_jobnum.value[1])
         except Exception as e:
@@ -189,9 +189,9 @@ class ActivationUserview(View):
             user.jobnum = job_num
             db.session.add(user)
             db.session.commit()
-            return reponse(code= MessageEnum.success.value[0],
+            return response(code= MessageEnum.success.value[0],
                            message= MessageEnum.success.value[1], data= '')
-        return reponse(code= MessageEnum.activi_user_jobnum_is.value[0],
+        return response(code= MessageEnum.activi_user_jobnum_is.value[0],
                         message= MessageEnum.activi_user_jobnum_is.value[1])
 
 
@@ -200,7 +200,7 @@ class ResetPasswordView(View):  # 重置密码
 
     @login_required
     def dispatch_request(self, id):
-        if chckuserpermisson() is False:
+        if check_user_permission() is False:
             flash(MessageEnum.permiss_is_ness.value[1])
             return redirect(request.headers.get('Referer'))
         user = User.query.filter_by(username=session.get('username')).first()
@@ -236,10 +236,10 @@ class ChangePassword(MethodView):
         user.set_password(password)
         try:
             db.session.commit()
-            return reponse(code= MessageEnum.change_password_success.value[0],
+            return response(code= MessageEnum.change_password_success.value[0],
                             data= MessageEnum.change_password_success.value[1])
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
-            return reponse(code= MessageEnum.change_password_error.value[0],
+            return response(code= MessageEnum.change_password_error.value[0],
                             data= MessageEnum.change_password_error.value[1])

@@ -11,12 +11,7 @@ from flask_login import current_user, login_required
 from app import loginManager
 from common.mock_server import get_token_data
 from error_message import MessageEnum
-from common.systemlog import logger
-
-@loginManager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
+from common.system_log import logger
 
 mock = Blueprint('mock', __name__)
 
@@ -28,8 +23,9 @@ class EditMockServerView(MethodView):  # 编辑mock服务
         if not mock:
             flash(MessageEnum.use_select_edit.value[1])
             return redirect(url_for('home.mockserver'))
-        return render_template('edit/editmock.html', mock=mock)
+        return render_template('edit/edit_mock.html', mock=mock)
 
+    @login_required
     def post(self, id):
         mock = Mockserver.query.filter_by(id=id, status=False).first()
         if not mock:
@@ -79,7 +75,7 @@ class EditMockServerView(MethodView):  # 编辑mock服务
             logger.exception(e)
             db.session.rollback()
             flash(MessageEnum.mock_edit_fail.value[1])
-            return render_template('edit/editmock.html', mock=mock)
+            return render_template('edit/edit_mock.html', mock=mock)
 
 
 class MakeMockserverView(MethodView):  # 做一个mock服务
@@ -95,6 +91,7 @@ class MakeMockserverView(MethodView):  # 做一个mock服务
         data = get_token_data(path)
         return data
 
+    @login_required
     def delete(self, path):  # delete请求方法
         data = get_token_data(path)
         return data

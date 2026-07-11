@@ -1,6 +1,6 @@
 """ 
 @author: lileilei
-@file: mergelist.py
+@file: list_utils.py
 @time: 2018/1/29 13:55 
 """
 """
@@ -8,7 +8,7 @@ list的合并
 """
 
 
-def hebinglist(list1: list):
+def flatten_list(list1: list):
     new = []
     for m in list1:
         for h in m:
@@ -16,7 +16,7 @@ def hebinglist(list1: list):
     return new
 
 
-def listmax(list2: list):
+def list_stats(list2: list):
     list_int = []
     for i in list2:
         try:
@@ -30,3 +30,7 @@ def listmax(list2: list):
     minx = min(list_int)
     pingjun = nsm / (len(list_int))
     return ma, minx, pingjun
+
+# 向后兼容别名
+hebinglist = flatten_list
+listmax = list_stats

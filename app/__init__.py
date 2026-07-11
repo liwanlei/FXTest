@@ -9,13 +9,14 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
 
 from app.models import Work
 from config import lod
 from apscheduler.schedulers.background import BackgroundScheduler, BlockingScheduler
 from config import jobstores, executors
 from flask_admin import Admin
-from common.systemlog import logger
+from common.system_log import logger
 
 from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 
@@ -24,12 +25,13 @@ conf = lod()
 loginManager = LoginManager(app)
 app.config.from_object(conf)
 bootstrap = Bootstrap(app)
+csrf = CSRFProtect(app)
 loginManager.session_protection = "strong"
 loginManager.login_view = 'home.login'
 loginManager.login_message = u'FXTest测试平台必须登录，请登录您的FXTest平台账号！'
 db = SQLAlchemy(app)
 admin = Admin(app, name=u'FXTest系统管理后台')
-from app import views, models, urls, apiadmin
+from app import views, models, urls, admin_views
 
 
 def listerner(event):
@@ -41,12 +43,11 @@ def listerner(event):
 
 sched = BackgroundScheduler(jobstores=jobstores, executors=executors)
 sched.add_listener(listerner, EVENT_JOB_ERROR | EVENT_JOB_EXECUTED)
-work_choices = []
-work_list = Work.query.all()
 choice_l = [(1, '否'), (2, '是')]
-for i in range(len(work_list)):
-    work_choices.append((work_list[i].id, work_list[i].name))
-try:
-    sched.start()
-except Exception as e:
-    logger.exception(e)
+work_choices = []
+
+
+def init_work_choices():
+    global work_choices
+    work_list = Work.query.all()
+    work_choices = [(w.id, w.name) for w in work_list]

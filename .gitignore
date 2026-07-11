@@ -1,0 +1,30 @@
+# 环境变量 (包含密钥)
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 数据库
+*.sqlite
+*.sqlite3
+
+# 上传文件
+app/upload/*.xls
+app/upload/*.xlsx
+app/upload/*.log
+app/upload/*.html
+
+# 系统
+.DS_Store
+Thumbs.db

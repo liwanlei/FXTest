@@ -1,6 +1,6 @@
 """ 
 @author: lileilei
-@file: opearexcel.py
+@file: excel_utils.py
 @time: 2018/4/4 16:10 
 """
 '''
@@ -10,7 +10,7 @@ import xlwt
 from xlwt import *
 
 
-def yangshi1():
+def _header_style():
     style = XFStyle()
     fnt = Font()
     fnt.name = u'微软雅黑'
@@ -24,7 +24,7 @@ def yangshi1():
     return style
 
 
-def yangshi2():
+def _cell_style():
     style1 = XFStyle()
     alignment = xlwt.Alignment()
     alignment.horz = xlwt.Alignment.HORZ_CENTER
@@ -130,3 +130,7 @@ def create_interface_case(filename: str, caselist: list):
         return {'code': 0, 'message': filename}
     except Exception as e:
         return {'code': 1, 'error': e}
+
+# 向后兼容别名
+yangshi1 = _header_style
+yangshi2 = _cell_style

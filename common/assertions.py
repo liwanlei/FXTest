@@ -4,7 +4,7 @@
 '''
 判断
 '''
-from common.nested_dict import getdictvalue
+from common.dict_utils import getdictvalue
 
 
 def assert_in(assertin, returnjson):
@@ -25,7 +25,7 @@ def assert_in(assertin, returnjson):
         return '请检查断言'
 
 
-def assertre(asserqingwang):
+def parse_assertion(asserqingwang):
     if len(asserqingwang.split('=')) > 1:
         data = asserqingwang.split('&')
         result = dict([(item.split('=')) for item in data])
@@ -56,3 +56,6 @@ def pare_result_mysql(mysqlresult, paseziduan, return_result):
         return {'code': 0, 'result': 'pass'}
     else:
         return {'code': 3, 'result': 'fail'}
+
+# 向后兼容别名
+assertre = parse_assertion

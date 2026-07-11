@@ -1,13 +1,32 @@
-""" 
+"""
 @author: lileilei
-@file: padkdk.py 
-@time: 2018/1/29 13:22 
+@file: list_paging.py
+@time: 2018/1/29 13:22
 """
 """
-部分页面的分页使用，
-注：这里来源于百度搜索结果
+分页工具：
+- Pagination: URL 分页类，生成 HTML 页码
+- fenye_list: 列表切片分页，返回分页后的二维列表
 """
 from urllib.parse import urlencode
+
+
+def fenye_list(Ob_list, split):
+    """将列表按每页 split 条切分为多个子列表。
+
+    Args:
+        Ob_list: 待分页的列表
+        split: 每页显示条数
+
+    Returns:
+        list[list]: 分页后的二维列表，外层索引对应页码-1
+    """
+    if not Ob_list:
+        return []
+    split = int(split)
+    if split <= 0:
+        return [list(Ob_list)]
+    return [list(Ob_list[i:i + split]) for i in range(0, len(Ob_list), split)]
 
 
 class Pagination(object):

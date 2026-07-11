@@ -6,8 +6,8 @@
 调用类，传入url，请求方法，参数，请求headers，就可以进行请求，
 目前只支持dict格式的参数，和请求headers。
 '''
-from common.PackageRequest import Request
-from common.systemlog import logger
+from common.package_request import Request
+from common.system_log import logger
 
 class Api():
     def __init__(self, url, method, params, headers):
@@ -16,7 +16,6 @@ class Api():
         self.param = params
         self.headers = headers
         self.request = Request()
-        self.response = []
 
     def testapi(self):
 
@@ -36,7 +35,7 @@ class Api():
                                                     params=self.param,
                                                     headers=self.headers)
             elif str(self.method).upper() == 'DELETE':
-                response, spend = self.request.delfile(url=self.url,
+                response, spend = self.request.delete(url=self.url,
                                                     params=self.param,
                                                     headers=self.headers)
             else:

@@ -3,7 +3,7 @@
 # @File    : views.py
 from flask import Blueprint
 from flask import redirect, request, render_template, url_for, flash
-from common.BSTestRunner import BSTestRunner
+from common.bs_test_runner import BSTestRunner
 from flask.views import MethodView
 from flask_login import current_user, login_required
 from app import loginManager, sched
@@ -12,8 +12,9 @@ from app.test_case.new_unittest_case import *
 from common.dingtalk import send_ding
 from config import Dingtalk_access_token
 from error_message import *
-from common.jsontools import reponse
-from common.systemlog import logger
+from app.helpers import get_user_projects
+from common.json_tools import response
+from common.system_log import logger
 from ast import literal_eval
 
 task = Blueprint('task', __name__)
@@ -82,11 +83,6 @@ def addtask(id):  # 定时任务执行的时候所用的函数
         logger.exception(e)
 
 
-@loginManager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-
 class TestforTaskView(MethodView):  # 为测试任务添加测试用例
 
     @login_required
@@ -94,38 +90,26 @@ class TestforTaskView(MethodView):  # 为测试任务添加测试用例
         if current_user.is_sper:
             projects = Project.query.filter_by(status=False).all()
         else:
-            projects = []
-            ids = []
-            for i in current_user.quanxians:
-                if (i.projects in ids) is False:
-                    if i.projects.status is False:
-                        projects.append(i.projects)
-                        ids.append(i.projects)
+            projects = get_user_projects()
         task_one = Task.query.filter_by(id=id).first()
-        return render_template('add/addtestcasefortask.html',
-                               task_one=task_one, procjets=projects)
+        return render_template('add/add_test_case_for_task.html',
+                               task_one=task_one, projects=projects)
 
     @login_required
     def post(self, id):
         if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).all()
         else:
-            projects = []
-            id = []
-            for i in current_user.quanxians:
-                if (i.projects in id) is False:
-                    if i.projects.status is False:
-                        projects.append(i.projects)
-                        id.append(i.projects)
+            projects = get_user_projects()
         task_one = Task.query.filter_by(id=id).first()
         project_test = request.form.get('project')
         if project_test == '':
             flash(MessageEnum.not_add_project.value[1])
-            return render_template('add/addtestcasefortask.html', task_one=task_one, procjets=projects)
+            return render_template('add/add_test_case_for_task.html', task_one=task_one, projects=projects)
         test_case = request.form.getlist('testyongli')
         if test_case == '':
             flash(MessageEnum.project_not_case.value[1])
-            return render_template('add/addtestcasefortask.html', task_one=task_one, procjets=projects)
+            return render_template('add/add_test_case_for_task.html', task_one=task_one, projects=projects)
         for oldtask in task_one.interface.all():
             task_one.interface.remove(oldtask)
         for case in test_case:
@@ -234,7 +218,7 @@ class AddTimingTaskView(MethodView):
     @login_required
     def get(self):
         project = Project.query.filter_by(status=False).all()
-        return render_template('add/addtimingtasks.html', projects=project)
+        return render_template('add/add_timing_tasks.html', projects=project)
 
     @login_required
     def post(self):
@@ -244,30 +228,31 @@ class AddTimingTaskView(MethodView):
         taskname_is = Task.query.filter_by(taskname=data['taskname']).first()
         testevent = Interfacehuan.query.filter_by(url=data['testevent']).first()
         if not testevent:
-            return reponse(
-                code=MessageEnum.task_event_not_exict.value[0],
-                message=MessageEnum.task_event_not_exict.value[1],
+            return response(
+                code=MessageEnum.task_event_not_exist.value[0],
+                message=MessageEnum.task_event_not_exist.value[1],
                 data='')
         if taskname_is:
-            return reponse(
+            return response(
                 code=MessageEnum.task_name_not_same.value[0],
                 message=MessageEnum.task_name_not_same.value[1],
                 data='')
         procjt = Project.query.filter_by(project_name=data['projects'], status=False).first()
         if not procjt:
-            return reponse(code=MessageEnum.task_project_is_not_exict.value[0],
-                           message=MessageEnum.task_project_is_not_exict.value[1], data='')
+            return response(code=MessageEnum.task_project_is_not_exist.value[0],
+                           message=MessageEnum.task_project_is_not_exist.value[1], data='')
         new_task = Task(taskname=data['taskname'], taskstart=str(task_time),
                         taskrepor_to=data['to_email'], taskrepor_cao=data['cao_email'],
                         task_make_email=data['weihu'], makeuser=current_user.id,
                         prject=procjt.id, testevent=testevent.id)
         db.session.add(new_task)
         try:
-            return reponse(code=MessageEnum.success.value[0], message=MessageEnum.success.value[1], data='')
+            db.session.commit()
+            return response(code=MessageEnum.success.value[0], message=MessageEnum.success.value[1], data='')
         except Exception as e:
             logger.exception(e)
             db.session.rollback()
-            return reponse(
+            return response(
                 code=MessageEnum.task_add_fail.value[0], message=MessageEnum.task_add_fail.value[1], data='')
 
 
@@ -277,16 +262,10 @@ class EdiTmingTaskView(MethodView):
         if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).all()
         else:
-            projects = []
-            id = []
-            for i in current_user.quanxians:
-                if (i.projects in id) is False:
-                    if i.projects.status is False:
-                        projects.append(i.projects)
-                        id.append(i.projects)
+            projects = get_user_projects()
         task_one = Task.query.filter_by(id=id).first()
         if not task_one:
-            flash(MessageEnum.task_edit_not_exict.value[1])
+            flash(MessageEnum.task_edit_not_exist.value[1])
             return redirect(url_for('home.timingtask'))
         return render_template('edit/edit_timing_tasks.html',
                                task_one=task_one, porjects=projects)
@@ -304,13 +283,13 @@ class EdiTmingTaskView(MethodView):
         weihu = request.form['weihu']
         if taskname == '':
             flash(MessageEnum.task_name_not_none.value[1])
-            return render_template('add/addtimingtasks.html')
+            return render_template('add/add_timing_tasks.html')
         if to_email_data == '':
             flash(MessageEnum.task_recevier.value[1])
-            return render_template('add/addtimingtasks.html')
+            return render_template('add/add_timing_tasks.html')
         if weihu == '':
             flash(MessageEnum.task_user.value[1])
-            return render_template('add/addtimingtasks.html')
+            return render_template('add/add_timing_tasks.html')
         task_one.taskname = taskname
         task_one.taskrepor_to = to_email_data
         task_one.taskrepor_cao = cao_email
@@ -333,7 +312,7 @@ class DeteleTaskView(MethodView):
         next = request.headers.get('Referer')
         task_one = Task.query.filter_by(id=id).first()
         if not task_one:
-            flash(MessageEnum.delete_not_exict.value[1])
+            flash(MessageEnum.delete_not_exist.value[1])
             return redirect(next or url_for('home.timingtask'))
         if task_one.status is True:
             flash(MessageEnum.task_is_delete.value[1])
@@ -357,11 +336,11 @@ class GetTestView(MethodView):
         project = project.decode('utf-8')
         changeProject = Project.query.filter_by(project_name=project).first()
         if not changeProject:
-            return reponse(
+            return response(
                 code=MessageEnum.project_search.value[0],
                 message=MessageEnum.project_search.value[1], data='')
         if changeProject.status:
-            return reponse(
+            return response(
                 code=MessageEnum.project_delet_free.value[0],
                 message=MessageEnum.project_delet_free.value[1],
                 data='')
@@ -370,13 +349,14 @@ class GetTestView(MethodView):
         testeventlist = []
         for testevent in testevents:
             testeventlist.append({"url": testevent.url})
-        return reponse(
+        return response(
             code=MessageEnum.success.value[0],
             data=testeventlist,
             message=MessageEnum.success.value[1])
 
 
 class CreateTaskCaseAndRunView(MethodView):
+    @login_required
     def post(self):
         data = request.get_json()
         testevent_url=data['testevent_url']
@@ -390,7 +370,7 @@ class CreateTaskCaseAndRunView(MethodView):
                                                              project=changProject.id).first()
             if testevent_url_exit:
                 if len(caselist)<1:
-                    return reponse(
+                    return response(
                         code=MessageEnum.task_must_be_mulite_case_recommend.value[0],
                         data={},
                         message=MessageEnum.task_must_be_mulite_case_recommend.value[1])
@@ -398,21 +378,21 @@ class CreateTaskCaseAndRunView(MethodView):
                     success,faill,error,hou=runtestcase(taskcase=caselist,testevent_url=testevent_url)
                     data={"project":project,'taskmd5':taskmd5,'passnum':success,
                           'failnum':faill,'error':error,'extimetime':hou}
-                    return reponse(
+                    return response(
                         code=MessageEnum.success.value[0],
                         data=data,
                         message=MessageEnum.success.value[1])
                 else:
                     pass
 
-            return reponse(
-                code=MessageEnum.testeveirment_not_exict.value[0],
+            return response(
+                code=MessageEnum.test_environment_not_exist.value[0],
                 data={},
-                message=MessageEnum.testeveirment_not_exict.value[1])
-        return reponse(
-            code=MessageEnum.project_not_exict.value[0],
+                message=MessageEnum.test_environment_not_exist.value[1])
+        return response(
+            code=MessageEnum.project_not_exist.value[0],
             data={},
-            message=MessageEnum.project_not_exict.value[1])
+            message=MessageEnum.project_not_exist.value[1])
 
 def runtestcase(taskcase,testevent_url):
     star = time.time()

@@ -1,19 +1,2 @@
-""" 
-@author: lileilei
-@file: ddd.py 
-@time: 2018/4/13 13:24 
-"""
-'''
-字典的合并
-'''
-from ast import literal_eval
-
-
-def mergeDict(dict_list: dict):
-    dictMerged = {}
-    for item in dict_list:
-        try:
-            dictMerged.update(literal_eval(item))
-        except Exception as e:
-            pass
-    return dictMerged
+"""已合并至 common.dict_utils，此文件保留以向后兼容。"""
+from common.dict_utils import merge_dict, mergeDict  # noqa: F401

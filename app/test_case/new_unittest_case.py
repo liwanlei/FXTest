@@ -13,18 +13,18 @@ from config import redis_host, redis_port, \
 from app.models import *
 from common.redis_client import ConRedisOper
 from common.case_logger import filelogpath
-from common.nested_dict import getdictvalue
-from common.systemlog import logger
+from common.dict_utils import getdictvalue
+from common.system_log import logger
 import json
 from ast import literal_eval
 
-def save_reslut(key, value):
+def save_result(key, value):
     m = ConRedisOper(host=redis_host, port=redis_port,
                      db=redis_save_result_db)
     m.sethash(key, value, save_duration)
 
 
-def get_reslut(key):
+def get_result(key):
     m = ConRedisOper(host=redis_host, port=redis_port,
                      db=redis_save_result_db)
     reslit = m.getset(key)
@@ -193,3 +193,7 @@ class TestCase(Parmer):
             self.assertEqual(value1, value2, msg="断言与预期不符合")
         else:
             self.assertTrue(False, msg=self.fail_log)
+
+# 向后兼容别名
+save_reslut = save_result
+get_reslut = get_result

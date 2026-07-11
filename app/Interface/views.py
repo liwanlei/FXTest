@@ -7,24 +7,19 @@ from flask import redirect, request, \
     render_template, session, url_for, flash, Blueprint, \
     make_response, send_from_directory
 from app.models import *
-from common.excel_parser import pasre_inter
+from common.excel_parser import parse_interface
 from flask.views import MethodView, View
 from flask_login import login_required, current_user
 import json, os, time
 from config import Config_import
 from common.excel_utils import create_interface
-from common.merge import mergeDict
+from common.dict_utils import mergeDict
 from error_message import MessageEnum
-from common.systemlog import logger
-from common.jsontools import reponse
+from common.system_log import logger
+from common.json_tools import response
+from app.helpers import get_user_projects, get_project_model
 
 interfaceview = Blueprint('interface', __name__)
-
-
-def get_project_model():
-    projects = Project.query.filter_by(status=False).all()
-    model = Model.query.filter_by(status=False).all()
-    return projects, model
 
 
 class EditInterfaceView(MethodView):
@@ -38,13 +33,7 @@ class EditInterfaceView(MethodView):
         if current_user.is_sper is True:
             projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
-            projects = []
-            project_ids = []
-            for i in current_user.quanxians:
-                if (i.projects in id) is False:
-                    if i.projects.status is False:
-                        projects.append(i.projects)
-                        project_ids.append(i.projects)
+            projects = get_user_projects()
         project, models = get_project_model()
         return render_template('edit/edit_interface.html', interfac=interface,
                                projects=projects, models=models)
@@ -59,24 +48,18 @@ class EditInterfaceView(MethodView):
         if current_user.is_sper:
             projects = Project.query.filter_by(status=False).order_by(Project.id.desc()).all()
         else:
-            projects = []
-            id = []
-            for i in current_user.quanxians:
-                if (i.projects in id) == False:
-                    if i.projects.status == False:
-                        projects.append(i.projects)
-                        id.append(i.projects)
-        projecct = request.form.get('project')
+            projects = get_user_projects()
+        project = request.form.get('project')
         model = request.form.get('model')
         intername = request.form.get('inter_name')
         url = request.form.get('url')
         interfa_tey = request.form.get('interface_type')
         headers = request.form.get('headers')
         meth = request.form.get('meth')
-        if projecct is None or model is None or intername == '' or headers == '' or url == '' or meth == '':
+        if project is None or model is None or intername == '' or headers == '' or url == '' or meth == '':
             flash(MessageEnum.edit_interface_null_parame.value[1])
             return render_template('edit/edit_interface.html', interfac=interface, projects=projects, models=models)
-        project_id = Project.query.filter_by(project_name=projecct).first().id
+        project_id = Project.query.filter_by(project_name=project).first().id
         models_id = Model.query.filter_by(model_name=model).first().id
         interface.projects_id = project_id
         interface.model_id = models_id
@@ -87,13 +70,13 @@ class EditInterfaceView(MethodView):
         interface.Interface_user_id = current_user.id
         interface.interfacetype = interfa_tey
         try:
-            flash(MessageEnum.Interface_edit.value[1])
+            flash(MessageEnum.interface_edit.value[1])
             db.session.commit()
             return redirect(url_for('home.interface'))
         except Exception as e:
             logger.error(e)
             db.session.rollback()
-            flash(MessageEnum.Interface_edit_fail.value[1])
+            flash(MessageEnum.interface_edit_fail.value[1])
             return redirect(url_for('home.interface'))
 
 
@@ -108,7 +91,7 @@ class ImportInterfaceView(View):
                 filename = 'jiekou.xlsx'
                 file.save(filename)
                 jiekou_bianhao, project_nam, model_nam, interface_name, interface_url, interface_header, \
-                interface_meth, interface_par, interface_bas, interface_type = pasre_inter(filename)
+                interface_meth, interface_par, interface_bas, interface_type = parse_interface(filename)
                 if len(interface_meth) > Config_import:
                     flash(MessageEnum.import_max_big.value[1])
                     return redirect(url_for('interface.import_inter'))
@@ -164,28 +147,33 @@ class SerinterView(MethodView):
             typeinterface = 'none'
         if not project:
             return (
-                {'msg': MessageEnum.project_not_exict.value[0],
-                 'code': MessageEnum.project_not_exict.value[1],
+                {'msg': MessageEnum.project_not_exist.value[0],
+                 'code': MessageEnum.project_not_exist.value[1],
                  'data': ''})
         project_is = Project.query.filter_by(project_name=str(projec)).first()
+        if not project_is:
+            return response(
+                message=MessageEnum.project_not_exist.value[1],
+                code=MessageEnum.project_not_exist.value[0],
+                data='')
         if project_is.status is True:
-            return reponse(
+            return response(
                 message=MessageEnum.project_delet_free.value[1], code=MessageEnum.project_delet_free.value[0],
                 data='')
-        interfaclist = Interface.query.filter_by(projects_id=project_is.id, status=False,
+        interface_list = Interface.query.filter_by(projects_id=project_is.id, status=False,
                                                  interfacetype=interfatype).all()
-        interfaclists = []
-        for interface in interfaclist:
-            interfaclists.append({'model_id': interface.models.model_name,
+        interface_lists = []
+        for interface in interface_list:
+            interface_lists.append({'model_id': interface.models.model_name,
                                   'projects_id': interface.projects.project_name,
                                   'id': interface.id, 'Interface_url': interface.Interface_url,
                                   'Interface_meth': interface.Interface_meth,
                                   'Interface_headers': interface.Interface_headers,
                                   'Interface_name': interface.Interface_name})
         data = {}
-        data['data'] = interfaclists
+        data['data'] = interface_lists
         data['typeinter'] = typeinterface
-        return reponse(message=MessageEnum.success.value[1],
+        return response(message=MessageEnum.success.value[1],
                        code=MessageEnum.success.value[0],
                        data=data)
 
@@ -196,8 +184,8 @@ class ExportinterfaceInterfceView(MethodView):
         project = request.form.get('interface_type')
         project_case = Project.query.filter_by(project_name=str(project), status=False).first()
         if project_case is None:
-            logger.info(MessageEnum.project_not_exict.value[1])
-            flash(MessageEnum.project_not_exict.value[1])
+            logger.info(MessageEnum.project_not_exist.value[1])
+            flash(MessageEnum.project_not_exist.value[1])
             return redirect(url_for('home.interface'))
         interface_list = Interface.query.filter_by(projects_id=project_case.id, status=False).all()
         pad = os.getcwd()
@@ -248,7 +236,7 @@ class AddParameterView(MethodView):
         if self.interface is None:
             flash(MessageEnum.add_parame_interface.value[1])
             return redirect(url_for('home.interface'))
-        return render_template('add/addparmes.html', interface=self.interface)
+        return render_template('add/add_params.html', interface=self.interface)
 
     @login_required
     def post(self, id):
@@ -261,14 +249,14 @@ class AddParameterView(MethodView):
         demo = request.form.get('shili')
         if name is None or name == '':
             flash(MessageEnum.parame_name_not_empty.value[1])
-            return render_template('add/addparmes.html', interface=self.interface)
+            return render_template('add/add_params.html', interface=self.interface)
         if type is None or type == '':
             flash(MessageEnum.parame_error.value[1])
-            return render_template('add/addparmes.html', interface=self.interface)
+            return render_template('add/add_params.html', interface=self.interface)
         old_name = Parameter.query.filter_by(interface_id=self.interface.id, status=False, parameter_name=name).first()
         if old_name:
-            flash(MessageEnum.parame_is_exict.value[1])
-            return render_template('add/addparmes.html', interface=self.interface)
+            flash(MessageEnum.param_is_exist.value[1])
+            return render_template('add/add_params.html', interface=self.interface)
         if nuss == '是':
             if_nuss = True
         else:
@@ -289,7 +277,7 @@ class AddParameterView(MethodView):
         except Exception as  e:
             db.session.rollback()
             flash('添加失败！原因：%s' % e)
-            return render_template('add/addparmes.html',
+            return render_template('add/add_params.html',
                                    interface=self.interface)
 
 
@@ -298,7 +286,7 @@ class DeleteParameterView(MethodView):
     def get(self, id):
         passem = Parameter.query.filter_by(id=id, status=False).first()
         if not passem:
-            flash(MessageEnum.parame_is_not_exict.value[1])
+            flash(MessageEnum.param_is_not_exist.value[1])
             return redirect(url_for('interface.interface_detail',
                                     id=passem.interfaces.id))
         passem.status = True
@@ -325,9 +313,9 @@ class EditPParameterView(MethodView):
             flash(MessageEnum.interface_not_exist.value[1])
             return redirect(url_for('home.interface'))
         if pasrm is None:
-            flash(MessageEnum.parame_is_not_exict.value[1])
+            flash(MessageEnum.param_is_not_exist.value[1])
             return redirect(url_for('interface.interface_detail', id=inte_id))
-        return render_template('edit/edtiparmes.html', pasrm=pasrm, interface_one=interface_one)
+        return render_template('edit/edit_params.html', pasrm=pasrm, interface_one=interface_one)
 
     @login_required
     def post(self, id, inte_id):
@@ -337,7 +325,7 @@ class EditPParameterView(MethodView):
             flash(MessageEnum.interface_not_exist.value[1])
             return redirect(url_for('home.interface'))
         if pasrm is None:
-            flash(MessageEnum.parame_is_not_exict.value[1])
+            flash(MessageEnum.param_is_not_exist.value[1])
             return redirect(url_for('interface.interface_detail', id=inte_id))
         type = request.form.get('type')
         nuss = request.form.get('nussu')
@@ -347,7 +335,7 @@ class EditPParameterView(MethodView):
         name = request.form.get('name')
         if name is None or name == '':
             flash(MessageEnum.parame_name_not_empty.value[1])
-            return render_template('edit/edtiparmes.html', pasrm=pasrm, interface_one=interface_one)
+            return render_template('edit/edit_params.html', pasrm=pasrm, interface_one=interface_one)
         if nuss == '是':
             if_nuss = True
         else:
@@ -358,7 +346,7 @@ class EditPParameterView(MethodView):
             is_chu = 0
         if type is None or type == '':
             flash(MessageEnum.parame_type_is_not_empty.value[1])
-            return render_template('edit/edtiparmes.html', pasrm=pasrm, interface_one=interface_one)
+            return render_template('edit/edit_params.html', pasrm=pasrm, interface_one=interface_one)
         pasrm.type = is_chu
         pasrm.necessary = if_nuss
         pasrm.desc = desec
@@ -370,7 +358,7 @@ class EditPParameterView(MethodView):
         except Exception as e:
             logger.exception(e)
             flash(MessageEnum.edit_fail.value[1])
-            return render_template('edit/edtiparmes.html', pasrm=pasrm, interface_one=interface_one)
+            return render_template('edit/edit_params.html', pasrm=pasrm, interface_one=interface_one)
 
 
 class AddGroupInterface(MethodView):
@@ -379,10 +367,10 @@ class AddGroupInterface(MethodView):
     def get(self, interfaceid):
         interface_one = Interface.query.filter_by(id=interfaceid, status=False).first()
         if not interface_one:
-            return reponse(message=MessageEnum.interface_not_exist.value[1],
+            return response(message=MessageEnum.interface_not_exist.value[1],
                            code=MessageEnum.interface_not_exist.value[0])
 
-        return reponse(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0])
+        return response(message=MessageEnum.success.value[1], code=MessageEnum.success.value[0])
 
 
 class GetGroupInterface(MethodView):
@@ -392,8 +380,8 @@ class GetGroupInterface(MethodView):
     def get(self, interfaceid):
         interface_one = Interface.query.filter_by(id=interfaceid, status=False).first()
         if not interface_one:
-            return reponse(message=MessageEnum.interface_not_exist.value[1],
+            return response(message=MessageEnum.interface_not_exist.value[1],
                            code=MessageEnum.interface_not_exist.value[0])
 
-        return reponse(message=MessageEnum.success.value[1],
+        return response(message=MessageEnum.success.value[1],
                        code=MessageEnum.success.value[0])

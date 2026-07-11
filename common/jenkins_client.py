@@ -1,6 +1,6 @@
 '''
 @author: lileilei
-@file: CollectionJenkins.py
+@file: jenkins_client.py
 @time: 2018/8/17 9:45
 '''
 '''
@@ -8,7 +8,7 @@ jenkins的链接
 '''
 import jenkins, requests
 from config import jenkins_password, jenkins_user, jenkins_url
-from common.systemlog import logger
+from common.system_log import logger
 
 
 class Conlenct_jenkins(object):

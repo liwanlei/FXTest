@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>FXTest测试平台</title>
-    <link href="{{ url_for('static',filename='css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static',filename='css/demo.css') }}" rel="stylesheet">
     <link href="{{ url_for('static',filename='css/main.css') }}" rel="stylesheet">
     <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
@@ -14,7 +14,7 @@
         }
     </style>
 </head>
-<body style="    background-color: beige;">
+<body>
 <div id="wrapper">
     <div class="vertical-align-wrap">
         <div class="vertical-align-middle">
@@ -51,7 +51,6 @@
                     </div>
                 </form>
             </div>
-            <h3 style="text-align: center;color: red">管理员：liwanlei 密码:liwanlei </h3>
             <h3 style="text-align: center;color: red">版权归属雷子所有，如果您要进行定制开发 可以联系我：952943386 </h3>
             <h4 style="text-align: center;color: red ">
                 <strong><a href="{{ url_for('register') }}">注册</a></strong>
@@ -73,12 +72,16 @@
                 var data = {};
                 data['username'] = username;
                 data['password'] = password;
+                var csrf_token = document.getElementsByName('csrf_token')[0].value;
                 $.ajax({
                     url: '{{ url_for('home.login') }}',
                     type: 'POST',
                     data: JSON.stringify(data),
                     contentType: 'application/json; charset=UTF-8',
                     processData: false,
+                    headers: {
+                        'X-CSRFToken': csrf_token
+                    },
                     success: function (result) {
                         if (result['code'] == 0) {
                             location.href = '{{ url_for('home.index') }}';

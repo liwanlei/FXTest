@@ -4,6 +4,7 @@
 # @Time    : 2017/12/7 9:27
 from .views import *
 from .views import home
+from .resource_views import *
 
 home.add_url_rule('/index', view_func=IndexView.as_view('index'))
 home.add_url_rule('/login', view_func=LoginView.as_view('login'))
@@ -27,10 +28,6 @@ home.add_url_rule('/mock/<int:page>', view_func=MockViews.as_view('mockservers')
 home.add_url_rule('/timingtask', view_func=TimingtasksView.as_view('timingtask'))
 home.add_url_rule('/timingtask/<int:page>', view_func=TimingtasksView.as_view('timingtasks'))
 home.add_url_rule('/get_project_test_report', view_func=GetProtestReportView.as_view('get_project_test_report'))
-# home.add_url_rule('/jenkinsfirst', view_func=JenkinsFirst.as_view('jenkinsfirst'))
-# home.add_url_rule('/buildjob/<jobname>', view_func=JenkinsGou.as_view('buildjob'))
-# home.add_url_rule('/getjenlog', view_func=GetJenLogview.as_view('get_jen_log'))
-# home.add_url_rule('/deletejentask/<int:id>', view_func=DeleteJenkinstask.as_view('deletejentask'))
 home.add_url_rule('/deletegenconfig/<int:id>', view_func=DeleteGenconfigView.as_view('deletegenconfig'))
 home.add_url_rule('/genconfig', view_func=GenconfigView.as_view('genconfig'))
 home.add_url_rule('/genconfig/<int:page>', view_func=GenconfigView.as_view('genconfigs'))

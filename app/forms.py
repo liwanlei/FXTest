@@ -1,7 +1,7 @@
 # encoding: utf-8
 """
 @author: lileilei
-@file: form.py
+@file: forms.py
 @time: 2017/7/13 16:42
 """
 from app import work_choices
@@ -23,7 +23,7 @@ class LoginForm(Form):
                              render_kw={'placeholder': u'请输入密码'})
 
 
-class RegFrom(Form):
+class RegisterForm(Form):
     username = StringField(u'注册用户名', [validators.Length(min=4, max=16, message=u'用户名长度在4-16位'),
                                       validators.DataRequired(message=u'请输入用户名')], render_kw={'placeholder': u'请输入用户名'})
     password = PasswordField(u'注册密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'),
@@ -40,7 +40,7 @@ class RegFrom(Form):
                        validators=[validators.DataRequired(message=u"项目名称不能为空")])
 
 
-class changepasswordFrom(Form):
+class ChangePasswordForm(Form):
     password = PasswordField(u'密码', [validators.length(min=8, max=16, message=u'密码长度8-16位'), validators.DataRequired()],
                              render_kw={'placeholder': u'请输入原密码'})
     changepassword_password = PasswordField(u'密码',
@@ -51,7 +51,7 @@ class changepasswordFrom(Form):
                                     render_kw={'placeholder': u'请再次输入密码'})
 
 
-class InterForm(Form):  # 接口的表单
+class InterfaceForm(Form):  # 接口的表单
     project_name = StringField(u'项目名字', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口所属项目名称'})
     model_name = StringField(u'模块名字', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口所属模块名称'})
     interface_name = StringField(u'接口名字', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口名称'})
@@ -63,7 +63,7 @@ class InterForm(Form):  # 接口的表单
     interface_bas = StringField(u'请求返回示例', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口返回示例'})
 
 
-class Interface_case_Form(Form):  # 测试用例的表单
+class InterfaceCaseForm(Form):  # 测试用例的表单
     yongli_name = StringField(u'项目', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口项目名称'})
     model_name = StringField(u'模块', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口模块名称'})
     interface_name = StringField(u'接口名字', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口名称'})
@@ -76,7 +76,7 @@ class Interface_case_Form(Form):  # 测试用例的表单
     save = SelectField(u'选择是否保存测试结果', choices=choice_l, coerce=int)
 
 
-class Set_email_Form(Form):  # 设置发送邮箱的
+class EmailSettingForm(Form):  # 设置发送邮箱的
     send_email = StringField(u'请输入邮箱', [validators.DataRequired(message=u'请输入邮箱'), Email(message=u'邮箱格式不对')],
                              render_kw={'placeholder': u'请输入邮箱'})
     password = StringField(u'请输入安全密码：', [validators.DataRequired(message=u'请输入安全密码')],
@@ -87,8 +87,17 @@ class Set_email_Form(Form):  # 设置发送邮箱的
                        render_kw={'placeholder': u'请输入stmp的端口号：'})
 
 
-class Interface_Env(Form):  # 测试环境
+class InterfaceEnvForm(Form):  # 测试环境
     project = StringField(u'项目', [validators.DataRequired(message=u'请填写项目')], render_kw={'placeholder': u'请输入接口项目名称'})
     envtion = StringField(u'测试环境url', [validators.DataRequired(message=u'请输入测试环境url')],
                           render_kw={'placeholder': u'测试环境url'})
     desc = StringField(u'测试环境描述', [validators.DataRequired(message=u'请输入测试环境描述')], render_kw={'placeholder': u'测试环境描述'})
+
+
+# 向后兼容别名（历史代码可能仍使用旧类名）
+RegFrom = RegisterForm
+changepasswordFrom = ChangePasswordForm
+InterForm = InterfaceForm
+Interface_case_Form = InterfaceCaseForm
+Set_email_Form = EmailSettingForm
+Interface_Env = InterfaceEnvForm
