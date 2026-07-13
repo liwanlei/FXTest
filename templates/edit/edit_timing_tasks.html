@@ -1,0 +1,76 @@
+{% extends 'back.html' %}
+{% block hello %}
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
+        <div class="tpl-content-page-title"></div>
+        <div class="tpl-portlet-components" style="background-color: whitesmoke;">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 编辑定时任务
+                </div>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                    <div class="portlet-input input-small input-inline">
+                        <div class="input-icon right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('task.editmingtask',id=task_one.id) }}" method="POST" style="width: 40%;
+    margin-left: 30%;">
+                <div class="form-group">
+                    <p style="margin-top: 20px">
+                        <strong>任务名称:</strong>
+                        <input type="text" name="taskname" placeholder="请输入任务名！" value="{{ task_one.taskname }}">
+                    </p>
+                    <p style="margin-top: 20px"><strong>测试时间:</strong>
+                        <strong>周：</strong>
+                        <select name="week">
+                            <option>mon-tue</option>
+                            <option>mon-wed</option>
+                            <option>mon-thu</option>
+                            <option>mon-fri</option>
+                            <option>mon-sat</option>
+                            <option>mon-sun</option>
+                        </select>
+                        <strong>时钟:</strong>
+                        <select name="hours">
+                            {% for j in range(25) %}
+                                <option>{{ j }}</option>
+                            {% endfor %}
+                        </select>
+                        <strong>分钟:</strong>
+                        <select name="minute">
+                            {% for i in range(61) %}
+                                <option>{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                    <p style="margin-top: 20px"><strong>邮件主送:</strong>
+                        <textarea type="text" name="to_email" placeholder="测试报告发送谁给，逗号分隔多个！"
+                                  style="width: 200px;height: 100px;">
+                            {{ task_one.taskrepor_to }}
+                        </textarea></p>
+                    <p style="margin-top: 20px"><strong>邮件抄送:</strong>
+                        <textarea type="text" name="cao_email" placeholder="测试报告抄送的人，用逗号分隔！"
+                                  style="width: 200px;height: 100px;">
+                            {{ task_one.taskrepor_cao }}
+                        </textarea>
+                    </p>
+                    <p style="margin-top: 20px">
+                        <strong>支持人邮件:</strong>
+                        <input type="text" name="weihu" placeholder="维护改测试计划的人！" value="{{ task_one.task_make_email }}">
+                    </p>
+                </div>
+                <button type="submit" class="am-btn am-btn-primary ">编辑</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

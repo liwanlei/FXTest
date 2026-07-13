@@ -2,7 +2,6 @@ APScheduler==3.7.0
 cached-property==1.5.2
 cchardet==2.1.7
 celery==5.2.2
-celery-with-redis==3.0
 ddt==1.4.2
 decorator==5.1.1
 defusedxml==0.7.1
@@ -65,7 +64,6 @@ Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.2
 keyring==23.0.1
 kiwisolver==1.2.0
-kombu==3.0.37
 ldap3==2.9
 libusb1==1.9.2
 Logbook==1.5.3

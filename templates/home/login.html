@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FXTest测试平台</title>
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/demo.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/main.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <style type="text/css">
+        body {
+            background: url({{url_for('static',filename='img/bg-login.jpg')}}) !important;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div class="vertical-align-wrap">
+        <div class="vertical-align-middle">
+            <div class="header " style="">
+                <h1 style="text-align: center;">FXTest测试平台登录</h1>
+            </div>
+            <div style="text-align: center;color: red" id="duanyan">
+            </div>
+            <div style="text-align: center;color: red">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class=flashes>
+                            {% for message in messages %}
+                                <li><strong>{{ message }}</strong></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div style="">
+                <form class="form-auth-small" method="POST" style="width: 40%;margin-left: 30%;">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {% if form.username.errors %}
+                            {% for e in form.username.errors %}
+                                <p class="flashes">{{ e }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        {{ form.username(class='form-control',id='username') }}
+                        <div class="form-group">
+                            {{ form.password(class='form-control',id='password') }}
+                        </div>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="login()">登录</button>
+                    </div>
+                </form>
+            </div>
+            <h3 style="text-align: center;color: red">版权归属雷子所有，如果您要进行定制开发 可以联系我：952943386 </h3>
+            <h4 style="text-align: center;color: red ">
+                <strong><a href="{{ url_for('register') }}">注册</a></strong>
+            </h4>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function login() {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        var message = document.getElementById('duanyan');
+        if (username.length < 1) {
+            message.innerHTML = "用户名不能为空！";
+        } else {
+            if (password.length < 1) {
+                message.innerHTML = "密码不能为空！";
+            } else {
+                var data = {};
+                data['username'] = username;
+                data['password'] = password;
+                var csrf_token = document.getElementsByName('csrf_token')[0].value;
+                $.ajax({
+                    url: '{{ url_for('home.login') }}',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json; charset=UTF-8',
+                    processData: false,
+                    headers: {
+                        'X-CSRFToken': csrf_token
+                    },
+                    success: function (result) {
+                        if (result['code'] == 0) {
+                            location.href = '{{ url_for('home.index') }}';
+                        } else {
+                            message.innerHTML = (result['message']);
+                        }
+                    }
+                });
+            }
+        }
+    }
+</script>
+</body>
+</html>

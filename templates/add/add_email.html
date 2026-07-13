@@ -1,0 +1,58 @@
+{% extends 'back.html' %}
+{% block hello %}
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components" style="background-color: whitesmoke;">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 添加测试报告邮件
+                </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('user.add_emai') }}" method="POST">
+                {{ form.hidden_tag() }}
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    <strong>邮箱名字:</strong>
+                    {{ form.send_email }}</div>
+                {% if form.send_email.errors %}
+                    {% for e in form.send_email.errors %}
+                        <p class="help-block " style='color:red'>{{ e }}</p>
+                    {% endfor %}
+                {% endif %}
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>邮箱安全:</strong>
+                    {{ form.password }}</div>
+                {% if form.password.errors %}
+                    {% for e in form.password.errors %}
+                        <span class="help-block" style='color:red'>{{ e }}</span>
+                    {% endfor %}
+                {% endif %}
+                <div class="form-group">
+                    <strong>
+                        <span>&nbsp;</span>
+                        是否设置默认</strong>
+                    <label>
+                        <input name="checkbox" type="checkbox">
+                    </label>
+                    <span>&nbsp;</span></div>
+                <div class="form-group">
+                    <strong>接受邮箱:</strong>
+                    <input type="text" name="email" placeholder="请输入接受邮箱">
+                    <text style="color: lightsteelblue;">多个邮箱请用逗号隔开</text>
+                </div>
+                <button type="submit" class="am-btn am-btn-primary ">添加</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

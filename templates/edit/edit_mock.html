@@ -1,0 +1,77 @@
+{% extends 'mockserver.html' %}
+{% block bodys %}
+    <div class="mockser" style="margin-top:4%">
+        <div class="tpl-content-page-title">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="tpl-portlet-components" style="background-color: whitesmoke;">
+            <div>
+                <h3 style="text-align: center">编辑mockserver端口</h3>
+                <form method="POST" style="margin-left: 40%" action="{{ url_for('mock.editmockserver',id=mock.id) }}">
+                    <p>接口名字：<input type="text" placeholder="请输入接口名字" name="name" value="{{ mock.name }}"></p>
+                    <p> 接口描述：<input type="text" placeholder="请输入接口描述" name="desc" value="{{ mock.description }}"></p>
+                    <p> 接口路径：<input type="text" placeholder="请输入接口路径" name="path" value="{{ mock.path }}"></p>
+                    <p> 请求方式：
+                        <select name="meth" class="select2-results">
+                            <option>get</option>
+                            <option>post</option>
+                            <option>delete</option>
+                            <option>put</option>
+                            <option>push</option>
+                        </select>
+                    </p>
+                    <p>类型参数：
+                        <select name="type">
+                            <option>json</option>
+                            <option>xml</option>
+                        </select>
+                    </p>
+                    <p>请求头：
+                        <textarea name="headers" style="width: 200px;height: 100px;">
+                            {{ mock.headers }}
+                        </textarea>
+                    </p>
+                    <p>请求参数：
+                        <textarea name="parm" style="width: 200px;height: 100px;">
+                            {{ mock.params }}
+                        </textarea>
+                    </p>
+                    <p>返回参数：
+                        <textarea name="back" style="width: 200px;height: 100px;">
+                            {{ mock.fanhui }}
+                        </textarea>
+                    </p>
+                    <p>是否校验：
+                        <select name="checkout">
+                            <option>是</option>
+                            <option>否</option>
+                        </select>
+                    </p>
+                    <p>是否校验请求头：
+                        <select name="checkouheaders">
+                            <option>是</option>
+                            <option>否</option>
+                        </select>
+                    </p>
+                    <p>是否开启：
+                        <select name="kaiqi">
+                            <option>是</option>
+                            <option>否</option>
+                        </select>
+                    </p>
+                    <p>
+                        <input type="submit" value="编辑" class="btn-success " style="height:30px;width: 60px;">
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

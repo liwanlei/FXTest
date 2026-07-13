@@ -1,0 +1,6 @@
+{% extends 'back.html' %}
+{% block hello %}
+    <h2 style="text-align: center;color: red">页面找不到了。页面或者已经不存在了。请回
+        <a href="{{ url_for('home.index') }}">首页</a>
+    </h2>
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends "back.html" %}
+{% block hello %}
+    <div class="tpl-content-wrapper" onload="yilai();" style="margin-top: -7px;">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components" style="background-color: whitesmoke;">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 编辑测试用例
+                </div>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                    <div class="portlet-input input-small input-inline">
+                        <div class="input-icon right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('case.edit_case',id=edit.id) }}" method="POST">
+                <div class="form-group">
+                    <strong>项目:</strong>
+                    {% for project in  projects %}
+                        {% if project.project_name==edit.projects.project_name %}
+                            <input type='radio' value="{{ project.id }}" name="project" class="projects"
+                                   checked='checked'>{{ project.project_name }}
+                        {% else %}
+                            <input type='radio' value="{{ project.id }}" name="project" class="projects">
+                            {{ project.project_name }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>模块名字:</strong>
+                    <span>
+                        {% for model in  models %}
+                            {% if model.model_name==edit.models.model_name %}
+                                <input type='radio' value="{{ model.model_name }}" checked="checked" name="model">
+                                {{ model.model_name }}
+                            {% else %}
+                                <input type='radio' value="{{ model.model_name }}" name="model">{{ model.model_name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>接口:</strong>
+                    <select name="inerfa">
+                        {% for  test in inerfacelist %}
+                            {% if test.Interface_name == edit.interface_id.Interface_name %}
+                                <option selected>{{ test.Interface_name }}</option>
+                            {% else %}
+                                <option>{{ test.Interface_name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <strong>接口协议类型:</strong>
+                    <select name="interface_type">
+                        <option class="glyphicon-option-vertical">http</option>
+                        <option>dubbo</option>
+                    </select>
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>接口编号:</strong>
+                    <input type="text" name="url" value="{{ edit.bian_num }}" placeholder="接口用例编号">
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>接口headers:</strong>
+                    <input type="text" name="headers" value="{{ edit.Interface_headers }}">
+                    <span style="color: red">
+                        **dubbo接口这里需要填写入参对象
+                    </span>
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>请求方式:</strong>
+                    <input type="text" name="meth" value="{{ edit.Interface_meth }}">
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>请求参数:</strong>
+                    <input type="text" name="parme" value="{{ edit.Interface_pase }}">
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>请求预期:</strong>
+                    <input type="text" name="reque" value="{{ edit.Interface_assert }}">
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>是否保存测试结果:</strong>
+                    <input type="checkbox" name="save" value="是">
+                </div>
+                <span>&nbsp;</span>
+                <div class="form-group">
+                    <strong>是否ci:</strong>
+                    <input type="checkbox" name="ci" value="是">
+                </div>
+                <div class="form-group">
+                    <p><strong>请选择依赖接口:</strong>
+                        <select id="interface" name="jiekou">
+                            <option id='ceshiurls'> {{ edit.pid }}</option>
+                        </select></p>
+                    <strong>从依赖接口中获取参数：</strong>
+                    <input type="text" name="yilaicanshu" placeholder="请输入要依赖接口测试结果中的数据" value="{{ edit.getattr_p }}">
+                    <span style="color: rebeccapurple"> *这里的接口如果没有依赖请不要选择添加</span>
+                </div>
+                <div class="form-group">
+                    <strong>请选择依赖mock：</strong>
+                    <select name="mock">
+                        <option>选择依赖mock</option>
+                        {% for mock in mock_yilai %}
+                            <option>{{ mock.path }}</option>
+                        {% endfor %}
+                    </select>
+                    <strong>依赖mock的参数：</strong><input type="text" placeholder="请输入依赖mock的参数" name="mockdata">
+                </div>
+                <div class="form-group">
+                    <strong>是否校验数据库:</strong>
+                    <input type="radio" name="database" id="database" onclick="qidong()">
+                    <div id="shujuku" style="display: none">
+                        <p>
+                            <strong>数据库语句：</strong>
+                            <input type="text" name="databasesql" placeholder="请输入要查询的数据库语句！">
+                        </p>
+                        <strong>比较字段：</strong><input type="text" name="databijiao" placeholder="请输入和数据库比对！">
+                    </div>
+                </div>
+                <button type="submit" class="am-btn am-btn-primary">修改</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script language="JavaScript">
+        $(function yilai() {
+            var project = $("input[name='project']:checked").val();
+            if (project == undefined) {
+                return;
+            }
+            ;
+            $.ajax({
+                url: '{{ url_for('getcase') }}',
+                type: 'POST',
+                data: project,
+                contentType: 'application/json; charset=UTF-8',
+                processData: false,
+                success: function (reponse) {
+                    if (reponse['code'] == 100017) {
+                        selectdata = reponse['data']['data']
+                        var interce = $('#interface');
+                        for (var i = 0; i < selectdata.length; i++) {
+                            var url = selectdata[i];
+                            interce.append("<option id='ceshiurls'>  " + url + "</option>");
+                        }
+                        ;
+                    } else {
+                        alert(reponse['message'])
+                    }
+                }
+            })
+        });
+
+        function qidong() {
+            var d = document.getElementById('database');
+            var database = document.getElementById('shujuku');
+            if (d.checked == true) {
+                database.style.display = '';
+            } else {
+                database.style.display = 'none';
+            }
+        }
+    </script>
+{% endblock %}

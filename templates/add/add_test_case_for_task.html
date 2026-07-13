@@ -1,0 +1,88 @@
+{% extends 'back.html' %}
+{% block hello %}
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
+        <div class="tpl-content-page-title">
+        </div>
+        <div class="tpl-portlet-components" style="background-color: whitesmoke;">
+            <div class="portlet-title">
+                <div class="caption font-green bold">
+                    <span class="am-icon-code"></span> 任务用例操作
+                </div>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                    <div class="portlet-input input-small input-inline">
+                        <div class="input-icon right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class='flashes'>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="{{ url_for('task.testfortask',id=task_one.id) }}">
+                <div style="margin-top: 20px">
+                    <strong>已经有的用例：</strong>
+                    <p>
+                        {% for yongli in task_one.interface.all() %}
+                            {% if yongli.status== 1 %}
+                            {% else %}
+                                <input type="reset" value="{{ yongli }}">
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                </div>
+                <p style="margin-top: 20px">
+                    <strong>选择任务要执行的测试项目:</strong>
+                    <select id="project" name="project">
+                        <option>-----------------</option>
+                        {% for porject in procjets %}
+                            <option>
+                                {{ porject.project_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>
+                    <strong>选择测试用例：</strong>
+                </p>
+                <p id="ceshiyongli"></p>
+                <input type="submit" value="提交" class="btn btn-default">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $('select#project').change(function ajaxtestyongli() {
+            var project = document.getElementById('project').value;
+            $.ajax({
+                url: '{{ url_for('gettest') }}',
+                type: 'POST',
+                data: project,
+                contentType: 'application/json; charset=UTF-8',
+                processData: false,
+                success: function (testyong) {
+                    var message = (testyong['data']);
+                    var city = $("#ceshiyongli");
+                    city.empty();
+                    if (message.length) {
+                        var len = message.length;
+                        for (var i = 0; i < len; i++) {
+                            var obj = message[i];
+                            city.append("<input  type='checkbox' class='checkbox-inline' name='testyongli' value='" + obj.id + "'>" + obj.name);
+                        }
+                        ;
+                    }
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            })
+        });
+    </script>
+{% endblock %}
