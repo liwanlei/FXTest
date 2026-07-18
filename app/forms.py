@@ -76,7 +76,12 @@ class InterfaceCaseForm(Form):  # 测试用例的表单
     interface_meth = StringField(u'请求方式', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口请求方式'})
     interface_can = StringField(u'请求参数', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口请求参数'})
     interface_rest = StringField(u'请求预期', [validators.DataRequired()], render_kw={'placeholder': u'请输入接口预期'})
-    save = SelectField(u'选择是否保存测试结果', choices=choice_l, coerce=int)
+    save = SelectField(u'选择是否保存测试结果', choices=[], coerce=int)
+
+    def __init__(self, *args, **kwargs):
+        super(InterfaceCaseForm, self).__init__(*args, **kwargs)
+        from app import choice_l
+        self.save.choices = choice_l
 
 
 class EmailSettingForm(Form):  # 设置发送邮箱的
