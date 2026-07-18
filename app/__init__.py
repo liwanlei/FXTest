@@ -23,7 +23,7 @@ conf = lod()
 loginManager = LoginManager(app)
 app.config.from_object(conf)
 bootstrap = Bootstrap(app)
-loginManager.session_protection = "strong"
+loginManager.session_protection = "basic"
 loginManager.login_view = 'home.login'
 loginManager.login_message = u'FXTest测试平台必须登录，请登录您的FXTest平台账号！'
 db = SQLAlchemy(app)
