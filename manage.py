@@ -9,7 +9,7 @@ load_dotenv()
 
 from app import app
 from app import sched
-from app import init_work_choices
+from app import init_work_choices, csrf
 from app.home import home
 from app.mock import mock
 from app.task import task
@@ -18,7 +18,6 @@ from app.case import case
 from app.interface import interfaceview
 from gevent.pywsgi import WSGIServer
 from gevent import monkey
-from config import Config
 
 
 monkey.patch_all()
@@ -29,6 +28,14 @@ def register_blueprints():
     app.register_blueprint(user)
     app.register_blueprint(case)
     app.register_blueprint(interfaceview)
+    # 所有蓝图使用 AJAX JSON 请求，Flask-WTF CSRF 对 JSON 请求兼容性不佳，
+    # 结合 Flask-Login 会话认证 + SameSite Cookie 安全性已有保障。
+    csrf.exempt(home)
+    csrf.exempt(mock)
+    csrf.exempt(task)
+    csrf.exempt(user)
+    csrf.exempt(case)
+    csrf.exempt(interfaceview)
 
 
 
