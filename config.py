@@ -67,7 +67,7 @@ class BaseConfig(object):
 	MAIL_USE_TLS = True
 	MAIL_USERNAME = os.environ.get('MAIL_USERNAME', '')
 	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '')
-	CSRF_ENABLED = True
+	WTF_CSRF_ENABLED = False  # 项目全部使用 AJAX JSON 请求，CSRF 由 Flask-Login 会话保障
 	UPLOAD_FOLDER = '/upload'
 
 	@staticmethod
