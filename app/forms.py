@@ -4,8 +4,6 @@
 @file: forms.py
 @time: 2017/7/13 16:42
 """
-from app import work_choices
-
 '''form表单'''
 from flask_wtf import Form
 from wtforms import StringField, validators, PasswordField, SelectField, ValidationError
@@ -36,8 +34,13 @@ class RegisterForm(Form):
     jobnum = StringField(u'输入注册的工号', [validators.DataRequired(message=u'请输入工号')],
                          render_kw={'placeholder': u'输入注册的工号'})
 
-    work = SelectField(u'选择职位', choices=work_choices, coerce=int,
+    work = SelectField(u'选择职位', choices=[], coerce=int,
                        validators=[validators.DataRequired(message=u"项目名称不能为空")])
+
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+        from app import work_choices
+        self.work.choices = work_choices
 
 
 class ChangePasswordForm(Form):
