@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """project_views 视图。"""
+from app import db
 from app.home.resource_views._shared import *  # noqa: F401,F403
 
 class ProjectView(MethodView):
@@ -12,7 +13,7 @@ class ProjectView(MethodView):
         projects_list = fenye_list(Ob_list=projects, split=PageShow)
         pages = range(1, len(projects_list) + 1)
         try:
-            paged_data = projects_list[int(page) - 1]
+            paged_data = projects_list[int(page) - 1] if projects_list else []
             return render_template('home/project.html', projects=paged_data, pages=pages)
         except Exception:
             return redirect(url_for('home.project'))

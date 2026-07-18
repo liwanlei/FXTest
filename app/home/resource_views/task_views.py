@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """task_views 视图。"""
+from flask import flash
+
+from app import db
 from app.home.resource_views._shared import *  # noqa: F401,F403
 
 class TimingtasksView(MethodView):
@@ -20,7 +23,7 @@ class TimingtasksView(MethodView):
         projects_list = fenye_list(Ob_list=old_yask, split=PageShow)
         pages = range(1, len(projects_list) + 1)
         try:
-            paged_data = projects_list[int(page) - 1]
+            paged_data = projects_list[int(page) - 1] if projects_list else []
             return render_template('home/timingtask.html', inte=paged_data, pages=pages)
         except Exception as e:
             logger.error(e)
@@ -62,7 +65,7 @@ class GenconfigView(MethodView):
         projects_list = fenye_list(Ob_list=genconfiglist, split=PageShow)
         pages = range(1, len(projects_list) + 1)
         try:
-            paged_data = projects_list[int(page) - 1]
+            paged_data = projects_list[int(page) - 1] if projects_list else []
             return render_template('home/genconfig.html', inte=paged_data, pages=pages)
         except Exception as e:
             logger.error(e)

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """env_views 视图。"""
+from app import db
 from app.home.resource_views._shared import *  # noqa: F401,F403
 
 class TestenvironmentView(MethodView):
@@ -27,7 +28,7 @@ class TestenvironmentView(MethodView):
         else:
             projects = get_user_projects()
         try:
-            test_events_page = projects_list[int(page) - 1]
+            test_events_page = projects_list[int(page) - 1] if projects_list else []
             return render_template('home/events.html', events=test_events_page,
                                    pages=pages,
                                    projects=projects)

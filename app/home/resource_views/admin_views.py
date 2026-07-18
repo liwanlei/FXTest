@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """admin_views 视图。"""
+from app import db
 from app.home.resource_views._shared import *  # noqa: F401,F403
 
 class AdminUserView(MethodView):
@@ -83,7 +84,7 @@ class TestResultView(MethodView):
         projects_list = fenye_list(Ob_list=project, split=PageShow)
         pages = range(1, len(projects_list) + 1)
         try:
-            paged_data = projects_list[int(page) - 1]
+            paged_data = projects_list[int(page) - 1] if projects_list else []
             return render_template('home/test_result.html', projects=paged_data, pages=pages)
         except Exception as e:
             logger.exception(e)
