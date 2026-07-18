@@ -20,10 +20,10 @@ from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 
 app = Flask(__name__)
 conf = lod()
-loginManager = LoginManager(app)
 app.config.from_object(conf)
+loginManager = LoginManager(app)
 bootstrap = Bootstrap(app)
-loginManager.session_protection = "basic"
+loginManager.session_protection = None
 loginManager.login_view = 'home.login'
 loginManager.login_message = u'FXTest测试平台必须登录，请登录您的FXTest平台账号！'
 db = SQLAlchemy(app)
