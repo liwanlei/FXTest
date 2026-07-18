@@ -4,8 +4,6 @@
 @file: config.py
 @time: 2017/7/13 16:39
 """
-from app.models import Permisson
-
 '''配置文件，后台一些需要的配置需要在这里进行配置'''
 import os
 from apscheduler.jobstores.redis import RedisJobStore
@@ -34,10 +32,17 @@ jmeter_data_db = os.environ.get('JMETER_DATA_DB', 'test')
 paln_run_url = os.environ.get('PLAN_RUN_URL', 'http://127.0.0.1:5000')
 
 email_type = "online.com"  # 用于校验邮箱
-roles = {'User': Permisson.DELETE | Permisson.EDIT | Permisson.ADD,
-		 'Oneadmin': Permisson.DELETE | Permisson.EDIT | Permisson.ADD | Permisson.ONEADMIN,
-		 'Administrator': Permisson.DELETE | Permisson.EDIT | Permisson.ADD | Permisson.ONEADMIN | Permisson.ADMIN
-		 }
+def _get_roles():
+    """延迟导入 Permisson 以避免循环依赖。"""
+    from app.models import Permisson
+    return {
+        'User': Permisson.DELETE | Permisson.EDIT | Permisson.ADD,
+        'Oneadmin': Permisson.DELETE | Permisson.EDIT | Permisson.ADD | Permisson.ONEADMIN,
+        'Administrator': Permisson.DELETE | Permisson.EDIT | Permisson.ADD | Permisson.ONEADMIN | Permisson.ADMIN,
+    }
+
+
+roles = _get_roles
 REDIS = {
 	'host': redis_host,
 	'port': redis_port,

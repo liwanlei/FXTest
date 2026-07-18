@@ -16,11 +16,12 @@ def create_roles():  # 创建角色
     """
 
     roleslist=[]
-    for item in roles:
+    _roles = roles()  # 延迟获取，避免循环导入
+    for item in _roles:
         role = Role.query.filter_by(name=item).first()
         if role is None:
             role = Role(name=item)
-        role.permissions = roles[item]
+        role.permissions = _roles[item]
         roleslist.append(role)
     db.session.add_all(roleslist)
     db.session.commit()

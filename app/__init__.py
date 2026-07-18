@@ -11,7 +11,6 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 
-from app.models import Work
 from config import lod
 from apscheduler.schedulers.background import BackgroundScheduler, BlockingScheduler
 from config import jobstores, executors
@@ -31,6 +30,7 @@ loginManager.login_view = 'home.login'
 loginManager.login_message = u'FXTest测试平台必须登录，请登录您的FXTest平台账号！'
 db = SQLAlchemy(app)
 admin = Admin(app, name=u'FXTest系统管理后台')
+from app.models import Work
 from app import views, models, urls, admin_views
 
 
