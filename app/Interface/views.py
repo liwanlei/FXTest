@@ -6,6 +6,8 @@
 from flask import redirect, request, \
     render_template, session, url_for, flash, Blueprint, \
     make_response, send_from_directory
+
+from app import db
 from app.models import *
 from common.excel_parser import parse_interface
 from flask.views import MethodView, View

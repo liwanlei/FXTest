@@ -3,7 +3,9 @@
 @file: views.py
 @time: 2017/7/13 16:42
 """
-from app import app
+from loguru import logger
+
+from app import app, db
 from flask import request, render_template, \
     make_response, send_from_directory, \
     flash, redirect, url_for
@@ -16,7 +18,6 @@ from app.forms import RegisterForm
 from flask_login import login_required, current_user
 from config import email_type
 from error_message import *
-from common.system_log import logger
 
 
 def get_common_data():

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """batch_run 视图。"""
+from app import db
 from app.case.case_operations._shared import *  # noqa: F401,F403
+from common.mysql_client import create_mysql_conn, execute_sql
+
 
 class MuliteCaseLiView(View):
     methods = ['GET', 'POST']

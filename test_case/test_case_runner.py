@@ -2,6 +2,7 @@
 # @Date    : 2017-07-20 21:06:16
 # @Author  : lileilei
 '''封装多用例执行'''
+from app import db
 from common.api_client import Api
 from common.assertions import assert_in
 from common.assertions import pare_result_mysql

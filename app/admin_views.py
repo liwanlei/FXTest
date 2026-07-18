@@ -5,7 +5,7 @@
 @description: 管理后台
 """
 
-from app import admin
+from app import admin, db
 from app.models import *
 from flask_admin.contrib.sqla import ModelView
 

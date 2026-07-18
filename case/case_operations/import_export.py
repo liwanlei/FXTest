@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """import_export 视图。"""
+from app import db
 from app.case.case_operations._shared import *  # noqa: F401,F403
 
 class ImportCaseView(View):

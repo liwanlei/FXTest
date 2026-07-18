@@ -2,13 +2,15 @@
 # @Author  : lileilei
 # @File    : views.py
 # @Time    : 2017/12/7 12:11
+import datetime
+
 from flask import Blueprint
 from flask import redirect, request, \
     render_template, url_for, flash
 from app.models import *
 from flask.views import MethodView
 from flask_login import current_user, login_required
-from app import loginManager
+from app import loginManager, db
 from common.mock_server import get_token_data
 from error_message import MessageEnum
 from common.system_log import logger

@@ -5,6 +5,8 @@
 """
 from flask import redirect, request, render_template, \
     session, url_for, flash, Blueprint
+
+from app import db
 from app.models import *
 from app.forms import *
 import os, time, datetime, json

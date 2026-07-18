@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 # @Author  : lileilei
 # @File    : views.py
+import datetime
+
 from flask import Blueprint
 from flask import redirect, request, render_template, url_for, flash
 from common.bs_test_runner import BSTestRunner
 from flask.views import MethodView
 from flask_login import current_user, login_required
-from app import loginManager, sched
+from app import loginManager, sched, db
 import time, os
 from app.test_case.new_unittest_case import *
 from common.dingtalk import send_ding

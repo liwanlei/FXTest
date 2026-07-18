@@ -4,6 +4,8 @@
 # @Time    : 2017/12/7 12:25
 from flask import Blueprint
 
+from app import db
+
 user = Blueprint('user', __name__)
 from flask import redirect, request, \
     session, url_for, flash

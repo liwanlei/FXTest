@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """env_views 视图。"""
+from app import db
 from app.home.resource_views._shared import *  # noqa: F401,F403
 
 class TestenvironmentView(MethodView):

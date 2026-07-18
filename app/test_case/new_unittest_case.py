@@ -5,6 +5,7 @@
 
 import unittest
 
+from app import db
 from common.api_client import Api
 from common.assertions import pare_result_mysql
 from common.mysql_client import *

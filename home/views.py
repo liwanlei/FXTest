@@ -2,6 +2,8 @@
 # @Author  : lileilei
 # @File    : views.py
 # @Time    : 2017/12/7 9:23
+import datetime
+
 from flask import Blueprint, flash
 import json
 from common.list_utils import flatten_list
@@ -14,7 +16,7 @@ from app.forms import *
 from flask.views import MethodView
 from flask_login import login_required, login_user, \
     logout_user, current_user
-from app import loginManager, sched
+from app import loginManager, sched, db
 from common.list_paging import Pagination, fenye_list
 from error_message import *
 from common.redis_client import ConRedisOper  # noqa: F401 (保留以兼容其他模块导入)

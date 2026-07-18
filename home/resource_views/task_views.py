@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """task_views 视图。"""
+from flask import flash
+
+from app import db
 from app.home.resource_views._shared import *  # noqa: F401,F403
 
 class TimingtasksView(MethodView):
