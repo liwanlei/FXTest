@@ -72,16 +72,12 @@
                 var data = {};
                 data['username'] = username;
                 data['password'] = password;
-                var csrf_token = document.getElementsByName('csrf_token')[0].value;
                 $.ajax({
                     url: '{{ url_for('home.login') }}',
                     type: 'POST',
                     data: JSON.stringify(data),
                     contentType: 'application/json; charset=UTF-8',
                     processData: false,
-                    headers: {
-                        'X-CSRFToken': csrf_token
-                    },
                     success: function (result) {
                         if (result['code'] == 0) {
                             location.href = '{{ url_for('home.index') }}';
