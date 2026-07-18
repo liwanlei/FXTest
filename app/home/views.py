@@ -14,7 +14,7 @@ from app.forms import *
 from flask.views import MethodView
 from flask_login import login_required, login_user, \
     logout_user, current_user
-from app import loginManager, sched
+from app import loginManager, sched, csrf
 from common.list_paging import Pagination, fenye_list
 from error_message import *
 from common.redis_client import ConRedisOper  # noqa: F401 (保留以兼容其他模块导入)

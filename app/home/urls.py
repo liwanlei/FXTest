@@ -5,9 +5,10 @@
 from .views import *
 from .views import home
 from .resource_views import *
+from app import csrf
 
 home.add_url_rule('/index', view_func=IndexView.as_view('index'))
-home.add_url_rule('/login', view_func=LoginView.as_view('login'))
+home.add_url_rule('/login', view_func=csrf.exempt(LoginView.as_view('login')))
 home.add_url_rule('/logout', view_func=LogoutView.as_view('logout'))
 home.add_url_rule('/interface', view_func=InterfaceView.as_view('interface'))
 home.add_url_rule('/interface/<int:page>', view_func=InterfaceView.as_view('interfaspa'))
