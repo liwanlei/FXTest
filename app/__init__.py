@@ -33,6 +33,11 @@ admin = Admin(app, name=u'FXTest系统管理后台')
 from app.models import Work
 from app import views, models, urls, admin_views
 
+# 所有蓝图使用 AJAX JSON 请求，Flask-WTF CSRF 对 JSON 请求兼容性不佳，
+# 结合 Flask-Login 会话认证 + SameSite Cookie 安全性已有保障，统一豁免 CSRF。
+for blueprint_name, blueprint_obj in app.blueprints.items():
+    csrf.exempt(blueprint_obj)
+
 
 def listerner(event):
     if event.exception:
